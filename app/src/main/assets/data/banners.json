@@ -1,0 +1,72 @@
+[
+  {
+    "id": "banner_001",
+    "title": "年终盛典 全品类大促",
+    "subtitle": "满300减50，满500减100",
+    "imageUrl": "https://example.com/banner_new_year_sale.jpg",
+    "actionUrl": "/promotions/new_year_sale",
+    "backgroundColor": "#FF6B35",
+    "textColor": "#FFFFFF",
+    "isActive": true,
+    "sortOrder": 1,
+    "startTime": 1703635200000,
+    "endTime": 1705622400000,
+    "type": "PROMOTION"
+  },
+  {
+    "id": "banner_002",
+    "title": "iPhone 15 新品首发",
+    "subtitle": "预约享受专属优惠",
+    "imageUrl": "https://example.com/banner_iphone15.jpg",
+    "actionUrl": "/products/iphone15_001",
+    "backgroundColor": "#000000",
+    "textColor": "#FFFFFF",
+    "isActive": true,
+    "sortOrder": 2,
+    "startTime": 1703635200000,
+    "endTime": 1706227200000,
+    "type": "PRODUCT"
+  },
+  {
+    "id": "banner_003",
+    "title": "京东超市 1小时达",
+    "subtitle": "生活用品，急速送达",
+    "imageUrl": "https://example.com/banner_supermarket.jpg",
+    "actionUrl": "/supermarket",
+    "backgroundColor": "#E31E24",
+    "textColor": "#FFFFFF",
+    "isActive": true,
+    "sortOrder": 3,
+    "startTime": 1703635200000,
+    "endTime": 1708992000000,
+    "type": "CATEGORY"
+  },
+  {
+    "id": "banner_004",
+    "title": "华为新品发布",
+    "subtitle": "科技创新，引领未来",
+    "imageUrl": "https://example.com/banner_huawei.jpg",
+    "actionUrl": "/brands/huawei",
+    "backgroundColor": "#FF0000",
+    "textColor": "#FFFFFF",
+    "isActive": true,
+    "sortOrder": 4,
+    "startTime": 1703635200000,
+    "endTime": 1706227200000,
+    "type": "BRAND"
+  },
+  {
+    "id": "banner_005",
+    "title": "数码配件专场",
+    "subtitle": "耳机、充电器、数据线低至5折",
+    "imageUrl": "https://example.com/banner_digital.jpg",
+    "actionUrl": "/categories/digital_accessories",
+    "backgroundColor": "#4285F4",
+    "textColor": "#FFFFFF",
+    "isActive": true,
+    "sortOrder": 5,
+    "startTime": 1703635200000,
+    "endTime": 1705622400000,
+    "type": "CATEGORY"
+  }
+]

@@ -1,0 +1,56 @@
+{
+  "id": "user_001",
+  "username": "jduser001",
+  "nickname": "京东用户",
+  "avatar": "https://example.com/avatar_default.jpg",
+  "phone": "13812345678",
+  "email": "jduser001@example.com",
+  "isLoggedIn": true,
+  "loginTime": 1704067200000,
+  "memberLevel": "金牌会员",
+  "points": 15680,
+  "balance": 299.50,
+  "coupons": [
+    {
+      "id": "coupon_001",
+      "name": "满300减50通用券",
+      "description": "全场通用，满300元可使用",
+      "minAmount": 300.0,
+      "discountAmount": 50.0,
+      "expiryTime": 1706227200000,
+      "isUsed": false
+    },
+    {
+      "id": "coupon_002", 
+      "name": "满500减100数码券",
+      "description": "数码类商品专用",
+      "minAmount": 500.0,
+      "discountAmount": 100.0,
+      "expiryTime": 1705622400000,
+      "isUsed": false
+    },
+    {
+      "id": "coupon_003",
+      "name": "超市免邮券",
+      "description": "超市商品免运费",
+      "minAmount": 0.0,
+      "discountAmount": 0.0,
+      "expiryTime": 1708992000000,
+      "isUsed": false
+    }
+  ],
+  "preferences": {
+    "receivePromotions": true,
+    "receiveOrderUpdates": true,
+    "receiveSystemNotifications": true,
+    "language": "zh-CN",
+    "currency": "CNY"
+  },
+  "statistics": {
+    "totalOrders": 25,
+    "totalSpent": 28560.50,
+    "favoriteCategory": "数码",
+    "registerTime": 1640995200000,
+    "lastLoginTime": 1704067200000
+  }
+}

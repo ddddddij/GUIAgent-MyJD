@@ -1,0 +1,62 @@
+[
+  {
+    "id": "addr_001",
+    "recipientName": "张三",
+    "phoneNumber": "13812345678",
+    "province": "北京市",
+    "city": "北京市",
+    "district": "朝阳区",
+    "detailAddress": "建国路88号SOHO现代城A座1501室",
+    "postCode": "100022",
+    "isDefault": true,
+    "createTime": 1704067200000
+  },
+  {
+    "id": "addr_002",
+    "recipientName": "李四",
+    "phoneNumber": "13687654321",
+    "province": "上海市",
+    "city": "上海市",
+    "district": "浦东新区",
+    "detailAddress": "陆家嘴环路1000号恒生银行大厦2205室",
+    "postCode": "200120",
+    "isDefault": false,
+    "createTime": 1703980800000
+  },
+  {
+    "id": "addr_003",
+    "recipientName": "王五",
+    "phoneNumber": "13923456789",
+    "province": "广东省",
+    "city": "深圳市",
+    "district": "南山区",
+    "detailAddress": "科技园南区深南大道9999号",
+    "postCode": "518057",
+    "isDefault": false,
+    "createTime": 1703894400000
+  },
+  {
+    "id": "addr_004",
+    "recipientName": "赵六",
+    "phoneNumber": "13745678901",
+    "province": "浙江省",
+    "city": "杭州市",
+    "district": "西湖区",
+    "detailAddress": "文三路259号昌地火炬大厦1号楼1201室",
+    "postCode": "310012",
+    "isDefault": false,
+    "createTime": 1703808000000
+  },
+  {
+    "id": "addr_005",
+    "recipientName": "陈七",
+    "phoneNumber": "13556789012",
+    "province": "江苏省",
+    "city": "南京市",
+    "district": "鼓楼区",
+    "detailAddress": "中山路18号德基广场二期A座1803室",
+    "postCode": "210008",
+    "isDefault": false,
+    "createTime": 1703721600000
+  }
+]

@@ -1,0 +1,122 @@
+[
+  {
+    "id": "notif_001",
+    "type": "SYSTEM",
+    "title": "系统升级通知",
+    "content": "京东APP将于今晚23:00-01:00进行系统升级，期间可能影响部分功能使用，请提前做好购物安排。",
+    "imageUrl": null,
+    "isRead": false,
+    "timestamp": 1704153600000,
+    "relatedOrderId": null,
+    "relatedProductId": null,
+    "actionUrl": null
+  },
+  {
+    "id": "notif_002",
+    "type": "ORDER",
+    "title": "订单已发货",
+    "content": "您的订单[order_004]已发货，物流单号：JD2024010312345678，预计1-2天送达。",
+    "imageUrl": "https://example.com/delivery_icon.jpg",
+    "isRead": true,
+    "timestamp": 1703980800000,
+    "relatedOrderId": "order_004",
+    "relatedProductId": "headphone_001",
+    "actionUrl": "/orders/order_004"
+  },
+  {
+    "id": "notif_003",
+    "type": "PROMOTION",
+    "title": "限时优惠！华为手机专场",
+    "content": "华为手机限时优惠，最高立减1000元！数量有限，先到先得！",
+    "imageUrl": "https://example.com/huawei_promotion.jpg",
+    "isRead": false,
+    "timestamp": 1704067200000,
+    "relatedOrderId": null,
+    "relatedProductId": null,
+    "actionUrl": "/promotions/huawei_sale"
+  },
+  {
+    "id": "notif_004",
+    "type": "DELIVERY",
+    "title": "包裹已签收",
+    "content": "您的订单[order_005]包裹已签收，感谢您的购买。如有问题请及时联系客服。",
+    "imageUrl": null,
+    "isRead": true,
+    "timestamp": 1703980800000,
+    "relatedOrderId": "order_005",
+    "relatedProductId": "shoes_001",
+    "actionUrl": "/orders/order_005"
+  },
+  {
+    "id": "notif_005",
+    "type": "REFUND",
+    "title": "退款已完成",
+    "content": "您的退款申请[refund_001]已处理完成，退款金额780.00元将在3-5个工作日内退回您的账户。",
+    "imageUrl": null,
+    "isRead": false,
+    "timestamp": 1704067200000,
+    "relatedOrderId": "order_006",
+    "relatedProductId": "cosmetic_001",
+    "actionUrl": "/refunds/refund_001"
+  },
+  {
+    "id": "notif_006",
+    "type": "REVIEW",
+    "title": "商品评价提醒",
+    "content": "您购买的商品[耐克Air Max 270运动鞋]已确认收货，快来评价一下吧！",
+    "imageUrl": "https://example.com/nike_shoes.jpg",
+    "isRead": false,
+    "timestamp": 1703980800000,
+    "relatedOrderId": "order_005",
+    "relatedProductId": "shoes_001",
+    "actionUrl": "/review/shoes_001"
+  },
+  {
+    "id": "notif_007",
+    "type": "GENERAL",
+    "title": "京东超市活动开始",
+    "content": "京东超市年终大促正式开启！生活用品满99减20，满199减50！",
+    "imageUrl": "https://example.com/jd_supermarket_sale.jpg",
+    "isRead": true,
+    "timestamp": 1703894400000,
+    "relatedOrderId": null,
+    "relatedProductId": null,
+    "actionUrl": "/supermarket/promotion"
+  },
+  {
+    "id": "notif_008",
+    "type": "ORDER",
+    "title": "订单待付款提醒",
+    "content": "您的订单[order_001]还未付款，请尽快完成支付，超时订单将自动取消。",
+    "imageUrl": null,
+    "isRead": false,
+    "timestamp": 1704153600000,
+    "relatedOrderId": "order_001",
+    "relatedProductId": "iphone15_001",
+    "actionUrl": "/orders/order_001/payment"
+  },
+  {
+    "id": "notif_009",
+    "type": "SYSTEM",
+    "title": "账户安全提醒",
+    "content": "检测到您的账户在新设备上登录，如非本人操作请立即修改密码。",
+    "imageUrl": null,
+    "isRead": true,
+    "timestamp": 1703808000000,
+    "relatedOrderId": null,
+    "relatedProductId": null,
+    "actionUrl": "/security/settings"
+  },
+  {
+    "id": "notif_010",
+    "type": "PROMOTION",
+    "title": "新用户专享优惠券",
+    "content": "恭喜您获得新用户专享优惠券包！包含满300减50、满500减100等多张优惠券。",
+    "imageUrl": "https://example.com/coupon_pack.jpg",
+    "isRead": false,
+    "timestamp": 1703721600000,
+    "relatedOrderId": null,
+    "relatedProductId": null,
+    "actionUrl": "/coupons/new_user"
+  }
+]

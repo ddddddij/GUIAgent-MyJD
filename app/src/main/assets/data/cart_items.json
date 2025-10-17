@@ -1,0 +1,136 @@
+[
+  {
+    "id": "cart_001",
+    "product": {
+      "id": "rice_001",
+      "name": "五常大米东北珍珠米5kg",
+      "price": 58.8,
+      "originalPrice": 68.8,
+      "brand": "五常",
+      "category": "超市",
+      "imageUrl": "https://example.com/rice.jpg",
+      "storeId": "jd_supermarket",
+      "storeName": "京东超市",
+      "colors": [],
+      "versions": ["2.5kg", "5kg", "10kg"],
+      "selectedColor": null,
+      "selectedVersion": "5kg",
+      "stock": 300,
+      "isInStock": true,
+      "rating": 4.8,
+      "reviewCount": 8900,
+      "description": "五常大米，黑土地种植，颗粒饱满，口感香甜。",
+      "specifications": {
+        "产地": "黑龙江五常",
+        "规格": "5kg",
+        "保质期": "12个月",
+        "储存方式": "阴凉干燥处",
+        "等级": "一级"
+      }
+    },
+    "quantity": 2,
+    "isSelected": true,
+    "addedTime": 1704067200000
+  },
+  {
+    "id": "cart_002",
+    "product": {
+      "id": "huawei_nova11_001",
+      "name": "华为nova11 256GB",
+      "price": 3499.0,
+      "originalPrice": 3999.0,
+      "brand": "华为",
+      "category": "手机",
+      "imageUrl": "https://example.com/huawei_nova11.jpg",
+      "storeId": "huawei_store",
+      "storeName": "华为官方旗舰店",
+      "colors": ["绮境森林", "曜金黑", "樱语粉", "冰霜银"],
+      "versions": ["128GB", "256GB", "512GB"],
+      "selectedColor": "樱语粉",
+      "selectedVersion": "256GB",
+      "stock": 120,
+      "isInStock": true,
+      "rating": 4.6,
+      "reviewCount": 980,
+      "description": "华为nova11 主打人像摄影，搭载骁龙778G芯片，6.7英寸曲面屏。",
+      "specifications": {
+        "屏幕尺寸": "6.7英寸",
+        "分辨率": "2412×1084",
+        "芯片": "骁龙778G",
+        "存储": "256GB",
+        "后置摄像头": "50MP主摄+8MP超广角",
+        "前置摄像头": "32MP",
+        "电池": "4500mAh"
+      }
+    },
+    "quantity": 1,
+    "isSelected": false,
+    "addedTime": 1703980800000
+  },
+  {
+    "id": "cart_003",
+    "product": {
+      "id": "headphone_001",
+      "name": "索尼WH-1000XM4无线降噪耳机",
+      "price": 1899.0,
+      "originalPrice": 2299.0,
+      "brand": "索尼",
+      "category": "数码",
+      "imageUrl": "https://example.com/sony_headphone.jpg",
+      "storeId": "sony_store",
+      "storeName": "索尼官方旗舰店",
+      "colors": ["黑色", "银色", "蓝色"],
+      "versions": ["标准版", "旅行套装版"],
+      "selectedColor": "蓝色",
+      "selectedVersion": "标准版",
+      "stock": 80,
+      "isInStock": true,
+      "rating": 4.8,
+      "reviewCount": 5600,
+      "description": "索尼WH-1000XM4，行业领先的降噪技术，30小时续航，LDAC高解析音频。",
+      "specifications": {
+        "类型": "头戴式无线耳机",
+        "降噪": "主动降噪",
+        "续航": "30小时",
+        "充电": "USB-C快充",
+        "重量": "254g"
+      }
+    },
+    "quantity": 1,
+    "isSelected": true,
+    "addedTime": 1703894400000
+  },
+  {
+    "id": "cart_004",
+    "product": {
+      "id": "milk_001",
+      "name": "蒙牛特仑苏纯牛奶250ml*16盒",
+      "price": 89.9,
+      "originalPrice": 99.9,
+      "brand": "蒙牛",
+      "category": "超市",
+      "imageUrl": "https://example.com/milk.jpg",
+      "storeId": "jd_supermarket",
+      "storeName": "京东超市",
+      "colors": [],
+      "versions": ["250ml*16盒", "250ml*24盒"],
+      "selectedColor": null,
+      "selectedVersion": "250ml*16盒",
+      "stock": 500,
+      "isInStock": true,
+      "rating": 4.9,
+      "reviewCount": 15800,
+      "description": "蒙牛特仑苏，甄选优质奶源，3.6g优质蛋白，营养丰富。",
+      "specifications": {
+        "品牌": "蒙牛",
+        "规格": "250ml*16盒",
+        "保质期": "6个月",
+        "储存方式": "常温保存",
+        "蛋白质含量": "≥3.6g/100ml"
+      }
+    },
+    "quantity": 3,
+    "isSelected": false,
+    "addedTime": 1703808000000
+  }
+]

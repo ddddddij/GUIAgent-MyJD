@@ -1,0 +1,91 @@
+[
+  {
+    "id": "refund_001",
+    "orderId": "order_006",
+    "orderItemId": "order_006_item_001",
+    "serviceType": "REFUND_ONLY",
+    "status": "COMPLETED",
+    "reason": "NOT_SATISFIED",
+    "description": "商品与预期不符，申请退款",
+    "refundAmount": 780.0,
+    "applyTime": 1703894400000,
+    "processTime": 1703980800000,
+    "completeTime": 1704067200000,
+    "images": [
+      "https://example.com/refund_001_1.jpg",
+      "https://example.com/refund_001_2.jpg"
+    ],
+    "adminReply": "经审核，同意退款，款项将在3-5个工作日内退回您的账户。"
+  },
+  {
+    "id": "refund_002",
+    "orderId": "order_007",
+    "orderItemId": "order_007_item_001",
+    "serviceType": "RETURN_AND_REFUND",
+    "status": "APPROVED",
+    "reason": "QUALITY_ISSUE",
+    "description": "笔记本屏幕有坏点，需要退货退款",
+    "refundAmount": 4999.0,
+    "applyTime": 1703808000000,
+    "processTime": 1703894400000,
+    "completeTime": null,
+    "images": [
+      "https://example.com/refund_002_1.jpg",
+      "https://example.com/refund_002_2.jpg",
+      "https://example.com/refund_002_3.jpg"
+    ],
+    "adminReply": "已同意退货退款，请将商品寄回指定地址。"
+  },
+  {
+    "id": "refund_003",
+    "orderId": "order_005",
+    "orderItemId": "order_005_item_001",
+    "serviceType": "EXCHANGE",
+    "status": "PROCESSING",
+    "reason": "SIZE_NOT_FIT",
+    "description": "鞋子尺码偏小，需要换大一码",
+    "refundAmount": 0.0,
+    "applyTime": 1703980800000,
+    "processTime": 1704067200000,
+    "completeTime": null,
+    "images": [
+      "https://example.com/refund_003_1.jpg"
+    ],
+    "adminReply": "正在为您处理换货申请，请耐心等待。"
+  },
+  {
+    "id": "refund_004",
+    "orderId": "order_004",
+    "orderItemId": "order_004_item_001",
+    "serviceType": "REFUND_ONLY",
+    "status": "PENDING",
+    "reason": "RECEIVED_WRONG_ITEM",
+    "description": "收到的颜色不对，订的是黑色收到的是银色",
+    "refundAmount": 1899.0,
+    "applyTime": 1704153600000,
+    "processTime": null,
+    "completeTime": null,
+    "images": [
+      "https://example.com/refund_004_1.jpg",
+      "https://example.com/refund_004_2.jpg"
+    ],
+    "adminReply": null
+  },
+  {
+    "id": "refund_005",
+    "orderId": "order_003",
+    "orderItemId": "order_003_item_001",
+    "serviceType": "RETURN_AND_REFUND",
+    "status": "REJECTED",
+    "reason": "QUALITY_ISSUE",
+    "description": "牛奶包装破损",
+    "refundAmount": 179.8,
+    "applyTime": 1704067200000,
+    "processTime": 1704153600000,
+    "completeTime": 1704153600000,
+    "images": [
+      "https://example.com/refund_005_1.jpg"
+    ],
+    "adminReply": "经检查，商品包装完好，不符合退货条件。"
+  }
+]
