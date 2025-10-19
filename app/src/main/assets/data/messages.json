@@ -1,0 +1,122 @@
+[
+  {
+    "id": "msg_001",
+    "type": "CUSTOMER_SERVICE",
+    "subType": "ALL",
+    "senderName": "京东客服",
+    "senderAvatar": "👨‍💼",
+    "content": "京东客服很高兴为您服务",
+    "timestamp": 1704153600000,
+    "isRead": false,
+    "isOfficial": true,
+    "hasUnreadDot": false
+  },
+  {
+    "id": "msg_002",
+    "type": "LOGISTICS",
+    "subType": "SHOPPING",
+    "senderName": "得力装订文具旗舰店",
+    "senderAvatar": "🏪",
+    "content": "～嗨好😊",
+    "timestamp": 1703980800000,
+    "isRead": true,
+    "isOfficial": false,
+    "hasUnreadDot": false
+  },
+  {
+    "id": "msg_003",
+    "type": "LOGISTICS",
+    "subType": "SHOPPING",
+    "senderName": "文轩网旗舰店",
+    "senderAvatar": "📚",
+    "content": "您好，智能客服助手为您服务！",
+    "timestamp": 1703894400000,
+    "isRead": true,
+    "isOfficial": false,
+    "hasUnreadDot": false
+  },
+  {
+    "id": "msg_004",
+    "type": "REVIEW",
+    "subType": "SHOPPING",
+    "senderName": "爱启航图书旗舰店",
+    "senderAvatar": "🚀",
+    "content": "是的",
+    "timestamp": 1703808000000,
+    "isRead": true,
+    "isOfficial": false,
+    "hasUnreadDot": false
+  },
+  {
+    "id": "msg_005",
+    "type": "PROMOTION",
+    "subType": "SHOPPING",
+    "senderName": "罗技G502官方旗舰店",
+    "senderAvatar": "🖱️",
+    "content": "好的哦",
+    "timestamp": 1703721600000,
+    "isRead": true,
+    "isOfficial": false,
+    "hasUnreadDot": false
+  },
+  {
+    "id": "msg_006",
+    "type": "REVIEW",
+    "subType": "SHOPPING",
+    "senderName": "博汇文轩图书专营店",
+    "senderAvatar": "🌹",
+    "content": "🌹",
+    "timestamp": 1703635200000,
+    "isRead": true,
+    "isOfficial": false,
+    "hasUnreadDot": false
+  },
+  {
+    "id": "msg_007",
+    "type": "PROMOTION",
+    "subType": "SHOPPING",
+    "senderName": "Apple产品京东自营旗舰店",
+    "senderAvatar": "🍎",
+    "content": "您有一条新消息",
+    "timestamp": 1703548800000,
+    "isRead": true,
+    "isOfficial": true,
+    "hasUnreadDot": false
+  },
+  {
+    "id": "msg_008",
+    "type": "CUSTOMER_SERVICE",
+    "subType": "SHOPPING",
+    "senderName": "艾本数码旗舰店",
+    "senderAvatar": "💻",
+    "content": "[卡片]",
+    "timestamp": 1703462400000,
+    "isRead": true,
+    "isOfficial": false,
+    "hasUnreadDot": false
+  },
+  {
+    "id": "msg_009",
+    "type": "LOGISTICS",
+    "subType": "INSTANT_DELIVERY",
+    "senderName": "京东秒送",
+    "senderAvatar": "🚚",
+    "content": "您的订单正在配送中，预计30分钟内送达",
+    "timestamp": 1704120000000,
+    "isRead": false,
+    "isOfficial": true,
+    "hasUnreadDot": true
+  },
+  {
+    "id": "msg_010",
+    "type": "REMINDER",
+    "subType": "TAKEAWAY",
+    "senderName": "京东外卖",
+    "senderAvatar": "🍔",
+    "content": "您有一个外卖订单待确认",
+    "timestamp": 1704100000000,
+    "isRead": false,
+    "isOfficial": true,
+    "hasUnreadDot": true
+  }
+]

@@ -30,6 +30,19 @@
 - **价格计算**: 实时计算总价
 - **空购物车**: 引导用户去购物
 
+#### 💬 消息页面 (ChatTab)
+- **顶部导航栏**: 显示"消息"标题，右侧购物车和更多功能图标
+- **消息分类标签**: 客服、物流、提醒、优惠、点评五个分类
+- **次级筛选标签**: 全部、购物、秒送、外卖四个子分类
+- **消息列表**: 静态消息数据展示，包含头像、发送方、内容摘要、时间
+- **官方标识**: 官方消息显示红色"官方"标签
+- **空状态**: 无消息时显示占位图和提示文字
+- **交互功能**: 
+  - 支持消息分类和子分类切换
+  - 点击消息项跳转到详情页面
+  - 点击购物车图标跳转到购物车页面
+  - 点击更多图标显示Toast提示
+
 #### 🎨 UI设计
 - **京东红色主题**: #E2231A 主色调
 - **Material 3**: 现代化设计语言
@@ -41,7 +54,7 @@
 MainActivity (底部导航)
 ├── 首页 (HomeScreen) ✅
 ├── 视频 (PlaceholderScreen) 🚧
-├── 消息 (PlaceholderScreen) 🚧  
+├── 消息 (ChatScreen) ✅  
 ├── 购物车 (CartScreen) ✅
 └── 我的 (PlaceholderScreen) 🚧
 ```
@@ -52,6 +65,7 @@ MainActivity (底部导航)
 
 - **商品数据** (`products.json`): 手机、超市商品、数码产品等
 - **Banner数据** (`banners.json`): 轮播图和活动信息
+- **消息数据** (`messages.json`): 客服、物流、促销等各类消息
 - **购物车数据**: 运行时动态管理
 
 ## 项目结构
@@ -62,22 +76,30 @@ app/src/main/java/com/example/MyJD/
 │   ├── Product.kt     # 商品模型
 │   ├── Banner.kt      # Banner模型
 │   ├── CartItem.kt    # 购物车项模型
+│   ├── Message.kt     # 消息模型
 │   └── ...
 ├── repository/         # 数据仓库层
 │   └── DataRepository.kt
 ├── viewmodel/          # ViewModel层
 │   ├── HomeViewModel.kt
+│   ├── ChatViewModel.kt
 │   └── ViewModelFactory.kt
 ├── ui/
 │   ├── screen/        # 页面
 │   │   ├── HomeScreen.kt
+│   │   ├── ChatScreen.kt
 │   │   ├── CartScreen.kt
 │   │   └── PlaceholderScreen.kt
 │   ├── components/    # 组件
 │   │   ├── HomeHeader.kt
 │   │   ├── BannerSection.kt
 │   │   ├── FunctionGrid.kt
-│   │   └── RecommendSection.kt
+│   │   ├── RecommendSection.kt
+│   │   ├── ChatTopBar.kt
+│   │   ├── MessageTabs.kt
+│   │   ├── SubTabs.kt
+│   │   ├── MessageItem.kt
+│   │   └── MessageList.kt
 │   └── theme/         # 主题样式
 │       ├── Color.kt
 │       ├── Theme.kt
@@ -130,6 +152,14 @@ app/src/main/java/com/example/MyJD/
 - 支持选择商品进行结算
 - 空购物车时显示"去逛逛"按钮返回首页
 
+### 💬 消息页面功能
+- 点击底部导航栏"消息"标签进入消息页面
+- 支持在不同消息类型间切换（客服、物流、提醒、优惠、点评）
+- 支持次级筛选（全部、购物、秒送、外卖）
+- 点击消息项可跳转到消息详情页面（占位页面）
+- 点击右上角购物车图标可跳转到购物车页面
+- 点击右上角更多图标显示"更多功能待开发"提示
+
 ## 设计规范
 
 ### 颜色规范
@@ -166,7 +196,7 @@ app/src/main/java/com/example/MyJD/
 - [ ] 超市页面
 - [ ] 用户中心页面
 - [ ] 视频页面
-- [ ] 消息页面
+- [ ] 消息详情页面
 
 ### 🔄 功能增强
 - [ ] 商品筛选和排序
@@ -180,6 +210,15 @@ app/src/main/java/com/example/MyJD/
 本项目仅用于学习和演示目的，不得用于商业用途。
 
 ## 更新日志
+
+### v1.0.2 (2024-10-19)
+- ✅ 完成消息页面(ChatTab)开发
+- ✅ 实现消息分类标签和次级筛选功能
+- ✅ 创建消息数据模型和静态数据文件
+- ✅ 开发消息列表组件，支持头像、官方标识、时间显示
+- ✅ 集成消息页面到主导航，支持跳转到消息详情
+- ✅ 修复已弃用的Divider组件警告
+- 🎨 消息页面UI完全遵循京东设计规范
 
 ### v1.0.1 (2024-10-18)
 - 🐛 修复LazyVerticalGrid嵌套在LazyColumn中导致的崩溃问题

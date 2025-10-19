@@ -5,6 +5,7 @@ import com.example.MyJD.model.Banner
 import com.example.MyJD.model.Product
 import com.example.MyJD.model.CartItem
 import com.example.MyJD.model.ShoppingCart
+import com.example.MyJD.model.Message
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
@@ -27,6 +28,16 @@ class DataRepository(private val context: Context) {
         try {
             val jsonString = context.assets.open("data/banners.json").bufferedReader().use { it.readText() }
             val listType = object : TypeToken<List<Banner>>() {}.type
+            gson.fromJson(jsonString, listType)
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    suspend fun loadMessages(): List<Message> = withContext(Dispatchers.IO) {
+        try {
+            val jsonString = context.assets.open("data/messages.json").bufferedReader().use { it.readText() }
+            val listType = object : TypeToken<List<Message>>() {}.type
             gson.fromJson(jsonString, listType)
         } catch (e: Exception) {
             emptyList()

@@ -9,6 +9,7 @@ class ViewModelFactory(private val repository: DataRepository) : ViewModelProvid
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when (modelClass) {
             HomeViewModel::class.java -> HomeViewModel(repository) as T
+            ChatViewModel::class.java -> ChatViewModel(repository) as T
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
     }

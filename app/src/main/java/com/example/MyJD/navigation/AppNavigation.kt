@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.MyJD.ui.screen.HomeScreen
+import com.example.MyJD.ui.screen.ChatScreen
 import com.example.MyJD.ui.screen.PlaceholderScreen
 
 @Composable
@@ -35,7 +36,14 @@ fun AppNavigation(navController: NavHostController) {
         }
         
         composable("chat") {
-            PlaceholderScreen("消息")
+            ChatScreen(
+                onNavigateToCart = {
+                    navController.navigate("cart")
+                },
+                onNavigateToDetail = { messageId ->
+                    navController.navigate("chat_detail/$messageId")
+                }
+            )
         }
         
         composable("cart") {
@@ -67,6 +75,11 @@ fun AppNavigation(navController: NavHostController) {
         
         composable("supermarket") {
             PlaceholderScreen("京东超市")
+        }
+        
+        composable("chat_detail/{messageId}") { backStackEntry ->
+            val messageId = backStackEntry.arguments?.getString("messageId") ?: ""
+            PlaceholderScreen("消息详情")
         }
     }
 }
