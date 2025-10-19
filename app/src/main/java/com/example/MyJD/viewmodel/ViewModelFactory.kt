@@ -10,6 +10,7 @@ class ViewModelFactory(private val repository: DataRepository) : ViewModelProvid
         return when (modelClass) {
             HomeViewModel::class.java -> HomeViewModel(repository) as T
             ChatViewModel::class.java -> ChatViewModel(repository) as T
+            MeViewModel::class.java -> MeViewModel(repository) as T
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
     }

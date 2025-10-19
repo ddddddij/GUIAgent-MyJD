@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.MyJD.ui.screen.HomeScreen
 import com.example.MyJD.ui.screen.ChatScreen
+import com.example.MyJD.ui.screen.MeScreen
 import com.example.MyJD.ui.screen.PlaceholderScreen
 
 @Composable
@@ -60,7 +61,20 @@ fun AppNavigation(navController: NavHostController) {
         }
         
         composable("profile") {
-            PlaceholderScreen("我的")
+            MeScreen(
+                onNavigateToSettings = {
+                    navController.navigate("settings")
+                },
+                onNavigateToAddress = {
+                    navController.navigate("address")
+                },
+                onNavigateToChat = {
+                    navController.navigate("chat")
+                },
+                onNavigateToOrderList = { orderType ->
+                    navController.navigate("order_list/$orderType")
+                }
+            )
         }
         
         composable("search/{query}") { backStackEntry ->
@@ -80,6 +94,19 @@ fun AppNavigation(navController: NavHostController) {
         composable("chat_detail/{messageId}") { backStackEntry ->
             val messageId = backStackEntry.arguments?.getString("messageId") ?: ""
             PlaceholderScreen("消息详情")
+        }
+        
+        composable("settings") {
+            PlaceholderScreen("设置")
+        }
+        
+        composable("address") {
+            PlaceholderScreen("地址管理")
+        }
+        
+        composable("order_list/{orderType}") { backStackEntry ->
+            val orderType = backStackEntry.arguments?.getString("orderType") ?: ""
+            PlaceholderScreen("订单列表")
         }
     }
 }

@@ -6,6 +6,8 @@ import com.example.MyJD.model.Product
 import com.example.MyJD.model.CartItem
 import com.example.MyJD.model.ShoppingCart
 import com.example.MyJD.model.Message
+import com.example.MyJD.model.MeTabData
+import com.google.gson.JsonObject
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
@@ -41,6 +43,33 @@ class DataRepository(private val context: Context) {
             gson.fromJson(jsonString, listType)
         } catch (e: Exception) {
             emptyList()
+        }
+    }
+
+    suspend fun loadMeTabData(): MeTabData = withContext(Dispatchers.IO) {
+        try {
+            val jsonString = context.assets.open("data/me_tab.json").bufferedReader().use { it.readText() }
+            gson.fromJson(jsonString, MeTabData::class.java)
+        } catch (e: Exception) {
+            MeTabData(
+                memberBenefits = emptyList(),
+                promoBanners = emptyList(),
+                orderStatuses = emptyList(),
+                assetItems = emptyList(),
+                serviceItems = emptyList(),
+                interactionItems = emptyList(),
+                quickActions = emptyList(),
+                userStats = com.example.MyJD.model.UserStats(0, 0, 0, 0)
+            )
+        }
+    }
+
+    suspend fun loadUserProfile(): JsonObject = withContext(Dispatchers.IO) {
+        try {
+            val jsonString = context.assets.open("data/user_profile.json").bufferedReader().use { it.readText() }
+            gson.fromJson(jsonString, JsonObject::class.java)
+        } catch (e: Exception) {
+            JsonObject()
         }
     }
 

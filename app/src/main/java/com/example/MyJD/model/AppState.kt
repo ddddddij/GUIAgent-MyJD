@@ -53,17 +53,17 @@ data class AppState(
         get() = notifications.count { !it.isRead }
     
     val pendingPaymentOrders: List<Order>
-        get() = orders.filter { it.status == OrderStatus.PENDING_PAYMENT }
+        get() = orders.filter { it.status == com.example.MyJD.model.OrderStatus.PENDING_PAYMENT }
     
     val pendingShipmentOrders: List<Order>
-        get() = orders.filter { it.status == OrderStatus.PENDING_SHIPMENT }
+        get() = orders.filter { it.status == com.example.MyJD.model.OrderStatus.PENDING_SHIPMENT }
     
     val pendingReceiptOrders: List<Order>
-        get() = orders.filter { it.status == OrderStatus.PENDING_RECEIPT }
+        get() = orders.filter { it.status == com.example.MyJD.model.OrderStatus.PENDING_RECEIPT }
     
     val pendingReviewOrders: List<Order>
-        get() = orders.filter { it.status == OrderStatus.PENDING_REVIEW }
+        get() = orders.filter { it.status == com.example.MyJD.model.OrderStatus.PENDING_REVIEW }
     
     val completedOrders: List<Order>
-        get() = orders.filter { it.status == OrderStatus.COMPLETED }
+        get() = orders.filter { it.status == com.example.MyJD.model.OrderStatus.COMPLETED }
 }

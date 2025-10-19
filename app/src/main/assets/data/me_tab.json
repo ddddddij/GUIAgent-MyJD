@@ -1,0 +1,202 @@
+{
+  "memberBenefits": [
+    {
+      "id": "benefit_coupons",
+      "name": "优惠券",
+      "value": "39",
+      "description": "张",
+      "iconEmoji": "🎫"
+    },
+    {
+      "id": "benefit_beans",
+      "name": "京豆",
+      "value": "66",
+      "description": "领",
+      "iconEmoji": "🫘"
+    },
+    {
+      "id": "benefit_hongbao",
+      "name": "红包",
+      "value": "888",
+      "description": "抽¥",
+      "iconEmoji": "🧧"
+    },
+    {
+      "id": "benefit_baitiao",
+      "name": "白条取现",
+      "value": "3000",
+      "description": "¥",
+      "iconEmoji": "💳"
+    },
+    {
+      "id": "benefit_instant",
+      "name": "秒送",
+      "value": "20",
+      "description": "抽¥",
+      "iconEmoji": "🚀"
+    },
+    {
+      "id": "benefit_more",
+      "name": "更多",
+      "value": "",
+      "description": "",
+      "iconEmoji": "➡️"
+    }
+  ],
+  "promoBanners": [
+    {
+      "id": "promo_subsidy",
+      "title": "品类补贴券",
+      "subtitle": "领券会场",
+      "backgroundColor": "#FF6B6B",
+      "textColor": "#FFFFFF",
+      "iconEmoji": "💰"
+    },
+    {
+      "id": "promo_1111",
+      "title": "11.11抢购",
+      "subtitle": "直降价起",
+      "backgroundColor": "#E2231A",
+      "textColor": "#FFFFFF",
+      "iconEmoji": "🛍️"
+    },
+    {
+      "id": "promo_burst",
+      "title": "爆款直降",
+      "subtitle": "买手代购",
+      "backgroundColor": "#333333",
+      "textColor": "#FFFFFF",
+      "iconEmoji": "📱"
+    }
+  ],
+  "orderStatuses": [
+    {
+      "id": "order_pending_payment",
+      "name": "待付款",
+      "iconEmoji": "💳",
+      "count": 0
+    },
+    {
+      "id": "order_pending_delivery",
+      "name": "待收货",
+      "iconEmoji": "📦",
+      "count": 0
+    },
+    {
+      "id": "order_pending_use",
+      "name": "待使用",
+      "iconEmoji": "🎯",
+      "count": 0
+    },
+    {
+      "id": "order_pending_review",
+      "name": "待评价",
+      "iconEmoji": "⭐",
+      "count": 7
+    },
+    {
+      "id": "order_refund",
+      "name": "退换/售后",
+      "iconEmoji": "🔄",
+      "count": 0
+    }
+  ],
+  "assetItems": [
+    {
+      "id": "asset_balance",
+      "name": "白条",
+      "value": "3.18",
+      "unit": "元",
+      "description": "待领",
+      "iconEmoji": "💵"
+    },
+    {
+      "id": "asset_credit",
+      "name": "金条借款",
+      "value": "3700",
+      "unit": "元",
+      "description": "",
+      "iconEmoji": "🏦"
+    },
+    {
+      "id": "asset_gold",
+      "name": "京东黄金",
+      "value": "971.07",
+      "unit": "元",
+      "description": "",
+      "iconEmoji": "🥇"
+    }
+  ],
+  "serviceItems": [
+    {
+      "id": "service_carwash",
+      "name": "洗车美容",
+      "description": "1.9起",
+      "iconEmoji": "🚗",
+      "badgeText": null
+    },
+    {
+      "id": "service_express",
+      "name": "京东快递",
+      "description": "",
+      "iconEmoji": "📮",
+      "badgeText": null
+    },
+    {
+      "id": "service_doctor",
+      "name": "在线医生",
+      "description": "",
+      "iconEmoji": "👩‍⚕️",
+      "badgeText": null
+    }
+  ],
+  "interactionItems": [
+    {
+      "id": "interaction_checkin",
+      "name": "打卡领京豆",
+      "description": "最高+88",
+      "iconEmoji": "✅",
+      "badgeText": null
+    },
+    {
+      "id": "interaction_daily",
+      "name": "天天领豆",
+      "description": "",
+      "iconEmoji": "🫘",
+      "badgeText": null
+    },
+    {
+      "id": "interaction_farm",
+      "name": "东东农场",
+      "description": "",
+      "iconEmoji": "🌾",
+      "badgeText": "水果"
+    }
+  ],
+  "quickActions": [
+    {
+      "id": "quick_service",
+      "name": "客服",
+      "iconEmoji": "🎧",
+      "route": "chat"
+    },
+    {
+      "id": "quick_address",
+      "name": "地址",
+      "iconEmoji": "📍",
+      "route": "address"
+    },
+    {
+      "id": "quick_settings",
+      "name": "设置",
+      "iconEmoji": "⚙️",
+      "route": "settings"
+    }
+  ],
+  "userStats": {
+    "footprint": 36,
+    "favorites": 0,
+    "following": 11,
+    "grass": 0
+  }
+}
