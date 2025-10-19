@@ -23,7 +23,7 @@ fun HomeScreen(
     onNavigateToSupermarket: () -> Unit = {}
 ) {
     val context = LocalContext.current
-    val repository = remember { DataRepository(context) }
+    val repository = remember { DataRepository.getInstance(context) }
     val viewModel: HomeViewModel = viewModel(
         factory = com.example.MyJD.viewmodel.ViewModelFactory(repository)
     )

@@ -25,7 +25,7 @@ fun ProductDetailScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val repository = DataRepository(context)
+    val repository = DataRepository.getInstance(context)
     val viewModel: ProductDetailViewModel = viewModel(
         factory = ProductDetailViewModelFactory(repository)
     )

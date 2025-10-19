@@ -19,8 +19,22 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class DataRepository(private val context: Context) {
+class DataRepository private constructor(private val context: Context) {
     private val gson = Gson()
+    
+    companion object {
+        @Volatile
+        private var INSTANCE: DataRepository? = null
+        
+        fun getInstance(context: Context): DataRepository {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: DataRepository(context.applicationContext).also { 
+                    INSTANCE = it
+                    android.util.Log.d("DataRepository", "Creating singleton instance")
+                }
+            }
+        }
+    }
 
     suspend fun loadProducts(): List<Product> = withContext(Dispatchers.IO) {
         try {
