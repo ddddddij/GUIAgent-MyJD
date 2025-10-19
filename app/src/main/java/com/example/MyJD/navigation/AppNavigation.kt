@@ -33,7 +33,12 @@ fun AppNavigation(navController: NavHostController) {
         }
         
         composable("video") {
-            PlaceholderScreen("视频")
+            PlaceholderScreen(
+                title = "视频",
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
         
         composable("chat") {
@@ -79,34 +84,69 @@ fun AppNavigation(navController: NavHostController) {
         
         composable("search/{query}") { backStackEntry ->
             val query = backStackEntry.arguments?.getString("query") ?: ""
-            PlaceholderScreen("搜索: $query")
+            PlaceholderScreen(
+                title = "搜索: $query",
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
         
         composable("product/{productId}") { backStackEntry ->
             val productId = backStackEntry.arguments?.getString("productId") ?: ""
-            PlaceholderScreen("商品详情")
+            PlaceholderScreen(
+                title = "商品详情",
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
         
         composable("supermarket") {
-            PlaceholderScreen("京东超市")
+            PlaceholderScreen(
+                title = "京东超市",
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
         
         composable("chat_detail/{messageId}") { backStackEntry ->
             val messageId = backStackEntry.arguments?.getString("messageId") ?: ""
-            PlaceholderScreen("消息详情")
+            PlaceholderScreen(
+                title = "消息详情",
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
         
         composable("settings") {
-            PlaceholderScreen("设置")
+            PlaceholderScreen(
+                title = "设置",
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
         
         composable("address") {
-            PlaceholderScreen("地址管理")
+            PlaceholderScreen(
+                title = "地址管理",
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
         
         composable("order_list/{orderType}") { backStackEntry ->
             val orderType = backStackEntry.arguments?.getString("orderType") ?: ""
-            PlaceholderScreen("订单列表")
+            PlaceholderScreen(
+                title = "订单列表",
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }
