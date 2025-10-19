@@ -62,6 +62,9 @@ fun AppNavigation(navController: NavHostController) {
                     navController.navigate("home") {
                         popUpTo("home") { inclusive = true }
                     }
+                },
+                onNavigateToCheckout = {
+                    navController.navigate("order_confirm")
                 }
             )
         }

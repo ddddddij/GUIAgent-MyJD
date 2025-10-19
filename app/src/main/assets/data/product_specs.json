@@ -1,0 +1,115 @@
+{
+  "productId": "100066896464",
+  "defaultSeries": "iPhone 15",
+  "defaultColor": "蓝色",
+  "defaultStorage": "128GB",
+  "series": [
+    {
+      "name": "iPhone 13",
+      "available": true,
+      "selected": false
+    },
+    {
+      "name": "iPhone 14 Plus",
+      "available": true,
+      "selected": false
+    },
+    {
+      "name": "iPhone 15",
+      "available": true,
+      "selected": true
+    },
+    {
+      "name": "iPhone 15 Pro",
+      "available": true,
+      "selected": false
+    },
+    {
+      "name": "iPhone 15 Plus",
+      "available": true,
+      "selected": false
+    },
+    {
+      "name": "15 Pro Max",
+      "available": true,
+      "selected": false
+    }
+  ],
+  "colors": [
+    {
+      "name": "黑色",
+      "colorCode": "#000000",
+      "image": "image/iPhone15图1.JPG",
+      "price": 3399,
+      "originalPrice": 3899,
+      "available": true,
+      "stockTag": "万人购买",
+      "selected": false
+    },
+    {
+      "name": "粉色",
+      "colorCode": "#FFB6C1",
+      "image": "image/iPhone15图2.JPG",
+      "price": 3699,
+      "originalPrice": 3899,
+      "available": true,
+      "stockTag": "万人购买",
+      "selected": false
+    },
+    {
+      "name": "蓝色",
+      "colorCode": "#ADD8E6",
+      "image": "image/iPhone15图3.JPG",
+      "price": 3799,
+      "originalPrice": 3899,
+      "available": true,
+      "stockTag": "万人购买",
+      "selected": true
+    },
+    {
+      "name": "绿色",
+      "colorCode": "#90EE90",
+      "image": "image/iPhone15图4.JPG",
+      "price": 3799,
+      "originalPrice": 3899,
+      "available": false,
+      "stockTag": "无货",
+      "selected": false
+    },
+    {
+      "name": "黄色",
+      "colorCode": "#FFFFE0",
+      "image": "image/iPhone15图5.JPG",
+      "price": 3799,
+      "originalPrice": 3899,
+      "available": false,
+      "stockTag": "无货",
+      "selected": false
+    }
+  ],
+  "storage": [
+    {
+      "capacity": "128GB",
+      "available": true,
+      "selected": true
+    },
+    {
+      "capacity": "256GB",
+      "available": true,
+      "selected": false
+    },
+    {
+      "capacity": "512GB",
+      "available": true,
+      "selected": false
+    }
+  ],
+  "promotionInfo": {
+    "subsidyText": "政府补贴价",
+    "subsidyAmount": 100,
+    "tags": [
+      "政府补贴已减100",
+      "国家贴息 12期免息"
+    ]
+  }
+}

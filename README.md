@@ -325,6 +325,22 @@ app/src/main/java/com/example/MyJD/
 
 ## 更新日志
 
+### v1.0.5 (2025-10-19)
+- ✅ 完成ProductSpecDialog（规格选择弹窗）开发
+- ✅ 实现完整的商品规格选择功能：系列、颜色、存储容量、数量选择
+- ✅ 开发规格选择相关组件：ProductSpecHeader、QuantitySelector、SeriesSelector、ColorSelector、StorageSelector
+- ✅ 创建ProductSpec和SpecSelection数据模型，支持规格选择状态管理
+- ✅ 集成ProductSpecViewModel管理规格选择逻辑
+- ✅ 完全重构购物车页面UI，根据参考截图重新设计
+- ✅ 新增购物车组件：CartHeader、CartTabs、CartStoreSection、CartProductCard
+- ✅ 实现店铺分组显示、促销标签、价格变动提示等功能
+- ✅ 支持规格购物车数据模型，替代原有简单购物车
+- ✅ 集成规格选择弹窗到商品详情页，支持"加入购物车"和"立即购买"两种模式
+- ✅ 实现底部导航栏购物车角标显示，实时更新商品数量
+- ✅ 完善购物车数据持久化和状态管理
+- ✅ 添加FlowRow布局支持，优化系列和存储选择展示
+- 🎨 UI设计完全遵循京东规格选择和购物车页面设计规范
+
 ### v1.0.4 (2025-10-19)
 - ✅ 完成商品详情页（ProductDetailScreen）开发
 - ✅ 实现完整的iPhone15商品详情展示，包含图片轮播、价格信息、规格选择

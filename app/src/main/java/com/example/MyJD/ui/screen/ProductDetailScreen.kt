@@ -36,6 +36,10 @@ fun ProductDetailScreen(
     val selectedPurchaseType by viewModel.selectedPurchaseType.collectAsState()
     val isFavorite by viewModel.isFavorite.collectAsState()
     
+    // 规格选择弹窗状态
+    var showSpecDialog by remember { mutableStateOf(false) }
+    var isAddToCartMode by remember { mutableStateOf(true) }
+    
     // 加载商品详情
     LaunchedEffect(productId) {
         viewModel.loadProductDetail(productId)
@@ -66,10 +70,13 @@ fun ProductDetailScreen(
                     },
                     onCartClick = onCartClick,
                     onAddToCartClick = {
-                        viewModel.addToCart()
-                        Toast.makeText(context, "已加入购物车", Toast.LENGTH_SHORT).show()
+                        isAddToCartMode = true
+                        showSpecDialog = true
                     },
-                    onBuyNowClick = onBuyNowClick
+                    onBuyNowClick = {
+                        isAddToCartMode = false
+                        showSpecDialog = true
+                    }
                 )
             }
         ) { paddingValues ->
@@ -193,6 +200,23 @@ fun ProductDetailScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                 }
             }
+        }
+        
+        // 规格选择弹窗
+        if (showSpecDialog) {
+            ProductSpecDialog(
+                productId = productId,
+                isAddToCart = isAddToCartMode,
+                onDismiss = { showSpecDialog = false },
+                onConfirm = { 
+                    showSpecDialog = false
+                    Toast.makeText(context, if (isAddToCartMode) "已加入购物车" else "正在跳转到订单页", Toast.LENGTH_SHORT).show()
+                },
+                onNavigateToOrder = {
+                    showSpecDialog = false
+                    onBuyNowClick()
+                }
+            )
         }
     }
 }
