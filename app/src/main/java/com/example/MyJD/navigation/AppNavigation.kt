@@ -8,6 +8,7 @@ import com.example.MyJD.ui.screen.HomeScreen
 import com.example.MyJD.ui.screen.ChatScreen
 import com.example.MyJD.ui.screen.MeScreen
 import com.example.MyJD.ui.screen.PlaceholderScreen
+import com.example.MyJD.ui.screen.ProductDetailScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
@@ -94,10 +95,16 @@ fun AppNavigation(navController: NavHostController) {
         
         composable("product/{productId}") { backStackEntry ->
             val productId = backStackEntry.arguments?.getString("productId") ?: ""
-            PlaceholderScreen(
-                title = "商品详情",
+            ProductDetailScreen(
+                productId = productId,
                 onBackClick = {
                     navController.popBackStack()
+                },
+                onCartClick = {
+                    navController.navigate("cart")
+                },
+                onBuyNowClick = {
+                    navController.navigate("order_confirm")
                 }
             )
         }
@@ -143,6 +150,15 @@ fun AppNavigation(navController: NavHostController) {
             val orderType = backStackEntry.arguments?.getString("orderType") ?: ""
             PlaceholderScreen(
                 title = "订单列表",
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        
+        composable("order_confirm") {
+            PlaceholderScreen(
+                title = "订单确认",
                 onBackClick = {
                     navController.popBackStack()
                 }

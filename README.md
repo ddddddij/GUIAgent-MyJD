@@ -66,6 +66,52 @@
   - 点击各功能模块显示相应Toast提示
   - 与消息页面互通，支持跳转到客服对话
 
+#### 📱 商品详情页 (ProductDetailScreen)
+- **商品图片展示区**: 
+  - 真实iPhone15产品图片轮播（iPhone15图1-5.JPG）
+  - 图片指示器显示当前位置（如"2/5"）
+  - 使用说明和视频入口按钮
+- **价格与补贴区**: 
+  - 绿色渐变背景突出政府补贴价格¥3799
+  - 原价划线显示¥3899，销量信息"已售500万+"
+  - 11.11政府补贴·贴息标签卡片
+- **购买方式与规格选择**: 
+  - 单品购买/以旧换新选项卡切换
+  - 5种颜色选择：粉色、蓝色、绿色、黑色、黄色
+  - 选中颜色红色边框高亮，政府补贴标签展示
+- **商品信息与参数**: 
+  - 自营标签和完整商品标题
+  - 榜单排名、免举证退换货、12期免息等标签
+  - 产品规格展示：上市日期、处理器、屏幕、显示技术
+  - 支持送礼物功能入口
+- **配送信息**: 
+  - 配送时间：明天18:00前付款预计送达
+  - 送货地址：武汉纺织大学，59元免基础运费
+  - 京东物流服务：预约送货、部分收货
+  - 7天无理由退货政策和一年质保
+- **促销信息**: 
+  - 高价回收：旧机最高可卖¥3200（iPhone 13 Pro Max）
+  - 立即换钱按钮（功能开发中提示）
+- **门店信息**: 
+  - 线下门店：共49家门店信息
+  - 距离显示：2.3km湖北武汉江夏九全嘉店
+  - 去预约按钮（功能开发中提示）
+- **买家评价**: 
+  - 评价统计：300万+买家，超95%好评率
+  - 热门标签云：拍照效果超清晰(7034)、手感很舒服(3940)等
+  - 用户评价列表：头像、昵称、钻石会员标识、评价内容、图片
+  - 点赞功能和查看更多入口
+- **底部操作栏**: 
+  - 店铺、客服、购物车快捷入口
+  - 加入购物车按钮（橙色背景）
+  - 立即购买按钮（红色背景，显示券后价）
+- **交互功能**: 
+  - 收藏切换（星标图标变色）
+  - 颜色规格选择状态切换
+  - 加入购物车成功提示
+  - 跳转到购物车和订单确认页面
+  - 各功能模块开发中Toast提示
+
 #### 🎨 UI设计
 - **京东红色主题**: #E2231A 主色调
 - **Material 3**: 现代化设计语言
@@ -79,7 +125,12 @@ MainActivity (底部导航)
 ├── 视频 (PlaceholderScreen) 🚧
 ├── 消息 (ChatScreen) ✅  
 ├── 购物车 (CartScreen) ✅
-└── 我的 (MeScreen) ✅
+├── 我的 (MeScreen) ✅
+└── 商品详情 (ProductDetailScreen) ✅
+    ├── 订单确认 (PlaceholderScreen) 🚧
+    ├── 设置页面 (PlaceholderScreen) 🚧
+    ├── 地址管理 (PlaceholderScreen) 🚧
+    └── 订单列表 (PlaceholderScreen) 🚧
 ```
 
 ### 数据结构
@@ -90,8 +141,10 @@ MainActivity (底部导航)
 - **Banner数据** (`banners.json`): 轮播图和活动信息
 - **消息数据** (`messages.json`): 客服、物流、促销等各类消息
 - **个人中心数据** (`me_tab.json`): 会员权益、订单状态、资产服务等
+- **商品详情数据** (`product_detail.json`): iPhone15详细信息、规格、评价等
 - **用户资料** (`user_profile.json`): 用户个人信息、偏好设置
 - **购物车数据**: 运行时动态管理
+- **图片资源** (`image/`): iPhone15产品图片（iPhone15图1-5.JPG）
 
 ## 项目结构
 
@@ -103,6 +156,7 @@ app/src/main/java/com/example/MyJD/
 │   ├── CartItem.kt    # 购物车项模型
 │   ├── Message.kt     # 消息模型
 │   ├── MeTabData.kt   # 个人中心模型
+│   ├── ProductDetail.kt # 商品详情模型
 │   └── ...
 ├── repository/         # 数据仓库层
 │   └── DataRepository.kt
@@ -110,6 +164,7 @@ app/src/main/java/com/example/MyJD/
 │   ├── HomeViewModel.kt
 │   ├── ChatViewModel.kt
 │   ├── MeViewModel.kt
+│   ├── ProductDetailViewModel.kt
 │   └── ViewModelFactory.kt
 ├── ui/
 │   ├── screen/        # 页面
@@ -117,6 +172,7 @@ app/src/main/java/com/example/MyJD/
 │   │   ├── ChatScreen.kt
 │   │   ├── MeScreen.kt
 │   │   ├── CartScreen.kt
+│   │   ├── ProductDetailScreen.kt
 │   │   └── PlaceholderScreen.kt
 │   ├── components/    # 组件
 │   │   ├── HomeHeader.kt
@@ -124,6 +180,16 @@ app/src/main/java/com/example/MyJD/
 │   │   ├── FunctionGrid.kt
 │   │   ├── RecommendSection.kt
 │   │   ├── ChatTopBar.kt
+│   │   ├── ProductDetailTopBar.kt
+│   │   ├── ProductImageSection.kt
+│   │   ├── ProductPriceSection.kt
+│   │   ├── ProductVariantSection.kt
+│   │   ├── ProductInfoSection.kt
+│   │   ├── ProductDeliverySection.kt
+│   │   ├── ProductPromotionSection.kt
+│   │   ├── ProductStoreSection.kt
+│   │   ├── ProductReviewSection.kt
+│   │   ├── ProductDetailBottomBar.kt
 │   │   ├── MessageTabs.kt
 │   │   ├── SubTabs.kt
 │   │   ├── MessageItem.kt
@@ -258,6 +324,19 @@ app/src/main/java/com/example/MyJD/
 本项目仅用于学习和演示目的，不得用于商业用途。
 
 ## 更新日志
+
+### v1.0.4 (2025-10-19)
+- ✅ 完成商品详情页（ProductDetailScreen）开发
+- ✅ 实现完整的iPhone15商品详情展示，包含图片轮播、价格信息、规格选择
+- ✅ 开发10+个独立UI组件：顶部导航、图片展示、价格区域、规格选择、商品信息、配送信息、促销信息、门店信息、评价信息、底部操作栏
+- ✅ 集成真实iPhone15产品图片（iPhone15图1-5.JPG）替换emoji占位符
+- ✅ 支持从assets目录加载图片，使用Coil图片库
+- ✅ 创建ProductDetail数据模型和product_detail.json静态数据
+- ✅ 实现收藏、颜色选择、加入购物车、立即购买等交互功能
+- ✅ 完全遵循京东设计规范：绿色价格区域、红色主题按钮、政府补贴标签
+- ✅ 集成到导航系统，支持从首页跳转到商品详情
+- ✅ 添加订单确认页面路由，完善购买流程
+- 🎨 页面UI完全复刻京东商品详情页设计
 
 ### v1.0.3 (2024-10-19)
 - ✅ 完成我的页面(MeTab)开发

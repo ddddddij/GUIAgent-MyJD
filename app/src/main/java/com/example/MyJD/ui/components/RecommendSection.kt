@@ -111,7 +111,7 @@ private fun ProductCard(
         Column(
             modifier = Modifier.padding(12.dp)
         ) {
-            // Product image placeholder
+            // Product image
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -120,10 +120,9 @@ private fun ProductCard(
                     .background(Color(0xFFF5F5F5)),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = "📱",
-                    fontSize = 32.sp,
-                    modifier = Modifier.align(Alignment.Center)
+                ProductImage(
+                    imageUrl = product.imageUrl,
+                    modifier = Modifier.fillMaxSize()
                 )
             }
 
@@ -224,6 +223,50 @@ private fun ProductCard(
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun ProductImage(
+    imageUrl: String,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    
+    // 检查是否为本地assets图片
+    if (imageUrl.startsWith("image/")) {
+        AsyncImage(
+            model = ImageRequest.Builder(context)
+                .data("file:///android_asset/$imageUrl")
+                .crossfade(true)
+                .build(),
+            contentDescription = "商品图片",
+            modifier = modifier,
+            contentScale = ContentScale.Crop
+        )
+    } else if (imageUrl.startsWith("http")) {
+        // 网络图片
+        AsyncImage(
+            model = ImageRequest.Builder(context)
+                .data(imageUrl)
+                .crossfade(true)
+                .build(),
+            contentDescription = "商品图片",
+            modifier = modifier,
+            contentScale = ContentScale.Crop
+        )
+    } else {
+        // emoji或其他占位符
+        Box(
+            modifier = modifier,
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "📱",
+                fontSize = 32.sp,
+                color = Color(0xFFCCCCCC)
+            )
         }
     }
 }

@@ -7,6 +7,7 @@ import com.example.MyJD.model.CartItem
 import com.example.MyJD.model.ShoppingCart
 import com.example.MyJD.model.Message
 import com.example.MyJD.model.MeTabData
+import com.example.MyJD.model.ProductDetail
 import com.google.gson.JsonObject
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -70,6 +71,31 @@ class DataRepository(private val context: Context) {
             gson.fromJson(jsonString, JsonObject::class.java)
         } catch (e: Exception) {
             JsonObject()
+        }
+    }
+
+    suspend fun loadProductDetail(productId: String): ProductDetail = withContext(Dispatchers.IO) {
+        try {
+            val jsonString = context.assets.open("data/product_detail.json").bufferedReader().use { it.readText() }
+            gson.fromJson(jsonString, ProductDetail::class.java)
+        } catch (e: Exception) {
+            // Return a default ProductDetail if loading fails
+            ProductDetail(
+                id = productId,
+                title = "商品信息加载失败",
+                images = listOf("📱"),
+                currentPrice = 0.0,
+                originalPrice = 0.0,
+                subsidyPrice = "",
+                soldCount = "",
+                colors = emptyList(),
+                specifications = com.example.MyJD.model.ProductSpecifications("", "", "", ""),
+                tags = emptyList(),
+                deliveryInfo = com.example.MyJD.model.DeliveryInfo("", "", "", "", "", ""),
+                tradeIn = com.example.MyJD.model.TradeInInfo("", 0.0, ""),
+                stores = emptyList(),
+                reviews = com.example.MyJD.model.ReviewInfo("", "", emptyList(), emptyList())
+            )
         }
     }
 
