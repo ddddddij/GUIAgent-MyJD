@@ -10,6 +10,11 @@ import com.example.MyJD.model.MeTabData
 import com.example.MyJD.model.ProductDetail
 import com.example.MyJD.model.ProductSpec
 import com.example.MyJD.model.CartItemSpec
+import com.example.MyJD.model.Order
+import com.example.MyJD.model.OrderItem
+import com.example.MyJD.model.OrderStatus
+import com.example.MyJD.model.PaymentMethod
+import com.example.MyJD.model.Address
 import com.google.gson.JsonObject
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -84,6 +89,83 @@ class DataRepository private constructor(private val context: Context) {
         }
     }
 
+    fun getOrders(): List<Order> {
+        return try {
+            val jsonString = context.assets.open("data/orders.json").bufferedReader().use { it.readText() }
+            val listType = object : TypeToken<List<Order>>() {}.type
+            val staticOrders: List<Order> = gson.fromJson(jsonString, listType)
+            
+            // 合并静态订单和运行时订单，运行时订单排在前面（最新的）
+            runtimeOrders + staticOrders
+        } catch (e: Exception) {
+            runtimeOrders.toList()
+        }
+    }
+    
+    fun createOrder(
+        productId: String,
+        productName: String,
+        storeName: String,
+        imageUrl: String,
+        price: Double,
+        quantity: Int,
+        selectedColor: String?,
+        selectedVersion: String?
+    ): String {
+        // 创建默认地址
+        val defaultAddress = Address(
+            id = "addr_default",
+            recipientName = "用户",
+            phoneNumber = "13800000000",
+            province = "北京市",
+            city = "北京市",
+            district = "朝阳区",
+            detailAddress = "默认地址"
+        )
+        
+        // 创建商品
+        val product = Product(
+            id = productId,
+            name = productName,
+            price = price,
+            originalPrice = price * 1.2,
+            brand = "品牌",
+            category = "手机",
+            imageUrl = imageUrl,
+            storeId = "store_${System.currentTimeMillis()}",
+            storeName = storeName
+        )
+        
+        // 创建订单项
+        val orderItem = OrderItem(
+            product = product,
+            quantity = quantity,
+            price = price,
+            selectedColor = selectedColor,
+            selectedVersion = selectedVersion
+        )
+        
+        // 创建订单
+        val orderId = "ORD${System.currentTimeMillis()}"
+        val order = Order(
+            id = orderId,
+            userId = "user_001",
+            items = listOf(orderItem),
+            status = OrderStatus.PENDING_PAYMENT,
+            paymentMethod = PaymentMethod.ONLINE_PAYMENT,
+            shippingAddress = defaultAddress,
+            totalAmount = price * quantity,
+            createTime = System.currentTimeMillis()
+        )
+        
+        // 添加到运行时订单列表
+        runtimeOrders.add(0, order) // 添加到最前面，显示为最新订单
+        
+        android.util.Log.d("DataRepository", "Created new order: $orderId for product: $productName")
+        
+        return orderId
+    }
+
     suspend fun loadUserProfile(): JsonObject = withContext(Dispatchers.IO) {
         try {
             val jsonString = context.assets.open("data/user_profile.json").bufferedReader().use { it.readText() }
@@ -139,6 +221,7 @@ class DataRepository private constructor(private val context: Context) {
 
     private var shoppingCart = ShoppingCart()
     private var specShoppingCart = mutableListOf<CartItemSpec>()
+    private var runtimeOrders = mutableListOf<Order>()
     
     // StateFlow for reactive cart updates
     private val _specCartFlow = MutableStateFlow<List<CartItemSpec>>(emptyList())
@@ -272,5 +355,33 @@ class DataRepository private constructor(private val context: Context) {
         _specCartFlow.value = specShoppingCart.toList()
         _cartCountFlow.value = getSpecCartTotalCount()
         android.util.Log.d("DataRepository", "StateFlows updated - Cart items: ${_specCartFlow.value.size}, Total count: ${_cartCountFlow.value}")
+    }
+    
+    /**
+     * 支付订单 - 将待付款订单状态更新为待发货
+     */
+    fun payOrder(orderId: String): Boolean {
+        val orderIndex = runtimeOrders.indexOfFirst { it.id == orderId }
+        if (orderIndex != -1) {
+            val order = runtimeOrders[orderIndex]
+            if (order.status == OrderStatus.PENDING_PAYMENT) {
+                // 更新订单状态为待收货（模拟快速发货）
+                runtimeOrders[orderIndex] = order.copy(
+                    status = OrderStatus.PENDING_RECEIPT,
+                    payTime = System.currentTimeMillis(),
+                    shipTime = System.currentTimeMillis() + 3600000L // 假设1小时后发货
+                )
+                android.util.Log.d("DataRepository", "Order $orderId status updated to PENDING_RECEIPT")
+                return true
+            }
+        }
+        return false
+    }
+    
+    /**
+     * 获取最新创建的待付款订单ID
+     */
+    fun getLatestPendingOrderId(): String? {
+        return runtimeOrders.firstOrNull { it.status == OrderStatus.PENDING_PAYMENT }?.id
     }
 }

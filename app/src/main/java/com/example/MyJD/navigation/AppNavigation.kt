@@ -9,6 +9,9 @@ import com.example.MyJD.ui.screen.ChatScreen
 import com.example.MyJD.ui.screen.MeScreen
 import com.example.MyJD.ui.screen.PlaceholderScreen
 import com.example.MyJD.ui.screen.ProductDetailScreen
+import com.example.MyJD.ui.screen.OrderScreen
+import com.example.MyJD.ui.screen.SettleScreen
+import com.example.MyJD.ui.screen.PaymentSuccessScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
@@ -150,9 +153,9 @@ fun AppNavigation(navController: NavHostController) {
         }
         
         composable("order_list/{orderType}") { backStackEntry ->
-            val orderType = backStackEntry.arguments?.getString("orderType") ?: ""
-            PlaceholderScreen(
-                title = "订单列表",
+            val orderType = backStackEntry.arguments?.getString("orderType") ?: "all"
+            OrderScreen(
+                orderType = orderType,
                 onBackClick = {
                     navController.popBackStack()
                 }
@@ -160,10 +163,29 @@ fun AppNavigation(navController: NavHostController) {
         }
         
         composable("order_confirm") {
-            PlaceholderScreen(
-                title = "订单确认",
+            SettleScreen(
                 onBackClick = {
                     navController.popBackStack()
+                },
+                onNavigateToPaymentSuccess = { orderAmount ->
+                    navController.navigate("payment_success/$orderAmount")
+                }
+            )
+        }
+        
+        composable("payment_success/{orderAmount}") { backStackEntry ->
+            val orderAmount = backStackEntry.arguments?.getString("orderAmount") ?: "¥0.00"
+            PaymentSuccessScreen(
+                orderAmount = orderAmount,
+                onViewOrderClick = {
+                    navController.navigate("order_list/all") {
+                        popUpTo("home") { inclusive = false }
+                    }
+                },
+                onBackToHomeClick = {
+                    navController.navigate("home") {
+                        popUpTo("home") { inclusive = true }
+                    }
                 }
             )
         }

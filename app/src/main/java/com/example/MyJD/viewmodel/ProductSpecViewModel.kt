@@ -155,6 +155,24 @@ class ProductSpecViewModel(
         return true
     }
 
+    fun buyNow(): String? {
+        val selection = _specSelection.value
+        if (!selection.isValid()) return null
+
+        _productSpec.value ?: return null
+        
+        return repository.createOrder(
+            productId = productId,
+            productName = "Apple/苹果 iPhone 15 (A3092) ${selection.selectedStorage}",
+            storeName = "Apple产品京东自营旗舰店",
+            imageUrl = "image/iPhone15封面.JPG",
+            price = selection.currentPrice,
+            quantity = selection.quantity,
+            selectedColor = selection.selectedColor,
+            selectedVersion = selection.selectedStorage
+        )
+    }
+
     fun canAddToCart(): Boolean {
         return _specSelection.value.isValid()
     }

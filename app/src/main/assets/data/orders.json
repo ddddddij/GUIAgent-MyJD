@@ -11,7 +11,7 @@
           "originalPrice": 6999.0,
           "brand": "苹果",
           "category": "手机",
-          "imageUrl": "https://example.com/iphone15.jpg",
+          "imageUrl": "image/iPhone15封面.JPG",
           "storeId": "apple_store",
           "storeName": "Apple官方旗舰店"
         },
@@ -57,7 +57,7 @@
           "originalPrice": 5988.0,
           "brand": "华为",
           "category": "手机",
-          "imageUrl": "https://example.com/huawei_p60.jpg",
+          "imageUrl": "image/华为P60封面.JPG",
           "storeId": "huawei_store",
           "storeName": "华为官方旗舰店"
         },
@@ -103,7 +103,7 @@
           "originalPrice": 99.9,
           "brand": "蒙牛",
           "category": "超市",
-          "imageUrl": "https://example.com/milk.jpg",
+          "imageUrl": "image/特仑苏封面.JPG",
           "storeId": "jd_supermarket",
           "storeName": "京东超市"
         },
@@ -149,7 +149,7 @@
           "originalPrice": 2299.0,
           "brand": "索尼",
           "category": "数码",
-          "imageUrl": "https://example.com/sony_headphone.jpg",
+          "imageUrl": "image/索尼WH-1000XM4封面.JPG",
           "storeId": "sony_store",
           "storeName": "索尼官方旗舰店"
         },
@@ -195,7 +195,7 @@
           "originalPrice": 1199.0,
           "brand": "耐克",
           "category": "运动",
-          "imageUrl": "https://example.com/nike_shoes.jpg",
+          "imageUrl": "image/耐克Air封面.JPG",
           "storeId": "nike_store",
           "storeName": "耐克官方旗舰店"
         },
@@ -241,7 +241,7 @@
           "originalPrice": 880.0,
           "brand": "兰蔻",
           "category": "美妆",
-          "imageUrl": "https://example.com/lancome.jpg",
+          "imageUrl": "image/兰蔻小黑瓶封面.JPG",
           "storeId": "lancome_store",
           "storeName": "兰蔻官方旗舰店"
         },
@@ -287,7 +287,7 @@
           "originalPrice": 5999.0,
           "brand": "联想",
           "category": "电脑",
-          "imageUrl": "https://example.com/thinkpad.jpg",
+          "imageUrl": "image/联想ThinkPad封面.JPG",
           "storeId": "lenovo_store",
           "storeName": "联想官方旗舰店"
         },

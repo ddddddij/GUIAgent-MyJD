@@ -13,6 +13,7 @@
 - **状态管理**: StateFlow + ViewModel
 - **图片加载**: Coil
 - **数据解析**: Gson
+- **结算功能**: SettleActivity 结算页面
 
 ## 项目特性
 
@@ -66,6 +67,102 @@
   - 点击各功能模块显示相应Toast提示
   - 与消息页面互通，支持跳转到客服对话
 
+#### 📋 订单页面 (OrderScreen)
+- **顶部导航栏**: 
+  - 返回按钮和"我的订单"标题
+  - 搜索框（占位显示，暂未实现搜索功能）
+- **分类标签栏**: 
+  - 支持5个订单状态分类：全部、待付款、待收货、待使用、待评价
+  - 点击不同标签切换对应订单列表
+  - 选中标签红色高亮显示
+- **订单列表**: 
+  - 每个订单卡片包含店铺信息、商品详情、操作按钮
+  - 店铺信息栏：店铺图标🏪 + 店铺名称 + 订单状态
+  - 商品信息：商品缩略图📱 + 商品名称 + 规格信息 + 价格数量
+  - 操作按钮根据订单状态动态显示：
+    - 待付款：去支付、取消订单
+    - 待发货：查看物流、取消订单  
+    - 待收货：查看物流、确认收货
+    - 待使用：查看券码、申请售后 ✨
+    - 待评价：去评价
+    - 已完成：删除订单、再次购买
+- **数据管理**: 
+  - 从本地orders.json文件读取7个订单数据
+  - 包含iPhone15、华为P60、特仑苏牛奶、索尼耳机、耐克鞋、兰蔻护肤品、联想笔记本等订单
+  - 订单状态包括待付款、待发货、待收货、待使用、待评价、已完成等状态
+  - 支持运行时创建新订单，与静态订单数据合并展示
+- **MVP架构实现**: 
+  - OrderContract定义View和Presenter接口
+  - OrderPresenter处理业务逻辑和数据过滤
+  - OrderViewModel管理UI状态和数据展示
+- **交互功能**: 
+  - 支持从"我的"页面任意订单状态入口进入并显示对应标签
+  - 返回按钮回到"我的"页面
+  - 所有操作按钮点击显示Toast提示（如"功能开发中"、"已确认收货"等）
+  - 不同订单状态显示不同颜色标识
+
+#### 🛍️ 规格选择功能 (ProductSpecDialog)
+- **规格选择弹窗**: 
+  - 商品头部信息展示：图片、价格、库存状态
+  - 支持多维度规格选择：系列、颜色、存储容量
+  - 数量选择器：+/- 按钮控制商品数量
+  - 立即购买和加入购物车两种操作模式
+- **数据模型**: 
+  - ProductSpec规格数据结构
+  - SpecSelection选择状态管理
+  - ProductSpecViewModel业务逻辑处理
+- **交互功能**: 
+  - 规格选择状态实时更新价格和库存
+  - 加入购物车成功提示
+  - 立即购买跳转到结算页面
+  - 支持从商品详情页调用
+
+#### 💰 立即购买功能
+- **购买流程**: 商品详情页 → 规格选择 → 立即购买 → 结算页面
+- **订单创建**: 
+  - 点击"立即购买"后自动创建待付款订单
+  - 订单信息包含选择的规格、数量、价格等
+  - 新订单实时添加到订单列表中
+- **数据管理**: 
+  - DataRepository支持运行时订单创建
+  - 内存中维护新创建的订单列表
+  - 与静态订单数据无缝合并展示
+
+#### 💳 结算页面 (SettleActivity)
+- **顶部导航栏**: 
+  - 返回按钮和"自己买"标题
+  - 右侧"送朋友"按钮（展示UI）
+- **收货地址模块**: 
+  - 默认地址信息展示：地址标签、姓名、电话（隐藏中间4位）
+  - 详细地址：湖北武汉市江夏区 武汉纺织大学（阳光校区）-北门
+  - 点击地址区域提示"切换地址"
+- **商品信息模块**: 
+  - 店铺信息：京东自营标识
+  - 商品卡片：图片、名称、规格、单价展示
+  - 数量调整器：+/- 按钮控制数量，最小为1
+  - 产品特性：7天无理由退货、7天价保标识
+- **服务与配送模块**: 
+  - 服务选项：可选1年 AppleCare+ 共5项
+  - 配送方式：京东快递，预计送达时间
+  - 收货方式：送货上门选项
+- **价格明细模块**: 
+  - 商品金额、运费（¥0.00）详细展示
+  - 优惠券：1张可用，点击提示"暂不支持使用优惠券"
+  - 合计金额：红色字体突出显示
+- **支付方式模块**: 
+  - 仅支持微信支付（简化版）
+  - 默认选中状态，圆形选中标识
+- **底部结算栏**: 
+  - 左侧总金额（红色加粗字体）
+  - 右侧红色"立即支付"按钮
+  - 点击支付跳转支付成功页面，订单状态自动更新为"待收货"
+- **功能特性**: 
+  - 完整MVP架构：SettleContract、SettlePresenter、SettleViewModel
+  - 实时价格计算：数量变化自动更新总价
+  - 数据传递：支持从商品详情页传递商品信息
+  - 默认数据：未传入信息时加载测试数据
+  - 响应式UI：垂直滚动布局，模块化设计
+
 #### 📱 商品详情页 (ProductDetailScreen)
 - **商品图片展示区**: 
   - 真实iPhone15产品图片轮播（iPhone15图1-5.JPG）
@@ -109,7 +206,7 @@
   - 收藏切换（星标图标变色）
   - 颜色规格选择状态切换
   - 加入购物车成功提示
-  - 跳转到购物车和订单确认页面
+  - 跳转到购物车和结算页面
   - 各功能模块开发中Toast提示
 
 #### 🎨 UI设计
@@ -127,10 +224,11 @@ MainActivity (底部导航)
 ├── 购物车 (CartScreen) ✅
 ├── 我的 (MeScreen) ✅
 └── 商品详情 (ProductDetailScreen) ✅
-    ├── 订单确认 (PlaceholderScreen) 🚧
+    ├── 规格选择弹窗 (ProductSpecDialog) ✅
+    ├── 结算页面 (SettleActivity) ✅
     ├── 设置页面 (PlaceholderScreen) 🚧
     ├── 地址管理 (PlaceholderScreen) 🚧
-    └── 订单列表 (PlaceholderScreen) 🚧
+    └── 订单列表 (OrderScreen) ✅
 ```
 
 ### 数据结构
@@ -142,8 +240,10 @@ MainActivity (底部导航)
 - **消息数据** (`messages.json`): 客服、物流、促销等各类消息
 - **个人中心数据** (`me_tab.json`): 会员权益、订单状态、资产服务等
 - **商品详情数据** (`product_detail.json`): iPhone15详细信息、规格、评价等
+- **订单数据** (`orders.json`): 用户订单信息、状态、商品项等
 - **用户资料** (`user_profile.json`): 用户个人信息、偏好设置
-- **购物车数据**: 运行时动态管理
+- **购物车数据**: 运行时动态管理，支持规格选择
+- **结算数据**: SettleData模型，包含商品、地址、配送、价格等信息
 - **图片资源** (`image/`): iPhone15产品图片（iPhone15图1-5.JPG）
 
 ## 项目结构
@@ -157,14 +257,24 @@ app/src/main/java/com/example/MyJD/
 │   ├── Message.kt     # 消息模型
 │   ├── MeTabData.kt   # 个人中心模型
 │   ├── ProductDetail.kt # 商品详情模型
+│   ├── ProductSpec.kt # 商品规格模型
+│   ├── SettleData.kt  # 结算数据模型
 │   └── ...
 ├── repository/         # 数据仓库层
 │   └── DataRepository.kt
+├── presenter/          # Presenter层
+│   ├── OrderContract.kt
+│   ├── OrderPresenter.kt
+│   ├── SettleContract.kt
+│   └── SettlePresenter.kt
 ├── viewmodel/          # ViewModel层
 │   ├── HomeViewModel.kt
 │   ├── ChatViewModel.kt
 │   ├── MeViewModel.kt
 │   ├── ProductDetailViewModel.kt
+│   ├── ProductSpecViewModel.kt
+│   ├── OrderViewModel.kt
+│   ├── SettleViewModel.kt
 │   └── ViewModelFactory.kt
 ├── ui/
 │   ├── screen/        # 页面
@@ -173,6 +283,8 @@ app/src/main/java/com/example/MyJD/
 │   │   ├── MeScreen.kt
 │   │   ├── CartScreen.kt
 │   │   ├── ProductDetailScreen.kt
+│   │   ├── OrderScreen.kt
+│   │   ├── SettleScreen.kt
 │   │   └── PlaceholderScreen.kt
 │   ├── components/    # 组件
 │   │   ├── HomeHeader.kt
@@ -190,6 +302,7 @@ app/src/main/java/com/example/MyJD/
 │   │   ├── ProductStoreSection.kt
 │   │   ├── ProductReviewSection.kt
 │   │   ├── ProductDetailBottomBar.kt
+│   │   ├── ProductSpecDialog.kt
 │   │   ├── MessageTabs.kt
 │   │   ├── SubTabs.kt
 │   │   ├── MessageItem.kt
@@ -304,26 +417,68 @@ app/src/main/java/com/example/MyJD/
 
 ### 🚧 待开发页面
 - [ ] 搜索结果页面
-- [ ] 商品详情页面  
 - [ ] 超市页面
 - [ ] 视频页面
 - [ ] 消息详情页面
 - [ ] 设置页面
 - [ ] 地址管理页面
-- [ ] 订单列表页面
+- [ ] 支付成功页面
 
 ### 🔄 功能增强
 - [ ] 商品筛选和排序
 - [ ] 用户登录/注册
-- [ ] 订单管理
-- [ ] 地址管理
-- [ ] 支付功能模拟
+- [ ] 地址管理和编辑
+- [ ] 优惠券使用功能
+- [ ] 多商品结算支持
+- [ ] 支付状态跟踪
 
 ## 许可证
 
 本项目仅用于学习和演示目的，不得用于商业用途。
 
 ## 更新日志
+
+### v1.0.8 (2025-10-20)
+- ✅ 完成支付成功页面（PaymentSuccessScreen）开发
+- ✅ 实现完整支付流程：结算页面 → 立即支付 → 支付成功页面
+- ✅ 创建PaymentSuccessScreen：精美UI设计、动画效果、操作按钮
+- ✅ 实现订单状态自动更新：支付成功后从"待付款"直接更新为"待收货"
+- ✅ 完善DataRepository支付逻辑：payOrder()方法支持状态转换
+- ✅ 更新MVP架构：SettleContract、SettlePresenter支持支付成功导航
+- ✅ 扩展SettleViewModel：增加支付成功状态管理和导航控制
+- ✅ 完善导航系统：新增payment_success路由，支持参数传递
+- ✅ 优化用户体验：支付成功页面显示订单金额，支持查看订单和继续购物
+- ✅ 测试完整用户流程：商品详情 → 规格选择 → 立即购买 → 结算 → 支付成功
+- 🎨 支付成功页面UI设计：绿色成功图标、微信支付标识、预计送达时间
+
+### v1.0.7 (2025-10-20)
+- ✅ 完成SettleActivity（结算页面）开发
+- ✅ 实现完整的结算界面：地址、商品、服务配送、价格明细、支付方式
+- ✅ 开发MVP架构组件：SettleContract、SettlePresenter、SettleViewModel
+- ✅ 创建SettleData数据模型，支持商品、地址、配送、价格等信息
+- ✅ 实现数量调整功能：+/- 按钮控制，实时计算总价
+- ✅ 集成微信支付选项（简化版），其他支付方式已移除
+- ✅ 支持从商品详情页传递商品信息，未传入时加载默认测试数据
+- ✅ 实现模拟支付流程，点击"立即支付"显示成功Toast提示
+- ✅ 完善用户流程：商品详情 → 规格选择 → 立即购买 → 结算页面
+- ✅ 更新导航系统，将order_confirm路由替换为SettleScreen
+- ✅ 修复ViewModelFactory和数据传递相关问题
+- ✅ 更新README.md文档，完善项目功能描述
+- 🎨 UI设计严格遵循京东结算页面规范，红色主题价格突出显示
+
+### v1.0.6 (2025-10-20)
+- ✅ 完成OrderActivity（订单页面）开发
+- ✅ 实现完整的订单管理界面：顶部导航栏、分类标签栏、订单列表
+- ✅ 支持5种订单状态分类筛选：全部、待付款、待收货、待使用、待评价
+- ✅ 开发MVP架构组件：OrderContract、OrderPresenter、OrderViewModel
+- ✅ 创建Order数据模型和orders.json订单数据文件
+- ✅ 实现订单卡片UI：店铺信息、商品详情、状态标识、操作按钮
+- ✅ 支持动态操作按钮：根据订单状态显示不同操作（去支付、确认收货、去评价等）
+- ✅ 集成到导航系统，支持从"我的"页面跳转并传递初始标签状态
+- ✅ 更新DataRepository添加getOrders()方法
+- ✅ 更新ViewModelFactory支持OrderViewModel创建
+- ✅ 所有操作按钮点击提供Toast反馈
+- 🎨 UI设计严格遵循京东订单页面规范，红色主题高亮
 
 ### v1.0.5 (2025-10-19)
 - ✅ 完成ProductSpecDialog（规格选择弹窗）开发

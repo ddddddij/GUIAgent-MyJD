@@ -11,6 +11,8 @@ class ViewModelFactory(private val repository: DataRepository) : ViewModelProvid
             HomeViewModel::class.java -> HomeViewModel(repository) as T
             ChatViewModel::class.java -> ChatViewModel(repository) as T
             MeViewModel::class.java -> MeViewModel(repository) as T
+            OrderViewModel::class.java -> OrderViewModel(repository) as T
+            SettleViewModel::class.java -> SettleViewModel(repository) as T
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
     }

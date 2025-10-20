@@ -216,10 +216,13 @@ fun ProductSpecDialog(
                                                 }
                                             } else {
                                                 // 立即购买流程
-                                                val success = viewModel.addToCart()
-                                                if (success) {
+                                                val orderId = viewModel.buyNow()
+                                                if (orderId != null) {
+                                                    Toast.makeText(context, "订单创建成功，正在跳转到结算页", Toast.LENGTH_SHORT).show()
                                                     showDialog = false
                                                     onNavigateToOrder()
+                                                } else {
+                                                    Toast.makeText(context, "创建订单失败，请重试", Toast.LENGTH_SHORT).show()
                                                 }
                                             }
                                         } else {
