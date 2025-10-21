@@ -14,6 +14,7 @@ import com.example.MyJD.ui.screen.SettleScreen
 import com.example.MyJD.ui.screen.PaymentSuccessScreen
 import com.example.MyJD.ui.screen.SearchScreen
 import com.example.MyJD.ui.screen.SearchResultScreen
+import com.example.MyJD.ui.screen.MessageDetailScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
@@ -143,10 +144,13 @@ fun AppNavigation(navController: NavHostController) {
         
         composable("chat_detail/{messageId}") { backStackEntry ->
             val messageId = backStackEntry.arguments?.getString("messageId") ?: ""
-            PlaceholderScreen(
-                title = "消息详情",
+            MessageDetailScreen(
+                conversationId = messageId,
                 onBackClick = {
                     navController.popBackStack()
+                },
+                onNavigateToProduct = { productId ->
+                    navController.navigate("product/$productId")
                 }
             )
         }

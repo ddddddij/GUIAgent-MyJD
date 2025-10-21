@@ -75,7 +75,8 @@ fun ChatScreen(
                 MessageList(
                     messages = filteredMessages,
                     onMessageClick = { message ->
-                        onNavigateToDetail(message.id)
+                        val conversationId = viewModel.getConversationIdForMessage(message)
+                        onNavigateToDetail(conversationId)
                     },
                     modifier = Modifier.weight(1f)
                 )

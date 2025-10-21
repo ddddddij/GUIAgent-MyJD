@@ -16,7 +16,13 @@ import com.example.MyJD.model.OrderStatus
 import com.example.MyJD.model.PaymentMethod
 import com.example.MyJD.model.CancelReason
 import com.example.MyJD.model.Address
+import com.example.MyJD.model.ConversationData
+import com.example.MyJD.model.Conversation
+import com.example.MyJD.model.ChatMessage
+import com.example.MyJD.model.ChatSender
+import com.example.MyJD.model.ChatMessageType
 import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
@@ -75,10 +81,72 @@ class DataRepository private constructor(private val context: Context) {
     suspend fun loadMessages(): List<Message> = withContext(Dispatchers.IO) {
         try {
             val jsonString = context.assets.open("data/messages.json").bufferedReader().use { it.readText() }
+            // Parse the new JSON structure
+            val jsonObject = JsonParser.parseString(jsonString).asJsonObject
+            val legacyMessagesJson = jsonObject.getAsJsonArray("legacy_messages")
             val listType = object : TypeToken<List<Message>>() {}.type
-            gson.fromJson(jsonString, listType)
+            gson.fromJson(legacyMessagesJson, listType)
         } catch (e: Exception) {
             emptyList()
+        }
+    }
+    
+    suspend fun loadConversationData(): ConversationData = withContext(Dispatchers.IO) {
+        try {
+            val jsonString = context.assets.open("data/messages.json").bufferedReader().use { it.readText() }
+            
+            // Parse the JSON to get the structure
+            val jsonObject = JsonParser.parseString(jsonString).asJsonObject
+            
+            // Parse legacy messages
+            val legacyMessagesJson = jsonObject.getAsJsonArray("legacy_messages")
+            val legacyMessages = gson.fromJson(legacyMessagesJson, Array<Message>::class.java).toList()
+            
+            // Parse conversations with custom parsing for enum types
+            val conversationsJson = jsonObject.getAsJsonArray("conversations")
+            val conversations = mutableListOf<Conversation>()
+            
+            for (conversationElement in conversationsJson) {
+                val conversationObj = conversationElement.asJsonObject
+                val id = conversationObj.get("id").asString
+                val chatName = conversationObj.get("chatName").asString
+                val chatAvatar = conversationObj.get("chatAvatar").asString
+                
+                val messagesArray = conversationObj.getAsJsonArray("messages")
+                val messages = mutableListOf<ChatMessage>()
+                
+                for (messageElement in messagesArray) {
+                    val messageObj = messageElement.asJsonObject
+                    val messageId = messageObj.get("id").asString
+                    val senderStr = messageObj.get("sender").asString
+                    val typeStr = messageObj.get("type").asString
+                    val content = messageObj.get("content").asString
+                    val timestamp = messageObj.get("timestamp").asLong
+                    
+                    val sender = when (senderStr) {
+                        "user" -> ChatSender.USER
+                        "other" -> ChatSender.OTHER
+                        else -> ChatSender.OTHER
+                    }
+                    
+                    val type = when (typeStr) {
+                        "text" -> ChatMessageType.TEXT
+                        "system" -> ChatMessageType.SYSTEM
+                        "product" -> ChatMessageType.PRODUCT
+                        else -> ChatMessageType.TEXT
+                    }
+                    
+                    messages.add(ChatMessage(messageId, sender, type, content, timestamp))
+                }
+                
+                conversations.add(Conversation(id, chatName, chatAvatar, messages))
+            }
+            
+            ConversationData(legacyMessages, conversations)
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Error loading conversation data", e)
+            // Return empty data structure on error
+            ConversationData(emptyList(), emptyList())
         }
     }
 

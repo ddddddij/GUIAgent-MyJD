@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.MyJD.model.Message
 import com.example.MyJD.model.MessageType
 import com.example.MyJD.model.MessageSubType
+import com.example.MyJD.model.ConversationData
 import com.example.MyJD.repository.DataRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -113,6 +114,25 @@ class ChatViewModel(private val repository: DataRepository) : ViewModel() {
             MessageSubType.SHOPPING -> "购物"
             MessageSubType.INSTANT_DELIVERY -> "秒送"
             MessageSubType.TAKEAWAY -> "外卖"
+        }
+    }
+    
+    fun getConversationIdForMessage(message: Message): String {
+        // Create a mapping from legacy message sender names to conversation IDs
+        return when (message.senderName) {
+            "京东客服" -> "C20251021001"
+            "得力装订文具旗舰店" -> "C20251021002"
+            "文轩网旗舰店" -> "C20251021003"
+            "Apple产品京东自营旗舰店" -> "C20251021004"
+            "京东秒送" -> "C20251021005"
+            else -> {
+                // For other senders, create a fallback conversation ID based on the message type
+                when (message.type) {
+                    MessageType.CUSTOMER_SERVICE -> "C20251021001" // Default to JD customer service
+                    MessageType.LOGISTICS -> "C20251021005" // Default to JD delivery
+                    else -> "C20251021001" // Default fallback
+                }
+            }
         }
     }
 }
