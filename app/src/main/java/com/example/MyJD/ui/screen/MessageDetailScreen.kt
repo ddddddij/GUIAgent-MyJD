@@ -40,7 +40,8 @@ import java.util.*
 fun MessageDetailScreen(
     conversationId: String,
     onBackClick: () -> Unit,
-    onNavigateToProduct: (String) -> Unit
+    onNavigateToProduct: (String) -> Unit,
+    onNavigateToSettings: (String, String) -> Unit = { _, _ -> }
 ) {
     val context = LocalContext.current
     val repository = remember { DataRepository.getInstance(context) }
@@ -147,7 +148,7 @@ fun MessageDetailScreen(
                 },
                 actions = {
                     IconButton(onClick = {
-                        android.widget.Toast.makeText(context, "设置功能开发中", android.widget.Toast.LENGTH_SHORT).show()
+                        onNavigateToSettings(title, avatar)
                     }) {
                         Icon(Icons.Filled.Settings, contentDescription = "设置")
                     }

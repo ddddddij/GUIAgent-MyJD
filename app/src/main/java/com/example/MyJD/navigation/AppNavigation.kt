@@ -15,6 +15,8 @@ import com.example.MyJD.ui.screen.PaymentSuccessScreen
 import com.example.MyJD.ui.screen.SearchScreen
 import com.example.MyJD.ui.screen.SearchResultScreen
 import com.example.MyJD.ui.screen.MessageDetailScreen
+import com.example.MyJD.ui.screen.MessageSettingScreen
+import com.example.MyJD.ui.screen.ShopPageScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
@@ -151,6 +153,34 @@ fun AppNavigation(navController: NavHostController) {
                 },
                 onNavigateToProduct = { productId ->
                     navController.navigate("product/$productId")
+                },
+                onNavigateToSettings = { shopName, shopAvatar ->
+                    navController.navigate("message_setting/$shopName/$shopAvatar")
+                }
+            )
+        }
+        
+        composable("message_setting/{shopName}/{shopAvatar}") { backStackEntry ->
+            val shopName = backStackEntry.arguments?.getString("shopName") ?: ""
+            val shopAvatar = backStackEntry.arguments?.getString("shopAvatar") ?: ""
+            MessageSettingScreen(
+                shopName = shopName,
+                shopAvatar = shopAvatar,
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onNavigateToShop = {
+                    navController.navigate("shop_page/$shopName")
+                }
+            )
+        }
+        
+        composable("shop_page/{shopName}") { backStackEntry ->
+            val shopName = backStackEntry.arguments?.getString("shopName") ?: "店铺主页"
+            ShopPageScreen(
+                shopName = shopName,
+                onBackClick = {
+                    navController.popBackStack()
                 }
             )
         }
