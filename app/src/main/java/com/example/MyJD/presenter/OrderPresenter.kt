@@ -32,19 +32,76 @@ class OrderPresenter(
     }
     
     override fun onActionClicked(action: String, orderId: String) {
-        val toastMessage = when (action) {
-            "删除订单" -> "订单已删除"
-            "再次购买" -> "功能开发中"
-            "去支付" -> "功能开发中"
-            "取消订单" -> "订单已取消"
-            "申请售后" -> "功能开发中"
-            "查看物流" -> "功能开发中"
-            "确认收货" -> "已确认收货"
-            "查看券码" -> "功能开发中"
-            "去评价" -> "功能开发中"
-            else -> "功能开发中"
+        when (action) {
+            "删除订单" -> {
+                view?.showDeleteConfirmDialog(orderId)
+            }
+            "去支付" -> {
+                view?.navigateToPayment(orderId)
+            }
+            "取消订单" -> {
+                android.util.Log.d("OrderPresenter", "Attempting to cancel order: $orderId")
+                val success = repository.cancelOrder(orderId)
+                if (success) {
+                    android.util.Log.d("OrderPresenter", "Order $orderId cancelled successfully")
+                    view?.showToast("订单已取消")
+                    loadOrders() // 刷新订单列表
+                } else {
+                    android.util.Log.w("OrderPresenter", "Failed to cancel order: $orderId")
+                    // 获取订单状态以提供更具体的错误信息
+                    val order = repository.getOrderById(orderId)
+                    val statusText = when(order?.status) {
+                        OrderStatus.PENDING_PAYMENT -> "待付款"
+                        OrderStatus.PENDING_SHIPMENT -> "待使用"
+                        OrderStatus.PENDING_RECEIPT -> "待收货"
+                        OrderStatus.PENDING_REVIEW -> "待评价"
+                        OrderStatus.COMPLETED -> "已完成"
+                        OrderStatus.CANCELLED -> "已取消"
+                        null -> "未知"
+                    }
+                    view?.showToast("取消订单失败，当前状态：$statusText（只有待付款订单可以取消）")
+                }
+            }
+            "确认收货" -> {
+                android.util.Log.d("OrderPresenter", "Attempting to confirm receipt for order: $orderId")
+                val success = repository.confirmReceipt(orderId)
+                if (success) {
+                    android.util.Log.d("OrderPresenter", "Order $orderId receipt confirmed successfully")
+                    view?.showToast("已确认收货")
+                    loadOrders() // 刷新订单列表
+                } else {
+                    android.util.Log.w("OrderPresenter", "Failed to confirm receipt for order: $orderId")
+                    // 获取订单状态以提供更具体的错误信息
+                    val order = repository.getOrderById(orderId)
+                    val statusText = when(order?.status) {
+                        OrderStatus.PENDING_PAYMENT -> "待付款"
+                        OrderStatus.PENDING_SHIPMENT -> "待使用"
+                        OrderStatus.PENDING_RECEIPT -> "待收货"
+                        OrderStatus.PENDING_REVIEW -> "待评价"
+                        OrderStatus.COMPLETED -> "已完成"
+                        OrderStatus.CANCELLED -> "已取消"
+                        null -> "未知"
+                    }
+                    view?.showToast("确认收货失败，当前状态：$statusText（只有待收货订单可以确认收货）")
+                }
+            }
+            "再次购买" -> view?.showToast("功能开发中")
+            "申请售后" -> view?.showToast("功能开发中")
+            "查看物流" -> view?.showToast("功能开发中")
+            "查看券码" -> view?.showToast("功能开发中")
+            "去评价" -> view?.showToast("功能开发中")
+            else -> view?.showToast("功能开发中")
         }
-        view?.showToast(toastMessage)
+    }
+    
+    override fun onDeleteConfirmed(orderId: String) {
+        val success = repository.deleteOrder(orderId)
+        if (success) {
+            view?.showToast("订单已删除")
+            loadOrders() // 刷新订单列表
+        } else {
+            view?.showToast("删除订单失败")
+        }
     }
     
     private fun filterOrdersByTab(tabIndex: Int) {

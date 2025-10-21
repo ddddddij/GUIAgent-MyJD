@@ -79,6 +79,16 @@ class SettleViewModel(
         presenter.loadSettleData(productId, productName, spec, price, imageUrl)
     }
     
+    fun loadCartSettleData() {
+        _uiState.value = _uiState.value.copy(isLoading = true)
+        presenter.loadCartSettleData()
+    }
+    
+    fun loadOrderSettleData(orderId: String) {
+        _uiState.value = _uiState.value.copy(isLoading = true)
+        presenter.loadOrderSettleData(orderId)
+    }
+    
     fun onQuantityIncrease() {
         presenter.onQuantityIncrease()
     }

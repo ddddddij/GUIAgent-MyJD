@@ -24,6 +24,8 @@ interface SettleContract {
             price: Double? = null,
             imageUrl: String? = null
         )
+        fun loadCartSettleData()
+        fun loadOrderSettleData(orderId: String)
         fun onQuantityIncrease()
         fun onQuantityDecrease()
         fun onAddressClick()
@@ -31,5 +33,6 @@ interface SettleContract {
         fun onDeliveryClick()
         fun onCouponClick()
         fun onPaymentClick()
+        fun onCartPaymentClick()
     }
 }

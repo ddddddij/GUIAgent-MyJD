@@ -36,6 +36,7 @@ import com.example.MyJD.viewmodel.ViewModelFactory
 fun OrderScreen(
     orderType: String = "all",
     onBackClick: () -> Unit,
+    onNavigateToPayment: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -57,6 +58,39 @@ fun OrderScreen(
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             viewModel.clearToast()
         }
+    }
+    
+    // Handle navigation to payment
+    LaunchedEffect(uiState.shouldNavigateToPayment) {
+        uiState.shouldNavigateToPayment?.let { orderId ->
+            onNavigateToPayment(orderId)
+            viewModel.clearNavigation()
+        }
+    }
+    
+    // Show delete confirmation dialog
+    uiState.showDeleteDialog?.let { orderId ->
+        AlertDialog(
+            onDismissRequest = { viewModel.clearDeleteDialog() },
+            title = { Text("确认删除") },
+            text = { Text("确定要删除这个订单吗？删除后将无法恢复。") },
+            confirmButton = {
+                TextButton(
+                    onClick = { 
+                        viewModel.onDeleteConfirmed(orderId)
+                    }
+                ) {
+                    Text("确定", color = Color(0xFFE53E3E))
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { viewModel.clearDeleteDialog() }
+                ) {
+                    Text("取消")
+                }
+            }
+        )
     }
     
     Column(
@@ -266,7 +300,7 @@ fun OrderCard(
 private fun getStatusDisplayText(status: OrderStatus): String {
     return when (status) {
         OrderStatus.PENDING_PAYMENT -> "待付款"
-        OrderStatus.PENDING_SHIPMENT -> "已收货"
+        OrderStatus.PENDING_SHIPMENT -> "待使用"
         OrderStatus.PENDING_RECEIPT -> "待收货"
         OrderStatus.PENDING_REVIEW -> "待评价"
         OrderStatus.COMPLETED -> "已完成"

@@ -16,7 +16,9 @@ data class OrderUiState(
     val orders: List<Order> = emptyList(),
     val selectedTabIndex: Int = 0,
     val isLoading: Boolean = false,
-    val toastMessage: String? = null
+    val toastMessage: String? = null,
+    val shouldNavigateToPayment: String? = null,
+    val showDeleteDialog: String? = null
 )
 
 class OrderViewModel(
@@ -54,6 +56,14 @@ class OrderViewModel(
         _uiState.value = _uiState.value.copy(selectedTabIndex = tabIndex)
     }
     
+    override fun navigateToPayment(orderId: String) {
+        _uiState.value = _uiState.value.copy(shouldNavigateToPayment = orderId)
+    }
+    
+    override fun showDeleteConfirmDialog(orderId: String) {
+        _uiState.value = _uiState.value.copy(showDeleteDialog = orderId)
+    }
+    
     // Public methods for UI interaction
     fun onTabSelected(tabIndex: Int) {
         presenter.onTabSelected(tabIndex)
@@ -65,6 +75,19 @@ class OrderViewModel(
     
     fun clearToast() {
         _uiState.value = _uiState.value.copy(toastMessage = null)
+    }
+    
+    fun clearNavigation() {
+        _uiState.value = _uiState.value.copy(shouldNavigateToPayment = null)
+    }
+    
+    fun clearDeleteDialog() {
+        _uiState.value = _uiState.value.copy(showDeleteDialog = null)
+    }
+    
+    fun onDeleteConfirmed(orderId: String) {
+        presenter.onDeleteConfirmed(orderId)
+        clearDeleteDialog()
     }
     
     fun initializeWithTab(orderType: String) {

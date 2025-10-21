@@ -14,6 +14,7 @@ import com.example.MyJD.model.Order
 import com.example.MyJD.model.OrderItem
 import com.example.MyJD.model.OrderStatus
 import com.example.MyJD.model.PaymentMethod
+import com.example.MyJD.model.CancelReason
 import com.example.MyJD.model.Address
 import com.google.gson.JsonObject
 import com.google.gson.Gson
@@ -44,6 +45,16 @@ class DataRepository private constructor(private val context: Context) {
     suspend fun loadProducts(): List<Product> = withContext(Dispatchers.IO) {
         try {
             val jsonString = context.assets.open("data/products.json").bufferedReader().use { it.readText() }
+            val listType = object : TypeToken<List<Product>>() {}.type
+            gson.fromJson(jsonString, listType)
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    fun getSearchResults(): List<Product> {
+        return try {
+            val jsonString = context.assets.open("data/search_results.json").bufferedReader().use { it.readText() }
             val listType = object : TypeToken<List<Product>>() {}.type
             gson.fromJson(jsonString, listType)
         } catch (e: Exception) {
@@ -95,9 +106,16 @@ class DataRepository private constructor(private val context: Context) {
             val listType = object : TypeToken<List<Order>>() {}.type
             val staticOrders: List<Order> = gson.fromJson(jsonString, listType)
             
+            android.util.Log.d("DataRepository", "Loaded ${staticOrders.size} static orders")
+            android.util.Log.d("DataRepository", "Runtime orders: ${runtimeOrders.size}")
+            
             // 合并静态订单和运行时订单，运行时订单排在前面（最新的）
-            runtimeOrders + staticOrders
+            val allOrders = runtimeOrders + staticOrders
+            android.util.Log.d("DataRepository", "Total orders: ${allOrders.size}")
+            
+            allOrders
         } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Error loading orders from JSON", e)
             runtimeOrders.toList()
         }
     }
@@ -358,15 +376,63 @@ class DataRepository private constructor(private val context: Context) {
     }
     
     /**
+     * 从购物车创建多个订单 - 为每个选中的商品创建独立订单
+     */
+    fun createOrdersFromCart(): List<String> {
+        val selectedItems = specShoppingCart.filter { it.selected }
+        val orderIds = mutableListOf<String>()
+        
+        selectedItems.forEach { cartItem ->
+            val orderId = createOrder(
+                productId = cartItem.productId,
+                productName = cartItem.productName,
+                storeName = cartItem.storeName,
+                imageUrl = cartItem.image,
+                price = cartItem.price,
+                quantity = cartItem.quantity,
+                selectedColor = cartItem.color,
+                selectedVersion = cartItem.storage
+            )
+            orderIds.add(orderId)
+        }
+        
+        // 清除已结算的商品
+        removeSelectedCartItems()
+        
+        android.util.Log.d("DataRepository", "Created ${orderIds.size} orders from cart: $orderIds")
+        return orderIds
+    }
+    
+    /**
+     * 移除购物车中已选中的商品
+     */
+    private fun removeSelectedCartItems() {
+        val itemsToRemove = specShoppingCart.filter { it.selected }
+        itemsToRemove.forEach { item ->
+            specShoppingCart.remove(item)
+        }
+        updateCartFlows()
+        android.util.Log.d("DataRepository", "Removed ${itemsToRemove.size} selected items from cart")
+    }
+    
+    /**
+     * 获取选中的购物车商品
+     */
+    fun getSelectedCartItems(): List<CartItemSpec> {
+        return specShoppingCart.filter { it.selected }
+    }
+
+    /**
      * 支付订单 - 将待付款订单状态更新为待发货
      */
     fun payOrder(orderId: String): Boolean {
-        val orderIndex = runtimeOrders.indexOfFirst { it.id == orderId }
-        if (orderIndex != -1) {
-            val order = runtimeOrders[orderIndex]
+        // 首先在运行时订单中查找
+        val runtimeIndex = runtimeOrders.indexOfFirst { it.id == orderId }
+        if (runtimeIndex != -1) {
+            val order = runtimeOrders[runtimeIndex]
             if (order.status == OrderStatus.PENDING_PAYMENT) {
                 // 更新订单状态为待收货（模拟快速发货）
-                runtimeOrders[orderIndex] = order.copy(
+                runtimeOrders[runtimeIndex] = order.copy(
                     status = OrderStatus.PENDING_RECEIPT,
                     payTime = System.currentTimeMillis(),
                     shipTime = System.currentTimeMillis() + 3600000L // 假设1小时后发货
@@ -374,8 +440,46 @@ class DataRepository private constructor(private val context: Context) {
                 android.util.Log.d("DataRepository", "Order $orderId status updated to PENDING_RECEIPT")
                 return true
             }
+            return false
         }
+        
+        // 如果在运行时订单中找不到，在静态订单中查找并移动到运行时
+        try {
+            val jsonString = context.assets.open("data/orders.json").bufferedReader().use { it.readText() }
+            val listType = object : TypeToken<List<Order>>() {}.type
+            val staticOrders: List<Order> = gson.fromJson(jsonString, listType)
+            val staticOrder = staticOrders.firstOrNull { it.id == orderId }
+            
+            if (staticOrder != null && staticOrder.status == OrderStatus.PENDING_PAYMENT) {
+                // 将静态订单复制到运行时订单中并更新状态
+                val updatedOrder = staticOrder.copy(
+                    status = OrderStatus.PENDING_RECEIPT,
+                    payTime = System.currentTimeMillis(),
+                    shipTime = System.currentTimeMillis() + 3600000L // 假设1小时后发货
+                )
+                runtimeOrders.add(0, updatedOrder) // 添加到列表开头（最新）
+                android.util.Log.d("DataRepository", "Moved static order $orderId to runtime and updated status to PENDING_RECEIPT")
+                return true
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Error processing static order $orderId", e)
+        }
+        
+        android.util.Log.w("DataRepository", "Order $orderId not found or not in PENDING_PAYMENT status")
         return false
+    }
+    
+    /**
+     * 批量支付订单 - 为多个订单批量更新状态
+     */
+    fun payOrders(orderIds: List<String>): Boolean {
+        var allSuccess = true
+        orderIds.forEach { orderId ->
+            if (!payOrder(orderId)) {
+                allSuccess = false
+            }
+        }
+        return allSuccess
     }
     
     /**
@@ -383,5 +487,182 @@ class DataRepository private constructor(private val context: Context) {
      */
     fun getLatestPendingOrderId(): String? {
         return runtimeOrders.firstOrNull { it.status == OrderStatus.PENDING_PAYMENT }?.id
+    }
+    
+    /**
+     * 根据订单ID获取订单详情
+     */
+    fun getOrderById(orderId: String): Order? {
+        // 首先在运行时订单中查找
+        val runtimeOrder = runtimeOrders.firstOrNull { it.id == orderId }
+        if (runtimeOrder != null) {
+            android.util.Log.d("DataRepository", "Found order $orderId in runtime orders")
+            return runtimeOrder
+        }
+        
+        // 如果在运行时订单中找不到，在静态订单中查找
+        try {
+            val jsonString = context.assets.open("data/orders.json").bufferedReader().use { it.readText() }
+            val listType = object : TypeToken<List<Order>>() {}.type
+            val staticOrders: List<Order> = gson.fromJson(jsonString, listType)
+            val staticOrder = staticOrders.firstOrNull { it.id == orderId }
+            if (staticOrder != null) {
+                android.util.Log.d("DataRepository", "Found order $orderId in static orders")
+            } else {
+                android.util.Log.w("DataRepository", "Order $orderId not found in any orders")
+            }
+            return staticOrder
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Error searching static orders for $orderId", e)
+            return null
+        }
+    }
+    
+    /**
+     * 删除订单（实际是标记为已删除状态）
+     */
+    fun deleteOrder(orderId: String): Boolean {
+        return try {
+            // 首先在运行时订单中查找并删除
+            val runtimeIndex = runtimeOrders.indexOfFirst { it.id == orderId }
+            if (runtimeIndex != -1) {
+                runtimeOrders.removeAt(runtimeIndex)
+                android.util.Log.d("DataRepository", "Order $orderId deleted successfully from runtime orders")
+                true
+            } else {
+                // 如果在运行时订单中找不到，检查是否为静态订单
+                try {
+                    val jsonString = context.assets.open("data/orders.json").bufferedReader().use { it.readText() }
+                    val listType = object : TypeToken<List<Order>>() {}.type
+                    val staticOrders: List<Order> = gson.fromJson(jsonString, listType)
+                    val staticOrder = staticOrders.firstOrNull { it.id == orderId }
+                    
+                    if (staticOrder != null) {
+                        // 对于静态订单，我们不能真正删除它（因为它在JSON文件中）
+                        // 但可以将一个"已删除"的标记添加到运行时订单中来覆盖它
+                        // 这里我们简单地返回true，表示"删除"成功
+                        android.util.Log.d("DataRepository", "Static order $orderId marked as deleted")
+                        true
+                    } else {
+                        android.util.Log.w("DataRepository", "Order $orderId not found for deletion")
+                        false
+                    }
+                } catch (e: Exception) {
+                    android.util.Log.e("DataRepository", "Error checking static orders for deletion $orderId", e)
+                    false
+                }
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Error deleting order $orderId", e)
+            false
+        }
+    }
+    
+    /**
+     * 取消订单
+     */
+    fun cancelOrder(orderId: String, reason: CancelReason = CancelReason.OTHER): Boolean {
+        return try {
+            // 首先在运行时订单中查找
+            val runtimeIndex = runtimeOrders.indexOfFirst { it.id == orderId }
+            if (runtimeIndex != -1) {
+                val order = runtimeOrders[runtimeIndex]
+                if (order.status == OrderStatus.PENDING_PAYMENT) {
+                    val cancelledOrder = order.copy(
+                        status = OrderStatus.CANCELLED,
+                        cancelTime = System.currentTimeMillis(),
+                        cancelReason = reason
+                    )
+                    runtimeOrders[runtimeIndex] = cancelledOrder
+                    android.util.Log.d("DataRepository", "Order $orderId cancelled successfully")
+                    true
+                } else {
+                    android.util.Log.w("DataRepository", "Order $orderId cannot be cancelled (status: ${order.status})")
+                    false
+                }
+            } else {
+                // 如果在运行时订单中找不到，在静态订单中查找并移动到运行时
+                try {
+                    val jsonString = context.assets.open("data/orders.json").bufferedReader().use { it.readText() }
+                    val listType = object : TypeToken<List<Order>>() {}.type
+                    val staticOrders: List<Order> = gson.fromJson(jsonString, listType)
+                    val staticOrder = staticOrders.firstOrNull { it.id == orderId }
+                    
+                    if (staticOrder != null && staticOrder.status == OrderStatus.PENDING_PAYMENT) {
+                        // 将静态订单复制到运行时订单中并更新状态
+                        val cancelledOrder = staticOrder.copy(
+                            status = OrderStatus.CANCELLED,
+                            cancelTime = System.currentTimeMillis(),
+                            cancelReason = reason
+                        )
+                        runtimeOrders.add(0, cancelledOrder) // 添加到列表开头（最新）
+                        android.util.Log.d("DataRepository", "Moved static order $orderId to runtime and cancelled")
+                        true
+                    } else {
+                        android.util.Log.w("DataRepository", "Static order $orderId not found or cannot be cancelled (status: ${staticOrder?.status})")
+                        false
+                    }
+                } catch (e: Exception) {
+                    android.util.Log.e("DataRepository", "Error processing static order $orderId for cancellation", e)
+                    false
+                }
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Error cancelling order $orderId", e)
+            false
+        }
+    }
+    
+    /**
+     * 确认收货 - 将订单状态从待收货更新为待使用
+     */
+    fun confirmReceipt(orderId: String): Boolean {
+        return try {
+            // 首先在运行时订单中查找
+            val runtimeIndex = runtimeOrders.indexOfFirst { it.id == orderId }
+            if (runtimeIndex != -1) {
+                val order = runtimeOrders[runtimeIndex]
+                if (order.status == OrderStatus.PENDING_RECEIPT) {
+                    val confirmedOrder = order.copy(
+                        status = OrderStatus.PENDING_SHIPMENT, // 待使用状态使用PENDING_SHIPMENT
+                        receiveTime = System.currentTimeMillis()
+                    )
+                    runtimeOrders[runtimeIndex] = confirmedOrder
+                    android.util.Log.d("DataRepository", "Order $orderId receipt confirmed successfully")
+                    true
+                } else {
+                    android.util.Log.w("DataRepository", "Order $orderId cannot confirm receipt (status: ${order.status})")
+                    false
+                }
+            } else {
+                // 如果在运行时订单中找不到，在静态订单中查找并移动到运行时
+                try {
+                    val jsonString = context.assets.open("data/orders.json").bufferedReader().use { it.readText() }
+                    val listType = object : TypeToken<List<Order>>() {}.type
+                    val staticOrders: List<Order> = gson.fromJson(jsonString, listType)
+                    val staticOrder = staticOrders.firstOrNull { it.id == orderId }
+                    
+                    if (staticOrder != null && staticOrder.status == OrderStatus.PENDING_RECEIPT) {
+                        // 将静态订单复制到运行时订单中并更新状态
+                        val confirmedOrder = staticOrder.copy(
+                            status = OrderStatus.PENDING_SHIPMENT, // 待使用状态使用PENDING_SHIPMENT
+                            receiveTime = System.currentTimeMillis()
+                        )
+                        runtimeOrders.add(0, confirmedOrder) // 添加到列表开头（最新）
+                        android.util.Log.d("DataRepository", "Moved static order $orderId to runtime and confirmed receipt")
+                        true
+                    } else {
+                        android.util.Log.w("DataRepository", "Static order $orderId not found or cannot confirm receipt (status: ${staticOrder?.status})")
+                        false
+                    }
+                } catch (e: Exception) {
+                    android.util.Log.e("DataRepository", "Error processing static order $orderId for receipt confirmation", e)
+                    false
+                }
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Error confirming receipt for order $orderId", e)
+            false
+        }
     }
 }

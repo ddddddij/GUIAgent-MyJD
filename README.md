@@ -209,6 +209,42 @@
   - 跳转到购物车和结算页面
   - 各功能模块开发中Toast提示
 
+#### 🔍 搜索功能 (SearchActivity & SearchResultActivity)
+- **搜索页面**:
+  - 仿京东橙色背景搜索导航栏：返回按钮、搜索栏、搜索按钮
+  - 搜索输入框默认显示"iPhone 15"关键字
+  - 搜索推荐词列表：19个固定iPhone15相关搜索建议
+  - 关键字红色高亮显示："iphone15"字符标红突出
+  - "AI帮你挑"粉色标签：部分推荐词显示AI推荐标识
+  - 点击任意推荐词或搜索按钮跳转到搜索结果页面
+  - 搜索过程Toast提示："正在搜索 iPhone 15…"
+- **搜索结果页面**:
+  - 顶部搜索栏：保持搜索关键字，支持重新搜索
+  - 排序筛选栏：综合、销量、价格（升/降序）、筛选四个选项
+  - 商品结果展示：2列网格布局，包含图片、名称、价格、店铺
+  - 筛选弹窗：价格区间输入、商品分类多选（手机、耳机、数码等）
+  - 动态排序功能：
+    - 综合排序：综合销量、评分、价格等因素
+    - 销量排序：按销量数值降序排列  
+    - 价格排序：支持升序/降序切换，箭头指示方向
+  - 商品卡片交互：点击跳转到商品详情页面
+- **数据管理**:
+  - 基于search_results.json的5个iPhone15系列商品数据
+  - 包含iPhone15 Pro Max、Pro、标准版、Plus等全系列产品
+  - 每个商品使用不同的iPhone15真实产品图片（iPhone15图1-5.JPG）
+  - 每个商品包含销量字段，支持排序功能
+  - 筛选条件：价格区间5000-10000元，手机分类
+- **MVP架构实现**:
+  - SearchContract/SearchResultContract定义接口
+  - SearchPresenter/SearchResultPresenter处理业务逻辑
+  - SearchViewModel/SearchResultViewModel管理状态
+  - FilterBottomSheet可复用筛选组件
+- **交互功能**:
+  - 从首页搜索框入口进入搜索页面
+  - 支持搜索词高亮显示，关键字标红
+  - 筛选重置和确定操作，实时更新结果
+  - 所有搜索结果支持跳转到商品详情页面
+
 #### 🎨 UI设计
 - **京东红色主题**: #E2231A 主色调
 - **Material 3**: 现代化设计语言
@@ -219,6 +255,8 @@
 ```
 MainActivity (底部导航)
 ├── 首页 (HomeScreen) ✅
+│   ├── 搜索页面 (SearchScreen) ✅
+│   └── 搜索结果页面 (SearchResultScreen) ✅
 ├── 视频 (PlaceholderScreen) 🚧
 ├── 消息 (ChatScreen) ✅  
 ├── 购物车 (CartScreen) ✅
@@ -236,6 +274,7 @@ MainActivity (底部导航)
 项目使用本地JSON文件模拟数据，包含：
 
 - **商品数据** (`products.json`): 手机、超市商品、数码产品等
+- **搜索结果数据** (`search_results.json`): 搜索结果商品数据，包含销量字段
 - **Banner数据** (`banners.json`): 轮播图和活动信息
 - **消息数据** (`messages.json`): 客服、物流、促销等各类消息
 - **个人中心数据** (`me_tab.json`): 会员权益、订单状态、资产服务等
@@ -416,13 +455,13 @@ app/src/main/java/com/example/MyJD/
 ## 后续开发计划
 
 ### 🚧 待开发页面
-- [ ] 搜索结果页面
+- [x] 搜索页面 (SearchActivity) ✅
+- [x] 搜索结果页面 (SearchResultActivity) ✅
 - [ ] 超市页面
 - [ ] 视频页面
 - [ ] 消息详情页面
 - [ ] 设置页面
 - [ ] 地址管理页面
-- [ ] 支付成功页面
 
 ### 🔄 功能增强
 - [ ] 商品筛选和排序
@@ -437,6 +476,25 @@ app/src/main/java/com/example/MyJD/
 本项目仅用于学习和演示目的，不得用于商业用途。
 
 ## 更新日志
+
+### v1.0.9 (2025-10-21)
+- ✅ 完成SearchActivity（搜索页面）开发
+- ✅ 完成SearchResultActivity（搜索结果页面）开发
+- ✅ 实现完整搜索功能：搜索推荐词列表、关键字高亮、结果展示
+- ✅ 开发搜索相关MVP架构组件：
+  - SearchContract、SearchPresenter、SearchViewModel
+  - SearchResultContract、SearchResultPresenter、SearchResultViewModel
+- ✅ 创建search_results.json搜索数据文件，包含8个商品及销量信息
+- ✅ 实现搜索页面UI：橙色导航栏、推荐词列表、"AI帮你挑"标签
+- ✅ 实现搜索结果页面UI：排序筛选栏、2列商品网格、筛选弹窗
+- ✅ 开发FilterBottomSheet可复用筛选组件：价格区间、分类多选
+- ✅ 实现动态排序功能：综合、销量、价格升序/降序
+- ✅ 支持关键字红色高亮显示（"iphone15"字符标红）
+- ✅ 集成到导航系统：首页搜索框 → 搜索页面 → 搜索结果页面
+- ✅ 扩展DataRepository添加getSearchResults()方法
+- ✅ 完善用户交互：Toast提示、页面跳转、筛选重置
+- ✅ 项目构建验证通过，所有搜索功能正常运行
+- 🎨 UI设计严格遵循京东搜索页面规范，橙色主题突出
 
 ### v1.0.8 (2025-10-20)
 - ✅ 完成支付成功页面（PaymentSuccessScreen）开发

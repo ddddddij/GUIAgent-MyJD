@@ -8,6 +8,8 @@ interface OrderContract {
         fun showOrders(orders: List<Order>)
         fun showToast(message: String)
         fun updateSelectedTab(tabIndex: Int)
+        fun navigateToPayment(orderId: String)
+        fun showDeleteConfirmDialog(orderId: String)
     }
     
     interface Presenter {
@@ -16,6 +18,7 @@ interface OrderContract {
         fun loadOrders()
         fun onTabSelected(tabIndex: Int)
         fun onActionClicked(action: String, orderId: String)
+        fun onDeleteConfirmed(orderId: String)
     }
 }
 

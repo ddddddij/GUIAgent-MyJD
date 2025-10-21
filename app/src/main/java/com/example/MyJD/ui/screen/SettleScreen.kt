@@ -38,6 +38,8 @@ fun SettleScreen(
     spec: String? = null,
     price: Double? = null,
     imageUrl: String? = null,
+    fromCart: Boolean = false,
+    fromOrder: String? = null,
     onBackClick: () -> Unit,
     onNavigateToPaymentSuccess: (String) -> Unit = {},
     modifier: Modifier = Modifier
@@ -52,7 +54,11 @@ fun SettleScreen(
     
     // Load settle data
     LaunchedEffect(Unit) {
-        viewModel.loadSettleData(productId, productName, spec, price, imageUrl)
+        when {
+            fromCart -> viewModel.loadCartSettleData()
+            fromOrder != null -> viewModel.loadOrderSettleData(fromOrder)
+            else -> viewModel.loadSettleData(productId, productName, spec, price, imageUrl)
+        }
     }
     
     // Show toast messages

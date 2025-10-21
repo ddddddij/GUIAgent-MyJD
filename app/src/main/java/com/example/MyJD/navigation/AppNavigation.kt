@@ -12,6 +12,8 @@ import com.example.MyJD.ui.screen.ProductDetailScreen
 import com.example.MyJD.ui.screen.OrderScreen
 import com.example.MyJD.ui.screen.SettleScreen
 import com.example.MyJD.ui.screen.PaymentSuccessScreen
+import com.example.MyJD.ui.screen.SearchScreen
+import com.example.MyJD.ui.screen.SearchResultScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
@@ -67,7 +69,7 @@ fun AppNavigation(navController: NavHostController) {
                     }
                 },
                 onNavigateToCheckout = {
-                    navController.navigate("order_confirm")
+                    navController.navigate("order_confirm?fromCart=true")
                 }
             )
         }
@@ -91,10 +93,25 @@ fun AppNavigation(navController: NavHostController) {
         
         composable("search/{query}") { backStackEntry ->
             val query = backStackEntry.arguments?.getString("query") ?: ""
-            PlaceholderScreen(
-                title = "搜索: $query",
+            SearchScreen(
                 onBackClick = {
                     navController.popBackStack()
+                },
+                onNavigateToSearchResult = { keyword ->
+                    navController.navigate("search_result/$keyword")
+                }
+            )
+        }
+        
+        composable("search_result/{keyword}") { backStackEntry ->
+            val keyword = backStackEntry.arguments?.getString("keyword") ?: ""
+            SearchResultScreen(
+                keyword = keyword,
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onNavigateToProduct = { productId ->
+                    navController.navigate("product/$productId")
                 }
             )
         }
@@ -158,12 +175,19 @@ fun AppNavigation(navController: NavHostController) {
                 orderType = orderType,
                 onBackClick = {
                     navController.popBackStack()
+                },
+                onNavigateToPayment = { orderId ->
+                    navController.navigate("order_confirm?fromOrder=$orderId")
                 }
             )
         }
         
-        composable("order_confirm") {
+        composable("order_confirm?fromCart={fromCart}&fromOrder={fromOrder}") { backStackEntry ->
+            val fromCart = backStackEntry.arguments?.getString("fromCart")?.toBooleanStrictOrNull() ?: false
+            val fromOrder = backStackEntry.arguments?.getString("fromOrder")
             SettleScreen(
+                fromCart = fromCart,
+                fromOrder = fromOrder,
                 onBackClick = {
                     navController.popBackStack()
                 },
