@@ -21,6 +21,7 @@ import com.example.MyJD.model.Conversation
 import com.example.MyJD.model.ChatMessage
 import com.example.MyJD.model.ChatSender
 import com.example.MyJD.model.ChatMessageType
+import com.example.MyJD.model.ShopPageData
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.google.gson.Gson
@@ -147,6 +148,29 @@ class DataRepository private constructor(private val context: Context) {
             android.util.Log.e("DataRepository", "Error loading conversation data", e)
             // Return empty data structure on error
             ConversationData(emptyList(), emptyList())
+        }
+    }
+    
+    suspend fun loadShopPageData(): ShopPageData = withContext(Dispatchers.IO) {
+        try {
+            val jsonString = context.assets.open("data/shop_data.json").bufferedReader().use { it.readText() }
+            gson.fromJson(jsonString, ShopPageData::class.java)
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Error loading shop page data", e)
+            // 返回默认数据结构
+            ShopPageData(
+                shopInfo = com.example.MyJD.model.ShopInfo(
+                    id = "default",
+                    name = "店铺加载失败",
+                    avatar = "🏪",
+                    followers = "0",
+                    isFollowed = false,
+                    serviceBanner = ""
+                ),
+                statistics = emptyList(),
+                categories = emptyList(),
+                products = emptyList()
+            )
         }
     }
 

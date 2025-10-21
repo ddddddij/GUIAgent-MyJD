@@ -178,9 +178,14 @@ fun AppNavigation(navController: NavHostController) {
         composable("shop_page/{shopName}") { backStackEntry ->
             val shopName = backStackEntry.arguments?.getString("shopName") ?: "店铺主页"
             ShopPageScreen(
-                shopName = shopName,
                 onBackClick = {
                     navController.popBackStack()
+                },
+                onProductClick = { productId ->
+                    navController.navigate("product_detail/$productId")
+                },
+                onCartClick = {
+                    navController.navigate("shopping_cart")
                 }
             )
         }

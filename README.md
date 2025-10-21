@@ -40,9 +40,53 @@
 - **空状态**: 无消息时显示占位图和提示文字
 - **交互功能**: 
   - 支持消息分类和子分类切换
-  - 点击消息项跳转到详情页面
+  - 点击消息项跳转到消息详情页面（MessageDetailActivity）
   - 点击购物车图标跳转到购物车页面
   - 点击更多图标显示Toast提示
+
+#### 💭 消息详情页面 (MessageDetailActivity)
+- **完整聊天界面**: MVP架构实现的聊天详情页，支持文本、系统、商品卡片三种消息类型
+- **顶部导航栏**: 聊天对象信息、设置入口（跳转MessageSettingActivity）
+- **消息气泡**: 左右分布设计，用户消息居右（蓝色），对方消息居左（灰色）
+- **消息发送**: 底部输入框，支持文本输入和发送功能
+- **消息数据**: 基于messages.json的对话结构，支持conversation对话管理
+- **自动滚动**: 发送消息后自动滚动到底部
+- **交互功能**: 
+  - 发送文本消息，实时添加到对话列表
+  - 点击设置图标跳转到消息设置页面
+  - 支持系统消息和商品推荐消息展示
+
+#### ⚙️ 消息设置页面 (MessageSettingActivity)
+- **店铺信息展示**: Apple产品京东自营旗舰店信息，包含头像、名称、粉丝数
+- **功能设置项**: 消息免打扰、置顶聊天、清空聊天记录等开关设置
+- **店铺操作**: "进入店铺"按钮，跳转到ShopPageActivity
+- **举报功能**: 举报选项，显示开发中提示
+- **MVP架构**: MessageSettingContract、MessageSettingPresenter完整实现
+- **交互功能**: 
+  - 各种设置开关可切换状态
+  - 点击"进入店铺"跳转到店铺主页
+  - 清空聊天记录等功能提示开发中
+
+#### 🏪 店铺主页 (ShopPageActivity)
+- **完整店铺展示**: Apple产品京东自营旗舰店模拟主页，展示店铺信息和商品列表
+- **店铺头部信息**: 店铺头像🍎、名称、粉丝数9090.3万、已关注状态
+- **服务标语**: "Apple 全方位服务，尽在京东"横幅展示
+- **店铺统计**: 近30天新增关注、商品满意度、服务态度、物流速度四项数据
+- **分类标签**: 推荐、销量、新品、价格、仅看有货五个分类（UI展示，无实际过滤）
+- **商品网格**: 2列商品展示，包含5个iPhone系列产品
+- **商品卡片**: 
+  - 商品图片📱、标题、价格（红色当前价，灰色原价）
+  - 评价信息⭐和评价数量
+  - 库存状态（缺货/仅剩X件提示）
+  - 加购物车按钮（红色圆形+图标）
+- **数据管理**: 基于shop_data.json静态数据，包含店铺信息、统计数据、商品列表
+- **MVP架构**: ShopPageContract、ShopPagePresenter完整业务逻辑处理
+- **交互功能**: 
+  - 点击商品卡片跳转到商品详情页
+  - 点击+按钮将商品添加到购物车（显示成功提示）
+  - 点击分类标签切换选中状态
+  - 点击返回按钮返回消息设置页面
+  - 完全集成购物车和商品详情导航功能
 
 #### 👤 我的页面 (MeTab)
 - **顶部用户信息区**: 
@@ -259,6 +303,9 @@ MainActivity (底部导航)
 │   └── 搜索结果页面 (SearchResultScreen) ✅
 ├── 视频 (PlaceholderScreen) 🚧
 ├── 消息 (ChatScreen) ✅  
+│   ├── 消息详情 (MessageDetailScreen) ✅
+│   └── 消息设置 (MessageSettingScreen) ✅
+│       └── 店铺主页 (ShopPageScreen) ✅
 ├── 购物车 (CartScreen) ✅
 ├── 我的 (MeScreen) ✅
 └── 商品详情 (ProductDetailScreen) ✅
@@ -276,7 +323,8 @@ MainActivity (底部导航)
 - **商品数据** (`products.json`): 手机、超市商品、数码产品等
 - **搜索结果数据** (`search_results.json`): 搜索结果商品数据，包含销量字段
 - **Banner数据** (`banners.json`): 轮播图和活动信息
-- **消息数据** (`messages.json`): 客服、物流、促销等各类消息
+- **消息数据** (`messages.json`): 客服、物流、促销等各类消息，对话结构数据
+- **店铺数据** (`shop_data.json`): Apple店铺信息、统计数据、商品列表
 - **个人中心数据** (`me_tab.json`): 会员权益、订单状态、资产服务等
 - **商品详情数据** (`product_detail.json`): iPhone15详细信息、规格、评价等
 - **订单数据** (`orders.json`): 用户订单信息、状态、商品项等
@@ -476,6 +524,27 @@ app/src/main/java/com/example/MyJD/
 本项目仅用于学习和演示目的，不得用于商业用途。
 
 ## 更新日志
+
+### v1.0.10 (2025-10-21)
+- ✅ 完成MessageDetailActivity（消息详情页）开发
+- ✅ 完成MessageSettingActivity（消息设置页）开发  
+- ✅ 完成ShopPageActivity（店铺主页）开发
+- ✅ 实现完整聊天功能：消息详情页支持文本、系统、商品卡片三种消息类型
+- ✅ 开发消息相关MVP架构组件：
+  - MessageDetailContract、MessageDetailPresenter
+  - MessageSettingContract、MessageSettingPresenter  
+  - ShopPageContract、ShopPagePresenter
+- ✅ 重构messages.json数据结构：支持对话(conversations)和消息(messages)分离
+- ✅ 创建shop_data.json店铺数据文件，包含Apple店铺信息、统计数据、5个iPhone商品
+- ✅ 实现消息详情页UI：聊天气泡、发送框、自动滚动、设置入口
+- ✅ 实现消息设置页UI：店铺信息、功能开关、进入店铺按钮
+- ✅ 实现店铺主页UI：店铺头部、服务横幅、统计栏、分类标签、商品网格
+- ✅ 开发ProductCardItem可复用商品卡片组件：评价、价格、库存、购物车按钮
+- ✅ 完善DataRepository：支持对话数据加载和店铺数据加载
+- ✅ 集成完整导航流程：消息页 → 消息详情 → 消息设置 → 店铺主页
+- ✅ 店铺主页集成购物车和商品详情导航功能
+- ✅ 项目构建验证通过，所有消息和店铺功能正常运行
+- 🎨 UI设计严格遵循京东消息和店铺页面规范，保持品牌一致性
 
 ### v1.0.9 (2025-10-21)
 - ✅ 完成SearchActivity（搜索页面）开发
