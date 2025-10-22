@@ -4,6 +4,10 @@ import com.example.MyJD.model.SettleData
 import com.example.MyJD.model.SettlePricing
 import com.example.MyJD.model.OrderStatus
 import com.example.MyJD.repository.DataRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SettlePresenter(
     private val repository: DataRepository
@@ -13,6 +17,7 @@ class SettlePresenter(
     private var settleData: SettleData? = null
     private var isCartMode = false
     private var cartOrderIds: List<String> = emptyList()
+    private val presenterScope = CoroutineScope(Dispatchers.Main)
     
     override fun attach(view: SettleContract.View) {
         this.view = view
@@ -29,63 +34,96 @@ class SettlePresenter(
         price: Double?,
         imageUrl: String?
     ) {
-        // 如果传入了参数，使用传入的数据创建SettleData
-        settleData = if (productId != null && productName != null && spec != null && price != null) {
-            SettleData.createDefault(
-                productId = productId,
-                productName = productName,
-                spec = spec,
-                price = price,
-                imageUrl = imageUrl ?: "image/iPhone15封面.JPG"
-            )
-        } else {
-            // 否则使用默认数据
-            SettleData.createDefault()
-        }
-        
-        settleData?.let { data ->
-            view?.showSettleData(data)
+        presenterScope.launch {
+            try {
+                // 加载默认地址
+                val defaultAddress = withContext(Dispatchers.IO) {
+                    repository.getDefaultAddress()
+                }
+                
+                // 如果传入了参数，使用传入的数据创建SettleData
+                settleData = if (productId != null && productName != null && spec != null && price != null) {
+                    SettleData.createDefault(
+                        productId = productId,
+                        productName = productName,
+                        spec = spec,
+                        price = price,
+                        imageUrl = imageUrl ?: "image/iPhone15封面.JPG",
+                        address = defaultAddress
+                    )
+                } else {
+                    // 否则使用默认数据
+                    SettleData.createDefault(address = defaultAddress)
+                }
+                
+                settleData?.let { data ->
+                    view?.showSettleData(data)
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("SettlePresenter", "Error loading settle data", e)
+                // 如果加载失败，使用不带地址的默认数据
+                settleData = SettleData.createDefault()
+                settleData?.let { data ->
+                    view?.showSettleData(data)
+                }
+            }
         }
     }
     
     override fun loadCartSettleData() {
-        isCartMode = true
-        val selectedItems = repository.getSelectedCartItems()
-        
-        if (selectedItems.isNotEmpty()) {
-            // 创建订单
-            cartOrderIds = repository.createOrdersFromCart()
-            
-            // 计算总价
-            val totalPrice = selectedItems.sumOf { it.totalPrice }
-            val totalQuantity = selectedItems.sumOf { it.quantity }
-            
-            // 使用第一个商品作为主要显示商品（可以改为显示商品列表）
-            val firstItem = selectedItems.first()
-            val defaultData = SettleData.createDefault(
-                productId = firstItem.productId,
-                productName = if (selectedItems.size > 1) 
-                    "${firstItem.productName} 等${selectedItems.size}件商品" 
-                else firstItem.productName,
-                spec = "${firstItem.color} ${firstItem.storage}",
-                price = totalPrice / totalQuantity, // 平均单价
-                imageUrl = firstItem.image
-            )
-            
-            settleData = defaultData.copy(
-                product = defaultData.product.copy(quantity = totalQuantity),
-                pricing = SettlePricing(
-                    productAmount = totalPrice,
-                    shippingFee = 0.0,
-                    totalAmount = totalPrice
-                )
-            )
-        } else {
-            settleData = SettleData.createDefault()
-        }
-        
-        settleData?.let { data ->
-            view?.showSettleData(data)
+        presenterScope.launch {
+            try {
+                isCartMode = true
+                val selectedItems = repository.getSelectedCartItems()
+                
+                // 加载默认地址
+                val defaultAddress = withContext(Dispatchers.IO) {
+                    repository.getDefaultAddress()
+                }
+                
+                if (selectedItems.isNotEmpty()) {
+                    // 创建订单
+                    cartOrderIds = repository.createOrdersFromCart()
+                    
+                    // 计算总价
+                    val totalPrice = selectedItems.sumOf { it.totalPrice }
+                    val totalQuantity = selectedItems.sumOf { it.quantity }
+                    
+                    // 使用第一个商品作为主要显示商品（可以改为显示商品列表）
+                    val firstItem = selectedItems.first()
+                    val defaultData = SettleData.createDefault(
+                        productId = firstItem.productId,
+                        productName = if (selectedItems.size > 1) 
+                            "${firstItem.productName} 等${selectedItems.size}件商品" 
+                        else firstItem.productName,
+                        spec = "${firstItem.color} ${firstItem.storage}",
+                        price = totalPrice / totalQuantity, // 平均单价
+                        imageUrl = firstItem.image,
+                        address = defaultAddress
+                    )
+                    
+                    settleData = defaultData.copy(
+                        product = defaultData.product.copy(quantity = totalQuantity),
+                        pricing = SettlePricing(
+                            productAmount = totalPrice,
+                            shippingFee = 0.0,
+                            totalAmount = totalPrice
+                        )
+                    )
+                } else {
+                    settleData = SettleData.createDefault(address = defaultAddress)
+                }
+                
+                settleData?.let { data ->
+                    view?.showSettleData(data)
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("SettlePresenter", "Error loading cart settle data", e)
+                settleData = SettleData.createDefault()
+                settleData?.let { data ->
+                    view?.showSettleData(data)
+                }
+            }
         }
     }
     
@@ -177,7 +215,14 @@ class SettlePresenter(
     }
     
     override fun onAddressClick() {
-        view?.showToast("切换地址")
+        view?.navigateToAddressList()
+    }
+    
+    override fun onAddressSelected(address: com.example.MyJD.model.Address) {
+        settleData?.let { currentData ->
+            settleData = currentData.copy(address = address)
+            view?.showSettleData(settleData!!)
+        }
     }
     
     override fun onServiceClick() {

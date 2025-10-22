@@ -9,6 +9,7 @@
     "detailAddress": "建国路88号SOHO现代城A座1501室",
     "postCode": "100022",
     "isDefault": true,
+    "tag": "家",
     "createTime": 1704067200000
   },
   {
@@ -21,6 +22,7 @@
     "detailAddress": "陆家嘴环路1000号恒生银行大厦2205室",
     "postCode": "200120",
     "isDefault": false,
+    "tag": "公司",
     "createTime": 1703980800000
   },
   {
@@ -33,6 +35,7 @@
     "detailAddress": "科技园南区深南大道9999号",
     "postCode": "518057",
     "isDefault": false,
+    "tag": "公司",
     "createTime": 1703894400000
   },
   {
@@ -45,6 +48,7 @@
     "detailAddress": "文三路259号昌地火炬大厦1号楼1201室",
     "postCode": "310012",
     "isDefault": false,
+    "tag": "学校",
     "createTime": 1703808000000
   },
   {
@@ -57,6 +61,7 @@
     "detailAddress": "中山路18号德基广场二期A座1803室",
     "postCode": "210008",
     "isDefault": false,
+    "tag": "购物",
     "createTime": 1703721600000
   }
 ]

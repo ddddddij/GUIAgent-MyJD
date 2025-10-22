@@ -1,9 +1,16 @@
 package com.example.MyJD.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.MyJD.repository.DataRepository
 import com.example.MyJD.ui.screen.HomeScreen
 import com.example.MyJD.ui.screen.ChatScreen
 import com.example.MyJD.ui.screen.MeScreen
@@ -17,6 +24,8 @@ import com.example.MyJD.ui.screen.SearchResultScreen
 import com.example.MyJD.ui.screen.MessageDetailScreen
 import com.example.MyJD.ui.screen.MessageSettingScreen
 import com.example.MyJD.ui.screen.ShopPageScreen
+import com.example.MyJD.ui.screen.AddressListScreen
+import com.example.MyJD.ui.screen.AddressDetailScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
@@ -199,11 +208,30 @@ fun AppNavigation(navController: NavHostController) {
             )
         }
         
-        composable("address") {
-            PlaceholderScreen(
-                title = "地址管理",
+        composable("address?refresh={refresh}") { backStackEntry ->
+            val refresh = backStackEntry.arguments?.getString("refresh")?.toBooleanStrictOrNull() ?: false
+            AddressListScreen(
+                refresh = refresh,
                 onBackClick = {
                     navController.popBackStack()
+                },
+                onNavigateToAddressDetail = { addressId ->
+                    navController.navigate("address_detail?addressId=$addressId")
+                }
+            )
+        }
+        
+        composable("address_detail?addressId={addressId}") { backStackEntry ->
+            val addressId = backStackEntry.arguments?.getString("addressId")?.takeIf { it != "null" }
+            AddressDetailScreen(
+                addressId = addressId,
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onSaveSuccess = {
+                    navController.navigate("address?refresh=true") {
+                        popUpTo("address") { inclusive = true }
+                    }
                 }
             )
         }
@@ -221,17 +249,49 @@ fun AppNavigation(navController: NavHostController) {
             )
         }
         
-        composable("order_confirm?fromCart={fromCart}&fromOrder={fromOrder}") { backStackEntry ->
+        composable("order_confirm?fromCart={fromCart}&fromOrder={fromOrder}&selectedAddressId={selectedAddressId}") { backStackEntry ->
             val fromCart = backStackEntry.arguments?.getString("fromCart")?.toBooleanStrictOrNull() ?: false
             val fromOrder = backStackEntry.arguments?.getString("fromOrder")
+            val selectedAddressId = backStackEntry.arguments?.getString("selectedAddressId")?.takeIf { it != "null" }
+            
+            // Load selected address if provided
+            val repository = DataRepository.getInstance(LocalContext.current)
+            var selectedAddress by remember { mutableStateOf<com.example.MyJD.model.Address?>(null) }
+            
+            LaunchedEffect(selectedAddressId) {
+                selectedAddressId?.let { addressId ->
+                    selectedAddress = repository.getAddressById(addressId)
+                }
+            }
+            
             SettleScreen(
                 fromCart = fromCart,
                 fromOrder = fromOrder,
+                selectedAddress = selectedAddress,
                 onBackClick = {
                     navController.popBackStack()
                 },
                 onNavigateToPaymentSuccess = { orderAmount ->
                     navController.navigate("payment_success/$orderAmount")
+                },
+                onNavigateToAddressList = {
+                    navController.navigate("address_from_settle")
+                }
+            )
+        }
+        
+        composable("address_from_settle") {
+            AddressListScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onNavigateToAddressDetail = { addressId ->
+                    navController.navigate("address_detail?addressId=$addressId")
+                },
+                onNavigateToSettleScreen = { selectedAddress ->
+                    navController.navigate("order_confirm?selectedAddressId=${selectedAddress.id}") {
+                        popUpTo("order_confirm") { inclusive = true }
+                    }
                 }
             )
         }

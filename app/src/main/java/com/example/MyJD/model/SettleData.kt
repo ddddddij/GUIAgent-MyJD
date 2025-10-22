@@ -57,7 +57,7 @@ enum class SettlePaymentMethod {
 
 data class SettleData(
     val product: SettleProduct,
-    val address: SettleAddress,
+    val address: Address?,
     val delivery: SettleDelivery = SettleDelivery(),
     val service: SettleService = SettleService(),
     val pricing: SettlePricing,
@@ -70,7 +70,8 @@ data class SettleData(
             storeName: String = "京东自营",
             spec: String = "蓝色 | 128GB",
             price: Double = 3899.0,
-            imageUrl: String = "image/iPhone15封面.JPG"
+            imageUrl: String = "image/iPhone15封面.JPG",
+            address: Address? = null
         ): SettleData {
             val product = SettleProduct(
                 productId = productId,
@@ -79,12 +80,6 @@ data class SettleData(
                 spec = spec,
                 price = price,
                 imageUrl = imageUrl
-            )
-            
-            val address = SettleAddress(
-                name = "代嘉仪",
-                phone = "15312341773",
-                location = "湖北武汉市江夏区 武汉纺织大学（阳光校区）-北门"
             )
             
             val pricing = SettlePricing.from(product)

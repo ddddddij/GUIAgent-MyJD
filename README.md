@@ -253,6 +253,41 @@
   - 跳转到购物车和结算页面
   - 各功能模块开发中Toast提示
 
+#### 📍 地址管理功能 (AddressListActivity & AddressDetailActivity)
+- **地址列表页面**:
+  - 收货地址完整列表展示：收货人、手机号（隐藏中间4位）、完整地址
+  - 地址卡片设计：姓名电话、详细地址、地址标签（家/公司/学校等）
+  - 默认地址标识：红色"默认"标签，系统仅允许一个默认地址
+  - 操作功能支持：修改、删除、复制、设为默认四个操作
+  - 设为默认复选框：点击切换默认状态，自动取消其他地址默认状态
+  - 新增地址入口：底部红色渐变"新增收货地址"按钮
+  - 空状态处理：无地址时显示"暂无地址，请新增收货地址"提示
+- **地址编辑页面**:
+  - 收货人信息区：姓名输入、手机号（+86区号）、通讯录入口
+  - 地址选择区：地图选址/地区选址切换、省市区三级联动、详细地址输入
+  - 静态地图展示：地图占位图，支持后续地图SDK集成
+  - 设为默认开关：Switch控件，开启时自动取消其他默认地址
+  - 地址标签选择：学校、家、公司、购物、秒送/外卖、自定义六种标签
+  - 表单验证：姓名、手机号、地址字段完整性和格式验证
+  - 地址粘贴板：支持地址快速输入（功能预留）
+- **数据管理**:
+  - Address数据模型：id、姓名、手机、省市区、详细地址、标签、默认状态
+  - 地址CRUD操作：新增、查询、更新、删除、设置默认地址
+  - 运行时数据管理：内存中维护地址变更，与静态数据合并
+  - 默认地址唯一性：自动维护系统中仅一个默认地址的约束
+- **MVP架构实现**:
+  - AddressListContract/AddressDetailContract：定义View和Presenter接口
+  - AddressListPresenter/AddressDetailPresenter：处理地址业务逻辑
+  - AddressListViewModel/AddressDetailViewModel：管理UI状态和响应式数据
+  - AddressItemCard可复用组件：地址卡片展示和操作封装
+- **交互功能**:
+  - 从"我的"页面进入地址管理，支持完整CRUD操作流程
+  - 地址删除确认对话框，防止误操作
+  - 地址复制到剪贴板，支持快速分享
+  - 表单验证错误提示，引导用户正确输入
+  - 操作成功Toast反馈：保存、删除、设为默认等
+  - 与结算页面集成：支持地址选择和切换功能
+
 #### 🔍 搜索功能 (SearchActivity & SearchResultActivity)
 - **搜索页面**:
   - 仿京东橙色背景搜索导航栏：返回按钮、搜索栏、搜索按钮
@@ -308,12 +343,13 @@ MainActivity (底部导航)
 │       └── 店铺主页 (ShopPageScreen) ✅
 ├── 购物车 (CartScreen) ✅
 ├── 我的 (MeScreen) ✅
+│   ├── 地址管理 (AddressListScreen) ✅
+│   │   └── 地址编辑 (AddressDetailScreen) ✅
+│   ├── 设置页面 (PlaceholderScreen) 🚧
+│   └── 订单列表 (OrderScreen) ✅
 └── 商品详情 (ProductDetailScreen) ✅
     ├── 规格选择弹窗 (ProductSpecDialog) ✅
-    ├── 结算页面 (SettleActivity) ✅
-    ├── 设置页面 (PlaceholderScreen) 🚧
-    ├── 地址管理 (PlaceholderScreen) 🚧
-    └── 订单列表 (OrderScreen) ✅
+    └── 结算页面 (SettleActivity) ✅
 ```
 
 ### 数据结构
@@ -331,6 +367,7 @@ MainActivity (底部导航)
 - **用户资料** (`user_profile.json`): 用户个人信息、偏好设置
 - **购物车数据**: 运行时动态管理，支持规格选择
 - **结算数据**: SettleData模型，包含商品、地址、配送、价格等信息
+- **地址数据** (`addresses.json`): 收货地址信息，包含姓名、电话、地址、标签等
 - **图片资源** (`image/`): iPhone15产品图片（iPhone15图1-5.JPG）
 
 ## 项目结构
@@ -353,7 +390,11 @@ app/src/main/java/com/example/MyJD/
 │   ├── OrderContract.kt
 │   ├── OrderPresenter.kt
 │   ├── SettleContract.kt
-│   └── SettlePresenter.kt
+│   ├── SettlePresenter.kt
+│   ├── AddressListContract.kt
+│   ├── AddressListPresenter.kt
+│   ├── AddressDetailContract.kt
+│   └── AddressDetailPresenter.kt
 ├── viewmodel/          # ViewModel层
 │   ├── HomeViewModel.kt
 │   ├── ChatViewModel.kt
@@ -362,6 +403,8 @@ app/src/main/java/com/example/MyJD/
 │   ├── ProductSpecViewModel.kt
 │   ├── OrderViewModel.kt
 │   ├── SettleViewModel.kt
+│   ├── AddressListViewModel.kt
+│   ├── AddressDetailViewModel.kt
 │   └── ViewModelFactory.kt
 ├── ui/
 │   ├── screen/        # 页面
@@ -372,6 +415,8 @@ app/src/main/java/com/example/MyJD/
 │   │   ├── ProductDetailScreen.kt
 │   │   ├── OrderScreen.kt
 │   │   ├── SettleScreen.kt
+│   │   ├── AddressListScreen.kt
+│   │   ├── AddressDetailScreen.kt
 │   │   └── PlaceholderScreen.kt
 │   ├── components/    # 组件
 │   │   ├── HomeHeader.kt
@@ -399,7 +444,8 @@ app/src/main/java/com/example/MyJD/
 │   │   ├── PromoBanner.kt
 │   │   ├── OrderSection.kt
 │   │   ├── AssetServiceSection.kt
-│   │   └── InteractionSection.kt
+│   │   ├── InteractionSection.kt
+│   │   └── AddressItemCard.kt
 │   └── theme/         # 主题样式
 │       ├── Color.kt
 │       ├── Theme.kt
@@ -505,16 +551,15 @@ app/src/main/java/com/example/MyJD/
 ### 🚧 待开发页面
 - [x] 搜索页面 (SearchActivity) ✅
 - [x] 搜索结果页面 (SearchResultActivity) ✅
+- [x] 地址管理页面 (AddressListActivity & AddressDetailActivity) ✅
 - [ ] 超市页面
 - [ ] 视频页面
-- [ ] 消息详情页面
 - [ ] 设置页面
-- [ ] 地址管理页面
 
 ### 🔄 功能增强
 - [ ] 商品筛选和排序
 - [ ] 用户登录/注册
-- [ ] 地址管理和编辑
+- [x] 地址管理和编辑 ✅
 - [ ] 优惠券使用功能
 - [ ] 多商品结算支持
 - [ ] 支付状态跟踪
@@ -524,6 +569,25 @@ app/src/main/java/com/example/MyJD/
 本项目仅用于学习和演示目的，不得用于商业用途。
 
 ## 更新日志
+
+### v1.0.11 (2025-10-22)
+- ✅ 完成AddressListActivity（地址列表页）开发
+- ✅ 完成AddressDetailActivity（地址编辑页）开发
+- ✅ 实现完整地址管理功能：新增、编辑、删除、设为默认、复制地址
+- ✅ 开发地址管理MVP架构组件：
+  - AddressListContract、AddressListPresenter
+  - AddressDetailContract、AddressDetailPresenter
+  - AddressListViewModel、AddressDetailViewModel
+- ✅ 创建AddressItemCard可复用地址卡片组件
+- ✅ 实现地址列表UI：地址卡片、操作按钮、默认地址标识、空状态处理
+- ✅ 实现地址编辑UI：收货人信息、地址选择、标签选择、表单验证
+- ✅ 扩展Address数据模型：添加tag字段支持地址标签
+- ✅ 扩展DataRepository：添加地址CRUD操作方法和默认地址管理
+- ✅ 更新地址数据addresses.json：添加标签字段和多样化测试数据
+- ✅ 完善导航系统：集成地址管理页面路由和参数传递
+- ✅ 更新ViewModelFactory：支持地址相关ViewModel创建
+- ✅ 项目构建验证通过，所有地址管理功能正常运行
+- 🎨 UI设计严格遵循京东地址管理页面规范，红色主题突出
 
 ### v1.0.10 (2025-10-21)
 - ✅ 完成MessageDetailActivity（消息详情页）开发

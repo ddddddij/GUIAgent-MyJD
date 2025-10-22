@@ -16,7 +16,8 @@ data class SettleUiState(
     val quantity: Int = 1,
     val toastMessage: String? = null,
     val isLoading: Boolean = false,
-    val shouldNavigateToPaymentSuccess: String? = null
+    val shouldNavigateToPaymentSuccess: String? = null,
+    val shouldNavigateToAddressList: Boolean = false
 )
 
 class SettleViewModel(
@@ -67,6 +68,10 @@ class SettleViewModel(
         _uiState.value = _uiState.value.copy(shouldNavigateToPaymentSuccess = orderAmount)
     }
     
+    override fun navigateToAddressList() {
+        _uiState.value = _uiState.value.copy(shouldNavigateToAddressList = true)
+    }
+    
     // Public methods for UI interaction
     fun loadSettleData(
         productId: String? = null,
@@ -99,6 +104,14 @@ class SettleViewModel(
     
     fun onAddressClick() {
         presenter.onAddressClick()
+    }
+    
+    fun onAddressSelected(address: com.example.MyJD.model.Address) {
+        presenter.onAddressSelected(address)
+    }
+    
+    fun clearAddressListNavigation() {
+        _uiState.value = _uiState.value.copy(shouldNavigateToAddressList = false)
     }
     
     fun onServiceClick() {

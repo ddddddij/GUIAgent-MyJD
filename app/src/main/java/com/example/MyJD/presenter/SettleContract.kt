@@ -2,6 +2,7 @@ package com.example.MyJD.presenter
 
 import com.example.MyJD.model.SettleData
 import com.example.MyJD.model.SettlePricing
+import com.example.MyJD.model.Address
 
 interface SettleContract {
     
@@ -12,6 +13,7 @@ interface SettleContract {
         fun updateQuantity(quantity: Int)
         fun navigateBack()
         fun navigateToPaymentSuccess(orderAmount: String)
+        fun navigateToAddressList()
     }
     
     interface Presenter {
@@ -29,6 +31,7 @@ interface SettleContract {
         fun onQuantityIncrease()
         fun onQuantityDecrease()
         fun onAddressClick()
+        fun onAddressSelected(address: Address)
         fun onServiceClick()
         fun onDeliveryClick()
         fun onCouponClick()

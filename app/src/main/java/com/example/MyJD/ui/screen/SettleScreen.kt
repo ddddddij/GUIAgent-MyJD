@@ -40,8 +40,10 @@ fun SettleScreen(
     imageUrl: String? = null,
     fromCart: Boolean = false,
     fromOrder: String? = null,
+    selectedAddress: com.example.MyJD.model.Address? = null,
     onBackClick: () -> Unit,
     onNavigateToPaymentSuccess: (String) -> Unit = {},
+    onNavigateToAddressList: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -51,6 +53,13 @@ fun SettleScreen(
     )
     
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    
+    // Handle selected address from address list
+    LaunchedEffect(selectedAddress) {
+        selectedAddress?.let { address ->
+            viewModel.onAddressSelected(address)
+        }
+    }
     
     // Load settle data
     LaunchedEffect(Unit) {
@@ -74,6 +83,14 @@ fun SettleScreen(
         uiState.shouldNavigateToPaymentSuccess?.let { orderAmount ->
             onNavigateToPaymentSuccess(orderAmount)
             viewModel.clearNavigation()
+        }
+    }
+    
+    // Handle navigation to address list
+    LaunchedEffect(uiState.shouldNavigateToAddressList) {
+        if (uiState.shouldNavigateToAddressList) {
+            onNavigateToAddressList()
+            viewModel.clearAddressListNavigation()
         }
     }
     
@@ -189,7 +206,7 @@ fun SettleScreen(
 
 @Composable
 private fun AddressSection(
-    address: com.example.MyJD.model.SettleAddress,
+    address: com.example.MyJD.model.Address?,
     onClick: () -> Unit
 ) {
     Card(
@@ -199,47 +216,92 @@ private fun AddressSection(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         shape = RoundedCornerShape(8.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
+        if (address != null) {
+            Column(
+                modifier = Modifier.padding(16.dp)
             ) {
-                Surface(
-                    color = Color(0xFFE93B3D),
-                    shape = RoundedCornerShape(4.dp),
-                    modifier = Modifier.padding(end = 8.dp)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
+                    if (address.isDefault) {
+                        Surface(
+                            color = Color(0xFFE93B3D),
+                            shape = RoundedCornerShape(4.dp),
+                            modifier = Modifier.padding(end = 8.dp)
+                        ) {
+                            Text(
+                                text = "默认",
+                                color = Color.White,
+                                fontSize = 10.sp,
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                            )
+                        }
+                    }
+                    
+                    if (address.tag.isNotEmpty()) {
+                        Surface(
+                            color = Color(0xFFE93B3D),
+                            shape = RoundedCornerShape(4.dp),
+                            modifier = Modifier.padding(end = 8.dp)
+                        ) {
+                            Text(
+                                text = address.tag,
+                                color = Color.White,
+                                fontSize = 10.sp,
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                            )
+                        }
+                    }
+                    
                     Text(
-                        text = "默认",
-                        color = Color.White,
-                        fontSize = 10.sp,
-                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                        text = "${address.province}${address.city}${address.district}",
+                        fontSize = 14.sp,
+                        color = Color.Gray
                     )
                 }
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
                 Text(
-                    text = "湖北武汉市江夏区",
+                    text = address.detailAddress,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.Black
+                )
+                
+                Spacer(modifier = Modifier.height(4.dp))
+                
+                val maskedPhone = if (address.phoneNumber.length >= 11) {
+                    "${address.phoneNumber.take(3)}****${address.phoneNumber.takeLast(4)}"
+                } else {
+                    address.phoneNumber
+                }
+                
+                Text(
+                    text = "${address.recipientName} $maskedPhone",
                     fontSize = 14.sp,
                     color = Color.Gray
                 )
             }
-            
-            Spacer(modifier = Modifier.height(8.dp))
-            
-            Text(
-                text = "武汉纺织大学（阳光校区）-北门",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium,
-                color = Color.Black
-            )
-            
-            Spacer(modifier = Modifier.height(4.dp))
-            
-            Text(
-                text = "${address.name} ${address.displayPhone}",
-                fontSize = 14.sp,
-                color = Color.Gray
-            )
+        } else {
+            // 没有地址时的处理
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "📍",
+                    fontSize = 24.sp
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "请选择收货地址",
+                    fontSize = 16.sp,
+                    color = Color.Gray
+                )
+            }
         }
     }
 }
