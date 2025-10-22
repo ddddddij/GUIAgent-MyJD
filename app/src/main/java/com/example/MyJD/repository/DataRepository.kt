@@ -299,6 +299,7 @@ class DataRepository private constructor(private val context: Context) {
                 originalPrice = 0.0,
                 subsidyPrice = "",
                 soldCount = "",
+                storeName = "京东自营",
                 colors = emptyList(),
                 specifications = com.example.MyJD.model.ProductSpecifications("", "", "", ""),
                 tags = emptyList(),

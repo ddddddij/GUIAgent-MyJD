@@ -8,6 +8,7 @@ data class ProductDetail(
     val originalPrice: Double,
     val subsidyPrice: String,
     val soldCount: String,
+    val storeName: String = "京东自营",
     val colors: List<ProductColor>,
     val selectedColorIndex: Int = 0,
     val purchaseTypes: List<String> = listOf("单品购买", "以旧换新"),

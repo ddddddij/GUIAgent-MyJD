@@ -140,6 +140,9 @@ fun AppNavigation(navController: NavHostController) {
                 },
                 onBuyNowClick = {
                     navController.navigate("order_confirm")
+                },
+                onShopClick = { shopName ->
+                    navController.navigate("shop_page/$shopName")
                 }
             )
         }
@@ -191,7 +194,7 @@ fun AppNavigation(navController: NavHostController) {
                     navController.popBackStack()
                 },
                 onProductClick = { productId ->
-                    navController.navigate("product_detail/$productId")
+                    navController.navigate("product/$productId")
                 },
                 onCartClick = {
                     navController.navigate("shopping_cart")

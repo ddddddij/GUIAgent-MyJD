@@ -22,6 +22,7 @@ fun ProductDetailScreen(
     onBackClick: () -> Unit,
     onCartClick: () -> Unit,
     onBuyNowClick: () -> Unit,
+    onShopClick: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -63,7 +64,8 @@ fun ProductDetailScreen(
                 ProductDetailBottomBar(
                     currentPrice = detail.currentPrice,
                     onStoreClick = {
-                        Toast.makeText(context, "店铺功能开发中", Toast.LENGTH_SHORT).show()
+                        // 使用商品详情中的店铺名称导航到店铺页面
+                        onShopClick(detail.storeName)
                     },
                     onServiceClick = {
                         Toast.makeText(context, "客服功能开发中", Toast.LENGTH_SHORT).show()
