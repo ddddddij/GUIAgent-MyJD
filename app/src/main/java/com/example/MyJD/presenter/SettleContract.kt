@@ -3,6 +3,7 @@ package com.example.MyJD.presenter
 import com.example.MyJD.model.SettleData
 import com.example.MyJD.model.SettlePricing
 import com.example.MyJD.model.Address
+import com.example.MyJD.model.Coupon
 
 interface SettleContract {
     
@@ -14,6 +15,7 @@ interface SettleContract {
         fun navigateBack()
         fun navigateToPaymentSuccess(orderAmount: String)
         fun navigateToAddressList()
+        fun showCouponDialog(availableCoupons: List<Coupon>, orderAmount: Double)
     }
     
     interface Presenter {
@@ -35,6 +37,7 @@ interface SettleContract {
         fun onServiceClick()
         fun onDeliveryClick()
         fun onCouponClick()
+        fun onCouponSelected(coupon: Coupon?)
         fun onPaymentClick()
         fun onCartPaymentClick()
     }

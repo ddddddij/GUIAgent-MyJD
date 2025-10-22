@@ -18,6 +18,7 @@ import com.example.MyJD.model.CancelReason
 import com.example.MyJD.model.Address
 import com.example.MyJD.model.ConversationData
 import com.example.MyJD.model.Conversation
+import com.example.MyJD.model.Coupon
 import com.example.MyJD.model.ChatMessage
 import com.example.MyJD.model.ChatSender
 import com.example.MyJD.model.ChatMessageType
@@ -334,6 +335,11 @@ class DataRepository private constructor(private val context: Context) {
     private var specShoppingCart = mutableListOf<CartItemSpec>()
     private var runtimeOrders = mutableListOf<Order>()
     private var runtimeAddresses = mutableListOf<Address>()
+    
+    // 优惠券存储
+    private var availableCoupons = mutableListOf<Coupon>().apply {
+        add(Coupon.createDefault()) // 添加默认的满3000减50优惠券
+    }
     
     // StateFlow for reactive cart updates
     private val _specCartFlow = MutableStateFlow<List<CartItemSpec>>(emptyList())
@@ -983,5 +989,60 @@ class DataRepository private constructor(private val context: Context) {
         } catch (e: Exception) {
             android.util.Log.e("DataRepository", "Error clearing default static address", e)
         }
+    }
+    
+    // ==================== 优惠券管理功能 ====================
+    
+    /**
+     * 获取所有可用的优惠券
+     */
+    fun getAvailableCoupons(): List<Coupon> {
+        return availableCoupons.filter { !it.isUsed && !it.isExpired }
+    }
+    
+    /**
+     * 获取指定金额可用的优惠券
+     */
+    fun getAvailableCoupons(orderAmount: Double): List<Coupon> {
+        return availableCoupons.filter { it.isAvailable(orderAmount) }
+    }
+    
+    /**
+     * 根据ID获取优惠券
+     */
+    fun getCouponById(couponId: String): Coupon? {
+        return availableCoupons.find { it.id == couponId }
+    }
+    
+    /**
+     * 使用优惠券
+     */
+    fun useCoupon(couponId: String): Boolean {
+        val couponIndex = availableCoupons.indexOfFirst { it.id == couponId }
+        return if (couponIndex != -1) {
+            val coupon = availableCoupons[couponIndex]
+            if (!coupon.isUsed && !coupon.isExpired) {
+                availableCoupons[couponIndex] = coupon.copy(isUsed = true)
+                android.util.Log.d("DataRepository", "Used coupon: $couponId")
+                true
+            } else {
+                android.util.Log.w("DataRepository", "Cannot use coupon: $couponId (used: ${coupon.isUsed}, expired: ${coupon.isExpired})")
+                false
+            }
+        } else {
+            android.util.Log.w("DataRepository", "Coupon not found: $couponId")
+            false
+        }
+    }
+    
+    /**
+     * 重置优惠券状态（用于测试）
+     */
+    fun resetCoupons() {
+        availableCoupons.forEach { coupon ->
+            val index = availableCoupons.indexOf(coupon)
+            availableCoupons[index] = coupon.copy(isUsed = false)
+        }
+        android.util.Log.d("DataRepository", "Reset all coupons")
     }
 }

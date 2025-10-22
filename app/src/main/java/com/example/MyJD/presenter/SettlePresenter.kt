@@ -3,6 +3,7 @@ package com.example.MyJD.presenter
 import com.example.MyJD.model.SettleData
 import com.example.MyJD.model.SettlePricing
 import com.example.MyJD.model.OrderStatus
+import com.example.MyJD.model.Coupon
 import com.example.MyJD.repository.DataRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -234,7 +235,30 @@ class SettlePresenter(
     }
     
     override fun onCouponClick() {
-        view?.showToast("暂不支持使用优惠券")
+        settleData?.let { data ->
+            val orderAmount = data.pricing.productAmount
+            val availableCoupons = repository.getAvailableCoupons(orderAmount)
+            view?.showCouponDialog(availableCoupons, orderAmount)
+        }
+    }
+    
+    override fun onCouponSelected(coupon: Coupon?) {
+        settleData?.let { data ->
+            val couponDiscount = coupon?.discountAmount ?: 0.0
+            val updatedPricing = SettlePricing.from(data.product, couponDiscount)
+            val updatedData = data.copy(
+                selectedCoupon = coupon,
+                pricing = updatedPricing
+            )
+            settleData = updatedData
+            view?.showSettleData(updatedData)
+            
+            if (coupon != null) {
+                view?.showToast("已选择优惠券：${coupon.getDisplayText()}")
+            } else {
+                view?.showToast("已取消选择优惠券")
+            }
+        }
     }
     
     override fun onPaymentClick() {
@@ -248,7 +272,11 @@ class SettlePresenter(
                         android.util.Log.d("SettlePresenter", "Processing payment for orders: $cartOrderIds")
                         val paymentSuccess = repository.payOrders(cartOrderIds)
                         if (paymentSuccess) {
-                            // 支付成功，跳转到支付成功页面
+                            // 支付成功，使用优惠券
+                            data.selectedCoupon?.let { coupon ->
+                                repository.useCoupon(coupon.id)
+                            }
+                            // 跳转到支付成功页面
                             val totalAmount = data.pricing.totalAmount
                             android.util.Log.d("SettlePresenter", "Payment successful for orders: $cartOrderIds")
                             view?.navigateToPaymentSuccess("¥${totalAmount.toInt()}.00")
@@ -265,7 +293,11 @@ class SettlePresenter(
                         if (orderId != null) {
                             val paymentSuccess = repository.payOrder(orderId)
                             if (paymentSuccess) {
-                                // 支付成功，跳转到支付成功页面
+                                // 支付成功，使用优惠券
+                                data.selectedCoupon?.let { coupon ->
+                                    repository.useCoupon(coupon.id)
+                                }
+                                // 跳转到支付成功页面
                                 val totalAmount = data.pricing.totalAmount
                                 android.util.Log.d("SettlePresenter", "Immediate purchase payment successful for order: $orderId")
                                 view?.navigateToPaymentSuccess("¥${totalAmount.toInt()}.00")

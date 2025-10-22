@@ -3,6 +3,7 @@ package com.example.MyJD.viewmodel
 import androidx.lifecycle.ViewModel
 import com.example.MyJD.model.SettleData
 import com.example.MyJD.model.SettlePricing
+import com.example.MyJD.model.Coupon
 import com.example.MyJD.presenter.SettleContract
 import com.example.MyJD.presenter.SettlePresenter
 import com.example.MyJD.repository.DataRepository
@@ -17,7 +18,10 @@ data class SettleUiState(
     val toastMessage: String? = null,
     val isLoading: Boolean = false,
     val shouldNavigateToPaymentSuccess: String? = null,
-    val shouldNavigateToAddressList: Boolean = false
+    val shouldNavigateToAddressList: Boolean = false,
+    val showCouponDialog: Boolean = false,
+    val availableCoupons: List<Coupon> = emptyList(),
+    val currentOrderAmount: Double = 0.0
 )
 
 class SettleViewModel(
@@ -70,6 +74,14 @@ class SettleViewModel(
     
     override fun navigateToAddressList() {
         _uiState.value = _uiState.value.copy(shouldNavigateToAddressList = true)
+    }
+    
+    override fun showCouponDialog(availableCoupons: List<Coupon>, orderAmount: Double) {
+        _uiState.value = _uiState.value.copy(
+            showCouponDialog = true,
+            availableCoupons = availableCoupons,
+            currentOrderAmount = orderAmount
+        )
     }
     
     // Public methods for UI interaction
@@ -136,5 +148,13 @@ class SettleViewModel(
     
     fun clearNavigation() {
         _uiState.value = _uiState.value.copy(shouldNavigateToPaymentSuccess = null)
+    }
+    
+    fun onCouponSelected(coupon: Coupon?) {
+        presenter.onCouponSelected(coupon)
+    }
+    
+    fun dismissCouponDialog() {
+        _uiState.value = _uiState.value.copy(showCouponDialog = false)
     }
 }

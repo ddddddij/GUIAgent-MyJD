@@ -38,14 +38,17 @@ data class SettlePricing(
     val productAmount: Double,
     val shippingFee: Double = 0.0,
     val couponCount: Int = 1,
+    val couponDiscount: Double = 0.0, // 优惠券优惠金额
     val totalAmount: Double
 ) {
     companion object {
-        fun from(product: SettleProduct): SettlePricing {
+        fun from(product: SettleProduct, couponDiscount: Double = 0.0): SettlePricing {
             val productAmount = product.totalPrice
+            val finalAmount = (productAmount - couponDiscount).coerceAtLeast(0.0)
             return SettlePricing(
                 productAmount = productAmount,
-                totalAmount = productAmount
+                couponDiscount = couponDiscount,
+                totalAmount = finalAmount
             )
         }
     }
@@ -61,7 +64,8 @@ data class SettleData(
     val delivery: SettleDelivery = SettleDelivery(),
     val service: SettleService = SettleService(),
     val pricing: SettlePricing,
-    val paymentMethod: SettlePaymentMethod = SettlePaymentMethod.WECHAT_PAY
+    val paymentMethod: SettlePaymentMethod = SettlePaymentMethod.WECHAT_PAY,
+    val selectedCoupon: Coupon? = null // 选中的优惠券
 ) {
     companion object {
         fun createDefault(

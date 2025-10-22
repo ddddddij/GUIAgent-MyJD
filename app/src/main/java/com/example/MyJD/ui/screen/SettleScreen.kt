@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -26,6 +27,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.MyJD.model.SettleData
 import com.example.MyJD.model.SettlePricing
+import com.example.MyJD.model.Coupon
 import com.example.MyJD.repository.DataRepository
 import com.example.MyJD.viewmodel.SettleViewModel
 import com.example.MyJD.viewmodel.ViewModelFactory
@@ -92,6 +94,22 @@ fun SettleScreen(
             onNavigateToAddressList()
             viewModel.clearAddressListNavigation()
         }
+    }
+    
+    // 优惠券选择对话框
+    if (uiState.showCouponDialog) {
+        CouponSelectionDialog(
+            availableCoupons = uiState.availableCoupons,
+            orderAmount = uiState.currentOrderAmount,
+            selectedCoupon = uiState.settleData?.selectedCoupon,
+            onCouponSelected = { coupon ->
+                viewModel.onCouponSelected(coupon)
+                viewModel.dismissCouponDialog()
+            },
+            onDismiss = {
+                viewModel.dismissCouponDialog()
+            }
+        )
     }
     
     Column(
@@ -183,6 +201,7 @@ fun SettleScreen(
                         item {
                             PricingSection(
                                 pricing = uiState.pricing ?: settleData.pricing,
+                                selectedCoupon = settleData.selectedCoupon,
                                 onCouponClick = viewModel::onCouponClick
                             )
                         }
@@ -535,6 +554,7 @@ private fun ServiceDeliverySection(
 @Composable
 private fun PricingSection(
     pricing: SettlePricing,
+    selectedCoupon: Coupon?,
     onCouponClick: () -> Unit
 ) {
     Card(
@@ -597,10 +617,35 @@ private fun PricingSection(
                     color = Color.Black
                 )
                 Text(
-                    text = "${pricing.couponCount}张可用",
+                    text = if (selectedCoupon != null) {
+                        "已选择: ${selectedCoupon.getDisplayText()}"
+                    } else {
+                        "${pricing.couponCount}张可用"
+                    },
                     fontSize = 14.sp,
-                    color = Color.Gray
+                    color = if (selectedCoupon != null) Color(0xFFE93B3D) else Color.Gray
                 )
+            }
+            
+            // 显示优惠券优惠金额（如果有选中的优惠券）
+            if (pricing.couponDiscount > 0) {
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "优惠券优惠",
+                        fontSize = 14.sp,
+                        color = Color.Black
+                    )
+                    Text(
+                        text = "-¥${pricing.couponDiscount.toInt()}.00",
+                        fontSize = 14.sp,
+                        color = Color(0xFFE93B3D)
+                    )
+                }
             }
             
             Spacer(modifier = Modifier.height(12.dp))
@@ -709,4 +754,92 @@ private fun BottomPaymentBar(
             }
         }
     }
+}
+
+@Composable
+private fun CouponSelectionDialog(
+    availableCoupons: List<Coupon>,
+    orderAmount: Double,
+    selectedCoupon: Coupon?,
+    onCouponSelected: (Coupon?) -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = "选择优惠券",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        text = {
+            LazyColumn {
+                // 不使用优惠券选项
+                item {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { onCouponSelected(null) }
+                            .padding(vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = selectedCoupon == null,
+                            onClick = { onCouponSelected(null) }
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "不使用优惠券",
+                            fontSize = 16.sp
+                        )
+                    }
+                }
+                
+                // 优惠券列表
+                items(availableCoupons.size) { index ->
+                    val coupon = availableCoupons[index]
+                    val isUsable = coupon.isAvailable(orderAmount)
+                    
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable(enabled = isUsable) { 
+                                if (isUsable) onCouponSelected(coupon) 
+                            }
+                            .padding(vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = selectedCoupon?.id == coupon.id,
+                            onClick = { if (isUsable) onCouponSelected(coupon) },
+                            enabled = isUsable
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = coupon.getDisplayText(),
+                                fontSize = 16.sp,
+                                color = if (isUsable) Color.Black else Color.Gray
+                            )
+                            Text(
+                                text = if (isUsable) {
+                                    "有效期至 ${coupon.validUntil}"
+                                } else {
+                                    "不满足使用条件（订单金额需≥¥${coupon.minAmount.toInt()}）"
+                                },
+                                fontSize = 12.sp,
+                                color = Color.Gray
+                            )
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text("确定")
+            }
+        }
+    )
 }
