@@ -1,21 +1,28 @@
 package com.example.MyJD.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.MyJD.model.QuickAction
 import com.example.MyJD.ui.theme.JDRed
+import android.graphics.BitmapFactory
 
 @Composable
 fun UserHeader(
@@ -104,10 +111,42 @@ fun UserHeader(
                             .clickable { onAvatarClick() },
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(
-                            text = avatar,
-                            fontSize = 36.sp
-                        )
+                        val context = LocalContext.current
+                        
+                        // 检查是否是图片文件
+                        if (avatar.endsWith(".JPG") || avatar.endsWith(".jpg") || avatar.endsWith(".PNG") || avatar.endsWith(".png")) {
+                            val bitmap by remember(avatar) {
+                                derivedStateOf {
+                                    try {
+                                        val inputStream = context.assets.open("image/$avatar")
+                                        val loadedBitmap = BitmapFactory.decodeStream(inputStream)
+                                        inputStream.close()
+                                        loadedBitmap
+                                    } catch (e: Exception) {
+                                        null
+                                    }
+                                }
+                            }
+                            
+                            bitmap?.let {
+                                Image(
+                                    painter = BitmapPainter(it.asImageBitmap()),
+                                    contentDescription = "用户头像",
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .clip(CircleShape),
+                                    contentScale = ContentScale.Crop
+                                )
+                            } ?: Text(
+                                text = "👤",
+                                fontSize = 36.sp
+                            )
+                        } else {
+                            Text(
+                                text = avatar,
+                                fontSize = 36.sp
+                            )
+                        }
                     }
                     
                     Spacer(modifier = Modifier.width(16.dp))

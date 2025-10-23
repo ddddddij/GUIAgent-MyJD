@@ -1,5 +1,6 @@
 package com.example.MyJD.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -18,6 +19,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -25,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.example.MyJD.model.ReviewInfo
 import com.example.MyJD.model.ReviewItem
 import com.example.MyJD.model.ReviewTag
+import android.graphics.BitmapFactory
 
 @Composable
 fun ProductReviewSection(
@@ -155,9 +161,10 @@ private fun ReviewList(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        reviews.take(3).forEach { review ->
+        reviews.take(3).forEachIndexed { reviewIndex, review ->
             ReviewItemCard(
                 review = review,
+                reviewIndex = reviewIndex,
                 onImageClick = onImageClick
             )
         }
@@ -167,6 +174,7 @@ private fun ReviewList(
 @Composable
 private fun ReviewItemCard(
     review: ReviewItem,
+    reviewIndex: Int,
     onImageClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -235,11 +243,12 @@ private fun ReviewItemCard(
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(review.images.take(3)) { image ->
+                    itemsIndexed(review.images.take(3)) { index, image ->
                         ReviewImageItem(
                             image = image,
+                            imageIndex = reviewIndex * 3 + index, // 确保跨评论的图片都不重复
                             imageCount = if (review.imageCount > 3) review.imageCount - 2 else 0,
-                            isLast = review.images.indexOf(image) == 2,
+                            isLast = index == 2,
                             onClick = onImageClick
                         )
                     }
@@ -278,11 +287,32 @@ private fun ReviewItemCard(
 @Composable
 private fun ReviewImageItem(
     image: String,
+    imageIndex: Int,
     imageCount: Int,
     isLast: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+    
+    // 根据实际的imageIndex使用不同的评论区图片
+    val reviewImages = listOf("评论区1.jpg", "评论区2.jpg", "评论区3.jpg", "评论区4.jpg")
+    val imageName = reviewImages[imageIndex % reviewImages.size]
+    
+    // 使用remember和derivedStateOf来处理图片加载
+    val bitmap by remember(imageName) {
+        derivedStateOf {
+            try {
+                val inputStream = context.assets.open("image/$imageName")
+                val loadedBitmap = BitmapFactory.decodeStream(inputStream)
+                inputStream.close()
+                loadedBitmap
+            } catch (e: Exception) {
+                null
+            }
+        }
+    }
+    
     Box(
         modifier = modifier
             .size(80.dp)
@@ -291,7 +321,16 @@ private fun ReviewImageItem(
             .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
-        Text(
+        bitmap?.let {
+            Image(
+                painter = BitmapPainter(it.asImageBitmap()),
+                contentDescription = "评论图片",
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(4.dp)),
+                contentScale = ContentScale.Crop
+            )
+        } ?: Text(
             text = image,
             fontSize = 32.sp
         )

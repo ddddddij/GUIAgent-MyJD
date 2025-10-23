@@ -1,5 +1,6 @@
 package com.example.MyJD.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,7 +12,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
@@ -19,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.MyJD.model.Product
 import java.text.DecimalFormat
+import android.graphics.BitmapFactory
 
 @Composable
 fun ProductCardItem(
@@ -53,7 +60,38 @@ fun ProductCardItem(
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
+                val context = LocalContext.current
+                
+                // 根据商品ID和名称组合哈希值确保每个商品使用不同的iPhone15图片
+                val iPhoneImages = listOf("iPhone15图1.JPG", "iPhone15图2.JPG", "iPhone15图3.JPG", "iPhone15图4.JPG", "iPhone15图5.JPG")
+                val combinedHash = (product.id + product.name).hashCode()
+                val imageIndex = kotlin.math.abs(combinedHash) % iPhoneImages.size
+                val imageName = iPhoneImages[imageIndex]
+                
+                // 使用remember和derivedStateOf来处理图片加载
+                val bitmap by remember(imageName) {
+                    derivedStateOf {
+                        try {
+                            val inputStream = context.assets.open("image/$imageName")
+                            val loadedBitmap = BitmapFactory.decodeStream(inputStream)
+                            inputStream.close()
+                            loadedBitmap
+                        } catch (e: Exception) {
+                            null
+                        }
+                    }
+                }
+                
+                bitmap?.let {
+                    Image(
+                        painter = BitmapPainter(it.asImageBitmap()),
+                        contentDescription = "商品图片",
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(RoundedCornerShape(6.dp)),
+                        contentScale = ContentScale.Crop
+                    )
+                } ?: Text(
                     text = product.imageUrl,
                     fontSize = 48.sp
                 )

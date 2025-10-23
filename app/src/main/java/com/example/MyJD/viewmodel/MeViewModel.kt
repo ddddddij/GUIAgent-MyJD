@@ -45,7 +45,7 @@ class MeViewModel(private val repository: DataRepository) : ViewModel() {
     fun getUserDisplayName(): String {
         return _userProfile.value?.get("nickname")?.asString 
             ?: _userProfile.value?.get("username")?.asString 
-            ?: "Ddddddjy"
+            ?: "ddddddjy"
     }
 
     fun getUserMemberLevel(): String {
@@ -53,7 +53,7 @@ class MeViewModel(private val repository: DataRepository) : ViewModel() {
     }
 
     fun getUserAvatar(): String {
-        return "👤" // Using emoji as placeholder
+        return "用户头像.JPG" // Using actual image file
     }
 
     fun hasStudentBenefit(): Boolean {
