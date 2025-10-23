@@ -7,6 +7,7 @@ import com.example.MyJD.model.ProductSpec
 import com.example.MyJD.model.SpecSelection
 import com.example.MyJD.model.CartItemSpec
 import com.example.MyJD.repository.DataRepository
+import com.example.MyJD.utils.PricingUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -50,12 +51,16 @@ class ProductSpecViewModel(
                 val defaultSeries = spec.series.find { it.selected } ?: spec.series.firstOrNull()
                 val defaultStorage = spec.storage.find { it.selected } ?: spec.storage.firstOrNull()
                 
+                val selectedSeriesName = defaultSeries?.name ?: spec.defaultSeries
+                val selectedStorageName = defaultStorage?.capacity ?: spec.defaultStorage
+                val calculatedPrice = PricingUtils.calculatePrice(selectedSeriesName, selectedStorageName)
+                
                 _specSelection.value = _specSelection.value.copy(
-                    selectedSeries = defaultSeries?.name ?: spec.defaultSeries,
+                    selectedSeries = selectedSeriesName,
                     selectedColor = defaultColor?.name ?: spec.defaultColor,
-                    selectedStorage = defaultStorage?.capacity ?: spec.defaultStorage,
-                    currentPrice = defaultColor?.price ?: 0.0,
-                    originalPrice = defaultColor?.originalPrice ?: 0.0,
+                    selectedStorage = selectedStorageName,
+                    currentPrice = if (calculatedPrice > 0) calculatedPrice else (defaultColor?.price ?: 0.0),
+                    originalPrice = if (calculatedPrice > 0) calculatedPrice + 400 else (defaultColor?.originalPrice ?: 0.0),
                     currentImage = defaultColor?.image ?: "",
                     stockAvailable = defaultColor?.available ?: false
                 )
@@ -69,7 +74,7 @@ class ProductSpecViewModel(
 
     fun selectSeries(seriesName: String) {
         _specSelection.value = _specSelection.value.copy(selectedSeries = seriesName)
-        updatePrice()
+        updatePriceBasedOnSpecs()
     }
 
     fun selectColor(colorName: String) {
@@ -78,16 +83,17 @@ class ProductSpecViewModel(
         
         _specSelection.value = _specSelection.value.copy(
             selectedColor = colorName,
-            currentPrice = selectedColor.price,
-            originalPrice = selectedColor.originalPrice,
             currentImage = selectedColor.image,
             stockAvailable = selectedColor.available
         )
+        
+        // 重新计算价格，颜色不影响价格
+        updatePriceBasedOnSpecs()
     }
 
     fun selectStorage(storageName: String) {
         _specSelection.value = _specSelection.value.copy(selectedStorage = storageName)
-        updatePrice()
+        updatePriceBasedOnSpecs()
     }
 
     fun updateQuantity(quantity: Int) {
@@ -110,15 +116,14 @@ class ProductSpecViewModel(
         }
     }
 
-    private fun updatePrice() {
-        val spec = _productSpec.value ?: return
-        val selectedColor = spec.colors.find { it.name == _specSelection.value.selectedColor }
-        if (selectedColor != null) {
+    private fun updatePriceBasedOnSpecs() {
+        val selection = _specSelection.value
+        val calculatedPrice = PricingUtils.calculatePrice(selection.selectedSeries, selection.selectedStorage)
+        
+        if (calculatedPrice > 0) {
             _specSelection.value = _specSelection.value.copy(
-                currentPrice = selectedColor.price,
-                originalPrice = selectedColor.originalPrice,
-                currentImage = selectedColor.image,
-                stockAvailable = selectedColor.available
+                currentPrice = calculatedPrice,
+                originalPrice = calculatedPrice + 400 // 原价比现价高400元作为折扣展示
             )
         }
     }
