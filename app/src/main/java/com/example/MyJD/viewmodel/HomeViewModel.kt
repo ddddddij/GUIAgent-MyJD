@@ -27,6 +27,8 @@ class HomeViewModel(private val repository: DataRepository) : ViewModel() {
 
     init {
         loadData()
+        // 确保在ViewModel创建时立即加载数据
+        android.util.Log.d("HomeViewModel", "HomeViewModel initialized")
     }
 
     private fun loadData() {
@@ -81,5 +83,11 @@ class HomeViewModel(private val repository: DataRepository) : ViewModel() {
 
     fun getSupermarketProducts(): List<Product> {
         return _products.value.filter { it.category == "超市" }
+    }
+
+    // 提供刷新数据的方法
+    fun refreshData() {
+        android.util.Log.d("HomeViewModel", "Refreshing data...")
+        loadData()
     }
 }

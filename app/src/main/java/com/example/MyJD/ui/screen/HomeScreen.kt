@@ -32,6 +32,13 @@ fun HomeScreen(
     val products by viewModel.products.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
 
+    // 确保在页面初始化时立即加载数据
+    LaunchedEffect(Unit) {
+        if (products.isEmpty()) {
+            viewModel.refreshData()
+        }
+    }
+
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(0.dp)
@@ -80,7 +87,7 @@ fun HomeScreen(
         
         item {
             RecommendSection(
-                products = viewModel.getRecommendedProducts(),
+                products = products.take(10), // 直接使用状态中的products而不是调用方法
                 onProductClick = onNavigateToProduct,
                 onAddToCart = { product ->
                     viewModel.addToCart(product)
