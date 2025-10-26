@@ -95,21 +95,12 @@ fun ProductDetailBottomBar(
                     shape = RoundedCornerShape(20.dp),
                     contentPadding = PaddingValues(vertical = 12.dp)
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "券后价 ¥${currentPrice.toInt()}",
-                            fontSize = 10.sp,
-                            color = Color.White
-                        )
-                        Text(
-                            text = "立即购买",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
-                    }
+                    Text(
+                        text = "立即购买",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
                 }
             }
         }
