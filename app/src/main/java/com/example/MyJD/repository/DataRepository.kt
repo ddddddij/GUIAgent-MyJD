@@ -1045,4 +1045,271 @@ class DataRepository private constructor(private val context: Context) {
         }
         android.util.Log.d("DataRepository", "Reset all coupons")
     }
+    
+    // ==================== 任务验证功能 ====================
+    
+    /**
+     * 验证任务是否完成 - 基于数据状态判断
+     */
+    fun verifyTask(taskId: String): Boolean {
+        return when (taskId) {
+            "TASK_001" -> verifySearchiPhone15()
+            "TASK_002" -> verifyAddiPhone15ToCart()
+            "TASK_003" -> verifyPurchaseiPhone15()
+            "TASK_004" -> verifyViewAllOrders()
+            "TASK_005" -> verifyCheckoutFirstCartItem()
+            "TASK_006" -> verifyPayFirstPendingOrder()
+            "TASK_007" -> verifySendMessageToAppleStore()
+            "TASK_008" -> verifyCountHomeProducts()
+            "TASK_009" -> verifyCalculateCartTotalPrice()
+            "TASK_010" -> verifyCountPendingReceiptOrders()
+            "TASK_011" -> verifyCountCustomerServiceMessages()
+            "TASK_012" -> verifyCheckJDSecsongDelivery()
+            "TASK_013" -> verifyCheckCartForiPhone15AndCheckout()
+            "TASK_014" -> verifyCountiPhone15Comments()
+            "TASK_015" -> verifyAddMultipleiPhone15ToCart()
+            "TASK_016" -> verifyComplexSearchAndPurchase()
+            "TASK_017" -> verifyComplexStoreNavigation()
+            "TASK_018" -> verifyCancelAllPendingOrders()
+            "TASK_019" -> verifyAddNewAddress()
+            "TASK_020" -> verifySetAppleStoreMessageMute()
+            else -> false
+        }
+    }
+    
+    /**
+     * 获取所有任务验证结果
+     */
+    fun getAllTaskVerifications(): Map<String, Boolean> {
+        val taskIds = listOf(
+            "TASK_001", "TASK_002", "TASK_003", "TASK_004", "TASK_005",
+            "TASK_006", "TASK_007", "TASK_008", "TASK_009", "TASK_010",
+            "TASK_011", "TASK_012", "TASK_013", "TASK_014", "TASK_015",
+            "TASK_016", "TASK_017", "TASK_018", "TASK_019", "TASK_020"
+        )
+        return taskIds.associateWith { verifyTask(it) }
+    }
+    
+    // ==================== 具体任务验证函数 ====================
+    
+    /**
+     * TASK_001: 在首页中搜索「iPhone 15」，并查看搜索结果的第一个商品
+     */
+    private fun verifySearchiPhone15(): Boolean {
+        // 基于应用状态判断：检查是否存在搜索相关的状态变化
+        return false // 需要实际搜索操作才能验证
+    }
+
+    /**
+     * TASK_002: 将首页中的商品「iPhone 15 蓝色 128GB」加入购物车
+     */
+    private fun verifyAddiPhone15ToCart(): Boolean {
+        val cartItems = getSpecShoppingCart()
+        return cartItems.any { item ->
+            item.productName.contains("iPhone 15", ignoreCase = true) &&
+            item.color.contains("蓝色", ignoreCase = true) &&
+            item.storage.contains("128GB", ignoreCase = true)
+        }
+    }
+
+    /**
+     * TASK_003: 立即购买首页中一台任意规格的「iPhone 15」
+     */
+    private fun verifyPurchaseiPhone15(): Boolean {
+        val orders = getOrders()
+        return orders.any { order ->
+            order.items.any { item ->
+                item.product.name.contains("iPhone 15", ignoreCase = true)
+            }
+        }
+    }
+
+    /**
+     * TASK_004: 在「我的」页面查看我的全部订单
+     */
+    private fun verifyViewAllOrders(): Boolean {
+        // 需要UI状态记录才能验证
+        return false
+    }
+
+    /**
+     * TASK_005: 在购物车中勾选第一个商品，然后结算
+     */
+    private fun verifyCheckoutFirstCartItem(): Boolean {
+        // 检查是否有从购物车结算的订单
+        val cartItems = getSpecShoppingCart()
+        val orders = getOrders()
+        return cartItems.isNotEmpty() && orders.isNotEmpty()
+    }
+
+    /**
+     * TASK_006: 结算我的第一个待付款订单
+     */
+    private fun verifyPayFirstPendingOrder(): Boolean {
+        val orders = getOrders()
+        // 检查是否有已支付的订单（从待付款变为其他状态）
+        return orders.any { it.status != OrderStatus.PENDING_PAYMENT }
+    }
+
+    /**
+     * TASK_007: 给Apple产品京东自营旗舰店发消息问手机什么时候发货
+     */
+    private fun verifySendMessageToAppleStore(): Boolean {
+        // 需要消息发送记录才能验证
+        return false
+    }
+
+    /**
+     * TASK_008: 计算首页共展示了多少件商品
+     */
+    private fun verifyCountHomeProducts(): Boolean {
+        // 需要计算操作记录才能验证
+        return false
+    }
+
+    /**
+     * TASK_009: 计算购物车中所有商品的总价
+     */
+    private fun verifyCalculateCartTotalPrice(): Boolean {
+        // 需要计算操作记录才能验证
+        return false
+    }
+
+    /**
+     * TASK_010: 计算待收货的订单有多少项
+     */
+    private fun verifyCountPendingReceiptOrders(): Boolean {
+        // 需要计算操作记录才能验证
+        return false
+    }
+
+    /**
+     * TASK_011: 计算我一共收到多少条京东客服的消息
+     */
+    private fun verifyCountCustomerServiceMessages(): Boolean {
+        // 需要计算操作记录才能验证
+        return false
+    }
+
+    /**
+     * TASK_012: 查看京东秒送的物流消息，确定商品还有多久能送达
+     */
+    private fun verifyCheckJDSecsongDelivery(): Boolean {
+        // 需要查看物流信息的记录才能验证
+        return false
+    }
+
+    /**
+     * TASK_013: 查看购物车中是否有iPhone15，如果有就结算这项
+     */
+    private fun verifyCheckCartForiPhone15AndCheckout(): Boolean {
+        val cartItems = getSpecShoppingCart()
+        val hasiPhone15 = cartItems.any { it.productName.contains("iPhone 15", ignoreCase = true) }
+        val orders = getOrders()
+        val hasiPhone15Order = orders.any { order ->
+            order.items.any { item ->
+                item.product.name.contains("iPhone 15", ignoreCase = true)
+            }
+        }
+        return hasiPhone15 && hasiPhone15Order
+    }
+
+    /**
+     * TASK_014: 查看首页iPhone15商品共有多少条评论
+     */
+    private fun verifyCountiPhone15Comments(): Boolean {
+        // 需要查看评论的操作记录才能验证
+        return false
+    }
+
+    /**
+     * TASK_015: 将商品"iPhone 15 蓝色 128GB 1件"、"iPhone 15 黑色 256GB 2件"、"iPhone 15 粉色 128GB 3件"共6件商品加入购物车
+     */
+    private fun verifyAddMultipleiPhone15ToCart(): Boolean {
+        val cartItems = getSpecShoppingCart()
+        
+        val blueiPhone15 = cartItems.find { item ->
+            item.productName.contains("iPhone 15", ignoreCase = true) &&
+            item.color.contains("蓝色", ignoreCase = true) &&
+            item.storage.contains("128GB", ignoreCase = true) &&
+            item.quantity >= 1
+        }
+        
+        val blackiPhone15 = cartItems.find { item ->
+            item.productName.contains("iPhone 15", ignoreCase = true) &&
+            item.color.contains("黑色", ignoreCase = true) &&
+            item.storage.contains("256GB", ignoreCase = true) &&
+            item.quantity >= 2
+        }
+        
+        val pinkiPhone15 = cartItems.find { item ->
+            item.productName.contains("iPhone 15", ignoreCase = true) &&
+            item.color.contains("粉色", ignoreCase = true) &&
+            item.storage.contains("128GB", ignoreCase = true) &&
+            item.quantity >= 3
+        }
+        
+        return blueiPhone15 != null && blackiPhone15 != null && pinkiPhone15 != null
+    }
+
+    /**
+     * TASK_016: 搜索iPhone15并筛选价格在5000-8000之间的手机类别，将iPhone15 黑色 256GB加入购物车后，选择微信支付，满3000减50优惠券结算
+     */
+    private fun verifyComplexSearchAndPurchase(): Boolean {
+        val cartItems = getSpecShoppingCart()
+        val hasBlackiPhone15 = cartItems.any { item ->
+            item.productName.contains("iPhone 15", ignoreCase = true) &&
+            item.color.contains("黑色", ignoreCase = true) &&
+            item.storage.contains("256GB", ignoreCase = true)
+        }
+        // 需要支付方式和优惠券使用记录才能完全验证
+        return hasBlackiPhone15
+    }
+
+    /**
+     * TASK_017: 进入首页iPhone15商品详情并进入店铺主页，然后立即购买店铺中"iPhone 15 粉色 256GB 1件"后，查看待收货订单
+     */
+    private fun verifyComplexStoreNavigation(): Boolean {
+        val orders = getOrders()
+        return orders.any { order ->
+            order.items.any { item ->
+                item.product.name.contains("iPhone 15", ignoreCase = true) &&
+                item.selectedColor?.contains("粉色", ignoreCase = true) == true &&
+                item.selectedVersion?.contains("256GB", ignoreCase = true) == true
+            }
+        }
+    }
+
+    /**
+     * TASK_018: 取消我所有的待付款订单，然后在全部订单中删除已取消的订单
+     */
+    private fun verifyCancelAllPendingOrders(): Boolean {
+        val orders = getOrders()
+        val pendingPaymentOrders = orders.filter { it.status == OrderStatus.PENDING_PAYMENT }
+        val cancelledOrders = orders.filter { it.status == OrderStatus.CANCELLED }
+        // 如果没有待付款订单且有已取消订单，说明可能已经执行了取消操作
+        return pendingPaymentOrders.isEmpty() && cancelledOrders.isNotEmpty()
+    }
+
+    /**
+     * TASK_019: 新建地址"湖北省武汉市洪山区文秀街9号"并设为默认地址
+     */
+    private fun verifyAddNewAddress(): Boolean {
+        // 检查运行时地址中是否有武汉地址
+        return runtimeAddresses.any { address ->
+            address.province.contains("湖北", ignoreCase = true) &&
+            address.city.contains("武汉", ignoreCase = true) &&
+            address.district.contains("洪山", ignoreCase = true) &&
+            address.detailAddress.contains("文秀街9号", ignoreCase = true) &&
+            address.isDefault
+        }
+    }
+
+    /**
+     * TASK_020: 设置Apple产品京东自营旗舰店的聊天为消息免打扰
+     */
+    private fun verifySetAppleStoreMessageMute(): Boolean {
+        // 需要消息设置记录才能验证
+        return false
+    }
 }
