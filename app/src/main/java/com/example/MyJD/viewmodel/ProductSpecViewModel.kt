@@ -1,5 +1,6 @@
 package com.example.MyJD.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -8,6 +9,7 @@ import com.example.MyJD.model.SpecSelection
 import com.example.MyJD.model.CartItemSpec
 import com.example.MyJD.repository.DataRepository
 import com.example.MyJD.utils.PricingUtils
+import com.example.MyJD.utils.TaskLogger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +17,8 @@ import kotlinx.coroutines.launch
 
 class ProductSpecViewModel(
     private val repository: DataRepository,
-    private val productId: String
+    private val productId: String,
+    private val context: Context
 ) : ViewModel() {
 
     private val _productSpec = MutableStateFlow<ProductSpec?>(null)
@@ -154,6 +157,17 @@ class ProductSpecViewModel(
         
         repository.addToSpecCart(cartItem)
         
+        // 记录添加到购物车的任务日志
+        TaskLogger.logAddToCart(
+            context = context,
+            productId = productId,
+            productName = cartItem.productName,
+            color = selection.selectedColor,
+            version = selection.selectedStorage,
+            quantity = selection.quantity,
+            price = selection.currentPrice
+        )
+        
         android.util.Log.d("ProductSpecViewModel", "Item added to cart: $cartItem")
         android.util.Log.d("ProductSpecViewModel", "Cart after adding: ${repository.getSpecCartTotalCount()} items")
         android.util.Log.d("ProductSpecViewModel", "All cart items: ${repository.getSpecShoppingCart().map { "${it.productName} x${it.quantity}" }}")
@@ -166,7 +180,7 @@ class ProductSpecViewModel(
 
         _productSpec.value ?: return null
         
-        return repository.createOrder(
+        val orderId = repository.createOrder(
             productId = productId,
             productName = "Apple/苹果 iPhone 15 (A3092) ${selection.selectedStorage}",
             storeName = "Apple产品京东自营旗舰店",
@@ -176,6 +190,20 @@ class ProductSpecViewModel(
             selectedColor = selection.selectedColor,
             selectedVersion = selection.selectedStorage
         )
+        
+        // 记录立即购买的任务日志
+        if (orderId != null) {
+            TaskLogger.logPurchase(
+                context = context,
+                productId = productId,
+                productName = "Apple/苹果 iPhone 15 (A3092) ${selection.selectedStorage}",
+                orderId = orderId,
+                color = selection.selectedColor,
+                version = selection.selectedStorage
+            )
+        }
+        
+        return orderId
     }
 
     fun canAddToCart(): Boolean {
@@ -188,12 +216,13 @@ class ProductSpecViewModel(
 
     class Factory(
         private val repository: DataRepository,
-        private val productId: String
+        private val productId: String,
+        private val context: Context
     ) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(ProductSpecViewModel::class.java)) {
-                return ProductSpecViewModel(repository, productId) as T
+                return ProductSpecViewModel(repository, productId, context) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }

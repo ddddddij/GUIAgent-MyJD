@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    // Removed kotlinx.serialization plugin
 }
 
 android {
@@ -71,6 +72,8 @@ dependencies {
     
     // FlowRow for flexible layouts
     implementation("com.google.accompanist:accompanist-flowlayout:0.32.0")
+    
+    // Using Gson instead of kotlinx.serialization
     
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

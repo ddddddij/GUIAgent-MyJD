@@ -1,21 +1,21 @@
-任务,判断方式,对应函数
-在首页中搜索「iPhone 15」，并查看搜索结果的第一个商品。,检查任务日志中是否存在搜索iPhone 15和查看第一个商品的记录,verifySearchiPhone15()
-将首页中的商品「iPhone 15 蓝色 128GB」加入购物车。,检查购物车数据中是否存在iPhone 15 蓝色 128GB商品,verifyAddiPhone15ToCart()
-立即购买首页中一台任意规格的「iPhone 15」。,检查订单数据中是否存在iPhone 15商品的订单,verifyPurchaseiPhone15()
-在「我的」页面查看我的全部订单。,检查任务日志中是否存在查看全部订单的记录,verifyViewAllOrders()
-在购物车中勾选第一个商品，然后结算。,检查任务日志中是否存在勾选第一个商品和结算的记录,verifyCheckoutFirstCartItem()
-结算我的第一个待付款订单。,检查任务日志中是否存在支付第一个待付款订单的记录,verifyPayFirstPendingOrder()
-给Apple产品京东自营旗舰店发消息问手机什么时候发货。,检查任务日志中是否存在向Apple店铺发送消息的记录,verifySendMessageToAppleStore()
-计算首页共展示了多少件商品。,检查任务日志中是否存在计算首页商品数量的记录,verifyCountHomeProducts()
-计算购物车中所有商品的总价。,检查任务日志中是否存在计算购物车总价的记录,verifyCalculateCartTotalPrice()
-计算待收货的订单有多少项。,检查任务日志中是否存在计算待收货订单数量的记录,verifyCountPendingReceiptOrders()
-计算我一共收到多少条京东客服的消息。,检查任务日志中是否存在计算京东客服消息数量的记录,verifyCountCustomerServiceMessages()
-查看京东秒送的物流消息，确定商品还有多久能送达。,检查任务日志中是否存在查看京东秒送物流信息的记录,verifyCheckJDSecsongDelivery()
-查看购物车中是否有iPhone15，如果有就结算这项。,检查任务日志中是否存在检查购物车iPhone15和结算的记录,verifyCheckCartForiPhone15AndCheckout()
-查看首页iPhone15商品共有多少条评论。,检查任务日志中是否存在计算iPhone15评论数量的记录,verifyCountiPhone15Comments()
-将商品"iPhone 15 蓝色 128GB 1件"、"iPhone 15 黑色 256GB 2件"、"iPhone 15 粉色 128GB 3件"共6件商品加入购物车。,检查购物车数据中是否存在指定规格和数量的iPhone 15商品,verifyAddMultipleiPhone15ToCart()
-搜索iPhone15并筛选价格在5000-8000之间的手机类别，将iPhone15 黑色 256GB加入购物车后，选择微信支付，满3000减50优惠券结算。,检查任务日志中是否存在搜索筛选、加入购物车、选择支付方式、使用优惠券和结算的完整记录,verifyComplexSearchAndPurchase()
-进入首页iPhone15商品详情并进入店铺主页，然后立即购买店铺中"iPhone 15 粉色 256GB 1件"后，查看待收货订单。,检查任务日志中是否存在进入详情、进入店铺、购买商品和查看订单的完整记录,verifyComplexStoreNavigation()
-取消我所有的待付款订单，然后在全部订单中删除已取消的订单。,检查任务日志中是否存在取消待付款订单和删除已取消订单的记录,verifyCancelAllPendingOrders()
-新建地址"湖北省武汉市洪山区文秀街9号"并设为默认地址。,检查地址数据中是否存在武汉洪山区文秀街9号地址且设为默认,verifyAddNewAddress()
-设置Apple产品京东自营旗舰店的聊天为消息免打扰。,检查任务日志中是否存在设置Apple店铺消息免打扰的记录,verifySetAppleStoreMessageMute()
+任务,判断方式,对应函数,数据源,详细判断逻辑
+在首页中搜索「iPhone 15」，并查看搜索结果的第一个商品。,检查任务日志中是否存在搜索iPhone 15和查看第一个商品的记录,verifySearchiPhone15(),task_logs.json,检查日志中taskType为SEARCH且searchKeyword包含iPhone 15且firstProductViewed为true的记录
+将首页中的商品「iPhone 15 蓝色 128GB」加入购物车。,检查购物车数据中是否存在iPhone 15 蓝色 128GB商品,verifyAddiPhone15ToCart(),cart_items.json,检查购物车中是否存在product.name包含iPhone 15且selectedColor为蓝色且selectedVersion为128GB的商品
+立即购买首页中一台任意规格的「iPhone 15」。,检查订单数据中是否存在iPhone 15商品的订单,verifyPurchaseiPhone15(),orders.json,检查订单中是否存在items中包含product.name含iPhone 15的订单记录
+在「我的」页面查看我的全部订单。,检查任务日志中是否存在查看全部订单的记录,verifyViewAllOrders(),task_logs.json,检查日志中taskType为VIEW_ORDERS且page为全部订单的记录
+在购物车中勾选第一个商品，然后结算。,检查任务日志中是否存在勾选第一个商品和结算的记录,verifyCheckoutFirstCartItem(),task_logs.json,检查日志中taskType为CHECKOUT_CART且itemCount>=1的记录
+结算我的第一个待付款订单。,检查任务日志中是否存在支付第一个待付款订单的记录,verifyPayFirstPendingOrder(),task_logs.json,检查日志中taskType为PAY_ORDER的记录
+给Apple产品京东自营旗舰店发消息问手机什么时候发货。,检查任务日志中是否存在向Apple店铺发送消息的记录,verifySendMessageToAppleStore(),task_logs.json,检查日志中taskType为SEND_MESSAGE且storeName包含Apple的记录
+计算首页共展示了多少件商品。,检查任务日志中是否存在计算首页商品数量的记录,verifyCountHomeProducts(),task_logs.json,检查日志中taskType为COUNT_PRODUCTS且location为首页的记录
+计算购物车中所有商品的总价。,检查任务日志中是否存在计算购物车总价的记录,verifyCalculateCartTotalPrice(),task_logs.json,检查日志中taskType为CALCULATE_PRICE且location为购物车的记录
+计算待收货的订单有多少项。,检查任务日志中是否存在计算待收货订单数量的记录,verifyCountPendingReceiptOrders(),task_logs.json,检查日志中taskType为COUNT_ORDERS且orderType为待收货的记录
+计算我一共收到多少条京东客服的消息。,检查任务日志中是否存在计算京东客服消息数量的记录,verifyCountCustomerServiceMessages(),task_logs.json,检查日志中taskType为COUNT_MESSAGES且messageType包含京东客服的记录
+查看京东秒送的物流消息，确定商品还有多久能送达。,检查任务日志中是否存在查看京东秒送物流信息的记录,verifyCheckJDSecsongDelivery(),task_logs.json,检查日志中taskType为CHECK_DELIVERY且deliveryService包含京东秒送的记录
+查看购物车中是否有iPhone15，如果有就结算这项。,检查任务日志中是否存在检查购物车iPhone15和结算的记录,verifyCheckCartForiPhone15AndCheckout(),cart_items.json + task_logs.json,结合检查购物车数据和结算日志记录
+查看首页iPhone15商品共有多少条评论。,检查任务日志中是否存在计算iPhone15评论数量的记录,verifyCountiPhone15Comments(),task_logs.json,检查日志中taskType为COUNT_COMMENTS且productName包含iPhone15的记录
+将商品"iPhone 15 蓝色 128GB 1件"、"iPhone 15 黑色 256GB 2件"、"iPhone 15 粉色 128GB 3件"共6件商品加入购物车。,检查购物车数据中是否存在指定规格和数量的iPhone 15商品,verifyAddMultipleiPhone15ToCart(),cart_items.json,检查购物车中iPhone 15蓝色128GB>=1件、黑色256GB>=2件、粉色128GB>=3件
+搜索iPhone15并筛选价格在5000-8000之间的手机类别，将iPhone15 黑色 256GB加入购物车后，选择微信支付，满3000减50优惠券结算。,检查任务日志中是否存在搜索筛选、加入购物车、选择支付方式、使用优惠券和结算的完整记录,verifyComplexSearchAndPurchase(),task_logs.json,检查日志中taskType为COMPLEX_PURCHASE且包含所有指定操作步骤的记录
+进入首页iPhone15商品详情并进入店铺主页，然后立即购买店铺中"iPhone 15 粉色 256GB 1件"后，查看待收货订单。,检查任务日志中是否存在进入详情、进入店铺、购买商品和查看订单的完整记录,verifyComplexStoreNavigation(),task_logs.json,检查日志中taskType为STORE_NAVIGATION且包含店铺导航和购买流程的记录
+取消我所有的待付款订单，然后在全部订单中删除已取消的订单。,检查任务日志中是否存在取消待付款订单和删除已取消订单的记录,verifyCancelAllPendingOrders(),task_logs.json,检查日志中taskType为CANCEL_ORDERS的记录
+新建地址"湖北省武汉市洪山区文秀街9号"并设为默认地址。,检查地址数据中是否存在武汉洪山区文秀街9号地址且设为默认,verifyAddNewAddress(),addresses.json,检查地址中province为湖北省、city为武汉市、district为洪山区、detailAddress包含文秀街9号且isDefault为true的记录
+设置Apple产品京东自营旗舰店的聊天为消息免打扰。,检查任务日志中是否存在设置Apple店铺消息免打扰的记录,verifySetAppleStoreMessageMute(),task_logs.json,检查日志中taskType为SET_MESSAGE_MUTE且storeName包含Apple的记录

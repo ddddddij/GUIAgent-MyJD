@@ -45,7 +45,7 @@ fun SearchResultScreen(
     val context = LocalContext.current
     val repository = remember { DataRepository.getInstance(context) }
     val viewModel: SearchResultViewModel = viewModel(
-        factory = SearchResultViewModelFactory(repository, keyword)
+        factory = SearchResultViewModelFactory(repository, keyword, context)
     )
     
     val products by viewModel.products.collectAsState()

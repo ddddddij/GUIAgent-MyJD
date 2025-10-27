@@ -14,6 +14,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.MyJD.repository.DataRepository
 import com.example.MyJD.viewmodel.MeViewModel
 import com.example.MyJD.ui.components.*
+import com.example.MyJD.utils.TaskVerifier
 
 @Composable
 fun MeScreen(
@@ -120,6 +121,37 @@ fun MeScreen(
                             Toast.makeText(context, "${interaction.name}功能待开发", Toast.LENGTH_SHORT).show()
                         }
                     )
+                }
+                
+                // 调试区域 - 任务验证
+                item {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.White)
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp)
+                        ) {
+                            Text(
+                                text = "调试功能",
+                                style = MaterialTheme.typography.titleMedium,
+                                modifier = Modifier.padding(bottom = 12.dp)
+                            )
+                            
+                            Button(
+                                onClick = {
+                                    // 执行任务验证并输出到logcat
+                                    TaskVerifier.verifyAllTasksAndLogToLogcat(context)
+                                    Toast.makeText(context, "任务验证结果已输出到logcat，请查看Android Studio的Logcat", Toast.LENGTH_LONG).show()
+                                },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Text("验证所有任务 (查看logcat)")
+                            }
+                        }
+                    }
                 }
                 
                 // Add some bottom padding for better scrolling

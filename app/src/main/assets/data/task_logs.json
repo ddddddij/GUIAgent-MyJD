@@ -1,0 +1,33 @@
+[
+  {
+    "id": "log_001",
+    "taskType": "SEARCH",
+    "taskDescription": "搜索iPhone 15",
+    "action": "搜索操作",
+    "details": {
+      "searchKeyword": "iPhone 15",
+      "searchResultCount": 15,
+      "firstProductViewed": true,
+      "firstProductId": "iphone15_001",
+      "firstProductName": "iPhone 15 蓝色 128GB"
+    },
+    "timestamp": 1704067200000,
+    "completed": true
+  },
+  {
+    "id": "log_002", 
+    "taskType": "ADD_TO_CART",
+    "taskDescription": "将iPhone 15 蓝色 128GB加入购物车",
+    "action": "添加到购物车",
+    "details": {
+      "productId": "iphone15_001",
+      "productName": "iPhone 15 蓝色 128GB",
+      "color": "蓝色",
+      "version": "128GB",
+      "quantity": 1,
+      "price": 5999.0
+    },
+    "timestamp": 1704067260000,
+    "completed": true
+  }
+]

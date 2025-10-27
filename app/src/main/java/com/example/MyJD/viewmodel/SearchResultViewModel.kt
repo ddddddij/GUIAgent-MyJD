@@ -1,5 +1,6 @@
 package com.example.MyJD.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,10 +13,12 @@ import com.example.MyJD.presenter.SearchResultPresenter
 import com.example.MyJD.presenter.SearchFilter
 import com.example.MyJD.presenter.SearchSortType
 import com.example.MyJD.repository.DataRepository
+import com.example.MyJD.utils.TaskLogger
 
 class SearchResultViewModel(
     private val repository: DataRepository,
-    private val keyword: String
+    private val keyword: String,
+    private val context: Context
 ) : ViewModel(), SearchResultContract.View {
     
     private val presenter: SearchResultContract.Presenter = SearchResultPresenter(repository)
@@ -68,6 +71,19 @@ class SearchResultViewModel(
     
     fun onProductClicked(productId: String) {
         presenter.onProductClicked(productId)
+        
+        // 记录查看第一个商品的日志（如果点击的是第一个商品）
+        val products = _products.value
+        if (products.isNotEmpty() && products.first().id == productId) {
+            TaskLogger.logSearchTask(
+                context = context,
+                keyword = keyword,
+                resultCount = products.size,
+                firstProductViewed = true,
+                firstProductId = productId,
+                firstProductName = products.first().name
+            )
+        }
     }
     
     fun applyFilter(filter: SearchFilter) {
@@ -103,6 +119,16 @@ class SearchResultViewModel(
     // SearchResultContract.View implementations
     override fun showProducts(products: List<Product>) {
         _products.value = products
+        
+        // 记录搜索任务日志
+        TaskLogger.logSearchTask(
+            context = context,
+            keyword = keyword,
+            resultCount = products.size,
+            firstProductViewed = false,
+            firstProductId = if (products.isNotEmpty()) products.first().id else "",
+            firstProductName = if (products.isNotEmpty()) products.first().name else ""
+        )
     }
     
     override fun showToast(message: String) {
@@ -138,12 +164,13 @@ class SearchResultViewModel(
 
 class SearchResultViewModelFactory(
     private val repository: DataRepository,
-    private val keyword: String
+    private val keyword: String,
+    private val context: Context
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SearchResultViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return SearchResultViewModel(repository, keyword) as T
+            return SearchResultViewModel(repository, keyword, context) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

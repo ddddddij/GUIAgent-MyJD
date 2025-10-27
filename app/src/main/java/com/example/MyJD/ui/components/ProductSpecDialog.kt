@@ -38,7 +38,7 @@ fun ProductSpecDialog(
     val context = LocalContext.current
     val repository = remember { DataRepository.getInstance(context) }
     val viewModel: ProductSpecViewModel = viewModel(
-        factory = ProductSpecViewModel.Factory(repository, productId)
+        factory = ProductSpecViewModel.Factory(repository, productId, context)
     )
     
     val productSpec by viewModel.productSpec.collectAsState()
