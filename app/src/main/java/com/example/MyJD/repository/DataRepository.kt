@@ -28,6 +28,14 @@ import com.example.MyJD.model.ShopPageData
 import com.example.MyJD.utils.TaskOneLogger
 import com.example.MyJD.utils.TaskFourLogger
 import com.example.MyJD.utils.TaskSixLogger
+import com.example.MyJD.utils.TaskEightLogger
+import com.example.MyJD.utils.TaskNineLogger
+import com.example.MyJD.utils.TaskTenLogger
+import com.example.MyJD.utils.TaskElevenLogger
+import com.example.MyJD.utils.TaskFourteenLogger
+import com.example.MyJD.utils.TaskSixteenLogger
+import com.example.MyJD.utils.TaskSeventeenLogger
+import com.example.MyJD.utils.TaskEighteenLogger
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.google.gson.Gson
@@ -1594,5 +1602,204 @@ class DataRepository private constructor(private val context: Context) {
         android.util.Log.d("DataRepository", "支付后待付款订单数量: ${pendingOrdersAfterPay.size}")
         
         android.util.Log.d("DataRepository", "=== 支付流程测试完成 ===")
+    }
+    
+    // ================ 新增任务支持方法 ================
+    
+    // 任务八相关方法
+    fun testTaskEightLogger() {
+        TaskEightLogger.logTaskStart(context)
+        TaskEightLogger.logHomePageEntered(context)
+        // 使用假数据进行测试，实际使用时会在UI组件中正确调用
+        val productCount = 20 // 模拟首页商品数量
+        TaskEightLogger.logProductsLoaded(context, productCount)
+        TaskEightLogger.logTaskCompleted(context, productCount)
+    }
+    
+    fun getTaskEightLog(): String = TaskEightLogger.readLog(context)
+    fun clearTaskEightLog() = TaskEightLogger.clearLog(context)
+    fun isTaskEightCompleted(): Boolean = TaskEightLogger.isTaskCompleted(context)
+    fun getTaskEightProductCount(): Int = TaskEightLogger.getProductCount(context)
+    
+    // 任务九相关方法
+    fun testTaskNineLogger() {
+        TaskNineLogger.logTaskStart(context)
+        TaskNineLogger.logCartPageEntered(context)
+        val cartItems = getSpecShoppingCart()
+        TaskNineLogger.logCartItemsLoaded(context, cartItems.size)
+        val totalPrice = getSelectedSpecCartTotalPrice()
+        TaskNineLogger.logTotalPriceCalculated(context, totalPrice)
+        TaskNineLogger.logTaskCompleted(context, totalPrice)
+    }
+    
+    fun getTaskNineLog(): String = TaskNineLogger.readLog(context)
+    fun clearTaskNineLog() = TaskNineLogger.clearLog(context)
+    fun isTaskNineCompleted(): Boolean = TaskNineLogger.isTaskCompleted(context)
+    fun getTaskNineTotalPrice(): Double = TaskNineLogger.getTotalPrice(context)
+    
+    // 任务十相关方法
+    fun testTaskTenLogger() {
+        TaskTenLogger.logTaskStart(context)
+        TaskTenLogger.logOrderPageEntered(context)
+        TaskTenLogger.logPendingReceiptTabSelected(context)
+        val pendingOrders = getOrders().filter { it.status == OrderStatus.PENDING_RECEIPT }
+        TaskTenLogger.logPendingReceiptOrdersLoaded(context, pendingOrders.size)
+        TaskTenLogger.logTaskCompleted(context, pendingOrders.size)
+    }
+    
+    fun getTaskTenLog(): String = TaskTenLogger.readLog(context)
+    fun clearTaskTenLog() = TaskTenLogger.clearLog(context)
+    fun isTaskTenCompleted(): Boolean = TaskTenLogger.isTaskCompleted(context)
+    fun getTaskTenPendingReceiptOrderCount(): Int = TaskTenLogger.getPendingReceiptOrderCount(context)
+    
+    // 任务十一相关方法
+    fun testTaskElevenLogger() {
+        TaskElevenLogger.logTaskStart(context)
+        TaskElevenLogger.logMessagePageEntered(context)
+        // 使用假数据进行测试，实际使用时会在UI组件中正确调用
+        val messageCount = 15 // 模拟消息总数
+        TaskElevenLogger.logMessagesLoaded(context, messageCount)
+        TaskElevenLogger.logTaskCompleted(context, messageCount)
+    }
+    
+    fun getTaskElevenLog(): String = TaskElevenLogger.readLog(context)
+    fun clearTaskElevenLog() = TaskElevenLogger.clearLog(context)
+    fun isTaskElevenCompleted(): Boolean = TaskElevenLogger.isTaskCompleted(context)
+    fun getTaskElevenMessageCount(): Int = TaskElevenLogger.getMessageCount(context)
+    
+    // 任务十四相关方法
+    fun testTaskFourteenLogger() {
+        TaskFourteenLogger.logTaskStart(context)
+        TaskFourteenLogger.logProductDetailEntered(context, "iPhone 15")
+        TaskFourteenLogger.logReviewSectionViewed(context)
+        // 假设iPhone15有20条评论
+        val reviewCount = 20
+        TaskFourteenLogger.logReviewsLoaded(context, reviewCount)
+        TaskFourteenLogger.logTaskCompleted(context, reviewCount)
+    }
+    
+    fun getTaskFourteenLog(): String = TaskFourteenLogger.readLog(context)
+    fun clearTaskFourteenLog() = TaskFourteenLogger.clearLog(context)
+    fun isTaskFourteenCompleted(): Boolean = TaskFourteenLogger.isTaskCompleted(context)
+    fun getTaskFourteenReviewCount(): Int = TaskFourteenLogger.getReviewCount(context)
+    
+    // 任务十六相关方法
+    fun testTaskSixteenLogger() {
+        TaskSixteenLogger.logTaskStart(context)
+        TaskSixteenLogger.logSearchStarted(context, "iPhone15")
+        TaskSixteenLogger.logSearchResultsLoaded(context, 10)
+        TaskSixteenLogger.logPriceFilterApplied(context, 5000, 8000)
+        TaskSixteenLogger.logCategoryFilterApplied(context, "手机")
+        TaskSixteenLogger.logProductSelected(context, "iPhone 15")
+        TaskSixteenLogger.logSpecSelected(context, "黑色", "256GB")
+        TaskSixteenLogger.logAddToCart(context, "iPhone 15 黑色 256GB")
+        TaskSixteenLogger.logCartEntered(context)
+        TaskSixteenLogger.logCheckoutStarted(context)
+        TaskSixteenLogger.logPaymentMethodSelected(context, "微信支付")
+        TaskSixteenLogger.logCouponSelected(context, "满3000减50")
+        TaskSixteenLogger.logPaymentCompleted(context, "order_test")
+        TaskSixteenLogger.logTaskCompleted(context)
+    }
+    
+    fun getTaskSixteenLog(): String = TaskSixteenLogger.readLog(context)
+    fun clearTaskSixteenLog() = TaskSixteenLogger.clearLog(context)
+    fun isTaskSixteenCompleted(): Boolean = TaskSixteenLogger.isTaskCompleted(context)
+    
+    // 任务十七相关方法
+    fun testTaskSeventeenLogger() {
+        TaskSeventeenLogger.logTaskStart(context)
+        TaskSeventeenLogger.logHomePageEntered(context)
+        TaskSeventeenLogger.logProductDetailEntered(context, "iPhone 15")
+        TaskSeventeenLogger.logShopPageEntered(context, "Apple产品京东自营旗舰店")
+        TaskSeventeenLogger.logShopProductSelected(context, "iPhone 15 粉色 256GB")
+        TaskSeventeenLogger.logProductSpecSelected(context, "粉色", "256GB", 1)
+        TaskSeventeenLogger.logBuyNowClicked(context, "iPhone 15 粉色 256GB")
+        TaskSeventeenLogger.logOrderCreated(context, "order_test")
+        TaskSeventeenLogger.logPaymentCompleted(context, "order_test")
+        TaskSeventeenLogger.logPendingReceiptOrdersViewed(context, 1)
+        TaskSeventeenLogger.logTaskCompleted(context)
+    }
+    
+    fun getTaskSeventeenLog(): String = TaskSeventeenLogger.readLog(context)
+    fun clearTaskSeventeenLog() = TaskSeventeenLogger.clearLog(context)
+    fun isTaskSeventeenCompleted(): Boolean = TaskSeventeenLogger.isTaskCompleted(context)
+    
+    // 任务十八相关方法
+    fun testTaskEighteenLogger() {
+        TaskEighteenLogger.logTaskStart(context)
+        TaskEighteenLogger.logOrderPageEntered(context)
+        val pendingOrders = getOrders().filter { it.status == OrderStatus.PENDING_PAYMENT }
+        TaskEighteenLogger.logPendingPaymentOrdersFound(context, pendingOrders.size)
+        
+        // 模拟取消所有待付款订单
+        pendingOrders.forEach { order ->
+            TaskEighteenLogger.logOrderCancelled(context, order.id)
+        }
+        TaskEighteenLogger.logAllPendingOrdersCancelled(context, pendingOrders.size)
+        
+        TaskEighteenLogger.logAllOrdersTabSelected(context)
+        val cancelledOrders = getOrders().filter { it.status == OrderStatus.CANCELLED }
+        TaskEighteenLogger.logCancelledOrdersFound(context, cancelledOrders.size)
+        
+        // 模拟删除所有已取消订单
+        cancelledOrders.forEach { order ->
+            TaskEighteenLogger.logOrderDeleted(context, order.id)
+        }
+        TaskEighteenLogger.logAllCancelledOrdersDeleted(context, cancelledOrders.size)
+        TaskEighteenLogger.logTaskCompleted(context, pendingOrders.size, cancelledOrders.size)
+    }
+    
+    fun getTaskEighteenLog(): String = TaskEighteenLogger.readLog(context)
+    fun clearTaskEighteenLog() = TaskEighteenLogger.clearLog(context)
+    fun isTaskEighteenCompleted(): Boolean = TaskEighteenLogger.isTaskCompleted(context)
+    fun getTaskEighteenCounts(): Pair<Int, Int> = TaskEighteenLogger.getCancelledAndDeletedCounts(context)
+    
+    /**
+     * 测试所有任务的日志功能
+     */
+    fun testAllTaskLoggers() {
+        android.util.Log.d("DataRepository", "=== 开始测试所有任务日志功能 ===")
+        
+        testTaskEightLogger()
+        testTaskNineLogger()
+        testTaskTenLogger()
+        testTaskElevenLogger()
+        testTaskFourteenLogger()
+        testTaskSixteenLogger()
+        testTaskSeventeenLogger()
+        testTaskEighteenLogger()
+        
+        android.util.Log.d("DataRepository", "=== 所有任务日志功能测试完成 ===")
+    }
+    
+    /**
+     * 获取所有任务的完成状态
+     */
+    fun getAllTasksCompletionStatus(): Map<String, Boolean> {
+        return mapOf(
+            "任务八" to isTaskEightCompleted(),
+            "任务九" to isTaskNineCompleted(),
+            "任务十" to isTaskTenCompleted(),
+            "任务十一" to isTaskElevenCompleted(),
+            "任务十四" to isTaskFourteenCompleted(),
+            "任务十六" to isTaskSixteenCompleted(),
+            "任务十七" to isTaskSeventeenCompleted(),
+            "任务十八" to isTaskEighteenCompleted()
+        )
+    }
+    
+    /**
+     * 清除所有任务的日志
+     */
+    fun clearAllTaskLogs() {
+        clearTaskEightLog()
+        clearTaskNineLog()
+        clearTaskTenLog()
+        clearTaskElevenLog()
+        clearTaskFourteenLog()
+        clearTaskSixteenLog()
+        clearTaskSeventeenLog()
+        clearTaskEighteenLog()
+        android.util.Log.d("DataRepository", "所有任务日志已清除")
     }
 }

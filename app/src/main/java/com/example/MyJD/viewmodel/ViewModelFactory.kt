@@ -12,8 +12,8 @@ class ViewModelFactory(
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when (modelClass) {
-            HomeViewModel::class.java -> HomeViewModel(repository) as T
-            ChatViewModel::class.java -> ChatViewModel(repository) as T
+            HomeViewModel::class.java -> HomeViewModel(repository, context) as T
+            ChatViewModel::class.java -> ChatViewModel(repository, context) as T
             MeViewModel::class.java -> MeViewModel(repository) as T
             OrderViewModel::class.java -> OrderViewModel(repository, context) as T
             SettleViewModel::class.java -> SettleViewModel(repository) as T

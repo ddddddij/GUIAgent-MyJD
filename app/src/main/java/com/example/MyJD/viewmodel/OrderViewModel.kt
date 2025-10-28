@@ -10,6 +10,7 @@ import com.example.MyJD.presenter.OrderPresenter
 import com.example.MyJD.presenter.OrderTab
 import com.example.MyJD.repository.DataRepository
 import com.example.MyJD.utils.TaskSixLogger
+import com.example.MyJD.utils.TaskTenLogger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -36,6 +37,11 @@ class OrderViewModel(
     
     init {
         presenter.attach(this)
+        
+        // 任务十日志记录：进入订单页面
+        TaskTenLogger.logTaskStart(context)
+        TaskTenLogger.logOrderPageEntered(context)
+        
         loadOrders()
     }
     
@@ -66,6 +72,13 @@ class OrderViewModel(
                 TaskSixLogger.logOrderFound(context, order.id)
             }
         }
+        
+        // 任务十日志记录：如果当前显示待收货订单
+        if (_uiState.value.selectedTabIndex == 2) {
+            val pendingReceiptOrders = orders.filter { it.status == OrderStatus.PENDING_RECEIPT }
+            TaskTenLogger.logPendingReceiptOrdersLoaded(context, pendingReceiptOrders.size)
+            TaskTenLogger.logTaskCompleted(context, pendingReceiptOrders.size)
+        }
     }
     
     override fun showToast(message: String) {
@@ -89,6 +102,10 @@ class OrderViewModel(
     
     // Public methods for UI interaction
     fun onTabSelected(tabIndex: Int) {
+        // 任务十日志记录：如果选择待收货标签页
+        if (tabIndex == 2) { // 待收货标签页索引为2
+            TaskTenLogger.logPendingReceiptTabSelected(context)
+        }
         presenter.onTabSelected(tabIndex)
     }
     

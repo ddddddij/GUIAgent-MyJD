@@ -1,5 +1,6 @@
 package com.example.MyJD.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.MyJD.model.Message
@@ -11,12 +12,16 @@ import com.example.MyJD.model.ChatMessage
 import com.example.MyJD.model.ChatSender
 import com.example.MyJD.model.ChatMessageType
 import com.example.MyJD.repository.DataRepository
+import com.example.MyJD.utils.TaskElevenLogger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ChatViewModel(private val repository: DataRepository) : ViewModel() {
+class ChatViewModel(
+    private val repository: DataRepository,
+    private val context: Context
+) : ViewModel() {
     
     private val _allMessages = MutableStateFlow<List<Message>>(emptyList())
     
@@ -36,6 +41,10 @@ class ChatViewModel(private val repository: DataRepository) : ViewModel() {
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
     init {
+        // 任务十一日志记录：开始任务和进入消息页面
+        TaskElevenLogger.logTaskStart(context)
+        TaskElevenLogger.logMessagePageEntered(context)
+        
         loadMessages()
         loadConversationSummaries()
     }
@@ -67,6 +76,11 @@ class ChatViewModel(private val repository: DataRepository) : ViewModel() {
                 // 合并原始消息和新消息，按时间戳排序
                 val allMessages = (originalMessages + convertedNewMessages).sortedByDescending { it.timestamp }
                 _allMessages.value = allMessages
+                
+                // 任务十一日志记录：消息加载完成
+                TaskElevenLogger.logMessagesLoaded(context, allMessages.size)
+                TaskElevenLogger.logTaskCompleted(context, allMessages.size)
+                
                 filterMessages()
             } catch (e: Exception) {
                 _allMessages.value = emptyList()

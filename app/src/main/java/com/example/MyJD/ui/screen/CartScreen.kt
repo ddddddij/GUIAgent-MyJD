@@ -31,6 +31,7 @@ import com.example.MyJD.ui.components.CartHeader
 import com.example.MyJD.ui.components.CartTabs
 import com.example.MyJD.ui.components.CartStoreSection
 import com.example.MyJD.ui.components.CartProductCard
+import com.example.MyJD.utils.TaskNineLogger
 import android.widget.Toast
 
 @Composable
@@ -50,9 +51,21 @@ fun CartScreen(
     var selectedTab by remember { mutableStateOf("全部") }
     var allSelected by remember { mutableStateOf(false) }
     
+    // 任务九日志记录：进入购物车页面和数据加载
+    LaunchedEffect(Unit) {
+        TaskNineLogger.logTaskStart(context)
+        TaskNineLogger.logCartPageEntered(context)
+    }
+    
     // 日志记录购物车数据变化
     LaunchedEffect(specCartItems) {
         android.util.Log.d("CartScreen", "Cart data updated via StateFlow: ${specCartItems.size} items")
+        
+        // 任务九日志记录：商品加载和总价计算
+        TaskNineLogger.logCartItemsLoaded(context, specCartItems.size)
+        val calculatedTotalPrice = repository.getSelectedSpecCartTotalPrice()
+        TaskNineLogger.logTotalPriceCalculated(context, calculatedTotalPrice)
+        TaskNineLogger.logTaskCompleted(context, calculatedTotalPrice)
     }
     
     // StateFlow会自动更新，无需手动刷新函数
