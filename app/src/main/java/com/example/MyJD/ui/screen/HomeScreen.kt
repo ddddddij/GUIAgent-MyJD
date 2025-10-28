@@ -25,7 +25,7 @@ fun HomeScreen(
     val context = LocalContext.current
     val repository = remember { DataRepository.getInstance(context) }
     val viewModel: HomeViewModel = viewModel(
-        factory = com.example.MyJD.viewmodel.ViewModelFactory(repository)
+        factory = com.example.MyJD.viewmodel.ViewModelFactory(repository, context)
     )
     
     val banners by viewModel.banners.collectAsState()

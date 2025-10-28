@@ -169,9 +169,11 @@ class ProductSpecViewModel(
 
         _productSpec.value ?: return null
         
+        val productName = "Apple/苹果 iPhone 15 (A3092) ${selection.selectedStorage}"
+        
         val orderId = repository.createOrder(
             productId = productId,
-            productName = "Apple/苹果 iPhone 15 (A3092) ${selection.selectedStorage}",
+            productName = productName,
             storeName = "Apple产品京东自营旗舰店",
             imageUrl = "image/iPhone15封面.JPG",
             price = selection.currentPrice,
@@ -179,7 +181,6 @@ class ProductSpecViewModel(
             selectedColor = selection.selectedColor,
             selectedVersion = selection.selectedStorage
         )
-        
         
         return orderId
     }

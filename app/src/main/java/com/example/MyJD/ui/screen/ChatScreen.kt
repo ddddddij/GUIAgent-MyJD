@@ -20,7 +20,7 @@ fun ChatScreen(
     val context = LocalContext.current
     val repository = remember { DataRepository.getInstance(context) }
     val viewModel: ChatViewModel = viewModel(
-        factory = com.example.MyJD.viewmodel.ViewModelFactory(repository)
+        factory = com.example.MyJD.viewmodel.ViewModelFactory(repository, context)
     )
     
     val filteredMessages by viewModel.filteredMessages.collectAsState()

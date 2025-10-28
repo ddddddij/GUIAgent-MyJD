@@ -26,6 +26,8 @@ import com.example.MyJD.model.ChatSender
 import com.example.MyJD.model.ChatMessageType
 import com.example.MyJD.model.ShopPageData
 import com.example.MyJD.utils.TaskOneLogger
+import com.example.MyJD.utils.TaskFourLogger
+import com.example.MyJD.utils.TaskSixLogger
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.google.gson.Gson
@@ -402,7 +404,7 @@ class DataRepository private constructor(private val context: Context) {
         )
         
         // 创建订单
-        val orderId = "ORD${System.currentTimeMillis()}"
+        val orderId = generateOrderId()
         val order = Order(
             id = orderId,
             userId = "user_001",
@@ -483,6 +485,9 @@ class DataRepository private constructor(private val context: Context) {
     private var specShoppingCart = mutableListOf<CartItemSpec>()
     private var runtimeOrders = mutableListOf<Order>()
     private var runtimeAddresses = mutableListOf<Address>()
+    
+    // 订单ID计数器
+    private var orderCounter = 1
     private var newMessages = mutableListOf<ChatMessage>()
     private var muteSettings = mutableListOf<MuteSetting>()
     
@@ -497,6 +502,9 @@ class DataRepository private constructor(private val context: Context) {
             }
             // 初始化时加载持久化数据
             loadPersistentData()
+            
+            // 初始化订单计数器
+            initializeOrderCounter()
         } catch (e: Exception) {
             android.util.Log.e("DataRepository", "Error initializing data directory", e)
         }
@@ -699,6 +707,9 @@ class DataRepository private constructor(private val context: Context) {
      * 支付订单 - 将待付款订单状态更新为待发货
      */
     fun payOrder(orderId: String): Boolean {
+        // 任务六日志记录：确认付款操作
+        TaskSixLogger.logConfirmPayment(context)
+        
         // 首先在运行时订单中查找
         val runtimeIndex = runtimeOrders.indexOfFirst { it.id == orderId }
         if (runtimeIndex != -1) {
@@ -710,7 +721,17 @@ class DataRepository private constructor(private val context: Context) {
                     payTime = System.currentTimeMillis(),
                     shipTime = System.currentTimeMillis() + 3600000L // 假设1小时后发货
                 )
+                
                 android.util.Log.d("DataRepository", "Order $orderId status updated to PENDING_RECEIPT")
+                
+                // 任务六日志记录：付款成功
+                TaskSixLogger.logPaymentSuccess(context, orderId)
+                
+                // 检查是否为第一个待付款订单的完成，如果是则记录任务完成
+                if (isFirstPendingPaymentOrder(orderId)) {
+                    TaskSixLogger.logTaskCompleted(context)
+                }
+                
                 saveOrders()
                 return true
             }
@@ -732,7 +753,17 @@ class DataRepository private constructor(private val context: Context) {
                     shipTime = System.currentTimeMillis() + 3600000L // 假设1小时后发货
                 )
                 runtimeOrders.add(0, updatedOrder) // 添加到列表开头（最新）
+                
                 android.util.Log.d("DataRepository", "Moved static order $orderId to runtime and updated status to PENDING_RECEIPT")
+                
+                // 任务六日志记录：付款成功
+                TaskSixLogger.logPaymentSuccess(context, orderId)
+                
+                // 检查是否为第一个待付款订单的完成，如果是则记录任务完成
+                if (isFirstPendingPaymentOrder(orderId)) {
+                    TaskSixLogger.logTaskCompleted(context)
+                }
+                
                 saveOrders()
                 return true
             }
@@ -741,7 +772,20 @@ class DataRepository private constructor(private val context: Context) {
         }
         
         android.util.Log.w("DataRepository", "Order $orderId not found or not in PENDING_PAYMENT status")
+        // 任务六日志记录：付款失败
+        TaskSixLogger.logPaymentFailed(context, "订单不存在或状态不正确")
         return false
+    }
+    
+    /**
+     * 检查给定订单是否是第一个待付款订单
+     */
+    private fun isFirstPendingPaymentOrder(orderId: String): Boolean {
+        val allOrders = getOrders()
+        val pendingPaymentOrders = allOrders
+            .filter { it.status == OrderStatus.PENDING_PAYMENT }
+            .sortedBy { it.createTime } // 按创建时间排序，最早的为第一个
+        return pendingPaymentOrders.isNotEmpty() && pendingPaymentOrders.first().id == orderId
     }
     
     /**
@@ -1363,5 +1407,192 @@ class DataRepository private constructor(private val context: Context) {
     fun clearTaskOneLogs() {
         TaskOneLogger.clearLogs(context)
         android.util.Log.d("DataRepository", "Task one: All logs cleared")
+    }
+    
+    // ==================== 任务四日志管理功能 ====================
+    
+    /**
+     * 记录访问「我的」页面（任务四相关）
+     */
+    fun logTaskFourMePageVisited() {
+        TaskFourLogger.logMePageVisited(context)
+        android.util.Log.d("DataRepository", "Task four: Me page visited")
+    }
+    
+    /**
+     * 记录找到订单管理区域（任务四相关）
+     */
+    fun logTaskFourOrdersSectionFound() {
+        TaskFourLogger.logOrdersSectionFound(context)
+        android.util.Log.d("DataRepository", "Task four: Orders section found")
+    }
+    
+    /**
+     * 记录点击「全部订单」（任务四相关）
+     */
+    fun logTaskFourAllOrdersClicked() {
+        TaskFourLogger.logAllOrdersClicked(context)
+        android.util.Log.d("DataRepository", "Task four: All orders clicked")
+    }
+    
+    /**
+     * 记录订单列表加载完成（任务四相关）
+     */
+    fun logTaskFourOrderListLoaded(orderCount: Int) {
+        TaskFourLogger.logOrderListLoaded(context, orderCount)
+        android.util.Log.d("DataRepository", "Task four: Order list loaded - $orderCount orders")
+    }
+    
+    /**
+     * 记录查看订单详情（任务四相关）
+     */
+    fun logTaskFourOrderDetailsViewed(orderId: String, status: String) {
+        TaskFourLogger.logOrderDetailsViewed(context, orderId, status)
+        android.util.Log.d("DataRepository", "Task four: Order details viewed - $orderId, status: $status")
+    }
+    
+    /**
+     * 记录任务四完成
+     */
+    fun logTaskFourCompleted(totalOrders: Int) {
+        TaskFourLogger.logTaskCompleted(context, totalOrders)
+        android.util.Log.d("DataRepository", "Task four: Task completed - viewed all orders, total: $totalOrders")
+    }
+    
+    // 任务六相关方法
+    /**
+     * 测试任务六日志功能
+     */
+    fun testTaskSixLogger() {
+        TaskSixLogger.logTaskStart(context)
+        TaskSixLogger.logOrderFound(context, "test_order_001")
+        TaskSixLogger.logClickPayButton(context)
+        TaskSixLogger.logPaymentSuccess(context, "test_order_001")
+        TaskSixLogger.logTaskCompleted(context)
+    }
+    
+    /**
+     * 获取任务六日志内容
+     */
+    fun getTaskSixLog(): String {
+        return TaskSixLogger.readLog(context)
+    }
+    
+    /**
+     * 清除任务六日志
+     */
+    fun clearTaskSixLog() {
+        TaskSixLogger.clearLog(context)
+    }
+    
+    /**
+     * 检查任务六是否完成
+     */
+    fun isTaskSixCompleted(): Boolean {
+        return TaskSixLogger.isTaskCompleted(context)
+    }
+    
+    /**
+     * 检查任务四是否完成
+     */
+    fun isTaskFourCompleted(): Boolean {
+        return TaskFourLogger.isTaskFourCompleted(context)
+    }
+    
+    /**
+     * 获取任务四完成状态详情
+     */
+    fun getTaskFourCompletionDetails(): Map<String, Any> {
+        return TaskFourLogger.getTaskFourCompletionDetails(context)
+    }
+    
+    /**
+     * 获取任务四日志文件路径
+     */
+    fun getTaskFourLogFilePath(): String {
+        return TaskFourLogger.getLogFilePath(context)
+    }
+    
+    /**
+     * 清除任务四日志
+     */
+    fun clearTaskFourLogs() {
+        TaskFourLogger.clearLogs(context)
+        android.util.Log.d("DataRepository", "Task four: All logs cleared")
+    }
+    
+    /**
+     * 初始化订单计数器
+     */
+    private fun initializeOrderCounter() {
+        val allOrders = getOrders()
+        if (allOrders.isNotEmpty()) {
+            // 找到最大的订单编号
+            val maxOrderNumber = allOrders.mapNotNull { order ->
+                val id = order.id
+                if (id.startsWith("order_")) {
+                    id.substring(6).toIntOrNull()
+                } else {
+                    null
+                }
+            }.maxOrNull() ?: 0
+            
+            orderCounter = maxOrderNumber + 1
+        } else {
+            orderCounter = 1
+        }
+        android.util.Log.d("DataRepository", "Initialized order counter to: $orderCounter")
+    }
+    
+    /**
+     * 生成新的订单ID
+     */
+    private fun generateOrderId(): String {
+        val id = "order_${String.format("%03d", orderCounter)}"
+        orderCounter++
+        android.util.Log.d("DataRepository", "Generated order ID: $id")
+        return id
+    }
+    
+    /**
+     * 测试支付流程
+     */
+    fun testPaymentFlow() {
+        android.util.Log.d("DataRepository", "=== 开始测试支付流程 ===")
+        
+        // 1. 创建测试订单
+        val orderId = createOrder(
+            productId = "test_product",
+            productName = "测试商品",
+            storeName = "测试店铺",
+            imageUrl = "test_image.jpg",
+            price = 100.0,
+            quantity = 1,
+            selectedColor = "红色",
+            selectedVersion = "64GB"
+        )
+        android.util.Log.d("DataRepository", "创建订单: $orderId")
+        
+        // 2. 检查订单状态
+        val createdOrder = getOrderById(orderId)
+        android.util.Log.d("DataRepository", "创建的订单状态: ${createdOrder?.status}")
+        
+        // 3. 获取所有待付款订单
+        val pendingOrders = getOrders().filter { it.status == OrderStatus.PENDING_PAYMENT }
+        android.util.Log.d("DataRepository", "当前待付款订单数量: ${pendingOrders.size}")
+        
+        // 4. 支付订单
+        val payResult = payOrder(orderId)
+        android.util.Log.d("DataRepository", "支付结果: $payResult")
+        
+        // 5. 再次检查订单状态
+        val paidOrder = getOrderById(orderId)
+        android.util.Log.d("DataRepository", "支付后订单状态: ${paidOrder?.status}")
+        
+        // 6. 检查待付款订单数量
+        val pendingOrdersAfterPay = getOrders().filter { it.status == OrderStatus.PENDING_PAYMENT }
+        android.util.Log.d("DataRepository", "支付后待付款订单数量: ${pendingOrdersAfterPay.size}")
+        
+        android.util.Log.d("DataRepository", "=== 支付流程测试完成 ===")
     }
 }

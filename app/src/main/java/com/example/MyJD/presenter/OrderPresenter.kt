@@ -37,7 +37,16 @@ class OrderPresenter(
                 view?.showDeleteConfirmDialog(orderId)
             }
             "去支付" -> {
-                view?.navigateToPayment(orderId)
+                android.util.Log.d("OrderPresenter", "Attempting to pay order: $orderId")
+                val success = repository.payOrder(orderId)
+                if (success) {
+                    android.util.Log.d("OrderPresenter", "Order $orderId paid successfully")
+                    view?.showToast("支付成功")
+                    loadOrders() // 刷新订单列表以移除已支付订单
+                } else {
+                    android.util.Log.w("OrderPresenter", "Failed to pay order: $orderId")
+                    view?.showToast("支付失败")
+                }
             }
             "取消订单" -> {
                 android.util.Log.d("OrderPresenter", "Attempting to cancel order: $orderId")

@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.MyJD.model.Product
+import com.example.MyJD.repository.DataRepository
 import com.example.MyJD.ui.theme.JDRed
 import com.example.MyJD.ui.theme.JDTextPrimary
 import com.example.MyJD.ui.theme.JDTextSecondary

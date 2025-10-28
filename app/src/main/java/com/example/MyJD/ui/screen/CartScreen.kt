@@ -42,7 +42,7 @@ fun CartScreen(
     val context = LocalContext.current
     val repository = remember { DataRepository.getInstance(context) }
     val viewModel: HomeViewModel = viewModel(
-        factory = ViewModelFactory(repository)
+        factory = ViewModelFactory(repository, context)
     )
     
     // 使用StateFlow响应式获取购物车数据

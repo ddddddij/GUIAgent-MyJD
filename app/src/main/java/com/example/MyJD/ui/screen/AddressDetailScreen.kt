@@ -41,7 +41,7 @@ fun AddressDetailScreen(
     val context = LocalContext.current
     val repository = remember { DataRepository.getInstance(context) }
     val viewModel: AddressDetailViewModel = viewModel(
-        factory = ViewModelFactory(repository)
+        factory = ViewModelFactory(repository, context)
     )
     
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()

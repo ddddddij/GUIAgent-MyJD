@@ -11,7 +11,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
 import com.example.MyJD.model.MeTabOrderStatus
+import com.example.MyJD.repository.DataRepository
+import com.example.MyJD.utils.TaskSixLogger
 
 @Composable
 fun OrderSection(
@@ -19,6 +23,13 @@ fun OrderSection(
     onOrderStatusClick: (MeTabOrderStatus) -> Unit,
     onViewAllClick: () -> Unit
 ) {
+    val context = LocalContext.current
+    val repository = DataRepository.getInstance(context)
+    
+    // 任务四日志记录：找到订单管理区域
+    LaunchedEffect(Unit) {
+        repository.logTaskFourOrdersSectionFound()
+    }
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -49,7 +60,11 @@ fun OrderSection(
                     text = "查看全部 >",
                     fontSize = 12.sp,
                     color = Color.Gray,
-                    modifier = Modifier.clickable { onViewAllClick() }
+                    modifier = Modifier.clickable { 
+                        // 任务四日志记录：点击「全部订单」
+                        repository.logTaskFourAllOrdersClicked()
+                        onViewAllClick() 
+                    }
                 )
             }
             
@@ -65,7 +80,13 @@ fun OrderSection(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
                             .weight(1f)
-                            .clickable { onOrderStatusClick(orderStatus) }
+                            .clickable { 
+                                // 任务六日志记录：如果点击的是待付款订单
+                                if (orderStatus.name == "待付款" && orderStatus.count > 0) {
+                                    TaskSixLogger.logTaskStart(context)
+                                }
+                                onOrderStatusClick(orderStatus) 
+                            }
                             .padding(vertical = 8.dp)
                     ) {
                         Box {
@@ -115,7 +136,11 @@ fun OrderSection(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
                         .weight(1f)
-                        .clickable { onViewAllClick() }
+                        .clickable { 
+                            // 任务四日志记录：点击「全部订单」
+                            repository.logTaskFourAllOrdersClicked()
+                            onViewAllClick() 
+                        }
                         .padding(vertical = 8.dp)
                 ) {
                     Text(

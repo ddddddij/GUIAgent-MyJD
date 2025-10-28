@@ -38,7 +38,7 @@ fun AddressListScreen(
     val context = LocalContext.current
     val repository = remember { DataRepository.getInstance(context) }
     val viewModel: AddressListViewModel = viewModel(
-        factory = ViewModelFactory(repository)
+        factory = ViewModelFactory(repository, context)
     )
     
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()

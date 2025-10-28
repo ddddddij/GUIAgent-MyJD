@@ -42,7 +42,7 @@ fun OrderScreen(
     val context = LocalContext.current
     val repository = remember { DataRepository.getInstance(context) }
     val viewModel: OrderViewModel = viewModel(
-        factory = ViewModelFactory(repository)
+        factory = ViewModelFactory(repository, context)
     )
     
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

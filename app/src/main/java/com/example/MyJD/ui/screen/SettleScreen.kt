@@ -51,7 +51,7 @@ fun SettleScreen(
     val context = LocalContext.current
     val repository = remember { DataRepository.getInstance(context) }
     val viewModel: SettleViewModel = viewModel(
-        factory = ViewModelFactory(repository)
+        factory = ViewModelFactory(repository, context)
     )
     
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

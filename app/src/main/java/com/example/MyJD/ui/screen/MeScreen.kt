@@ -25,11 +25,16 @@ fun MeScreen(
     val context = LocalContext.current
     val repository = remember { DataRepository.getInstance(context) }
     val viewModel: MeViewModel = viewModel(
-        factory = com.example.MyJD.viewmodel.ViewModelFactory(repository)
+        factory = com.example.MyJD.viewmodel.ViewModelFactory(repository, context)
     )
     
     val meTabData by viewModel.meTabData.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
+    
+    // 任务四日志记录：访问「我的」页面
+    LaunchedEffect(Unit) {
+        repository.logTaskFourMePageVisited()
+    }
 
     if (isLoading) {
         Box(
