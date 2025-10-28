@@ -9,7 +9,6 @@ import com.example.MyJD.model.SpecSelection
 import com.example.MyJD.model.CartItemSpec
 import com.example.MyJD.repository.DataRepository
 import com.example.MyJD.utils.PricingUtils
-import com.example.MyJD.utils.TaskLogger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -157,16 +156,6 @@ class ProductSpecViewModel(
         
         repository.addToSpecCart(cartItem)
         
-        // 记录添加到购物车的任务日志
-        TaskLogger.logAddToCart(
-            context = context,
-            productId = productId,
-            productName = cartItem.productName,
-            color = selection.selectedColor,
-            version = selection.selectedStorage,
-            quantity = selection.quantity,
-            price = selection.currentPrice
-        )
         
         android.util.Log.d("ProductSpecViewModel", "Item added to cart: $cartItem")
         android.util.Log.d("ProductSpecViewModel", "Cart after adding: ${repository.getSpecCartTotalCount()} items")
@@ -191,17 +180,6 @@ class ProductSpecViewModel(
             selectedVersion = selection.selectedStorage
         )
         
-        // 记录立即购买的任务日志
-        if (orderId != null) {
-            TaskLogger.logPurchase(
-                context = context,
-                productId = productId,
-                productName = "Apple/苹果 iPhone 15 (A3092) ${selection.selectedStorage}",
-                orderId = orderId,
-                color = selection.selectedColor,
-                version = selection.selectedStorage
-            )
-        }
         
         return orderId
     }

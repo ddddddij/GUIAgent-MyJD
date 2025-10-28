@@ -13,7 +13,6 @@ import com.example.MyJD.presenter.SearchResultPresenter
 import com.example.MyJD.presenter.SearchFilter
 import com.example.MyJD.presenter.SearchSortType
 import com.example.MyJD.repository.DataRepository
-import com.example.MyJD.utils.TaskLogger
 
 class SearchResultViewModel(
     private val repository: DataRepository,
@@ -75,14 +74,7 @@ class SearchResultViewModel(
         // 记录查看第一个商品的日志（如果点击的是第一个商品）
         val products = _products.value
         if (products.isNotEmpty() && products.first().id == productId) {
-            TaskLogger.logSearchTask(
-                context = context,
-                keyword = keyword,
-                resultCount = products.size,
-                firstProductViewed = true,
-                firstProductId = productId,
-                firstProductName = products.first().name
-            )
+            android.util.Log.d("SearchResultViewModel", "First product viewed: ${products.first().name}")
         }
     }
     
@@ -120,15 +112,7 @@ class SearchResultViewModel(
     override fun showProducts(products: List<Product>) {
         _products.value = products
         
-        // 记录搜索任务日志
-        TaskLogger.logSearchTask(
-            context = context,
-            keyword = keyword,
-            resultCount = products.size,
-            firstProductViewed = false,
-            firstProductId = if (products.isNotEmpty()) products.first().id else "",
-            firstProductName = if (products.isNotEmpty()) products.first().name else ""
-        )
+        android.util.Log.d("SearchResultViewModel", "Search results loaded: ${products.size} products for keyword: $keyword")
     }
     
     override fun showToast(message: String) {

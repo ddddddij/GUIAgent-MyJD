@@ -26,8 +26,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.MyJD.navigation.AppNavigation
 import com.example.MyJD.repository.DataRepository
 import com.example.MyJD.ui.theme.MyJDTheme
-import com.example.MyJD.utils.TaskLogger
-import com.example.MyJD.utils.TaskVerifier
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,14 +56,6 @@ fun MainScreen() {
         android.util.Log.d("MainActivity", "Cart count updated via StateFlow: $cartCount")
     }
     
-    // 初始化TaskLogger并显示调试信息（仅启动时执行一次）
-    LaunchedEffect(Unit) {
-        TaskLogger.initializeLogging(context)
-        // 延迟一秒后执行任务验证，确保应用完全启动
-        kotlinx.coroutines.delay(1000)
-        // 执行所有任务验证并输出到logcat
-        TaskVerifier.verifyAllTasksAndLogToLogcat(context)
-    }
     
     val bottomNavItems = listOf(
         BottomNavItem("home", "首页", Icons.Filled.Home),
