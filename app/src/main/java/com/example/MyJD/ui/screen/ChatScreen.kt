@@ -24,6 +24,7 @@ fun ChatScreen(
     )
     
     val filteredMessages by viewModel.filteredMessages.collectAsState()
+    val conversationSummaries by viewModel.conversationSummaries.collectAsState()
     val selectedMessageType by viewModel.selectedMessageType.collectAsState()
     val selectedSubType by viewModel.selectedSubType.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
@@ -72,14 +73,25 @@ fun ChatScreen(
                     CircularProgressIndicator()
                 }
             } else {
-                MessageList(
-                    messages = filteredMessages,
-                    onMessageClick = { message ->
-                        val conversationId = viewModel.getConversationIdForMessage(message)
-                        onNavigateToDetail(conversationId)
-                    },
-                    modifier = Modifier.weight(1f)
-                )
+                // 当选择客服消息类型时，显示对话摘要列表
+                if (selectedMessageType == com.example.MyJD.model.MessageType.CUSTOMER_SERVICE) {
+                    ConversationSummaryList(
+                        conversationSummaries = conversationSummaries,
+                        onConversationClick = { conversationSummary ->
+                            onNavigateToDetail(conversationSummary.id)
+                        },
+                        modifier = Modifier.weight(1f)
+                    )
+                } else {
+                    MessageList(
+                        messages = filteredMessages,
+                        onMessageClick = { message ->
+                            val conversationId = viewModel.getConversationIdForMessage(message)
+                            onNavigateToDetail(conversationId)
+                        },
+                        modifier = Modifier.weight(1f)
+                    )
+                }
             }
         }
     }

@@ -74,9 +74,9 @@ fun SettingItemView(
                         },
                         colors = SwitchDefaults.colors(
                             checkedThumbColor = Color.White,
-                            checkedTrackColor = Color(0xFF1976D2),
+                            checkedTrackColor = Color(0xFF4CAF50), // 绿色表示免打扰开启
                             uncheckedThumbColor = Color.White,
-                            uncheckedTrackColor = Color.Gray
+                            uncheckedTrackColor = Color.Gray // 灰色表示免打扰关闭
                         )
                     )
                 }

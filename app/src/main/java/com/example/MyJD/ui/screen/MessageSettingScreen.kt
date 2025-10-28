@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.MyJD.presenter.MessageSettingContract
 import com.example.MyJD.presenter.MessageSettingPresenter
+import com.example.MyJD.repository.DataRepository
 import com.example.MyJD.ui.components.SettingItemView
 import com.example.MyJD.ui.components.SettingSection
 import com.example.MyJD.ui.components.SettingDivider
@@ -32,7 +33,8 @@ fun MessageSettingScreen(
     onNavigateToShop: () -> Unit
 ) {
     val context = LocalContext.current
-    val presenter = remember { MessageSettingPresenter() }
+    val repository = remember { DataRepository.getInstance(context) }
+    val presenter = remember { MessageSettingPresenter(repository) }
     
     var displayShopName by remember { mutableStateOf(shopName) }
     var displayShopAvatar by remember { mutableStateOf(shopAvatar) }
@@ -135,9 +137,9 @@ fun MessageSettingScreen(
                     title = "消息免打扰",
                     showArrow = false,
                     showSwitch = true,
-                    switchEnabled = notificationEnabled,
+                    switchEnabled = !notificationEnabled, // 免打扰开关与通知开关相反
                     onSwitchChanged = { enabled ->
-                        presenter.onNotificationSwitchChanged(enabled)
+                        presenter.onNotificationSwitchChanged(!enabled) // 传递通知开关状态
                     }
                 )
                 

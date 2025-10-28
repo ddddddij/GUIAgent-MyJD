@@ -1,6 +1,10 @@
 package com.example.MyJD.presenter
 
-class MessageSettingPresenter : MessageSettingContract.Presenter {
+import com.example.MyJD.repository.DataRepository
+
+class MessageSettingPresenter(
+    private val repository: DataRepository
+) : MessageSettingContract.Presenter {
     
     private var view: MessageSettingContract.View? = null
     private var currentShopName: String = ""
@@ -20,7 +24,11 @@ class MessageSettingPresenter : MessageSettingContract.Presenter {
         currentShopAvatar = shopAvatar
         view?.setShopInfo(shopName, shopAvatar)
         
-        android.util.Log.d("MessageSettingPresenter", "Loaded shop info: $shopName")
+        // 从持久化存储中加载免打扰状态
+        isNotificationEnabled = !repository.getMuteSetting(shopName) // 注意：免打扰开启=通知关闭
+        view?.updateNotificationSwitch(isNotificationEnabled)
+        
+        android.util.Log.d("MessageSettingPresenter", "Loaded shop info: $shopName, notification enabled: $isNotificationEnabled")
     }
     
     override fun onEnterShopClick() {
@@ -37,10 +45,14 @@ class MessageSettingPresenter : MessageSettingContract.Presenter {
         isNotificationEnabled = enabled
         view?.updateNotificationSwitch(enabled)
         
-        val status = if (enabled) "开启" else "关闭"
-        android.util.Log.d("MessageSettingPresenter", "Notification switch: $status")
+        // 保存免打扰设置到持久化存储（免打扰=!通知开启）
+        repository.setMuteSetting(currentShopName, !enabled)
         
-        // 按要求：切换无实际功能，仅更新UI状态
+        val status = if (enabled) "开启" else "关闭"
+        val muteStatus = if (!enabled) "免打扰已开启" else "免打扰已关闭"
+        android.util.Log.d("MessageSettingPresenter", "Notification switch: $status, $muteStatus")
+        
+        view?.showToast(muteStatus)
     }
     
     override fun onMessageSettingsClick() {

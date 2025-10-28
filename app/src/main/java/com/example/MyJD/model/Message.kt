@@ -46,7 +46,8 @@ data class ChatMessage(
     val sender: ChatSender,
     val type: ChatMessageType,
     val content: String,
-    val timestamp: Long
+    val timestamp: Long,
+    val conversationId: String? = null // 添加对话ID字段
 )
 
 // Conversation data structure
@@ -69,4 +70,21 @@ data class ProductCard(
     val productName: String,
     val productPrice: String,
     val productImage: String
+)
+
+// Mute settings for stores/senders
+data class MuteSetting(
+    val senderName: String,
+    val isMuted: Boolean,
+    val timestamp: Long
+)
+
+// Conversation summary for chat list display
+data class ConversationSummary(
+    val id: String,
+    val chatName: String,
+    val chatAvatar: String,
+    val lastMessage: String,
+    val lastMessageTime: Long,
+    val hasUnread: Boolean = false
 )

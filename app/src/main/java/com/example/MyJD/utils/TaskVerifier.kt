@@ -3,6 +3,7 @@ package com.example.MyJD.utils
 import android.content.Context
 import android.util.Log
 import com.example.MyJD.model.*
+import com.example.MyJD.repository.DataRepository
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.File
@@ -48,11 +49,12 @@ object TaskVerifier {
     // 2. 验证将iPhone 15加入购物车
     fun verifyAddiPhone15ToCart(context: Context): VerificationResult {
         return try {
-            val cartItems = loadCartItems(context)
+            val repository = DataRepository.getInstance(context)
+            val cartItems = repository.getSpecShoppingCart()
             val iPhone15Items = cartItems.filter { 
-                it.product.name.contains("iPhone 15", ignoreCase = true) &&
-                it.product.selectedColor == "蓝色" &&
-                it.product.selectedVersion == "128GB"
+                it.productName.contains("iPhone 15", ignoreCase = true) &&
+                it.color == "蓝色" &&
+                it.storage == "128GB"
             }
             
             if (iPhone15Items.isNotEmpty()) {
@@ -62,7 +64,8 @@ object TaskVerifier {
                     details = mapOf(
                         "cartItemId" to iPhone15Items.first().id,
                         "quantity" to iPhone15Items.first().quantity,
-                        "addedTime" to iPhone15Items.first().addedTime
+                        "productName" to iPhone15Items.first().productName,
+                        "price" to iPhone15Items.first().price
                     )
                 )
             } else {
@@ -82,7 +85,8 @@ object TaskVerifier {
     // 3. 验证立即购买iPhone 15
     fun verifyPurchaseiPhone15(context: Context): VerificationResult {
         return try {
-            val orders = loadOrders(context)
+            val repository = DataRepository.getInstance(context)
+            val orders = repository.getOrders()
             val iPhone15Orders = orders.filter { order ->
                 order.items.any { item ->
                     item.product.name.contains("iPhone 15", ignoreCase = true)
@@ -399,21 +403,22 @@ object TaskVerifier {
     // 15. 验证添加多个iPhone15到购物车
     fun verifyAddMultipleiPhone15ToCart(context: Context): VerificationResult {
         return try {
-            val cartItems = loadCartItems(context)
+            val repository = DataRepository.getInstance(context)
+            val cartItems = repository.getSpecShoppingCart()
             val iPhone15Items = cartItems.filter { 
-                it.product.name.contains("iPhone 15", ignoreCase = true)
+                it.productName.contains("iPhone 15", ignoreCase = true)
             }
             
             val blueCount = iPhone15Items.filter { 
-                it.product.selectedColor == "蓝色" && it.product.selectedVersion == "128GB" 
+                it.color == "蓝色" && it.storage == "128GB" 
             }.sumOf { it.quantity }
             
             val blackCount = iPhone15Items.filter { 
-                it.product.selectedColor == "黑色" && it.product.selectedVersion == "256GB" 
+                it.color == "黑色" && it.storage == "256GB" 
             }.sumOf { it.quantity }
             
             val pinkCount = iPhone15Items.filter { 
-                it.product.selectedColor == "粉色" && it.product.selectedVersion == "128GB" 
+                it.color == "粉色" && it.storage == "128GB" 
             }.sumOf { it.quantity }
             
             val totalCount = blueCount + blackCount + pinkCount
@@ -527,7 +532,11 @@ object TaskVerifier {
     // 19. 验证新建地址
     fun verifyAddNewAddress(context: Context): VerificationResult {
         return try {
-            val addresses = loadAddresses(context)
+            val repository = DataRepository.getInstance(context)
+            // 使用runBlocking来调用suspend函数
+            val addresses = kotlinx.coroutines.runBlocking {
+                repository.loadAddresses()
+            }
             val wuhanAddress = addresses.find { 
                 it.province == "湖北省" && 
                 it.city == "武汉市" && 
@@ -563,61 +572,53 @@ object TaskVerifier {
     
     // 20. 验证设置Apple店铺消息免打扰
     fun verifySetAppleStoreMessageMute(context: Context): VerificationResult {
-        val logs = TaskLogger.getAllLogs(context)
-        val muteLogs = logs.filter { 
-            it.taskType == "SET_MESSAGE_MUTE" && 
-            it.details["storeName"]?.contains("Apple", ignoreCase = true) == true
-        }
-        
-        return if (muteLogs.isNotEmpty()) {
-            val latestLog = muteLogs.maxByOrNull { it.timestamp }
-            VerificationResult(
-                isCompleted = true,
-                message = "已设置Apple店铺消息免打扰",
-                details = mapOf(
-                    "setTime" to (latestLog?.timestamp ?: 0),
-                    "storeName" to (latestLog?.details?.get("storeName") ?: "")
+        return try {
+            val repository = DataRepository.getInstance(context)
+            val muteSettings = repository.getAllMuteSettings()
+            val appleMuteSetting = muteSettings.find { 
+                it.senderName.contains("Apple", ignoreCase = true) && it.isMuted
+            }
+            
+            if (appleMuteSetting != null) {
+                VerificationResult(
+                    isCompleted = true,
+                    message = "已设置Apple店铺消息免打扰",
+                    details = mapOf(
+                        "senderName" to appleMuteSetting.senderName,
+                        "isMuted" to appleMuteSetting.isMuted,
+                        "setTime" to appleMuteSetting.timestamp
+                    )
                 )
-            )
-        } else {
+            } else {
+                // 同时检查日志记录作为备选验证
+                val logs = TaskLogger.getAllLogs(context)
+                val muteLogs = logs.filter { 
+                    it.taskType == "SET_MESSAGE_MUTE" && 
+                    it.details["storeName"]?.contains("Apple", ignoreCase = true) == true
+                }
+                
+                if (muteLogs.isNotEmpty()) {
+                    val latestLog = muteLogs.maxByOrNull { it.timestamp }
+                    VerificationResult(
+                        isCompleted = true,
+                        message = "已设置Apple店铺消息免打扰(从日志验证)",
+                        details = mapOf(
+                            "setTime" to (latestLog?.timestamp ?: 0),
+                            "storeName" to (latestLog?.details?.get("storeName") ?: "")
+                        )
+                    )
+                } else {
+                    VerificationResult(
+                        isCompleted = false,
+                        message = "未设置Apple店铺消息免打扰"
+                    )
+                }
+            }
+        } catch (e: Exception) {
             VerificationResult(
                 isCompleted = false,
-                message = "未设置Apple店铺消息免打扰"
+                message = "检查免打扰设置失败: ${e.message}"
             )
-        }
-    }
-    
-    // 数据加载辅助函数
-    private fun loadCartItems(context: Context): List<CartItem> {
-        return try {
-            val inputStream = context.assets.open("data/cart_items.json")
-            val jsonString = inputStream.bufferedReader().use { it.readText() }
-            val listType = object : TypeToken<List<CartItem>>() {}.type
-            gson.fromJson<List<CartItem>>(jsonString, listType)
-        } catch (e: Exception) {
-            emptyList()
-        }
-    }
-    
-    private fun loadOrders(context: Context): List<Order> {
-        return try {
-            val inputStream = context.assets.open("data/orders.json")
-            val jsonString = inputStream.bufferedReader().use { it.readText() }
-            val listType = object : TypeToken<List<Order>>() {}.type
-            gson.fromJson<List<Order>>(jsonString, listType)
-        } catch (e: Exception) {
-            emptyList()
-        }
-    }
-    
-    private fun loadAddresses(context: Context): List<Address> {
-        return try {
-            val inputStream = context.assets.open("data/addresses.json")
-            val jsonString = inputStream.bufferedReader().use { it.readText() }
-            val listType = object : TypeToken<List<Address>>() {}.type
-            gson.fromJson<List<Address>>(jsonString, listType)
-        } catch (e: Exception) {
-            emptyList()
         }
     }
     

@@ -6,6 +6,10 @@ import com.example.MyJD.model.Message
 import com.example.MyJD.model.MessageType
 import com.example.MyJD.model.MessageSubType
 import com.example.MyJD.model.ConversationData
+import com.example.MyJD.model.ConversationSummary
+import com.example.MyJD.model.ChatMessage
+import com.example.MyJD.model.ChatSender
+import com.example.MyJD.model.ChatMessageType
 import com.example.MyJD.repository.DataRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,6 +23,9 @@ class ChatViewModel(private val repository: DataRepository) : ViewModel() {
     private val _filteredMessages = MutableStateFlow<List<Message>>(emptyList())
     val filteredMessages: StateFlow<List<Message>> = _filteredMessages.asStateFlow()
     
+    private val _conversationSummaries = MutableStateFlow<List<ConversationSummary>>(emptyList())
+    val conversationSummaries: StateFlow<List<ConversationSummary>> = _conversationSummaries.asStateFlow()
+    
     private val _selectedMessageType = MutableStateFlow(MessageType.CUSTOMER_SERVICE)
     val selectedMessageType: StateFlow<MessageType> = _selectedMessageType.asStateFlow()
     
@@ -30,20 +37,53 @@ class ChatViewModel(private val repository: DataRepository) : ViewModel() {
 
     init {
         loadMessages()
+        loadConversationSummaries()
     }
 
     private fun loadMessages() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val messages = repository.loadMessages()
-                _allMessages.value = messages
+                // 加载原始消息
+                val originalMessages = repository.loadMessages()
+                
+                // 加载新发送的消息并转换为Message格式
+                val newChatMessages = repository.getNewMessages()
+                val convertedNewMessages = newChatMessages.map { chatMessage ->
+                    Message(
+                        id = chatMessage.id,
+                        type = MessageType.CUSTOMER_SERVICE, // 新消息默认归类为客服类型
+                        subType = MessageSubType.ALL,
+                        senderName = "用户发送", // 标识为用户发送的消息
+                        senderAvatar = null,
+                        content = chatMessage.content,
+                        timestamp = chatMessage.timestamp,
+                        isRead = true, // 用户发送的消息标记为已读
+                        isOfficial = false,
+                        hasUnreadDot = false
+                    )
+                }
+                
+                // 合并原始消息和新消息，按时间戳排序
+                val allMessages = (originalMessages + convertedNewMessages).sortedByDescending { it.timestamp }
+                _allMessages.value = allMessages
                 filterMessages()
             } catch (e: Exception) {
                 _allMessages.value = emptyList()
                 _filteredMessages.value = emptyList()
             } finally {
                 _isLoading.value = false
+            }
+        }
+    }
+    
+    private fun loadConversationSummaries() {
+        viewModelScope.launch {
+            try {
+                val summaries = repository.getConversationSummaries()
+                _conversationSummaries.value = summaries
+            } catch (e: Exception) {
+                _conversationSummaries.value = emptyList()
             }
         }
     }
@@ -134,5 +174,40 @@ class ChatViewModel(private val repository: DataRepository) : ViewModel() {
                 }
             }
         }
+    }
+    
+    // 发送新消息的方法
+    fun sendMessage(content: String, targetSender: String = "京东客服") {
+        viewModelScope.launch {
+            try {
+                val newMessage = ChatMessage(
+                    id = "user_msg_${System.currentTimeMillis()}",
+                    sender = ChatSender.USER,
+                    type = ChatMessageType.TEXT,
+                    content = content,
+                    timestamp = System.currentTimeMillis()
+                )
+                
+                // 保存到持久化存储
+                repository.addNewMessage(newMessage)
+                
+                // 重新加载消息以显示新消息
+                loadMessages()
+                loadConversationSummaries()
+            } catch (e: Exception) {
+                // 处理发送失败的情况
+                android.util.Log.e("ChatViewModel", "Failed to send message", e)
+            }
+        }
+    }
+    
+    // 获取免打扰设置
+    fun getMuteSetting(senderName: String): Boolean {
+        return repository.getMuteSetting(senderName)
+    }
+    
+    // 设置免打扰
+    fun setMuteSetting(senderName: String, isMuted: Boolean) {
+        repository.setMuteSetting(senderName, isMuted)
     }
 }

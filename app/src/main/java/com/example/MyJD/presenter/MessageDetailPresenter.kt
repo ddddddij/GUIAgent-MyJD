@@ -36,13 +36,24 @@ class MessageDetailPresenter(
                     view?.setTitle(conversation.chatName)
                     view?.setAvatar(conversation.chatAvatar)
                     view?.showConversation(conversation)
+                    
+                    // 获取属于当前对话的新消息
+                    val newMessages = repository.getNewMessages().filter { 
+                        it.conversationId == conversationId 
+                    }
+                    val allMessages = (conversation.messages + newMessages).sortedBy { it.timestamp }
+                    
+                    // 更新conversation的消息列表
+                    conversation.messages.clear()
+                    conversation.messages.addAll(allMessages)
+                    
                     view?.showMessages(conversation.messages)
                     
                     // Auto scroll to bottom after loading
                     delay(100)
                     view?.scrollToBottom()
                     
-                    android.util.Log.d("MessageDetailPresenter", "Loaded conversation: ${conversation.chatName} with ${conversation.messages.size} messages")
+                    android.util.Log.d("MessageDetailPresenter", "Loaded conversation: ${conversation.chatName} with ${conversation.messages.size} messages (including ${newMessages.size} new messages)")
                 } else {
                     view?.showToast("找不到该对话")
                     android.util.Log.w("MessageDetailPresenter", "Conversation not found: $conversationId")
@@ -75,11 +86,15 @@ class MessageDetailPresenter(
                 sender = ChatSender.USER,
                 type = ChatMessageType.TEXT,
                 content = content.trim(),
-                timestamp = System.currentTimeMillis()
+                timestamp = System.currentTimeMillis(),
+                conversationId = conversation.id
             )
             
             // Add to conversation
             conversation.messages.add(newMessage)
+            
+            // 保存到持久化存储
+            repository.addNewMessage(newMessage)
             
             // Update view
             view?.addMessage(newMessage)

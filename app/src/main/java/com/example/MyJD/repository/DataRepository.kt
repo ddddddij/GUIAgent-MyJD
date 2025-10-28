@@ -6,6 +6,7 @@ import com.example.MyJD.model.Product
 import com.example.MyJD.model.CartItem
 import com.example.MyJD.model.ShoppingCart
 import com.example.MyJD.model.Message
+import com.example.MyJD.model.MuteSetting
 import com.example.MyJD.model.MeTabData
 import com.example.MyJD.model.ProductDetail
 import com.example.MyJD.model.ProductSpec
@@ -18,6 +19,7 @@ import com.example.MyJD.model.CancelReason
 import com.example.MyJD.model.Address
 import com.example.MyJD.model.ConversationData
 import com.example.MyJD.model.Conversation
+import com.example.MyJD.model.ConversationSummary
 import com.example.MyJD.model.Coupon
 import com.example.MyJD.model.ChatMessage
 import com.example.MyJD.model.ChatSender
@@ -32,9 +34,18 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.io.File
 
 class DataRepository private constructor(private val context: Context) {
     private val gson = Gson()
+    
+    // 数据文件路径 - 使用内部存储确保可靠性
+    private val dataDir = File(context.filesDir, "persistent_data")
+    private val cartItemsFile = File(dataDir, "cart_items.json")
+    private val ordersFile = File(dataDir, "orders.json")
+    private val addressesFile = File(dataDir, "addresses.json")
+    private val newMessagesFile = File(dataDir, "new_messages.json")
+    private val muteSettingsFile = File(dataDir, "mute_settings.json")
     
     companion object {
         @Volatile
@@ -47,6 +58,136 @@ class DataRepository private constructor(private val context: Context) {
                     android.util.Log.d("DataRepository", "Creating singleton instance")
                 }
             }
+        }
+    }
+    
+    // 数据持久化方法
+    private fun loadPersistentData() {
+        try {
+            // 加载购物车数据
+            if (cartItemsFile.exists()) {
+                val jsonContent = cartItemsFile.readText()
+                if (jsonContent.isNotBlank()) {
+                    val listType = object : TypeToken<List<CartItemSpec>>() {}.type
+                    val loadedCartItems: List<CartItemSpec>? = gson.fromJson(jsonContent, listType)
+                    if (loadedCartItems != null && loadedCartItems.isNotEmpty()) {
+                        specShoppingCart.clear()
+                        specShoppingCart.addAll(loadedCartItems)
+                        android.util.Log.d("DataRepository", "Loaded ${specShoppingCart.size} cart items from file")
+                    }
+                }
+            }
+            
+            // 加载订单数据
+            if (ordersFile.exists()) {
+                val jsonContent = ordersFile.readText()
+                if (jsonContent.isNotBlank()) {
+                    val listType = object : TypeToken<List<Order>>() {}.type
+                    val loadedOrders: List<Order>? = gson.fromJson(jsonContent, listType)
+                    if (loadedOrders != null) {
+                        runtimeOrders.clear()
+                        runtimeOrders.addAll(loadedOrders)
+                        android.util.Log.d("DataRepository", "Loaded ${runtimeOrders.size} orders from file")
+                    }
+                }
+            }
+            
+            // 加载地址数据
+            if (addressesFile.exists()) {
+                val jsonContent = addressesFile.readText()
+                if (jsonContent.isNotBlank()) {
+                    val listType = object : TypeToken<List<Address>>() {}.type
+                    val loadedAddresses: List<Address>? = gson.fromJson(jsonContent, listType)
+                    if (loadedAddresses != null) {
+                        runtimeAddresses.clear()
+                        runtimeAddresses.addAll(loadedAddresses)
+                        android.util.Log.d("DataRepository", "Loaded ${runtimeAddresses.size} addresses from file")
+                    }
+                }
+            }
+            
+            // 加载新消息数据
+            if (newMessagesFile.exists()) {
+                val jsonContent = newMessagesFile.readText()
+                if (jsonContent.isNotBlank()) {
+                    val listType = object : TypeToken<List<ChatMessage>>() {}.type
+                    val loadedMessages: List<ChatMessage>? = gson.fromJson(jsonContent, listType)
+                    if (loadedMessages != null) {
+                        newMessages.clear()
+                        newMessages.addAll(loadedMessages)
+                        android.util.Log.d("DataRepository", "Loaded ${newMessages.size} new messages from file")
+                    }
+                }
+            }
+            
+            // 加载免打扰设置数据
+            if (muteSettingsFile.exists()) {
+                val jsonContent = muteSettingsFile.readText()
+                if (jsonContent.isNotBlank()) {
+                    val listType = object : TypeToken<List<MuteSetting>>() {}.type
+                    val loadedSettings: List<MuteSetting>? = gson.fromJson(jsonContent, listType)
+                    if (loadedSettings != null) {
+                        muteSettings.clear()
+                        muteSettings.addAll(loadedSettings)
+                        android.util.Log.d("DataRepository", "Loaded ${muteSettings.size} mute settings from file")
+                    }
+                }
+            }
+            
+            // 更新购物车计数
+            updateCartFlows()
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Error loading persistent data", e)
+        }
+    }
+    
+    private fun saveCartItems() {
+        try {
+            val jsonContent = gson.toJson(specShoppingCart)
+            cartItemsFile.writeText(jsonContent)
+            android.util.Log.d("DataRepository", "Saved ${specShoppingCart.size} cart items to ${cartItemsFile.absolutePath}")
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Error saving cart items to ${cartItemsFile.absolutePath}", e)
+        }
+    }
+    
+    private fun saveOrders() {
+        try {
+            val jsonContent = gson.toJson(runtimeOrders)
+            ordersFile.writeText(jsonContent)
+            android.util.Log.d("DataRepository", "Saved ${runtimeOrders.size} orders to ${ordersFile.absolutePath}")
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Error saving orders to ${ordersFile.absolutePath}", e)
+        }
+    }
+    
+    private fun saveAddresses() {
+        try {
+            val jsonContent = gson.toJson(runtimeAddresses)
+            addressesFile.writeText(jsonContent)
+            android.util.Log.d("DataRepository", "Saved ${runtimeAddresses.size} addresses to ${addressesFile.absolutePath}")
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Error saving addresses to ${addressesFile.absolutePath}", e)
+        }
+    }
+    
+    private fun saveNewMessages() {
+        try {
+            val jsonContent = gson.toJson(newMessages)
+            newMessagesFile.writeText(jsonContent)
+            android.util.Log.d("DataRepository", "Saved ${newMessages.size} new messages to ${newMessagesFile.absolutePath}")
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Error saving new messages to ${newMessagesFile.absolutePath}", e)
+        }
+    }
+    
+    private fun saveMuteSettings() {
+        try {
+            val jsonContent = gson.toJson(muteSettings)
+            muteSettingsFile.writeText(jsonContent)
+            android.util.Log.d("DataRepository", "Saved ${muteSettings.size} mute settings to ${muteSettingsFile.absolutePath}")
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Error saving mute settings to ${muteSettingsFile.absolutePath}", e)
         }
     }
 
@@ -272,6 +413,9 @@ class DataRepository private constructor(private val context: Context) {
         // 添加到运行时订单列表
         runtimeOrders.add(0, order) // 添加到最前面，显示为最新订单
         
+        // 保存订单数据
+        saveOrders()
+        
         android.util.Log.d("DataRepository", "Created new order: $orderId for product: $productName")
         
         return orderId
@@ -335,6 +479,24 @@ class DataRepository private constructor(private val context: Context) {
     private var specShoppingCart = mutableListOf<CartItemSpec>()
     private var runtimeOrders = mutableListOf<Order>()
     private var runtimeAddresses = mutableListOf<Address>()
+    private var newMessages = mutableListOf<ChatMessage>()
+    private var muteSettings = mutableListOf<MuteSetting>()
+    
+    init {
+        // 确保数据目录存在
+        try {
+            if (!dataDir.exists()) {
+                val created = dataDir.mkdirs()
+                android.util.Log.d("DataRepository", "Created data directory: $created at ${dataDir.absolutePath}")
+            } else {
+                android.util.Log.d("DataRepository", "Data directory exists at ${dataDir.absolutePath}")
+            }
+            // 初始化时加载持久化数据
+            loadPersistentData()
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Error initializing data directory", e)
+        }
+    }
     
     // 优惠券存储
     private var availableCoupons = mutableListOf<Coupon>().apply {
@@ -431,6 +593,9 @@ class DataRepository private constructor(private val context: Context) {
         // 更新StateFlow
         updateCartFlows()
         
+        // 保存购物车数据
+        saveCartItems()
+        
         android.util.Log.d("DataRepository", "New cart size: ${specShoppingCart.size}")
         android.util.Log.d("DataRepository", "Cart items: ${specShoppingCart.map { "${it.productName} - ${it.quantity}" }}")
     }
@@ -438,6 +603,7 @@ class DataRepository private constructor(private val context: Context) {
     fun removeFromSpecCart(cartItemId: String) {
         specShoppingCart.removeAll { it.id == cartItemId }
         updateCartFlows()
+        saveCartItems()
     }
 
     fun updateSpecCartItemQuantity(cartItemId: String, quantity: Int) {
@@ -445,6 +611,7 @@ class DataRepository private constructor(private val context: Context) {
         if (itemIndex != -1) {
             specShoppingCart[itemIndex] = specShoppingCart[itemIndex].copy(quantity = quantity)
             updateCartFlows()
+            saveCartItems()
         }
     }
 
@@ -454,6 +621,7 @@ class DataRepository private constructor(private val context: Context) {
             val item = specShoppingCart[itemIndex]
             specShoppingCart[itemIndex] = item.copy(selected = !item.selected)
             updateCartFlows()
+            saveCartItems()
         }
     }
 
@@ -512,6 +680,7 @@ class DataRepository private constructor(private val context: Context) {
             specShoppingCart.remove(item)
         }
         updateCartFlows()
+        saveCartItems()
         android.util.Log.d("DataRepository", "Removed ${itemsToRemove.size} selected items from cart")
     }
     
@@ -538,6 +707,7 @@ class DataRepository private constructor(private val context: Context) {
                     shipTime = System.currentTimeMillis() + 3600000L // 假设1小时后发货
                 )
                 android.util.Log.d("DataRepository", "Order $orderId status updated to PENDING_RECEIPT")
+                saveOrders()
                 return true
             }
             return false
@@ -559,6 +729,7 @@ class DataRepository private constructor(private val context: Context) {
                 )
                 runtimeOrders.add(0, updatedOrder) // 添加到列表开头（最新）
                 android.util.Log.d("DataRepository", "Moved static order $orderId to runtime and updated status to PENDING_RECEIPT")
+                saveOrders()
                 return true
             }
         } catch (e: Exception) {
@@ -627,6 +798,7 @@ class DataRepository private constructor(private val context: Context) {
             val runtimeIndex = runtimeOrders.indexOfFirst { it.id == orderId }
             if (runtimeIndex != -1) {
                 runtimeOrders.removeAt(runtimeIndex)
+                saveOrders()
                 android.util.Log.d("DataRepository", "Order $orderId deleted successfully from runtime orders")
                 true
             } else {
@@ -674,6 +846,7 @@ class DataRepository private constructor(private val context: Context) {
                         cancelReason = reason
                     )
                     runtimeOrders[runtimeIndex] = cancelledOrder
+                    saveOrders()
                     android.util.Log.d("DataRepository", "Order $orderId cancelled successfully")
                     true
                 } else {
@@ -847,6 +1020,7 @@ class DataRepository private constructor(private val context: Context) {
             }
             
             runtimeAddresses.add(0, address) // 添加到最前面，显示为最新地址
+            saveAddresses()
             android.util.Log.d("DataRepository", "Added new address: ${address.id} for ${address.recipientName}")
             true
         } catch (e: Exception) {
@@ -869,12 +1043,14 @@ class DataRepository private constructor(private val context: Context) {
             val runtimeIndex = runtimeAddresses.indexOfFirst { it.id == updatedAddress.id }
             if (runtimeIndex != -1) {
                 runtimeAddresses[runtimeIndex] = updatedAddress
+                saveAddresses()
                 android.util.Log.d("DataRepository", "Updated runtime address: ${updatedAddress.id}")
                 return true
             }
             
             // 如果在运行时地址中找不到，添加为新的运行时地址（覆盖静态地址）
             runtimeAddresses.add(0, updatedAddress)
+            saveAddresses()
             android.util.Log.d("DataRepository", "Added updated address as new runtime address: ${updatedAddress.id}")
             true
         } catch (e: Exception) {
@@ -892,6 +1068,7 @@ class DataRepository private constructor(private val context: Context) {
             val runtimeIndex = runtimeAddresses.indexOfFirst { it.id == addressId }
             if (runtimeIndex != -1) {
                 runtimeAddresses.removeAt(runtimeIndex)
+                saveAddresses()
                 android.util.Log.d("DataRepository", "Deleted runtime address: $addressId")
                 return true
             }
@@ -968,6 +1145,9 @@ class DataRepository private constructor(private val context: Context) {
                 runtimeAddresses[i] = address.copy(isDefault = false)
             }
         }
+        
+        // 保存地址更改
+        saveAddresses()
         
         // 对于静态地址，我们通过添加非默认版本到运行时地址来覆盖
         try {
@@ -1304,12 +1484,86 @@ class DataRepository private constructor(private val context: Context) {
             address.isDefault
         }
     }
+    
+    suspend fun getConversationSummaries(): List<ConversationSummary> = withContext(Dispatchers.IO) {
+        try {
+            val conversationData = loadConversationData()
+            val allNewMessages = getNewMessages()
+            
+            conversationData.conversations.map { conversation ->
+                // 获取该对话的所有消息（包括原始消息和新消息）
+                val conversationNewMessages = allNewMessages.filter { it.conversationId == conversation.id }
+                val allMessages = conversation.messages + conversationNewMessages
+                
+                // 找到最新消息
+                val lastMessage = allMessages.sortedByDescending { it.timestamp }.firstOrNull()
+                
+                ConversationSummary(
+                    id = conversation.id,
+                    chatName = conversation.chatName,
+                    chatAvatar = conversation.chatAvatar,
+                    lastMessage = lastMessage?.content ?: "暂无消息",
+                    lastMessageTime = lastMessage?.timestamp ?: 0L,
+                    hasUnread = false // 可以根据需要实现未读状态逻辑
+                )
+            }.sortedByDescending { it.lastMessageTime } // 按最新消息时间排序
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Error getting conversation summaries", e)
+            emptyList()
+        }
+    }
+
+    // 新消息管理方法
+    fun addNewMessage(message: ChatMessage) {
+        newMessages.add(message)
+        saveNewMessages()
+        android.util.Log.d("DataRepository", "Added new message: ${message.content}")
+    }
+    
+    fun getNewMessages(): List<ChatMessage> {
+        return newMessages.toList()
+    }
+    
+    fun clearNewMessages() {
+        newMessages.clear()
+        saveNewMessages()
+        android.util.Log.d("DataRepository", "Cleared all new messages")
+    }
+    
+    // 免打扰设置管理方法
+    fun setMuteSetting(senderName: String, isMuted: Boolean) {
+        val existingIndex = muteSettings.indexOfFirst { it.senderName == senderName }
+        val newSetting = MuteSetting(
+            senderName = senderName,
+            isMuted = isMuted,
+            timestamp = System.currentTimeMillis()
+        )
+        
+        if (existingIndex != -1) {
+            muteSettings[existingIndex] = newSetting
+        } else {
+            muteSettings.add(newSetting)
+        }
+        
+        saveMuteSettings()
+        android.util.Log.d("DataRepository", "Set mute setting for $senderName: $isMuted")
+    }
+    
+    fun getMuteSetting(senderName: String): Boolean {
+        return muteSettings.find { it.senderName == senderName }?.isMuted ?: false
+    }
+    
+    fun getAllMuteSettings(): List<MuteSetting> {
+        return muteSettings.toList()
+    }
 
     /**
      * TASK_020: 设置Apple产品京东自营旗舰店的聊天为消息免打扰
      */
     private fun verifySetAppleStoreMessageMute(): Boolean {
-        // 需要消息设置记录才能验证
-        return false
+        return muteSettings.any { 
+            it.senderName.contains("Apple", ignoreCase = true) && 
+            it.isMuted 
+        }
     }
 }
