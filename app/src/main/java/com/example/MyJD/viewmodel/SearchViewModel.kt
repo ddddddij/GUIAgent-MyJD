@@ -7,8 +7,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import com.example.MyJD.presenter.SearchContract
 import com.example.MyJD.presenter.SearchPresenter
+import com.example.MyJD.repository.DataRepository
 
-class SearchViewModel : ViewModel(), SearchContract.View {
+class SearchViewModel(
+    private val repository: DataRepository
+) : ViewModel(), SearchContract.View {
     
     private val presenter: SearchContract.Presenter = SearchPresenter()
     
@@ -46,6 +49,11 @@ class SearchViewModel : ViewModel(), SearchContract.View {
     }
     
     fun onSearchClicked(keyword: String = _searchKeyword.value) {
+        // 任务一日志记录：搜索发起
+        if (keyword.contains("iPhone 15", ignoreCase = true)) {
+            repository.logTaskOneSearchInitiated(keyword)
+        }
+        
         presenter.onSearchClicked(keyword)
     }
     
@@ -79,11 +87,13 @@ class SearchViewModel : ViewModel(), SearchContract.View {
     }
 }
 
-class SearchViewModelFactory : ViewModelProvider.Factory {
+class SearchViewModelFactory(
+    private val repository: DataRepository
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SearchViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return SearchViewModel() as T
+            return SearchViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

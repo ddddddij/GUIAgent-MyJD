@@ -27,6 +27,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.MyJD.ui.theme.JDRed
 import com.example.MyJD.viewmodel.SearchViewModel
 import com.example.MyJD.viewmodel.SearchViewModelFactory
+import com.example.MyJD.repository.DataRepository
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,14 +36,14 @@ fun SearchScreen(
     onNavigateToSearchResult: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    val viewModel: SearchViewModel = viewModel(factory = SearchViewModelFactory())
+    val context = LocalContext.current
+    val repository = DataRepository.getInstance(context)
+    val viewModel: SearchViewModel = viewModel(factory = SearchViewModelFactory(repository))
     val suggestions by viewModel.suggestions.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val toastMessage by viewModel.toastMessage.collectAsState()
     val navigationEvent by viewModel.navigationEvent.collectAsState()
     val searchKeyword by viewModel.searchKeyword.collectAsState()
-    
-    val context = LocalContext.current
     
     // 处理Toast消息
     LaunchedEffect(toastMessage) {

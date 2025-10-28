@@ -25,9 +25,11 @@ import com.example.MyJD.model.ChatMessage
 import com.example.MyJD.model.ChatSender
 import com.example.MyJD.model.ChatMessageType
 import com.example.MyJD.model.ShopPageData
+import com.example.MyJD.utils.TaskOneLogger
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -37,7 +39,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import java.io.File
 
 class DataRepository private constructor(private val context: Context) {
-    private val gson = Gson()
+    private val gson = GsonBuilder()
+        .setPrettyPrinting()
+        .create()
     
     // 数据文件路径 - 使用内部存储确保可靠性
     private val dataDir = File(context.filesDir, "persistent_data")
@@ -1296,5 +1300,68 @@ class DataRepository private constructor(private val context: Context) {
     
     fun getAllMuteSettings(): List<MuteSetting> {
         return muteSettings.toList()
+    }
+    
+    // ==================== 任务一日志管理功能 ====================
+    
+    /**
+     * 记录搜索发起操作（任务一相关）
+     */
+    fun logTaskOneSearchInitiated(keyword: String) {
+        TaskOneLogger.logSearchInitiated(context, keyword)
+        android.util.Log.d("DataRepository", "Task one: Search initiated for '$keyword'")
+    }
+    
+    /**
+     * 记录搜索结果加载（任务一相关）
+     */
+    fun logTaskOneSearchResults(keyword: String, resultCount: Int) {
+        TaskOneLogger.logSearchResultsLoaded(context, keyword, resultCount)
+        android.util.Log.d("DataRepository", "Task one: Search results loaded - $resultCount results for '$keyword'")
+    }
+    
+    /**
+     * 记录查看第一个商品（任务一相关）
+     */
+    fun logTaskOneFirstProductViewed(productId: String, productName: String) {
+        TaskOneLogger.logFirstProductViewed(context, productId, productName)
+        android.util.Log.d("DataRepository", "Task one: First product viewed - '$productName' (ID: $productId)")
+    }
+    
+    /**
+     * 记录任务一完成
+     */
+    fun logTaskOneCompleted(searchKeyword: String, viewedProductName: String) {
+        TaskOneLogger.logTaskCompleted(context, searchKeyword, viewedProductName)
+        android.util.Log.d("DataRepository", "Task one: Task completed - searched '$searchKeyword', viewed '$viewedProductName'")
+    }
+    
+    /**
+     * 检查任务一是否完成
+     */
+    fun isTaskOneCompleted(): Boolean {
+        return TaskOneLogger.isTaskOneCompleted(context)
+    }
+    
+    /**
+     * 获取任务一完成状态详情
+     */
+    fun getTaskOneCompletionDetails(): Map<String, Any> {
+        return TaskOneLogger.getTaskOneCompletionDetails(context)
+    }
+    
+    /**
+     * 获取任务一日志文件路径
+     */
+    fun getTaskOneLogFilePath(): String {
+        return TaskOneLogger.getLogFilePath(context)
+    }
+    
+    /**
+     * 清除任务一日志
+     */
+    fun clearTaskOneLogs() {
+        TaskOneLogger.clearLogs(context)
+        android.util.Log.d("DataRepository", "Task one: All logs cleared")
     }
 }

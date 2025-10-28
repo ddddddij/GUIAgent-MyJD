@@ -74,7 +74,16 @@ class SearchResultViewModel(
         // 记录查看第一个商品的日志（如果点击的是第一个商品）
         val products = _products.value
         if (products.isNotEmpty() && products.first().id == productId) {
-            android.util.Log.d("SearchResultViewModel", "First product viewed: ${products.first().name}")
+            val firstProduct = products.first()
+            android.util.Log.d("SearchResultViewModel", "First product viewed: ${firstProduct.name}")
+            
+            // 任务一日志记录：查看第一个商品
+            repository.logTaskOneFirstProductViewed(productId, firstProduct.name)
+            
+            // 如果是搜索iPhone 15相关的，记录任务完成
+            if (keyword.contains("iPhone 15", ignoreCase = true)) {
+                repository.logTaskOneCompleted(keyword, firstProduct.name)
+            }
         }
     }
     
@@ -113,6 +122,9 @@ class SearchResultViewModel(
         _products.value = products
         
         android.util.Log.d("SearchResultViewModel", "Search results loaded: ${products.size} products for keyword: $keyword")
+        
+        // 任务一日志记录：搜索结果加载
+        repository.logTaskOneSearchResults(keyword, products.size)
     }
     
     override fun showToast(message: String) {
