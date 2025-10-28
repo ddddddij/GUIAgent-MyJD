@@ -11,6 +11,8 @@ import com.example.MyJD.presenter.OrderTab
 import com.example.MyJD.repository.DataRepository
 import com.example.MyJD.utils.TaskSixLogger
 import com.example.MyJD.utils.TaskTenLogger
+import com.example.MyJD.utils.TaskSeventeenLogger
+import com.example.MyJD.utils.TaskEighteenLogger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -78,11 +80,43 @@ class OrderViewModel(
             val pendingReceiptOrders = orders.filter { it.status == OrderStatus.PENDING_RECEIPT }
             TaskTenLogger.logPendingReceiptOrdersLoaded(context, pendingReceiptOrders.size)
             TaskTenLogger.logTaskCompleted(context, pendingReceiptOrders.size)
+            
+            // 任务十七日志记录：查看待收货订单（专门针对iPhone 15 粉色订单）
+            val iphone15PinkOrders = pendingReceiptOrders.filter { order ->
+                order.items.any { item ->
+                    item.product.name.contains("iPhone 15") && item.product.name.contains("粉色") && item.product.name.contains("256GB")
+                }
+            }
+            if (iphone15PinkOrders.isNotEmpty()) {
+                TaskSeventeenLogger.logPendingReceiptOrdersViewed(context, iphone15PinkOrders.size)
+                TaskSeventeenLogger.logTaskCompleted(context)
+            }
         }
     }
     
     override fun showToast(message: String) {
         _uiState.value = _uiState.value.copy(toastMessage = message)
+        
+        // 任务十八日志记录：根据消息判断操作结果
+        when (message) {
+            "订单已取消" -> {
+                TaskEighteenLogger.logCancelOrderSuccess(context)
+                // 检查是否已取消所有待付款订单
+                val pendingPaymentOrders = _uiState.value.orders.filter { it.status == OrderStatus.PENDING_PAYMENT }
+                if (pendingPaymentOrders.size <= 1) { // 当前这个即将被取消
+                    TaskEighteenLogger.logAllPendingPaymentOrdersCancelled(context)
+                }
+            }
+            "订单已删除" -> {
+                TaskEighteenLogger.logDeleteCancelledOrderSuccess(context)
+                // 检查是否还有已取消的订单
+                val cancelledOrders = _uiState.value.orders.filter { it.status == OrderStatus.CANCELLED }
+                if (cancelledOrders.size <= 1) { // 当前这个即将被删除
+                    TaskEighteenLogger.logAllCancelledOrdersDeleted(context)
+                    TaskEighteenLogger.logTaskCompleted(context)
+                }
+            }
+        }
     }
     
     override fun updateSelectedTab(tabIndex: Int) {
@@ -114,6 +148,17 @@ class OrderViewModel(
         if (action == "去支付") {
             TaskSixLogger.logClickPayButton(context)
         }
+        
+        // 任务十八日志记录：取消订单操作
+        if (action == "取消订单") {
+            // 检查是否是待付款订单
+            val order = _uiState.value.orders.find { it.id == orderId }
+            if (order?.status == OrderStatus.PENDING_PAYMENT) {
+                TaskEighteenLogger.logTaskStart(context)
+                TaskEighteenLogger.logCancelOrderAttempted(context, orderId)
+            }
+        }
+        
         presenter.onActionClicked(action, orderId)
     }
     
@@ -130,6 +175,12 @@ class OrderViewModel(
     }
     
     fun onDeleteConfirmed(orderId: String) {
+        // 任务十八日志记录：删除已取消订单
+        val order = _uiState.value.orders.find { it.id == orderId }
+        if (order?.status == OrderStatus.CANCELLED) {
+            TaskEighteenLogger.logDeleteCancelledOrderAttempted(context, orderId)
+        }
+        
         presenter.onDeleteConfirmed(orderId)
         clearDeleteDialog()
     }

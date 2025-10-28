@@ -30,6 +30,7 @@ import com.example.MyJD.presenter.ShopPageContract
 import com.example.MyJD.presenter.ShopPagePresenter
 import com.example.MyJD.repository.DataRepository
 import com.example.MyJD.ui.components.ProductCardItem
+import com.example.MyJD.utils.TaskSeventeenLogger
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -77,6 +78,9 @@ fun ShopPageScreen(
     LaunchedEffect(Unit) {
         presenter.attach(view)
         presenter.loadShopData()
+        
+        // 任务十七日志记录：加载店铺页面数据
+        TaskSeventeenLogger.logShopPageDataLoading(context)
     }
     
     DisposableEffect(Unit) {
@@ -166,6 +170,12 @@ fun ShopPageScreen(
                     ProductGridSection(
                         products = data.products,
                         onProductClick = { product ->
+                            // 任务十七日志记录：选择iPhone 15 粉色 256GB
+                            if (product.name.contains("iPhone 15") && 
+                                product.name.contains("粉色") && 
+                                product.name.contains("256GB")) {
+                                TaskSeventeenLogger.logShopProductSelected(context, product.name, product.id)
+                            }
                             presenter.onProductClick(product)
                         },
                         onAddToCartClick = { product ->

@@ -44,9 +44,37 @@ object TaskSeventeenLogger {
         writeToLog(context, message)
     }
     
+    fun logShopEntered(context: Context, shopName: String) {
+        logShopPageEntered(context, shopName)
+    }
+    
+    fun logShopPageDataLoading(context: Context) {
+        val timestamp = dateFormat.format(Date())
+        val message = "[$timestamp] 加载店铺页面数据"
+        writeToLog(context, message)
+    }
+    
+    fun logShopProductSelected(context: Context, productName: String, productId: String) {
+        val timestamp = dateFormat.format(Date())
+        val message = "[$timestamp] 在店铺中选择商品：$productName (ID: $productId)"
+        writeToLog(context, message)
+    }
+    
     fun logShopProductSelected(context: Context, productName: String) {
         val timestamp = dateFormat.format(Date())
         val message = "[$timestamp] 在店铺中选择商品：$productName"
+        writeToLog(context, message)
+    }
+    
+    fun logImmediatePurchaseInitiated(context: Context, productName: String, spec: String, price: Double) {
+        val timestamp = dateFormat.format(Date())
+        val message = "[$timestamp] 发起立即购买：$productName $spec，价格：¥$price"
+        writeToLog(context, message)
+    }
+    
+    fun logImmediatePurchaseCompleted(context: Context, orderAmount: Double) {
+        val timestamp = dateFormat.format(Date())
+        val message = "[$timestamp] 立即购买完成，金额：¥$orderAmount"
         writeToLog(context, message)
     }
     

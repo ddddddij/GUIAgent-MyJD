@@ -13,6 +13,7 @@ import com.example.MyJD.presenter.SearchResultPresenter
 import com.example.MyJD.presenter.SearchFilter
 import com.example.MyJD.presenter.SearchSortType
 import com.example.MyJD.repository.DataRepository
+import com.example.MyJD.utils.TaskSixteenLogger
 
 class SearchResultViewModel(
     private val repository: DataRepository,
@@ -90,6 +91,20 @@ class SearchResultViewModel(
     fun applyFilter(filter: SearchFilter) {
         _currentFilter.value = filter
         presenter.filterProducts(filter)
+        
+        // 任务十六日志记录：筛选操作
+        if (keyword.contains("iPhone15") || keyword.contains("iPhone 15")) {
+            // 检查价格筛选
+            if (filter.priceMin == 5000.0 && filter.priceMax == 8000.0) {
+                TaskSixteenLogger.logPriceFilterApplied(context, filter.priceMin!!.toInt(), filter.priceMax!!.toInt())
+            }
+            // 检查类别筛选
+            filter.categories.forEach { category ->
+                if (category.contains("手机")) {
+                    TaskSixteenLogger.logCategoryFilterApplied(context, category)
+                }
+            }
+        }
     }
     
     fun resetFilter() {
@@ -125,6 +140,11 @@ class SearchResultViewModel(
         
         // 任务一日志记录：搜索结果加载
         repository.logTaskOneSearchResults(keyword, products.size)
+        
+        // 任务十六日志记录：搜索结果加载
+        if (keyword.contains("iPhone15") || keyword.contains("iPhone 15")) {
+            TaskSixteenLogger.logSearchResultsLoaded(context, products.size)
+        }
     }
     
     override fun showToast(message: String) {

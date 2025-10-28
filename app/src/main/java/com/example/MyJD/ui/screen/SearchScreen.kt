@@ -38,7 +38,7 @@ fun SearchScreen(
 ) {
     val context = LocalContext.current
     val repository = DataRepository.getInstance(context)
-    val viewModel: SearchViewModel = viewModel(factory = SearchViewModelFactory(repository))
+    val viewModel: SearchViewModel = viewModel(factory = SearchViewModelFactory(repository, context))
     val suggestions by viewModel.suggestions.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val toastMessage by viewModel.toastMessage.collectAsState()

@@ -32,6 +32,7 @@ import com.example.MyJD.ui.components.CartTabs
 import com.example.MyJD.ui.components.CartStoreSection
 import com.example.MyJD.ui.components.CartProductCard
 import com.example.MyJD.utils.TaskNineLogger
+import com.example.MyJD.utils.TaskSixteenLogger
 import android.widget.Toast
 
 @Composable
@@ -66,6 +67,21 @@ fun CartScreen(
         val calculatedTotalPrice = repository.getSelectedSpecCartTotalPrice()
         TaskNineLogger.logTotalPriceCalculated(context, calculatedTotalPrice)
         TaskNineLogger.logTaskCompleted(context, calculatedTotalPrice)
+        
+        // 任务十六日志记录：检查购物车中是否有iPhone15商品
+        val hasIphone15 = specCartItems.any { item ->
+            item.productName.contains("iPhone15") || item.productName.contains("iPhone 15")
+        }
+        if (hasIphone15) {
+            val iphone15Items = specCartItems.filter { item ->
+                (item.productName.contains("iPhone15") || item.productName.contains("iPhone 15")) && 
+                item.getSpecText().contains("黑色") && item.getSpecText().contains("256GB")
+            }
+            if (iphone15Items.isNotEmpty()) {
+                TaskSixteenLogger.logAddToCartSuccess(context, "iPhone15 黑色 256GB", iphone15Items.first().quantity)
+                TaskSixteenLogger.logCartPageEntered(context, specCartItems.size)
+            }
+        }
     }
     
     // StateFlow会自动更新，无需手动刷新函数

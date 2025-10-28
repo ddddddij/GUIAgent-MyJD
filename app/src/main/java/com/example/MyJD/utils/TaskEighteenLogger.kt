@@ -80,6 +80,48 @@ object TaskEighteenLogger {
         writeToLog(context, message)
     }
     
+    fun logTaskCompleted(context: Context) {
+        val timestamp = dateFormat.format(Date())
+        val message = "[$timestamp] 任务十八完成：所有待付款订单已取消，所有已取消订单已删除"
+        writeToLog(context, message)
+    }
+    
+    fun logCancelOrderAttempted(context: Context, orderId: String) {
+        val timestamp = dateFormat.format(Date())
+        val message = "[$timestamp] 尝试取消订单：$orderId"
+        writeToLog(context, message)
+    }
+    
+    fun logCancelOrderSuccess(context: Context) {
+        val timestamp = dateFormat.format(Date())
+        val message = "[$timestamp] 订单取消成功"
+        writeToLog(context, message)
+    }
+    
+    fun logDeleteCancelledOrderAttempted(context: Context, orderId: String) {
+        val timestamp = dateFormat.format(Date())
+        val message = "[$timestamp] 尝试删除已取消订单：$orderId"
+        writeToLog(context, message)
+    }
+    
+    fun logDeleteCancelledOrderSuccess(context: Context) {
+        val timestamp = dateFormat.format(Date())
+        val message = "[$timestamp] 已取消订单删除成功"
+        writeToLog(context, message)
+    }
+    
+    fun logAllPendingPaymentOrdersCancelled(context: Context) {
+        val timestamp = dateFormat.format(Date())
+        val message = "[$timestamp] 所有待付款订单已取消"
+        writeToLog(context, message)
+    }
+    
+    fun logAllCancelledOrdersDeleted(context: Context) {
+        val timestamp = dateFormat.format(Date())
+        val message = "[$timestamp] 所有已取消订单已删除"
+        writeToLog(context, message)
+    }
+    
     fun logError(context: Context, error: String) {
         val timestamp = dateFormat.format(Date())
         val message = "[$timestamp] 错误: $error"

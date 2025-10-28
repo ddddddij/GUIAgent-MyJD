@@ -1,16 +1,21 @@
 package com.example.MyJD.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.MyJD.model.ProductDetail
 import com.example.MyJD.repository.DataRepository
+import com.example.MyJD.utils.TaskFourteenLogger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ProductDetailViewModel(private val repository: DataRepository) : ViewModel() {
+class ProductDetailViewModel(
+    private val repository: DataRepository,
+    private val context: Context
+) : ViewModel() {
     
     private val _productDetail = MutableStateFlow<ProductDetail?>(null)
     val productDetail: StateFlow<ProductDetail?> = _productDetail.asStateFlow()
@@ -36,6 +41,12 @@ class ProductDetailViewModel(private val repository: DataRepository) : ViewModel
                 _selectedColorIndex.value = detail.selectedColorIndex
                 _selectedPurchaseType.value = detail.selectedPurchaseType
                 _isFavorite.value = detail.isFavorite
+                
+                // 任务十四日志记录：如果是iPhone15商品，记录相关操作
+                if (detail.title.contains("iPhone15") || detail.title.contains("iPhone 15")) {
+                    TaskFourteenLogger.logTaskStart(context)
+                    TaskFourteenLogger.logProductDetailEntered(context, detail.title)
+                }
             } catch (e: Exception) {
                 // Handle error
             } finally {
@@ -102,13 +113,33 @@ class ProductDetailViewModel(private val repository: DataRepository) : ViewModel
             ""
         }
     }
+    
+    fun onReviewSectionViewed() {
+        _productDetail.value?.let { detail ->
+            if (detail.title.contains("iPhone15") || detail.title.contains("iPhone 15")) {
+                TaskFourteenLogger.logReviewSectionViewed(context)
+            }
+        }
+    }
+    
+    fun onReviewsLoaded(reviewCount: Int) {
+        _productDetail.value?.let { detail ->
+            if (detail.title.contains("iPhone15") || detail.title.contains("iPhone 15")) {
+                TaskFourteenLogger.logReviewsLoaded(context, reviewCount)
+                TaskFourteenLogger.logTaskCompleted(context, reviewCount)
+            }
+        }
+    }
 }
 
-class ProductDetailViewModelFactory(private val repository: DataRepository) : ViewModelProvider.Factory {
+class ProductDetailViewModelFactory(
+    private val repository: DataRepository,
+    private val context: Context
+) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ProductDetailViewModel::class.java)) {
-            return ProductDetailViewModel(repository) as T
+            return ProductDetailViewModel(repository, context) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

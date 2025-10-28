@@ -14,6 +14,7 @@ import com.example.MyJD.repository.DataRepository
 import com.example.MyJD.ui.components.*
 import com.example.MyJD.viewmodel.ProductDetailViewModel
 import com.example.MyJD.viewmodel.ProductDetailViewModelFactory
+import com.example.MyJD.utils.TaskSeventeenLogger
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,7 +29,7 @@ fun ProductDetailScreen(
     val context = LocalContext.current
     val repository = DataRepository.getInstance(context)
     val viewModel: ProductDetailViewModel = viewModel(
-        factory = ProductDetailViewModelFactory(repository)
+        factory = ProductDetailViewModelFactory(repository, context)
     )
     
     val productDetail by viewModel.productDetail.collectAsState()
@@ -64,6 +65,12 @@ fun ProductDetailScreen(
                 ProductDetailBottomBar(
                     currentPrice = detail.currentPrice,
                     onStoreClick = {
+                        // 任务十七日志记录：进入店铺
+                        if (detail.title.contains("iPhone15") || detail.title.contains("iPhone 15")) {
+                            TaskSeventeenLogger.logTaskStart(context)
+                            TaskSeventeenLogger.logProductDetailEntered(context, detail.title)
+                            TaskSeventeenLogger.logShopEntered(context, detail.storeName)
+                        }
                         // 使用商品详情中的店铺名称导航到店铺页面
                         onShopClick(detail.storeName)
                     },
@@ -183,6 +190,15 @@ fun ProductDetailScreen(
                 
                 item {
                     // 评价信息区
+                    LaunchedEffect(detail.reviews) {
+                        // 任务十四日志记录：当评论区域显示时记录
+                        viewModel.onReviewSectionViewed()
+                        // 记录评论数量
+                        if (detail.reviews.list.isNotEmpty()) {
+                            viewModel.onReviewsLoaded(detail.reviews.list.size)
+                        }
+                    }
+                    
                     ProductReviewSection(
                         reviews = detail.reviews,
                         onTagClick = { tagIndex ->

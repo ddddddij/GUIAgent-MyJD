@@ -1696,7 +1696,7 @@ class DataRepository private constructor(private val context: Context) {
         TaskSixteenLogger.logCartEntered(context)
         TaskSixteenLogger.logCheckoutStarted(context)
         TaskSixteenLogger.logPaymentMethodSelected(context, "微信支付")
-        TaskSixteenLogger.logCouponSelected(context, "满3000减50")
+        TaskSixteenLogger.logCouponSelected(context, "满3000减50", 50.0)
         TaskSixteenLogger.logPaymentCompleted(context, "order_test")
         TaskSixteenLogger.logTaskCompleted(context)
     }

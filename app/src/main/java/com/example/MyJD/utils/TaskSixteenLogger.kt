@@ -32,6 +32,10 @@ object TaskSixteenLogger {
         writeToLog(context, message)
     }
     
+    fun logSearchInitiated(context: Context, keyword: String) {
+        logSearchStarted(context, keyword)
+    }
+    
     fun logSearchResultsLoaded(context: Context, resultCount: Int) {
         val timestamp = dateFormat.format(Date())
         val message = "[$timestamp] 搜索结果加载完成，共找到：$resultCount 个结果"
@@ -86,9 +90,27 @@ object TaskSixteenLogger {
         writeToLog(context, message)
     }
     
-    fun logCouponSelected(context: Context, couponName: String) {
+    fun logCouponSelected(context: Context, couponName: String, discountAmount: Double) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 选择优惠券：$couponName"
+        val message = "[$timestamp] 选择优惠券：$couponName，优惠金额：¥$discountAmount"
+        writeToLog(context, message)
+    }
+    
+    fun logAddToCartSuccess(context: Context, productName: String, quantity: Int) {
+        val timestamp = dateFormat.format(Date())
+        val message = "[$timestamp] 成功加入购物车：$productName，数量：$quantity"
+        writeToLog(context, message)
+    }
+    
+    fun logCartPageEntered(context: Context, itemCount: Int) {
+        val timestamp = dateFormat.format(Date())
+        val message = "[$timestamp] 进入购物车页面，商品数量：$itemCount"
+        writeToLog(context, message)
+    }
+    
+    fun logOrderCompleted(context: Context, orderAmount: Double) {
+        val timestamp = dateFormat.format(Date())
+        val message = "[$timestamp] 订单完成，金额：¥$orderAmount"
         writeToLog(context, message)
     }
     

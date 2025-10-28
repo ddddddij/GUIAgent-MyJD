@@ -1,5 +1,6 @@
 package com.example.MyJD.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -8,9 +9,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import com.example.MyJD.presenter.SearchContract
 import com.example.MyJD.presenter.SearchPresenter
 import com.example.MyJD.repository.DataRepository
+import com.example.MyJD.utils.TaskSixteenLogger
 
 class SearchViewModel(
-    private val repository: DataRepository
+    private val repository: DataRepository,
+    private val context: Context
 ) : ViewModel(), SearchContract.View {
     
     private val presenter: SearchContract.Presenter = SearchPresenter()
@@ -54,6 +57,12 @@ class SearchViewModel(
             repository.logTaskOneSearchInitiated(keyword)
         }
         
+        // 任务十六日志记录：搜索iPhone15
+        if (keyword.contains("iPhone15") || keyword.contains("iPhone 15")) {
+            TaskSixteenLogger.logTaskStart(context)
+            TaskSixteenLogger.logSearchInitiated(context, keyword)
+        }
+        
         presenter.onSearchClicked(keyword)
     }
     
@@ -67,6 +76,20 @@ class SearchViewModel(
     
     fun clearNavigationEvent() {
         _navigationEvent.value = null
+    }
+    
+    fun onPriceFilterApplied(minPrice: Int, maxPrice: Int) {
+        // 任务十六日志记录：价格筛选
+        if (minPrice == 5000 && maxPrice == 8000) {
+            TaskSixteenLogger.logPriceFilterApplied(context, minPrice, maxPrice)
+        }
+    }
+    
+    fun onCategoryFilterApplied(category: String) {
+        // 任务十六日志记录：类别筛选
+        if (category.contains("手机")) {
+            TaskSixteenLogger.logCategoryFilterApplied(context, category)
+        }
     }
     
     // SearchContract.View implementations
@@ -88,12 +111,13 @@ class SearchViewModel(
 }
 
 class SearchViewModelFactory(
-    private val repository: DataRepository
+    private val repository: DataRepository,
+    private val context: Context
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SearchViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return SearchViewModel(repository) as T
+            return SearchViewModel(repository, context) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
