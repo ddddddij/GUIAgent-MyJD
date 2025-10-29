@@ -259,6 +259,40 @@
   - 跳转到购物车和结算页面
   - 各功能模块开发中Toast提示
 
+#### 📱 华为P60详情页 (HuaweiP60DetailScreen)
+- **页面独立设计**: 
+  - 专为华为P60商品设计的独立详情页面
+  - 简化的UI布局，突出产品核心信息展示
+  - 与iPhone15详情页分离，实现不同商品跳转到不同详情页
+- **商品信息展示**:
+  - 商品主图：华为P60封面.JPG，1:1宽高比展示
+  - 商品名称：华为P60 双向北斗卫星通信旗舰国行版
+  - 价格信息：¥1788限时特价，原价¥2288，价格红色突出显示
+  - 规格信息：8GB+256GB固定规格展示
+  - 产品特色标签：鸿蒙系统、卫星通信、OLED曲面屏、4800万像素、8GB+256GB
+- **底部操作栏**:
+  - 加入购物车按钮：灰色背景，黑色文字
+  - 立即购买按钮：红色背景，白色文字
+  - 点击显示成功Toast提示
+- **路由逻辑**:
+  - 根据产品ID智能跳转：huawei_p60、华为P60、P60关键词匹配
+  - 从首页推荐、搜索结果、消息详情等多个入口支持条件跳转
+  - 独立路由：huawei_p60_detail/{productId}
+- **数据管理**:
+  - 华为P60专用数据文件：huawei_p60_detail.json
+  - 包含完整的产品信息、规格、评价、店铺信息等
+  - 固定价格¥1788，符合开发要求规范
+- **MVP架构实现**:
+  - HuaweiP60DetailContract：定义专用View和Presenter接口
+  - HuaweiP60DetailPresenter：处理华为P60特定业务逻辑
+  - HuaweiP60DetailViewModel：管理UI状态和数据展示
+  - DataRepository扩展：添加getHuaweiP60ProductDetail方法
+- **技术特点**:
+  - 遵循现有MVP架构模式，代码结构清晰
+  - 复用现有UI组件，保持界面风格一致
+  - 与iPhone15详情页并行存在，不影响原有功能
+  - 支持未来扩展更多产品专用详情页
+
 #### 📍 地址管理功能 (AddressListActivity & AddressDetailActivity)
 - **地址列表页面**:
   - 收货地址完整列表展示：收货人、手机号（隐藏中间4位）、完整地址
@@ -353,9 +387,10 @@ MainActivity (底部导航)
 │   │   └── 地址编辑 (AddressDetailScreen) ✅
 │   ├── 设置页面 (PlaceholderScreen) 🚧
 │   └── 订单列表 (OrderScreen) ✅
-└── 商品详情 (ProductDetailScreen) ✅
-    ├── 规格选择弹窗 (ProductSpecDialog) ✅
-    └── 结算页面 (SettleActivity) ✅
+├── 商品详情 (ProductDetailScreen) ✅
+│   ├── 规格选择弹窗 (ProductSpecDialog) ✅
+│   └── 结算页面 (SettleActivity) ✅
+└── 华为P60详情页 (HuaweiP60DetailScreen) ✅
 ```
 
 ### 数据结构
@@ -369,6 +404,7 @@ MainActivity (底部导航)
 - **店铺数据** (`shop_data.json`): Apple店铺信息、统计数据、商品列表
 - **个人中心数据** (`me_tab.json`): 会员权益、订单状态、资产服务等
 - **商品详情数据** (`product_detail.json`): iPhone15详细信息、规格、评价等
+- **华为P60详情数据** (`huawei_p60_detail.json`): 华为P60详细信息、规格、评价等
 - **订单数据** (`orders.json`): 用户订单信息、状态、商品项等
 - **用户资料** (`user_profile.json`): 用户个人信息、偏好设置
 - **购物车数据**: 运行时动态管理，支持规格选择
@@ -575,6 +611,20 @@ app/src/main/java/com/example/MyJD/
 本项目仅用于学习和演示目的，不得用于商业用途。
 
 ## 更新日志
+
+### v1.0.13 (2025-10-29)
+- ✅ 完成华为P60详情页（HuaweiP60DetailScreen）开发
+- ✅ 实现独立的华为P60商品详情展示，与iPhone15详情页分离
+- ✅ 创建完整的MVP架构：HuaweiP60DetailContract、HuaweiP60DetailPresenter、HuaweiP60DetailViewModel
+- ✅ 新增华为P60专用数据文件huawei_p60_detail.json，包含完整商品信息
+- ✅ 扩展DataRepository，添加getHuaweiP60ProductDetail()方法
+- ✅ 实现智能路由逻辑：根据产品ID关键词（huawei_p60、华为P60、P60）自动跳转到相应详情页
+- ✅ 更新AppNavigation添加huawei_p60_detail路由，支持多入口访问
+- ✅ 商品信息展示：华为P60封面图、¥1788特价、8GB+256GB规格、产品特色标签
+- ✅ 简化UI设计：专注核心信息展示，保持与iPhone15详情页一致的UI风格
+- ✅ 完善导航系统：从首页推荐、搜索结果、消息详情等多个入口支持条件跳转
+- ✅ 项目构建验证通过，所有新增功能正常运行
+- 🎨 UI设计遵循开发要求规范，实现了不同商品专用详情页的架构扩展
 
 ### v1.0.12 (2025-10-23)
 - **智能差异化定价系统**：

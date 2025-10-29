@@ -26,6 +26,7 @@ import com.example.MyJD.ui.screen.MessageSettingScreen
 import com.example.MyJD.ui.screen.ShopPageScreen
 import com.example.MyJD.ui.screen.AddressListScreen
 import com.example.MyJD.ui.screen.AddressDetailScreen
+import com.example.MyJD.ui.screen.HuaweiP60DetailScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
@@ -39,7 +40,15 @@ fun AppNavigation(navController: NavHostController) {
                     navController.navigate("search/$query")
                 },
                 onNavigateToProduct = { productId ->
-                    navController.navigate("product/$productId")
+                    // 根据产品ID进行条件路由
+                    when {
+                        productId.contains("huawei_p60") || productId.contains("华为P60") || productId.contains("P60") -> 
+                            navController.navigate("huawei_p60_detail/$productId")
+                        productId.contains("iphone15") || productId.contains("iPhone15") -> 
+                            navController.navigate("product/$productId")
+                        else -> 
+                            navController.navigate("product/$productId")
+                    }
                 },
                 onNavigateToCart = {
                     navController.navigate("cart")
@@ -123,7 +132,15 @@ fun AppNavigation(navController: NavHostController) {
                     navController.popBackStack()
                 },
                 onNavigateToProduct = { productId ->
-                    navController.navigate("product/$productId")
+                    // 根据产品ID进行条件路由
+                    when {
+                        productId.contains("huawei_p60") || productId.contains("华为P60") || productId.contains("P60") -> 
+                            navController.navigate("huawei_p60_detail/$productId")
+                        productId.contains("iphone15") || productId.contains("iPhone15") -> 
+                            navController.navigate("product/$productId")
+                        else -> 
+                            navController.navigate("product/$productId")
+                    }
                 }
             )
         }
@@ -147,6 +164,22 @@ fun AppNavigation(navController: NavHostController) {
             )
         }
         
+        composable("huawei_p60_detail/{productId}") { backStackEntry ->
+            val productId = backStackEntry.arguments?.getString("productId") ?: ""
+            HuaweiP60DetailScreen(
+                productId = productId,
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onCartClick = {
+                    navController.navigate("cart")
+                },
+                onBuyNowClick = {
+                    navController.navigate("order_confirm")
+                }
+            )
+        }
+        
         composable("supermarket") {
             PlaceholderScreen(
                 title = "京东超市",
@@ -164,7 +197,15 @@ fun AppNavigation(navController: NavHostController) {
                     navController.popBackStack()
                 },
                 onNavigateToProduct = { productId ->
-                    navController.navigate("product/$productId")
+                    // 根据产品ID进行条件路由
+                    when {
+                        productId.contains("huawei_p60") || productId.contains("华为P60") || productId.contains("P60") -> 
+                            navController.navigate("huawei_p60_detail/$productId")
+                        productId.contains("iphone15") || productId.contains("iPhone15") -> 
+                            navController.navigate("product/$productId")
+                        else -> 
+                            navController.navigate("product/$productId")
+                    }
                 },
                 onNavigateToSettings = { shopName, shopAvatar ->
                     navController.navigate("message_setting/$shopName/$shopAvatar")

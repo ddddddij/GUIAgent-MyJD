@@ -470,6 +470,16 @@ class DataRepository private constructor(private val context: Context) {
         }
     }
 
+    suspend fun getHuaweiP60ProductDetail(productId: String): ProductDetail? = withContext(Dispatchers.IO) {
+        try {
+            val jsonString = context.assets.open("data/huawei_p60_detail.json").bufferedReader().use { it.readText() }
+            gson.fromJson(jsonString, ProductDetail::class.java)
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Failed to load Huawei P60 detail", e)
+            null
+        }
+    }
+
     suspend fun loadProductSpec(productId: String): ProductSpec = withContext(Dispatchers.IO) {
         try {
             val jsonString = context.assets.open("data/product_specs.json").bufferedReader().use { it.readText() }
