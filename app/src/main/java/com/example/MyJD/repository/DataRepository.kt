@@ -480,6 +480,36 @@ class DataRepository private constructor(private val context: Context) {
         }
     }
 
+    suspend fun getHuaweiMate60ProductDetail(productId: String): ProductDetail? = withContext(Dispatchers.IO) {
+        try {
+            val jsonString = context.assets.open("data/huawei_mate60_detail.json").bufferedReader().use { it.readText() }
+            gson.fromJson(jsonString, ProductDetail::class.java)
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Failed to load Huawei Mate60 detail", e)
+            null
+        }
+    }
+
+    suspend fun getHuaweiNova11ProductDetail(productId: String): ProductDetail? = withContext(Dispatchers.IO) {
+        try {
+            val jsonString = context.assets.open("data/huawei_nova11_detail.json").bufferedReader().use { it.readText() }
+            gson.fromJson(jsonString, ProductDetail::class.java)
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Failed to load Huawei Nova11 detail", e)
+            null
+        }
+    }
+
+    suspend fun getThinkPadProductDetail(productId: String): ProductDetail? = withContext(Dispatchers.IO) {
+        try {
+            val jsonString = context.assets.open("data/thinkpad_detail.json").bufferedReader().use { it.readText() }
+            gson.fromJson(jsonString, ProductDetail::class.java)
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Failed to load ThinkPad detail", e)
+            null
+        }
+    }
+
     suspend fun loadProductSpec(productId: String): ProductSpec = withContext(Dispatchers.IO) {
         try {
             val jsonString = context.assets.open("data/product_specs.json").bufferedReader().use { it.readText() }

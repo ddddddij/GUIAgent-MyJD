@@ -281,7 +281,7 @@
     "items": [
       {
         "product": {
-          "id": "laptop_001",
+          "id": "thinkpad_001",
           "name": "联想ThinkPad E14 14英寸笔记本电脑",
           "price": 4999.0,
           "originalPrice": 5999.0,

@@ -27,6 +27,9 @@ import com.example.MyJD.ui.screen.ShopPageScreen
 import com.example.MyJD.ui.screen.AddressListScreen
 import com.example.MyJD.ui.screen.AddressDetailScreen
 import com.example.MyJD.ui.screen.HuaweiP60DetailScreen
+import com.example.MyJD.ui.screen.HuaweiMate60DetailScreen
+import com.example.MyJD.ui.screen.HuaweiNova11DetailScreen
+import com.example.MyJD.ui.screen.ThinkPadDetailScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
@@ -44,6 +47,12 @@ fun AppNavigation(navController: NavHostController) {
                     when {
                         productId.contains("huawei_p60") || productId.contains("华为P60") || productId.contains("P60") -> 
                             navController.navigate("huawei_p60_detail/$productId")
+                        productId.contains("huawei_mate60") || productId.contains("华为Mate60") || productId.contains("Mate60") || productId.contains("mate60") -> 
+                            navController.navigate("huawei_mate60_detail/$productId")
+                        productId.contains("huawei_nova11") || productId.contains("华为Nova11") || productId.contains("Nova11") || productId.contains("nova11") -> 
+                            navController.navigate("huawei_nova11_detail/$productId")
+                        productId.contains("thinkpad") || productId.contains("ThinkPad") || productId.contains("联想ThinkPad") || productId.contains("联想笔记本") -> 
+                            navController.navigate("thinkpad_detail/$productId")
                         productId.contains("iphone15") || productId.contains("iPhone15") -> 
                             navController.navigate("product/$productId")
                         else -> 
@@ -136,6 +145,8 @@ fun AppNavigation(navController: NavHostController) {
                     when {
                         productId.contains("huawei_p60") || productId.contains("华为P60") || productId.contains("P60") -> 
                             navController.navigate("huawei_p60_detail/$productId")
+                        productId.contains("huawei_mate60") || productId.contains("华为Mate60") || productId.contains("Mate60") || productId.contains("mate60") -> 
+                            navController.navigate("huawei_mate60_detail/$productId")
                         productId.contains("iphone15") || productId.contains("iPhone15") -> 
                             navController.navigate("product/$productId")
                         else -> 
@@ -180,6 +191,54 @@ fun AppNavigation(navController: NavHostController) {
             )
         }
         
+        composable("huawei_mate60_detail/{productId}") { backStackEntry ->
+            val productId = backStackEntry.arguments?.getString("productId") ?: ""
+            HuaweiMate60DetailScreen(
+                productId = productId,
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onCartClick = {
+                    navController.navigate("cart")
+                },
+                onBuyNowClick = {
+                    navController.navigate("order_confirm")
+                }
+            )
+        }
+        
+        composable("huawei_nova11_detail/{productId}") { backStackEntry ->
+            val productId = backStackEntry.arguments?.getString("productId") ?: ""
+            HuaweiNova11DetailScreen(
+                productId = productId,
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onCartClick = {
+                    navController.navigate("cart")
+                },
+                onBuyNowClick = {
+                    navController.navigate("order_confirm")
+                }
+            )
+        }
+        
+        composable("thinkpad_detail/{productId}") { backStackEntry ->
+            val productId = backStackEntry.arguments?.getString("productId") ?: ""
+            ThinkPadDetailScreen(
+                productId = productId,
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onCartClick = {
+                    navController.navigate("cart")
+                },
+                onBuyNowClick = {
+                    navController.navigate("order_confirm")
+                }
+            )
+        }
+        
         composable("supermarket") {
             PlaceholderScreen(
                 title = "京东超市",
@@ -201,6 +260,12 @@ fun AppNavigation(navController: NavHostController) {
                     when {
                         productId.contains("huawei_p60") || productId.contains("华为P60") || productId.contains("P60") -> 
                             navController.navigate("huawei_p60_detail/$productId")
+                        productId.contains("huawei_mate60") || productId.contains("华为Mate60") || productId.contains("Mate60") || productId.contains("mate60") -> 
+                            navController.navigate("huawei_mate60_detail/$productId")
+                        productId.contains("huawei_nova11") || productId.contains("华为Nova11") || productId.contains("Nova11") || productId.contains("nova11") -> 
+                            navController.navigate("huawei_nova11_detail/$productId")
+                        productId.contains("thinkpad") || productId.contains("ThinkPad") || productId.contains("联想ThinkPad") || productId.contains("联想笔记本") -> 
+                            navController.navigate("thinkpad_detail/$productId")
                         productId.contains("iphone15") || productId.contains("iPhone15") -> 
                             navController.navigate("product/$productId")
                         else -> 

@@ -293,6 +293,40 @@
   - 与iPhone15详情页并行存在，不影响原有功能
   - 支持未来扩展更多产品专用详情页
 
+#### 📱 华为Mate60详情页 (HuaweiMate60DetailScreen)
+- **页面独立设计**: 
+  - 专为华为Mate60商品设计的独立详情页面
+  - 简化的UI布局，突出产品核心信息展示
+  - 与其他详情页分离，实现不同商品跳转到专用详情页
+- **商品信息展示**:
+  - 商品主图：华为Mate60封面.JPG，1:1宽高比展示
+  - 商品名称：华为Mate60 Pro 卫星通信版
+  - 价格信息：¥2919双11特价，原价¥3499，价格红色突出显示
+  - 规格信息：12GB+512GB固定规格展示
+  - 产品特色标签：卫星通信、鸿蒙OS、OLED直屏、66W快充、4800万超感光摄像头、12GB+512GB
+- **底部操作栏**:
+  - 加入购物车按钮：灰色背景，黑色文字
+  - 立即购买按钮：红色背景，白色文字
+  - 点击显示成功Toast提示
+- **路由逻辑**:
+  - 根据产品ID智能跳转：huawei_mate60、华为Mate60、Mate60、mate60关键词匹配
+  - 从首页推荐、搜索结果、消息详情等多个入口支持条件跳转
+  - 独立路由：huawei_mate60_detail/{productId}
+- **数据管理**:
+  - 华为Mate60专用数据文件：huawei_mate60_detail.json
+  - 包含完整的产品信息、规格、评价、店铺信息等
+  - 固定价格¥2919，符合开发要求规范
+- **MVP架构实现**:
+  - HuaweiMate60DetailContract：定义专用View和Presenter接口
+  - HuaweiMate60DetailPresenter：处理华为Mate60特定业务逻辑
+  - HuaweiMate60DetailViewModel：管理UI状态和数据展示
+  - DataRepository扩展：添加getHuaweiMate60ProductDetail方法
+- **技术特点**:
+  - 遵循现有MVP架构模式，代码结构清晰
+  - 复用现有UI组件，保持界面风格一致
+  - 与iPhone15和华为P60详情页并行存在，不影响原有功能
+  - 支持扩展性架构，方便添加更多产品专用详情页
+
 #### 📍 地址管理功能 (AddressListActivity & AddressDetailActivity)
 - **地址列表页面**:
   - 收货地址完整列表展示：收货人、手机号（隐藏中间4位）、完整地址
@@ -327,6 +361,81 @@
   - 表单验证错误提示，引导用户正确输入
   - 操作成功Toast反馈：保存、删除、设为默认等
   - 与结算页面集成：支持地址选择和切换功能
+
+#### 📱 华为Nova11详情页 (HuaweiNova11DetailScreen)
+- **页面独立设计**: 
+  - 专为华为Nova11商品设计的独立详情页面
+  - 简化的UI布局，突出产品核心信息展示
+  - 与其他详情页分离，实现不同商品跳转到专用详情页
+- **商品信息展示**:
+  - 商品主图：华为nova11封面.JPG，1:1宽高比展示
+  - 商品名称：华为Nova11 SE 1亿像素三摄 鸿蒙智能系统 NFC功能
+  - 价格信息：¥1217.99含补贴价，原价¥1599，价格红色突出显示
+  - 规格信息：曜金黑/雪域白/11号色 256GB三种颜色选择
+  - 产品特色标签：1亿像素、高通骁龙680、NFC、鸿蒙系统、66W快充、蓝牙耳机套装
+- **底部操作栏**:
+  - 加入购物车按钮：灰色背景，黑色文字
+  - 立即购买按钮：红色背景，白色文字
+  - 点击显示成功Toast提示
+- **路由逻辑**:
+  - 根据产品ID智能跳转：huawei_nova11、华为Nova11、Nova11、nova11关键词匹配
+  - 从首页推荐、搜索结果、消息详情等多个入口支持条件跳转
+  - 独立路由：huawei_nova11_detail/{productId}
+- **数据管理**:
+  - 华为Nova11专用数据文件：huawei_nova11_detail.json
+  - 包含完整的产品信息、规格、评价、店铺信息等
+  - 固定价格¥1217.99，符合开发要求规范
+- **MVP架构实现**:
+  - HuaweiNova11DetailContract：定义专用View和Presenter接口
+  - HuaweiNova11DetailPresenter：处理华为Nova11特定业务逻辑
+  - HuaweiNova11DetailViewModel：管理UI状态和数据展示
+  - DataRepository扩展：添加getHuaweiNova11ProductDetail方法
+- **技术特点**:
+  - 遵循现有MVP架构模式，代码结构清晰
+  - 复用现有UI组件，保持界面风格一致
+  - 与iPhone15、华为P60、华为Mate60详情页并行存在，不影响原有功能
+  - 支持扩展性架构，方便添加更多产品专用详情页
+
+#### 💻 ThinkPad详情页 (ThinkPadDetailScreen)
+- **页面独立设计**: 
+  - 专为ThinkPad笔记本商品设计的独立详情页面
+  - 笔记本专用UI布局，突出政府补贴和产品核心信息展示
+  - 与手机详情页分离，实现不同商品跳转到专用详情页
+- **商品信息展示**:
+  - 商品主图：ThinkPad产品图，1:1宽高比展示
+  - 商品名称：ThinkPad 【国家补贴20%】 联想笔记本电脑E14 2025超能版
+  - 价格信息：¥4499.1特价，原价¥5999，价格红色突出显示（22sp字体）
+  - 规格信息：E14超能版 黑色，酷睿5 220H，16G，512G固态
+  - 产品特色标签：国家补贴20%、E14超能版、酷睿处理器、16G内存、512G固态
+- **政府补贴设计**:
+  - 绿色补贴标识：#00BFA5颜色，突出显示"国家补贴20%"
+  - 专门的补贴价格展示区域
+  - 补贴相关的优惠活动标签
+- **购买方式选择**:
+  - 购买方式标签：一次性购买、分期购买等选项
+  - 笔记本专用的购买类型展示
+- **底部操作栏**:
+  - 加入购物车按钮：灰色背景，黑色文字
+  - 立即购买按钮：红色背景，白色文字
+  - 点击显示成功Toast提示
+- **路由逻辑**:
+  - 根据产品ID智能跳转：thinkpad、ThinkPad、联想ThinkPad、联想笔记本关键词匹配
+  - 从首页推荐、搜索结果、消息详情等多个入口支持条件跳转
+  - 独立路由：thinkpad_detail/{productId}
+- **数据管理**:
+  - ThinkPad专用数据文件：thinkpad_detail.json
+  - 包含完整的产品信息、规格、评价、店铺信息等
+  - 固定价格¥4499.1，符合开发要求规范
+- **MVP架构实现**:
+  - ThinkPadDetailContract：定义专用View和Presenter接口
+  - ThinkPadDetailPresenter：处理ThinkPad特定业务逻辑
+  - ThinkPadDetailViewModel：管理UI状态和数据展示
+  - DataRepository扩展：添加getThinkPadProductDetail方法
+- **技术特点**:
+  - 遵循现有MVP架构模式，代码结构清晰
+  - 复用现有UI组件，保持界面风格一致
+  - 与iPhone15、华为P60、华为Mate60、华为Nova11详情页并行存在，不影响原有功能
+  - 支持扩展性架构，形成完整的五产品详情页体系
 
 #### 🔍 搜索功能 (SearchActivity & SearchResultActivity)
 - **搜索页面**:
@@ -390,7 +499,10 @@ MainActivity (底部导航)
 ├── 商品详情 (ProductDetailScreen) ✅
 │   ├── 规格选择弹窗 (ProductSpecDialog) ✅
 │   └── 结算页面 (SettleActivity) ✅
-└── 华为P60详情页 (HuaweiP60DetailScreen) ✅
+├── 华为P60详情页 (HuaweiP60DetailScreen) ✅
+├── 华为Mate60详情页 (HuaweiMate60DetailScreen) ✅
+├── 华为Nova11详情页 (HuaweiNova11DetailScreen) ✅
+└── ThinkPad详情页 (ThinkPadDetailScreen) ✅
 ```
 
 ### 数据结构
@@ -405,6 +517,9 @@ MainActivity (底部导航)
 - **个人中心数据** (`me_tab.json`): 会员权益、订单状态、资产服务等
 - **商品详情数据** (`product_detail.json`): iPhone15详细信息、规格、评价等
 - **华为P60详情数据** (`huawei_p60_detail.json`): 华为P60详细信息、规格、评价等
+- **华为Mate60详情数据** (`huawei_mate60_detail.json`): 华为Mate60详细信息、规格、评价等
+- **华为Nova11详情数据** (`huawei_nova11_detail.json`): 华为Nova11详细信息、规格、评价等
+- **ThinkPad详情数据** (`thinkpad_detail.json`): ThinkPad笔记本详细信息、规格、评价等
 - **订单数据** (`orders.json`): 用户订单信息、状态、商品项等
 - **用户资料** (`user_profile.json`): 用户个人信息、偏好设置
 - **购物车数据**: 运行时动态管理，支持规格选择
@@ -611,6 +726,49 @@ app/src/main/java/com/example/MyJD/
 本项目仅用于学习和演示目的，不得用于商业用途。
 
 ## 更新日志
+
+### v1.0.16 (2025-10-29)
+- ✅ 完成ThinkPad详情页（ThinkPadDetailScreen）开发
+- ✅ 实现独立的ThinkPad笔记本商品详情展示，专为联想笔记本产品设计
+- ✅ 创建完整的MVP架构：ThinkPadDetailContract、ThinkPadDetailPresenter、ThinkPadDetailViewModel
+- ✅ 新增ThinkPad专用数据文件thinkpad_detail.json，包含完整商品信息
+- ✅ 扩展DataRepository，添加getThinkPadProductDetail()方法
+- ✅ 实现智能路由逻辑：根据产品ID关键词（thinkpad、ThinkPad、联想ThinkPad、联想笔记本）自动跳转到相应详情页
+- ✅ 更新AppNavigation添加thinkpad_detail路由，支持多入口访问
+- ✅ 商品信息展示：ThinkPad产品图、¥4499.1特价、E14超能版 黑色规格、政府补贴标识
+- ✅ 政府补贴设计：绿色补贴标识（#00BFA5），突出显示"国家补贴20%"，专门的补贴价格展示区域
+- ✅ 笔记本专用UI：配置规格展示、购买方式选择、优惠活动区域，22sp价格字体突出显示
+- ✅ 完善导航系统：支持iPhone15、华为P60、华为Mate60、华为Nova11、ThinkPad五种产品的专用详情页跳转
+- ✅ 项目构建验证通过，所有新增功能正常运行
+- 🎨 UI设计遵循开发要求规范，形成了完整的五产品详情页架构体系，特别针对笔记本产品优化
+
+### v1.0.15 (2025-10-29)
+- ✅ 完成华为Nova11详情页（HuaweiNova11DetailScreen）开发
+- ✅ 实现独立的华为Nova11商品详情展示，专为Nova11 SE设计
+- ✅ 创建完整的MVP架构：HuaweiNova11DetailContract、HuaweiNova11DetailPresenter、HuaweiNova11DetailViewModel
+- ✅ 新增华为Nova11专用数据文件huawei_nova11_detail.json，包含完整商品信息
+- ✅ 扩展DataRepository，添加getHuaweiNova11ProductDetail()方法
+- ✅ 实现智能路由逻辑：根据产品ID关键词（huawei_nova11、华为Nova11、Nova11、nova11）自动跳转到相应详情页
+- ✅ 更新AppNavigation添加huawei_nova11_detail路由，支持多入口访问
+- ✅ 商品信息展示：华为nova11封面图、¥1217.99含补贴价、曜金黑/雪域白/11号色 256GB规格、产品特色标签
+- ✅ 简化UI设计：专注核心信息展示，保持与其他详情页一致的UI风格
+- ✅ 完善导航系统：支持iPhone15、华为P60、华为Mate60、华为Nova11四种产品的专用详情页跳转
+- ✅ 项目构建验证通过，所有新增功能正常运行
+- 🎨 UI设计遵循开发要求规范，形成了完整的四产品详情页架构体系
+
+### v1.0.14 (2025-10-29)
+- ✅ 完成华为Mate60详情页（HuaweiMate60DetailScreen）开发
+- ✅ 实现独立的华为Mate60商品详情展示，与其他详情页完全分离
+- ✅ 创建完整的MVP架构：HuaweiMate60DetailContract、HuaweiMate60DetailPresenter、HuaweiMate60DetailViewModel
+- ✅ 新增华为Mate60专用数据文件huawei_mate60_detail.json，包含完整商品信息
+- ✅ 扩展DataRepository，添加getHuaweiMate60ProductDetail()方法
+- ✅ 实现智能路由逻辑：根据产品ID关键词（huawei_mate60、华为Mate60、Mate60、mate60）自动跳转到相应详情页
+- ✅ 更新AppNavigation添加huawei_mate60_detail路由，支持多入口访问
+- ✅ 商品信息展示：华为Mate60封面图、¥2919双11特价、12GB+512GB规格、产品特色标签
+- ✅ 简化UI设计：专注核心信息展示，保持与其他详情页一致的UI风格
+- ✅ 完善导航系统：支持iPhone15、华为P60、华为Mate60三种产品的专用详情页跳转
+- ✅ 项目构建验证通过，所有新增功能正常运行
+- 🎨 UI设计遵循开发要求规范，形成了完整的多产品详情页架构体系
 
 ### v1.0.13 (2025-10-29)
 - ✅ 完成华为P60详情页（HuaweiP60DetailScreen）开发
