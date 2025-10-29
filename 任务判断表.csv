@@ -1,21 +1,21 @@
-任务
-在首页中搜索「iPhone 15」，并查看搜索结果的第一个商品。
-将首页中的商品「iPhone 15 蓝色 128GB」加入购物车。
-立即购买首页中一台任意规格的「iPhone 15」。
-在「我的」页面查看我的全部订单。
-在购物车中勾选第一个商品，然后结算。
-结算我的第一个待付款订单。
-给Apple产品京东自营旗舰店发消息问手机什么时候发货。
-计算首页共展示了多少件商品。
-计算购物车中所有商品的总价。
-计算待收货的订单有多少项。
-计算我一共收到多少条京东客服的消息。
-查看京东秒送的物流消息，确定商品还有多久能送达。
-查看购物车中是否有iPhone15，如果有就结算这项。
-查看首页iPhone15商品共有多少条评论。
-将商品"iPhone 15 蓝色 128GB 1件"、"iPhone 15 黑色 256GB 2件"、"iPhone 15 粉色 128GB 3件"共6件商品加入购物车。
-搜索iPhone15并筛选价格在5000-8000之间的手机类别，将iPhone15 黑色 256GB加入购物车后，选择微信支付，满3000减50优惠券结算。
-进入首页iPhone15商品详情并进入店铺主页，然后立即购买店铺中"iPhone 15 粉色 256GB 1件"后，查看待收货订单。
-取消我所有的待付款订单，然后在全部订单中删除已取消的订单。
-新建地址"湖北省武汉市洪山区文秀街9号"并设为默认地址。
-设置Apple产品京东自营旗舰店的聊天为消息免打扰。
+任务,判断标准,判断函数
+在首页中搜索「iPhone 15」，并查看搜索结果的第一个商品。,检查task_one_logs.json文件中是否包含"TASK_COMPLETED"，并查看detail中消息是否符合。,TaskOneLogger.isTaskOneCompleted()
+将首页中的商品「iPhone 15 蓝色 128GB」加入购物车。,检查cart_items.json文件中是否包含"iPhone 15 蓝色 128GB"条目。,\
+立即购买首页中一台任意规格的「iPhone 15」。,检查orders.json文件中是否包含iPhone 15商品购买订单。,\
+在「我的」页面查看我的全部订单。,检查task_four_logs.json文件中是否包含"TASK_COMPLETED"。,TaskFourLogger.isTaskFourCompleted()
+在购物车中勾选一个商品，然后结算。,任务执行前检查cart_items.json文件中包含的商品条目，执行后检查orders.json文件中新增的待收货订单与cart_items.json文件中减少商品条目是否对应。,\
+结算我的第一个待付款订单。,"检查task_six_log.txt文件中是否包含""找到第一个待付款订单, 订单ID:xxx""，“点击付款按钮”，“确认付款操作”，“付款成功，订单ID: xxx”。",TaskSixLogger.isTaskCompleted()
+给Apple产品京东自营旗舰店发消息问手机什么时候发货。,检查new_messages.json文件中是否包含"什么时候发货"。,\
+计算首页共展示了多少件商品。,检查task_eight_log.txt文件中"任务八完成：首页共展示了 xx 件商品"这一条与AI报告的数字是否相同。,isTaskEightCompleted()
+计算购物车中所有商品的总价。,检查task_nine_log.txt文件中"任务九完成：购物车中所有商品的总价为xxx"这一条与AI报告的数字是否相同。,isTaskNineCompleted()
+计算待收货的订单有多少项。,检查task_ten_log.txt文件中"任务十完成：待收货的订单有xxx项"这一条与AI报告的数字是否相同。,isTaskTenCompleted()
+计算我一共收到多少条京东客服的消息。,检查task_eleven_log.txt文件中"任务十一完成：我一共收到了xx条消息"这一条与AI报告的数字是否相同。,isTaskElevenCompleted()
+查看京东秒送的物流消息，确定商品还有多久能送达。,检查messages.json文件中"您的订单正在配送中，预计30分钟内送达"这一条与AI报告的数字是否相同。,\
+查看购物车中是否有iPhone15，如果有就结算这项。,"检查cart_items.json文件中是否包含""iPhone 15""条目,如果有则在执行完后检查orders.json文件中新增的待收货订单。",\
+查看首页iPhone15商品共有多少条评论。,检查task_fourteen_log.txt文件中"任务十四完成：iPhone15商品详情页共有xx条评论"这一条与AI报告的数字是否相同。,isTaskFourteenCompleted()
+将商品"iPhone 15 蓝色 128GB 1件"、"iPhone 15 黑色 256GB 2件"、"iPhone 15 粉色 128GB 3件"共6件商品加入购物车。,检查cart_items.json文件中是否新增这6件iPhone15商品。,\
+搜索iPhone15并筛选价格在5000-8000之间的手机类别，将iPhone15 黑色 256GB加入购物车后，选择微信支付，满3000减50优惠券结算。,检查task_sixteen_log.txt文件中是否包含"任务十六完成：已成功搜索iPhone15，筛选价格范围和手机类别，将iPhone15 黑色 256GB加入购物车，选择微信支付和满3000减50优惠券完成结算",isTaskSixteenCompleted()
+进入首页iPhone15商品详情并进入店铺主页，然后立即购买店铺中"iPhone 15 粉色 256GB 1件"后，查看待收货订单。,检查task_seventeen_log.txt文件中是否包含"进入商品详情页"，"进入店铺主页"，"加载店铺页面数据"，"在店铺中选择商品:xxx"，然后检查orders.json文件中是否包含"iPhone 15 粉色 256GB 1件"商品购买订单。,isTaskSeventeenCompleted()
+取消我所有的待付款订单，然后在全部订单中删除已取消的订单。,检查task_eighteen_log.txt文件中"尝试取消订单"，"订单取消成功"，"尝试删除已取消订单"，"已取消订单删除成功"的条目。,isTaskEighteenCompleted()
+新建地址"湖北省武汉市洪山区文秀街9号"并设为默认地址。,检查addresses.json文件中是否包含"湖北省武汉市洪山区文秀街9号"，并且"isDefault"应该为true。,\
+设置Apple产品京东自营旗舰店的聊天为消息免打扰。,检查mute_settings.json文件中是否包含"isMuted: false"，"senderName: "Apple产品京东自营旗舰店""。,\
