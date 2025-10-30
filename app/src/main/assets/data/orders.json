@@ -320,5 +320,1845 @@
     "cancelReason": null,
     "trackingNumber": "JD2024010165432198",
     "isReviewed": true
+  },
+  {
+    "id": "order_008",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "huawei_nova11_001",
+          "name": "华为nova11 256GB",
+          "price": 3499.0,
+          "originalPrice": 3999.0,
+          "brand": "华为",
+          "category": "手机",
+          "imageUrl": "image/华为nova11封面.JPG",
+          "storeId": "huawei_store",
+          "storeName": "华为官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 3499.0,
+        "selectedColor": "樱语粉",
+        "selectedVersion": "256GB"
+      }
+    ],
+    "status": "PENDING_PAYMENT",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_001",
+      "recipientName": "张三",
+      "phoneNumber": "13812345678",
+      "province": "北京市",
+      "city": "北京市",
+      "district": "朝阳区",
+      "detailAddress": "建国路88号SOHO现代城A座1501室",
+      "postCode": "100022",
+      "isDefault": true,
+      "createTime": 1704067200000
+    },
+    "totalAmount": 3499.0,
+    "createTime": 1704240000000,
+    "payTime": null,
+    "shipTime": null,
+    "receiveTime": null,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": null,
+    "isReviewed": false
+  },
+  {
+    "id": "order_009",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "rice_001",
+          "name": "五常大米东北珍珠米5kg",
+          "price": 58.8,
+          "originalPrice": 68.8,
+          "brand": "五常",
+          "category": "超市",
+          "imageUrl": "image/五常大米封面.JPG",
+          "storeId": "jd_supermarket",
+          "storeName": "京东超市"
+        },
+        "quantity": 3,
+        "price": 58.8,
+        "selectedColor": null,
+        "selectedVersion": "5kg"
+      }
+    ],
+    "status": "PENDING_PAYMENT",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_001",
+      "recipientName": "张三",
+      "phoneNumber": "13812345678",
+      "province": "北京市",
+      "city": "北京市",
+      "district": "朝阳区",
+      "detailAddress": "建国路88号SOHO现代城A座1501室",
+      "postCode": "100022",
+      "isDefault": true,
+      "createTime": 1704067200000
+    },
+    "totalAmount": 176.4,
+    "createTime": 1704230000000,
+    "payTime": null,
+    "shipTime": null,
+    "receiveTime": null,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": null,
+    "isReviewed": false
+  },
+  {
+    "id": "order_010",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "cosmetic_001",
+          "name": "兰蔻小黑瓶精华肌底液30ml",
+          "price": 780.0,
+          "originalPrice": 880.0,
+          "brand": "兰蔻",
+          "category": "美妆",
+          "imageUrl": "image/兰蔻小黑瓶封面.JPG",
+          "storeId": "lancome_store",
+          "storeName": "兰蔻官方旗舰店"
+        },
+        "quantity": 2,
+        "price": 780.0,
+        "selectedColor": null,
+        "selectedVersion": "30ml"
+      }
+    ],
+    "status": "PENDING_PAYMENT",
+    "paymentMethod": "BAITIAO_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_002",
+      "recipientName": "李四",
+      "phoneNumber": "13687654321",
+      "province": "上海市",
+      "city": "上海市",
+      "district": "浦东新区",
+      "detailAddress": "陆家嘴环路1000号恒生银行大厦2205室",
+      "postCode": "200120",
+      "isDefault": false,
+      "createTime": 1703980800000
+    },
+    "totalAmount": 1560.0,
+    "createTime": 1704220000000,
+    "payTime": null,
+    "shipTime": null,
+    "receiveTime": null,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": null,
+    "isReviewed": false
+  },
+  {
+    "id": "order_011",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "thinkpad_001",
+          "name": "联想ThinkPad E14 14英寸笔记本电脑",
+          "price": 4999.0,
+          "originalPrice": 5999.0,
+          "brand": "联想",
+          "category": "电脑",
+          "imageUrl": "image/联想ThinkPad封面.JPG",
+          "storeId": "lenovo_store",
+          "storeName": "联想官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 4999.0,
+        "selectedColor": "银色",
+        "selectedVersion": "i7/16G/512G"
+      }
+    ],
+    "status": "PENDING_PAYMENT",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_001",
+      "recipientName": "张三",
+      "phoneNumber": "13812345678",
+      "province": "北京市",
+      "city": "北京市",
+      "district": "朝阳区",
+      "detailAddress": "建国路88号SOHO现代城A座1501室",
+      "postCode": "100022",
+      "isDefault": true,
+      "createTime": 1704067200000
+    },
+    "totalAmount": 4999.0,
+    "createTime": 1704210000000,
+    "payTime": null,
+    "shipTime": null,
+    "receiveTime": null,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": null,
+    "isReviewed": false
+  },
+  {
+    "id": "order_012",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "shoes_001",
+          "name": "耐克Air Max 270运动鞋",
+          "price": 899.0,
+          "originalPrice": 1199.0,
+          "brand": "耐克",
+          "category": "运动",
+          "imageUrl": "image/耐克Air封面.JPG",
+          "storeId": "nike_store",
+          "storeName": "耐克官方旗舰店"
+        },
+        "quantity": 2,
+        "price": 899.0,
+        "selectedColor": "全白",
+        "selectedVersion": "41"
+      }
+    ],
+    "status": "PENDING_PAYMENT",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_003",
+      "recipientName": "王五",
+      "phoneNumber": "13923456789",
+      "province": "广东省",
+      "city": "深圳市",
+      "district": "南山区",
+      "detailAddress": "科技园南区深南大道9999号",
+      "postCode": "518057",
+      "isDefault": false,
+      "createTime": 1703894400000
+    },
+    "totalAmount": 1798.0,
+    "createTime": 1704200000000,
+    "payTime": null,
+    "shipTime": null,
+    "receiveTime": null,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": null,
+    "isReviewed": false
+  },
+  {
+    "id": "order_013",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "huawei_mate60_001",
+          "name": "华为Mate60 512GB",
+          "price": 4999.0,
+          "originalPrice": 6999.0,
+          "brand": "华为",
+          "category": "手机",
+          "imageUrl": "image/华为Mate60封面.JPG",
+          "storeId": "huawei_store",
+          "storeName": "华为官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 4999.0,
+        "selectedColor": "白沙银",
+        "selectedVersion": "256GB"
+      }
+    ],
+    "status": "PENDING_PAYMENT",
+    "paymentMethod": "BAITIAO_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_001",
+      "recipientName": "张三",
+      "phoneNumber": "13812345678",
+      "province": "北京市",
+      "city": "北京市",
+      "district": "朝阳区",
+      "detailAddress": "建国路88号SOHO现代城A座1501室",
+      "postCode": "100022",
+      "isDefault": true,
+      "createTime": 1704067200000
+    },
+    "totalAmount": 4999.0,
+    "createTime": 1704190000000,
+    "payTime": null,
+    "shipTime": null,
+    "receiveTime": null,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": null,
+    "isReviewed": false
+  },
+  {
+    "id": "order_014",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "headphone_001",
+          "name": "索尼WH-1000XM4无线降噪耳机",
+          "price": 1899.0,
+          "originalPrice": 2299.0,
+          "brand": "索尼",
+          "category": "数码",
+          "imageUrl": "image/索尼WH-1000XM4封面.JPG",
+          "storeId": "sony_store",
+          "storeName": "索尼官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 1899.0,
+        "selectedColor": "银色",
+        "selectedVersion": "旅行套装版"
+      }
+    ],
+    "status": "PENDING_PAYMENT",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_002",
+      "recipientName": "李四",
+      "phoneNumber": "13687654321",
+      "province": "上海市",
+      "city": "上海市",
+      "district": "浦东新区",
+      "detailAddress": "陆家嘴环路1000号恒生银行大厦2205室",
+      "postCode": "200120",
+      "isDefault": false,
+      "createTime": 1703980800000
+    },
+    "totalAmount": 1899.0,
+    "createTime": 1704180000000,
+    "payTime": null,
+    "shipTime": null,
+    "receiveTime": null,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": null,
+    "isReviewed": false
+  },
+  {
+    "id": "order_015",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "milk_001",
+          "name": "蒙牛特仑苏纯牛奶250ml*16盒",
+          "price": 89.9,
+          "originalPrice": 99.9,
+          "brand": "蒙牛",
+          "category": "超市",
+          "imageUrl": "image/特仑苏封面.JPG",
+          "storeId": "jd_supermarket",
+          "storeName": "京东超市"
+        },
+        "quantity": 4,
+        "price": 89.9,
+        "selectedColor": null,
+        "selectedVersion": "250ml*24盒"
+      }
+    ],
+    "status": "PENDING_PAYMENT",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_003",
+      "recipientName": "王五",
+      "phoneNumber": "13923456789",
+      "province": "广东省",
+      "city": "深圳市",
+      "district": "南山区",
+      "detailAddress": "科技园南区深南大道9999号",
+      "postCode": "518057",
+      "isDefault": false,
+      "createTime": 1703894400000
+    },
+    "totalAmount": 359.6,
+    "createTime": 1704170000000,
+    "payTime": null,
+    "shipTime": null,
+    "receiveTime": null,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": null,
+    "isReviewed": false
+  },
+  {
+    "id": "order_016",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "iphone15_001",
+          "name": "iPhone 15 128GB",
+          "price": 5999.0,
+          "originalPrice": 6999.0,
+          "brand": "苹果",
+          "category": "手机",
+          "imageUrl": "image/iPhone15封面.JPG",
+          "storeId": "apple_store",
+          "storeName": "Apple官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 5999.0,
+        "selectedColor": "绿色",
+        "selectedVersion": "256GB"
+      }
+    ],
+    "status": "PENDING_PAYMENT",
+    "paymentMethod": "BAITIAO_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_001",
+      "recipientName": "张三",
+      "phoneNumber": "13812345678",
+      "province": "北京市",
+      "city": "北京市",
+      "district": "朝阳区",
+      "detailAddress": "建国路88号SOHO现代城A座1501室",
+      "postCode": "100022",
+      "isDefault": true,
+      "createTime": 1704067200000
+    },
+    "totalAmount": 5999.0,
+    "createTime": 1704160000000,
+    "payTime": null,
+    "shipTime": null,
+    "receiveTime": null,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": null,
+    "isReviewed": false
+  },
+  {
+    "id": "order_017",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "huawei_p60_001",
+          "name": "华为P60 Pro 256GB",
+          "price": 4488.0,
+          "originalPrice": 5988.0,
+          "brand": "华为",
+          "category": "手机",
+          "imageUrl": "image/华为P60封面.JPG",
+          "storeId": "huawei_store",
+          "storeName": "华为官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 4488.0,
+        "selectedColor": "翡冷翠",
+        "selectedVersion": "512GB"
+      }
+    ],
+    "status": "PENDING_PAYMENT",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_002",
+      "recipientName": "李四",
+      "phoneNumber": "13687654321",
+      "province": "上海市",
+      "city": "上海市",
+      "district": "浦东新区",
+      "detailAddress": "陆家嘴环路1000号恒生银行大厦2205室",
+      "postCode": "200120",
+      "isDefault": false,
+      "createTime": 1703980800000
+    },
+    "totalAmount": 4488.0,
+    "createTime": 1704150000000,
+    "payTime": null,
+    "shipTime": null,
+    "receiveTime": null,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": null,
+    "isReviewed": false
+  },
+  {
+    "id": "order_018",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "huawei_nova11_001",
+          "name": "华为nova11 256GB",
+          "price": 3499.0,
+          "originalPrice": 3999.0,
+          "brand": "华为",
+          "category": "手机",
+          "imageUrl": "image/华为nova11封面.JPG",
+          "storeId": "huawei_store",
+          "storeName": "华为官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 3499.0,
+        "selectedColor": "绮境森林",
+        "selectedVersion": "128GB"
+      }
+    ],
+    "status": "PENDING_RECEIPT",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_001",
+      "recipientName": "张三",
+      "phoneNumber": "13812345678",
+      "province": "北京市",
+      "city": "北京市",
+      "district": "朝阳区",
+      "detailAddress": "建国路88号SOHO现代城A座1501室",
+      "postCode": "100022",
+      "isDefault": true,
+      "createTime": 1704067200000
+    },
+    "totalAmount": 3499.0,
+    "createTime": 1704140000000,
+    "payTime": 1704141000000,
+    "shipTime": 1704200000000,
+    "receiveTime": null,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001234",
+    "isReviewed": false
+  },
+  {
+    "id": "order_019",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "rice_001",
+          "name": "五常大米东北珍珠米5kg",
+          "price": 58.8,
+          "originalPrice": 68.8,
+          "brand": "五常",
+          "category": "超市",
+          "imageUrl": "image/五常大米封面.JPG",
+          "storeId": "jd_supermarket",
+          "storeName": "京东超市"
+        },
+        "quantity": 5,
+        "price": 58.8,
+        "selectedColor": null,
+        "selectedVersion": "10kg"
+      }
+    ],
+    "status": "PENDING_RECEIPT",
+    "paymentMethod": "BAITIAO_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_002",
+      "recipientName": "李四",
+      "phoneNumber": "13687654321",
+      "province": "上海市",
+      "city": "上海市",
+      "district": "浦东新区",
+      "detailAddress": "陆家嘴环路1000号恒生银行大厦2205室",
+      "postCode": "200120",
+      "isDefault": false,
+      "createTime": 1703980800000
+    },
+    "totalAmount": 294.0,
+    "createTime": 1704130000000,
+    "payTime": 1704131000000,
+    "shipTime": 1704190000000,
+    "receiveTime": null,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001235",
+    "isReviewed": false
+  },
+  {
+    "id": "order_020",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "cosmetic_001",
+          "name": "兰蔻小黑瓶精华肌底液30ml",
+          "price": 780.0,
+          "originalPrice": 880.0,
+          "brand": "兰蔻",
+          "category": "美妆",
+          "imageUrl": "image/兰蔻小黑瓶封面.JPG",
+          "storeId": "lancome_store",
+          "storeName": "兰蔻官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 780.0,
+        "selectedColor": null,
+        "selectedVersion": "50ml"
+      }
+    ],
+    "status": "PENDING_RECEIPT",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_003",
+      "recipientName": "王五",
+      "phoneNumber": "13923456789",
+      "province": "广东省",
+      "city": "深圳市",
+      "district": "南山区",
+      "detailAddress": "科技园南区深南大道9999号",
+      "postCode": "518057",
+      "isDefault": false,
+      "createTime": 1703894400000
+    },
+    "totalAmount": 780.0,
+    "createTime": 1704120000000,
+    "payTime": 1704121000000,
+    "shipTime": 1704180000000,
+    "receiveTime": null,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001236",
+    "isReviewed": false
+  },
+  {
+    "id": "order_021",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "thinkpad_001",
+          "name": "联想ThinkPad E14 14英寸笔记本电脑",
+          "price": 4999.0,
+          "originalPrice": 5999.0,
+          "brand": "联想",
+          "category": "电脑",
+          "imageUrl": "image/联想ThinkPad封面.JPG",
+          "storeId": "lenovo_store",
+          "storeName": "联想官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 4999.0,
+        "selectedColor": "黑色",
+        "selectedVersion": "i7/16G/1T"
+      }
+    ],
+    "status": "PENDING_RECEIPT",
+    "paymentMethod": "BAITIAO_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_001",
+      "recipientName": "张三",
+      "phoneNumber": "13812345678",
+      "province": "北京市",
+      "city": "北京市",
+      "district": "朝阳区",
+      "detailAddress": "建国路88号SOHO现代城A座1501室",
+      "postCode": "100022",
+      "isDefault": true,
+      "createTime": 1704067200000
+    },
+    "totalAmount": 4999.0,
+    "createTime": 1704110000000,
+    "payTime": 1704111000000,
+    "shipTime": 1704170000000,
+    "receiveTime": null,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001237",
+    "isReviewed": false
+  },
+  {
+    "id": "order_022",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "shoes_001",
+          "name": "耐克Air Max 270运动鞋",
+          "price": 899.0,
+          "originalPrice": 1199.0,
+          "brand": "耐克",
+          "category": "运动",
+          "imageUrl": "image/耐克Air封面.JPG",
+          "storeId": "nike_store",
+          "storeName": "耐克官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 899.0,
+        "selectedColor": "红黑",
+        "selectedVersion": "43"
+      }
+    ],
+    "status": "PENDING_RECEIPT",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_002",
+      "recipientName": "李四",
+      "phoneNumber": "13687654321",
+      "province": "上海市",
+      "city": "上海市",
+      "district": "浦东新区",
+      "detailAddress": "陆家嘴环路1000号恒生银行大厦2205室",
+      "postCode": "200120",
+      "isDefault": false,
+      "createTime": 1703980800000
+    },
+    "totalAmount": 899.0,
+    "createTime": 1704100000000,
+    "payTime": 1704101000000,
+    "shipTime": 1704160000000,
+    "receiveTime": null,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001238",
+    "isReviewed": false
+  },
+  {
+    "id": "order_023",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "huawei_mate60_001",
+          "name": "华为Mate60 512GB",
+          "price": 4999.0,
+          "originalPrice": 6999.0,
+          "brand": "华为",
+          "category": "手机",
+          "imageUrl": "image/华为Mate60封面.JPG",
+          "storeId": "huawei_store",
+          "storeName": "华为官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 4999.0,
+        "selectedColor": "南糖玛瑙",
+        "selectedVersion": "1TB"
+      }
+    ],
+    "status": "PENDING_RECEIPT",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_003",
+      "recipientName": "王五",
+      "phoneNumber": "13923456789",
+      "province": "广东省",
+      "city": "深圳市",
+      "district": "南山区",
+      "detailAddress": "科技园南区深南大道9999号",
+      "postCode": "518057",
+      "isDefault": false,
+      "createTime": 1703894400000
+    },
+    "totalAmount": 4999.0,
+    "createTime": 1704090000000,
+    "payTime": 1704091000000,
+    "shipTime": 1704150000000,
+    "receiveTime": null,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001239",
+    "isReviewed": false
+  },
+  {
+    "id": "order_024",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "headphone_001",
+          "name": "索尼WH-1000XM4无线降噪耳机",
+          "price": 1899.0,
+          "originalPrice": 2299.0,
+          "brand": "索尼",
+          "category": "数码",
+          "imageUrl": "image/索尼WH-1000XM4封面.JPG",
+          "storeId": "sony_store",
+          "storeName": "索尼官方旗舰店"
+        },
+        "quantity": 2,
+        "price": 1899.0,
+        "selectedColor": "蓝色",
+        "selectedVersion": "标准版"
+      }
+    ],
+    "status": "PENDING_RECEIPT",
+    "paymentMethod": "BAITIAO_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_001",
+      "recipientName": "张三",
+      "phoneNumber": "13812345678",
+      "province": "北京市",
+      "city": "北京市",
+      "district": "朝阳区",
+      "detailAddress": "建国路88号SOHO现代城A座1501室",
+      "postCode": "100022",
+      "isDefault": true,
+      "createTime": 1704067200000
+    },
+    "totalAmount": 3798.0,
+    "createTime": 1704080000000,
+    "payTime": 1704081000000,
+    "shipTime": 1704140000000,
+    "receiveTime": null,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001240",
+    "isReviewed": false
+  },
+  {
+    "id": "order_025",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "milk_001",
+          "name": "蒙牛特仑苏纯牛奶250ml*16盒",
+          "price": 89.9,
+          "originalPrice": 99.9,
+          "brand": "蒙牛",
+          "category": "超市",
+          "imageUrl": "image/特仑苏封面.JPG",
+          "storeId": "jd_supermarket",
+          "storeName": "京东超市"
+        },
+        "quantity": 6,
+        "price": 89.9,
+        "selectedColor": null,
+        "selectedVersion": "250ml*16盒"
+      }
+    ],
+    "status": "PENDING_RECEIPT",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_002",
+      "recipientName": "李四",
+      "phoneNumber": "13687654321",
+      "province": "上海市",
+      "city": "上海市",
+      "district": "浦东新区",
+      "detailAddress": "陆家嘴环路1000号恒生银行大厦2205室",
+      "postCode": "200120",
+      "isDefault": false,
+      "createTime": 1703980800000
+    },
+    "totalAmount": 539.4,
+    "createTime": 1704070000000,
+    "payTime": 1704071000000,
+    "shipTime": 1704130000000,
+    "receiveTime": null,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001241",
+    "isReviewed": false
+  },
+  {
+    "id": "order_026",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "iphone15_001",
+          "name": "iPhone 15 128GB",
+          "price": 5999.0,
+          "originalPrice": 6999.0,
+          "brand": "苹果",
+          "category": "手机",
+          "imageUrl": "image/iPhone15封面.JPG",
+          "storeId": "apple_store",
+          "storeName": "Apple官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 5999.0,
+        "selectedColor": "黄色",
+        "selectedVersion": "512GB"
+      }
+    ],
+    "status": "PENDING_RECEIPT",
+    "paymentMethod": "BAITIAO_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_003",
+      "recipientName": "王五",
+      "phoneNumber": "13923456789",
+      "province": "广东省",
+      "city": "深圳市",
+      "district": "南山区",
+      "detailAddress": "科技园南区深南大道9999号",
+      "postCode": "518057",
+      "isDefault": false,
+      "createTime": 1703894400000
+    },
+    "totalAmount": 5999.0,
+    "createTime": 1704060000000,
+    "payTime": 1704061000000,
+    "shipTime": 1704120000000,
+    "receiveTime": null,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001242",
+    "isReviewed": false
+  },
+  {
+    "id": "order_027",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "huawei_p60_001",
+          "name": "华为P60 Pro 256GB",
+          "price": 4488.0,
+          "originalPrice": 5988.0,
+          "brand": "华为",
+          "category": "手机",
+          "imageUrl": "image/华为P60封面.JPG",
+          "storeId": "huawei_store",
+          "storeName": "华为官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 4488.0,
+        "selectedColor": "雪域白",
+        "selectedVersion": "128GB"
+      }
+    ],
+    "status": "PENDING_RECEIPT",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_001",
+      "recipientName": "张三",
+      "phoneNumber": "13812345678",
+      "province": "北京市",
+      "city": "北京市",
+      "district": "朝阳区",
+      "detailAddress": "建国路88号SOHO现代城A座1501室",
+      "postCode": "100022",
+      "isDefault": true,
+      "createTime": 1704067200000
+    },
+    "totalAmount": 4488.0,
+    "createTime": 1704050000000,
+    "payTime": 1704051000000,
+    "shipTime": 1704110000000,
+    "receiveTime": null,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001243",
+    "isReviewed": false
+  },
+  {
+    "id": "order_028",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "huawei_nova11_001",
+          "name": "华为nova11 256GB",
+          "price": 3499.0,
+          "originalPrice": 3999.0,
+          "brand": "华为",
+          "category": "手机",
+          "imageUrl": "image/华为nova11封面.JPG",
+          "storeId": "huawei_store",
+          "storeName": "华为官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 3499.0,
+        "selectedColor": "冰霜银",
+        "selectedVersion": "512GB"
+      }
+    ],
+    "status": "PENDING_SHIPMENT",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_001",
+      "recipientName": "张三",
+      "phoneNumber": "13812345678",
+      "province": "北京市",
+      "city": "北京市",
+      "district": "朝阳区",
+      "detailAddress": "建国路88号SOHO现代城A座1501室",
+      "postCode": "100022",
+      "isDefault": true,
+      "createTime": 1704067200000
+    },
+    "totalAmount": 3499.0,
+    "createTime": 1704040000000,
+    "payTime": 1704041000000,
+    "shipTime": 1704100000000,
+    "receiveTime": 1704160000000,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001244",
+    "isReviewed": false
+  },
+  {
+    "id": "order_029",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "rice_001",
+          "name": "五常大米东北珍珠米5kg",
+          "price": 58.8,
+          "originalPrice": 68.8,
+          "brand": "五常",
+          "category": "超市",
+          "imageUrl": "image/五常大米封面.JPG",
+          "storeId": "jd_supermarket",
+          "storeName": "京东超市"
+        },
+        "quantity": 2,
+        "price": 58.8,
+        "selectedColor": null,
+        "selectedVersion": "2.5kg"
+      }
+    ],
+    "status": "PENDING_SHIPMENT",
+    "paymentMethod": "BAITIAO_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_002",
+      "recipientName": "李四",
+      "phoneNumber": "13687654321",
+      "province": "上海市",
+      "city": "上海市",
+      "district": "浦东新区",
+      "detailAddress": "陆家嘴环路1000号恒生银行大厦2205室",
+      "postCode": "200120",
+      "isDefault": false,
+      "createTime": 1703980800000
+    },
+    "totalAmount": 117.6,
+    "createTime": 1704030000000,
+    "payTime": 1704031000000,
+    "shipTime": 1704090000000,
+    "receiveTime": 1704150000000,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001245",
+    "isReviewed": false
+  },
+  {
+    "id": "order_030",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "cosmetic_001",
+          "name": "兰蔻小黑瓶精华肌底液30ml",
+          "price": 780.0,
+          "originalPrice": 880.0,
+          "brand": "兰蔻",
+          "category": "美妆",
+          "imageUrl": "image/兰蔻小黑瓶封面.JPG",
+          "storeId": "lancome_store",
+          "storeName": "兰蔻官方旗舰店"
+        },
+        "quantity": 3,
+        "price": 780.0,
+        "selectedColor": null,
+        "selectedVersion": "100ml"
+      }
+    ],
+    "status": "PENDING_SHIPMENT",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_003",
+      "recipientName": "王五",
+      "phoneNumber": "13923456789",
+      "province": "广东省",
+      "city": "深圳市",
+      "district": "南山区",
+      "detailAddress": "科技园南区深南大道9999号",
+      "postCode": "518057",
+      "isDefault": false,
+      "createTime": 1703894400000
+    },
+    "totalAmount": 2340.0,
+    "createTime": 1704020000000,
+    "payTime": 1704021000000,
+    "shipTime": 1704080000000,
+    "receiveTime": 1704140000000,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001246",
+    "isReviewed": false
+  },
+  {
+    "id": "order_031",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "thinkpad_001",
+          "name": "联想ThinkPad E14 14英寸笔记本电脑",
+          "price": 4999.0,
+          "originalPrice": 5999.0,
+          "brand": "联想",
+          "category": "电脑",
+          "imageUrl": "image/联想ThinkPad封面.JPG",
+          "storeId": "lenovo_store",
+          "storeName": "联想官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 4999.0,
+        "selectedColor": "银色",
+        "selectedVersion": "i5/8G/512G"
+      }
+    ],
+    "status": "PENDING_SHIPMENT",
+    "paymentMethod": "BAITIAO_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_001",
+      "recipientName": "张三",
+      "phoneNumber": "13812345678",
+      "province": "北京市",
+      "city": "北京市",
+      "district": "朝阳区",
+      "detailAddress": "建国路88号SOHO现代城A座1501室",
+      "postCode": "100022",
+      "isDefault": true,
+      "createTime": 1704067200000
+    },
+    "totalAmount": 4999.0,
+    "createTime": 1704010000000,
+    "payTime": 1704011000000,
+    "shipTime": 1704070000000,
+    "receiveTime": 1704130000000,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001247",
+    "isReviewed": false
+  },
+  {
+    "id": "order_032",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "shoes_001",
+          "name": "耐克Air Max 270运动鞋",
+          "price": 899.0,
+          "originalPrice": 1199.0,
+          "brand": "耐克",
+          "category": "运动",
+          "imageUrl": "image/耐克Air封面.JPG",
+          "storeId": "nike_store",
+          "storeName": "耐克官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 899.0,
+        "selectedColor": "蓝白",
+        "selectedVersion": "40"
+      }
+    ],
+    "status": "PENDING_SHIPMENT",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_002",
+      "recipientName": "李四",
+      "phoneNumber": "13687654321",
+      "province": "上海市",
+      "city": "上海市",
+      "district": "浦东新区",
+      "detailAddress": "陆家嘴环路1000号恒生银行大厦2205室",
+      "postCode": "200120",
+      "isDefault": false,
+      "createTime": 1703980800000
+    },
+    "totalAmount": 899.0,
+    "createTime": 1704000000000,
+    "payTime": 1704001000000,
+    "shipTime": 1704060000000,
+    "receiveTime": 1704120000000,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001248",
+    "isReviewed": false
+  },
+  {
+    "id": "order_033",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "huawei_mate60_001",
+          "name": "华为Mate60 512GB",
+          "price": 4999.0,
+          "originalPrice": 6999.0,
+          "brand": "华为",
+          "category": "手机",
+          "imageUrl": "image/华为Mate60封面.JPG",
+          "storeId": "huawei_store",
+          "storeName": "华为官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 4999.0,
+        "selectedColor": "雅丹黑",
+        "selectedVersion": "512GB"
+      }
+    ],
+    "status": "PENDING_SHIPMENT",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_003",
+      "recipientName": "王五",
+      "phoneNumber": "13923456789",
+      "province": "广东省",
+      "city": "深圳市",
+      "district": "南山区",
+      "detailAddress": "科技园南区深南大道9999号",
+      "postCode": "518057",
+      "isDefault": false,
+      "createTime": 1703894400000
+    },
+    "totalAmount": 4999.0,
+    "createTime": 1703990000000,
+    "payTime": 1703991000000,
+    "shipTime": 1704050000000,
+    "receiveTime": 1704110000000,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001249",
+    "isReviewed": false
+  },
+  {
+    "id": "order_034",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "headphone_001",
+          "name": "索尼WH-1000XM4无线降噪耳机",
+          "price": 1899.0,
+          "originalPrice": 2299.0,
+          "brand": "索尼",
+          "category": "数码",
+          "imageUrl": "image/索尼WH-1000XM4封面.JPG",
+          "storeId": "sony_store",
+          "storeName": "索尼官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 1899.0,
+        "selectedColor": "黑色",
+        "selectedVersion": "旅行套装版"
+      }
+    ],
+    "status": "PENDING_SHIPMENT",
+    "paymentMethod": "BAITIAO_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_001",
+      "recipientName": "张三",
+      "phoneNumber": "13812345678",
+      "province": "北京市",
+      "city": "北京市",
+      "district": "朝阳区",
+      "detailAddress": "建国路88号SOHO现代城A座1501室",
+      "postCode": "100022",
+      "isDefault": true,
+      "createTime": 1704067200000
+    },
+    "totalAmount": 1899.0,
+    "createTime": 1703980000000,
+    "payTime": 1703981000000,
+    "shipTime": 1704040000000,
+    "receiveTime": 1704100000000,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001250",
+    "isReviewed": false
+  },
+  {
+    "id": "order_035",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "milk_001",
+          "name": "蒙牛特仑苏纯牛奶250ml*16盒",
+          "price": 89.9,
+          "originalPrice": 99.9,
+          "brand": "蒙牛",
+          "category": "超市",
+          "imageUrl": "image/特仑苏封面.JPG",
+          "storeId": "jd_supermarket",
+          "storeName": "京东超市"
+        },
+        "quantity": 3,
+        "price": 89.9,
+        "selectedColor": null,
+        "selectedVersion": "250ml*24盒"
+      }
+    ],
+    "status": "PENDING_SHIPMENT",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_002",
+      "recipientName": "李四",
+      "phoneNumber": "13687654321",
+      "province": "上海市",
+      "city": "上海市",
+      "district": "浦东新区",
+      "detailAddress": "陆家嘴环路1000号恒生银行大厦2205室",
+      "postCode": "200120",
+      "isDefault": false,
+      "createTime": 1703980800000
+    },
+    "totalAmount": 269.7,
+    "createTime": 1703970000000,
+    "payTime": 1703971000000,
+    "shipTime": 1704030000000,
+    "receiveTime": 1704090000000,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001251",
+    "isReviewed": false
+  },
+  {
+    "id": "order_036",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "iphone15_001",
+          "name": "iPhone 15 128GB",
+          "price": 5999.0,
+          "originalPrice": 6999.0,
+          "brand": "苹果",
+          "category": "手机",
+          "imageUrl": "image/iPhone15封面.JPG",
+          "storeId": "apple_store",
+          "storeName": "Apple官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 5999.0,
+        "selectedColor": "粉色",
+        "selectedVersion": "128GB"
+      }
+    ],
+    "status": "PENDING_SHIPMENT",
+    "paymentMethod": "BAITIAO_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_003",
+      "recipientName": "王五",
+      "phoneNumber": "13923456789",
+      "province": "广东省",
+      "city": "深圳市",
+      "district": "南山区",
+      "detailAddress": "科技园南区深南大道9999号",
+      "postCode": "518057",
+      "isDefault": false,
+      "createTime": 1703894400000
+    },
+    "totalAmount": 5999.0,
+    "createTime": 1703960000000,
+    "payTime": 1703961000000,
+    "shipTime": 1704020000000,
+    "receiveTime": 1704080000000,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001252",
+    "isReviewed": false
+  },
+  {
+    "id": "order_037",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "huawei_p60_001",
+          "name": "华为P60 Pro 256GB",
+          "price": 4488.0,
+          "originalPrice": 5988.0,
+          "brand": "华为",
+          "category": "手机",
+          "imageUrl": "image/华为P60封面.JPG",
+          "storeId": "huawei_store",
+          "storeName": "华为官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 4488.0,
+        "selectedColor": "珠光贝母",
+        "selectedVersion": "256GB"
+      }
+    ],
+    "status": "PENDING_SHIPMENT",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_001",
+      "recipientName": "张三",
+      "phoneNumber": "13812345678",
+      "province": "北京市",
+      "city": "北京市",
+      "district": "朝阳区",
+      "detailAddress": "建国路88号SOHO现代城A座1501室",
+      "postCode": "100022",
+      "isDefault": true,
+      "createTime": 1704067200000
+    },
+    "totalAmount": 4488.0,
+    "createTime": 1703950000000,
+    "payTime": 1703951000000,
+    "shipTime": 1704010000000,
+    "receiveTime": 1704070000000,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001253",
+    "isReviewed": false
+  },
+  {
+    "id": "order_038",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "huawei_nova11_001",
+          "name": "华为nova11 256GB",
+          "price": 3499.0,
+          "originalPrice": 3999.0,
+          "brand": "华为",
+          "category": "手机",
+          "imageUrl": "image/华为nova11封面.JPG",
+          "storeId": "huawei_store",
+          "storeName": "华为官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 3499.0,
+        "selectedColor": "曜金黑",
+        "selectedVersion": "512GB"
+      }
+    ],
+    "status": "PENDING_REVIEW",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_001",
+      "recipientName": "张三",
+      "phoneNumber": "13812345678",
+      "province": "北京市",
+      "city": "北京市",
+      "district": "朝阳区",
+      "detailAddress": "建国路88号SOHO现代城A座1501室",
+      "postCode": "100022",
+      "isDefault": true,
+      "createTime": 1704067200000
+    },
+    "totalAmount": 3499.0,
+    "createTime": 1703940000000,
+    "payTime": 1703941000000,
+    "shipTime": 1704000000000,
+    "receiveTime": 1704060000000,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001254",
+    "isReviewed": false
+  },
+  {
+    "id": "order_039",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "rice_001",
+          "name": "五常大米东北珍珠米5kg",
+          "price": 58.8,
+          "originalPrice": 68.8,
+          "brand": "五常",
+          "category": "超市",
+          "imageUrl": "image/五常大米封面.JPG",
+          "storeId": "jd_supermarket",
+          "storeName": "京东超市"
+        },
+        "quantity": 4,
+        "price": 58.8,
+        "selectedColor": null,
+        "selectedVersion": "10kg"
+      }
+    ],
+    "status": "PENDING_REVIEW",
+    "paymentMethod": "BAITIAO_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_002",
+      "recipientName": "李四",
+      "phoneNumber": "13687654321",
+      "province": "上海市",
+      "city": "上海市",
+      "district": "浦东新区",
+      "detailAddress": "陆家嘴环路1000号恒生银行大厦2205室",
+      "postCode": "200120",
+      "isDefault": false,
+      "createTime": 1703980800000
+    },
+    "totalAmount": 235.2,
+    "createTime": 1703930000000,
+    "payTime": 1703931000000,
+    "shipTime": 1703990000000,
+    "receiveTime": 1704050000000,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001255",
+    "isReviewed": false
+  },
+  {
+    "id": "order_040",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "cosmetic_001",
+          "name": "兰蔻小黑瓶精华肌底液30ml",
+          "price": 780.0,
+          "originalPrice": 880.0,
+          "brand": "兰蔻",
+          "category": "美妆",
+          "imageUrl": "image/兰蔻小黑瓶封面.JPG",
+          "storeId": "lancome_store",
+          "storeName": "兰蔻官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 780.0,
+        "selectedColor": null,
+        "selectedVersion": "30ml"
+      }
+    ],
+    "status": "PENDING_REVIEW",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_003",
+      "recipientName": "王五",
+      "phoneNumber": "13923456789",
+      "province": "广东省",
+      "city": "深圳市",
+      "district": "南山区",
+      "detailAddress": "科技园南区深南大道9999号",
+      "postCode": "518057",
+      "isDefault": false,
+      "createTime": 1703894400000
+    },
+    "totalAmount": 780.0,
+    "createTime": 1703920000000,
+    "payTime": 1703921000000,
+    "shipTime": 1703980000000,
+    "receiveTime": 1704040000000,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001256",
+    "isReviewed": false
+  },
+  {
+    "id": "order_041",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "thinkpad_001",
+          "name": "联想ThinkPad E14 14英寸笔记本电脑",
+          "price": 4999.0,
+          "originalPrice": 5999.0,
+          "brand": "联想",
+          "category": "电脑",
+          "imageUrl": "image/联想ThinkPad封面.JPG",
+          "storeId": "lenovo_store",
+          "storeName": "联想官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 4999.0,
+        "selectedColor": "黑色",
+        "selectedVersion": "i7/16G/512G"
+      }
+    ],
+    "status": "PENDING_REVIEW",
+    "paymentMethod": "BAITIAO_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_001",
+      "recipientName": "张三",
+      "phoneNumber": "13812345678",
+      "province": "北京市",
+      "city": "北京市",
+      "district": "朝阳区",
+      "detailAddress": "建国路88号SOHO现代城A座1501室",
+      "postCode": "100022",
+      "isDefault": true,
+      "createTime": 1704067200000
+    },
+    "totalAmount": 4999.0,
+    "createTime": 1703910000000,
+    "payTime": 1703911000000,
+    "shipTime": 1703970000000,
+    "receiveTime": 1704030000000,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001257",
+    "isReviewed": false
+  },
+  {
+    "id": "order_042",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "shoes_001",
+          "name": "耐克Air Max 270运动鞋",
+          "price": 899.0,
+          "originalPrice": 1199.0,
+          "brand": "耐克",
+          "category": "运动",
+          "imageUrl": "image/耐克Air封面.JPG",
+          "storeId": "nike_store",
+          "storeName": "耐克官方旗舰店"
+        },
+        "quantity": 2,
+        "price": 899.0,
+        "selectedColor": "黑白",
+        "selectedVersion": "44"
+      }
+    ],
+    "status": "PENDING_REVIEW",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_002",
+      "recipientName": "李四",
+      "phoneNumber": "13687654321",
+      "province": "上海市",
+      "city": "上海市",
+      "district": "浦东新区",
+      "detailAddress": "陆家嘴环路1000号恒生银行大厦2205室",
+      "postCode": "200120",
+      "isDefault": false,
+      "createTime": 1703980800000
+    },
+    "totalAmount": 1798.0,
+    "createTime": 1703900000000,
+    "payTime": 1703901000000,
+    "shipTime": 1703960000000,
+    "receiveTime": 1704020000000,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001258",
+    "isReviewed": false
+  },
+  {
+    "id": "order_043",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "huawei_mate60_001",
+          "name": "华为Mate60 512GB",
+          "price": 4999.0,
+          "originalPrice": 6999.0,
+          "brand": "华为",
+          "category": "手机",
+          "imageUrl": "image/华为Mate60封面.JPG",
+          "storeId": "huawei_store",
+          "storeName": "华为官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 4999.0,
+        "selectedColor": "雅川青",
+        "selectedVersion": "1TB"
+      }
+    ],
+    "status": "PENDING_REVIEW",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_003",
+      "recipientName": "王五",
+      "phoneNumber": "13923456789",
+      "province": "广东省",
+      "city": "深圳市",
+      "district": "南山区",
+      "detailAddress": "科技园南区深南大道9999号",
+      "postCode": "518057",
+      "isDefault": false,
+      "createTime": 1703894400000
+    },
+    "totalAmount": 4999.0,
+    "createTime": 1703890000000,
+    "payTime": 1703891000000,
+    "shipTime": 1703950000000,
+    "receiveTime": 1704010000000,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001259",
+    "isReviewed": false
+  },
+  {
+    "id": "order_044",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "headphone_001",
+          "name": "索尼WH-1000XM4无线降噪耳机",
+          "price": 1899.0,
+          "originalPrice": 2299.0,
+          "brand": "索尼",
+          "category": "数码",
+          "imageUrl": "image/索尼WH-1000XM4封面.JPG",
+          "storeId": "sony_store",
+          "storeName": "索尼官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 1899.0,
+        "selectedColor": "银色",
+        "selectedVersion": "标准版"
+      }
+    ],
+    "status": "PENDING_REVIEW",
+    "paymentMethod": "BAITIAO_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_001",
+      "recipientName": "张三",
+      "phoneNumber": "13812345678",
+      "province": "北京市",
+      "city": "北京市",
+      "district": "朝阳区",
+      "detailAddress": "建国路88号SOHO现代城A座1501室",
+      "postCode": "100022",
+      "isDefault": true,
+      "createTime": 1704067200000
+    },
+    "totalAmount": 1899.0,
+    "createTime": 1703880000000,
+    "payTime": 1703881000000,
+    "shipTime": 1703940000000,
+    "receiveTime": 1704000000000,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001260",
+    "isReviewed": false
+  },
+  {
+    "id": "order_045",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "milk_001",
+          "name": "蒙牛特仑苏纯牛奶250ml*16盒",
+          "price": 89.9,
+          "originalPrice": 99.9,
+          "brand": "蒙牛",
+          "category": "超市",
+          "imageUrl": "image/特仑苏封面.JPG",
+          "storeId": "jd_supermarket",
+          "storeName": "京东超市"
+        },
+        "quantity": 2,
+        "price": 89.9,
+        "selectedColor": null,
+        "selectedVersion": "250ml*16盒"
+      }
+    ],
+    "status": "PENDING_REVIEW",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_002",
+      "recipientName": "李四",
+      "phoneNumber": "13687654321",
+      "province": "上海市",
+      "city": "上海市",
+      "district": "浦东新区",
+      "detailAddress": "陆家嘴环路1000号恒生银行大厦2205室",
+      "postCode": "200120",
+      "isDefault": false,
+      "createTime": 1703980800000
+    },
+    "totalAmount": 179.8,
+    "createTime": 1703870000000,
+    "payTime": 1703871000000,
+    "shipTime": 1703930000000,
+    "receiveTime": 1703990000000,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001261",
+    "isReviewed": false
+  },
+  {
+    "id": "order_046",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "iphone15_001",
+          "name": "iPhone 15 128GB",
+          "price": 5999.0,
+          "originalPrice": 6999.0,
+          "brand": "苹果",
+          "category": "手机",
+          "imageUrl": "image/iPhone15封面.JPG",
+          "storeId": "apple_store",
+          "storeName": "Apple官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 5999.0,
+        "selectedColor": "黑色",
+        "selectedVersion": "256GB"
+      }
+    ],
+    "status": "PENDING_REVIEW",
+    "paymentMethod": "BAITIAO_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_003",
+      "recipientName": "王五",
+      "phoneNumber": "13923456789",
+      "province": "广东省",
+      "city": "深圳市",
+      "district": "南山区",
+      "detailAddress": "科技园南区深南大道9999号",
+      "postCode": "518057",
+      "isDefault": false,
+      "createTime": 1703894400000
+    },
+    "totalAmount": 5999.0,
+    "createTime": 1703860000000,
+    "payTime": 1703861000000,
+    "shipTime": 1703920000000,
+    "receiveTime": 1703980000000,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001262",
+    "isReviewed": false
+  },
+  {
+    "id": "order_047",
+    "userId": "user_001",
+    "items": [
+      {
+        "product": {
+          "id": "huawei_p60_001",
+          "name": "华为P60 Pro 256GB",
+          "price": 4488.0,
+          "originalPrice": 5988.0,
+          "brand": "华为",
+          "category": "手机",
+          "imageUrl": "image/华为P60封面.JPG",
+          "storeId": "huawei_store",
+          "storeName": "华为官方旗舰店"
+        },
+        "quantity": 1,
+        "price": 4488.0,
+        "selectedColor": "曜金黑",
+        "selectedVersion": "512GB"
+      }
+    ],
+    "status": "PENDING_REVIEW",
+    "paymentMethod": "ONLINE_PAYMENT",
+    "shippingAddress": {
+      "id": "addr_001",
+      "recipientName": "张三",
+      "phoneNumber": "13812345678",
+      "province": "北京市",
+      "city": "北京市",
+      "district": "朝阳区",
+      "detailAddress": "建国路88号SOHO现代城A座1501室",
+      "postCode": "100022",
+      "isDefault": true,
+      "createTime": 1704067200000
+    },
+    "totalAmount": 4488.0,
+    "createTime": 1703850000000,
+    "payTime": 1703851000000,
+    "shipTime": 1703910000000,
+    "receiveTime": 1703970000000,
+    "cancelTime": null,
+    "cancelReason": null,
+    "trackingNumber": "JD2024010318001263",
+    "isReviewed": false
   }
 ]

@@ -87,9 +87,22 @@ class DataRepository private constructor(private val context: Context) {
                     if (loadedCartItems != null && loadedCartItems.isNotEmpty()) {
                         specShoppingCart.clear()
                         specShoppingCart.addAll(loadedCartItems)
-                        android.util.Log.d("DataRepository", "Loaded ${specShoppingCart.size} cart items from file")
+                        android.util.Log.d("DataRepository", "Loaded ${specShoppingCart.size} cart items from persistent file")
+                    } else {
+                        loadInitialCartDataFromAssets()
                     }
+                } else {
+                    loadInitialCartDataFromAssets()
                 }
+            } else {
+                // 如果没有持久化数据，从assets加载初始数据
+                loadInitialCartDataFromAssets()
+            }
+            
+            // 额外检查：如果购物车仍然为空，强制从assets加载
+            if (specShoppingCart.isEmpty()) {
+                android.util.Log.d("DataRepository", "Cart is empty after initial load, force loading from assets")
+                loadInitialCartDataFromAssets()
             }
             
             // 加载订单数据
@@ -152,6 +165,58 @@ class DataRepository private constructor(private val context: Context) {
             updateCartFlows()
         } catch (e: Exception) {
             android.util.Log.e("DataRepository", "Error loading persistent data", e)
+        }
+    }
+    
+    /**
+     * 公共方法：强制从assets重新加载购物车数据
+     */
+    fun forceLoadCartDataFromAssets() {
+        loadInitialCartDataFromAssets()
+    }
+    
+    /**
+     * 从assets加载初始购物车数据并转换为CartItemSpec格式
+     */
+    private fun loadInitialCartDataFromAssets() {
+        try {
+            val jsonString = context.assets.open("data/cart_items.json").bufferedReader().use { it.readText() }
+            val listType = object : TypeToken<List<CartItem>>() {}.type
+            val assetCartItems: List<CartItem> = gson.fromJson(jsonString, listType)
+            
+            // 转换为CartItemSpec格式
+            val convertedItems = assetCartItems.map { cartItem ->
+                CartItemSpec(
+                    id = cartItem.id,
+                    productId = cartItem.product.id,
+                    productName = cartItem.product.name,
+                    series = cartItem.product.selectedVersion ?: cartItem.product.versions.firstOrNull() ?: "",
+                    color = cartItem.product.selectedColor ?: cartItem.product.colors.firstOrNull() ?: "",
+                    storage = cartItem.product.selectedVersion ?: cartItem.product.versions.firstOrNull() ?: "",
+                    image = cartItem.product.imageUrl,
+                    price = cartItem.product.price,
+                    originalPrice = cartItem.product.originalPrice ?: cartItem.product.price * 1.2,
+                    quantity = cartItem.quantity,
+                    selected = cartItem.isSelected,
+                    promotionTags = listOf("保价"),
+                    subsidyInfo = "政府补贴满1000减100",
+                    storeName = cartItem.product.storeName,
+                    storeTag = "自营"
+                )
+            }
+            
+            specShoppingCart.clear()
+            specShoppingCart.addAll(convertedItems)
+            
+            // 保存到持久化文件中
+            saveCartItems()
+            
+            // 更新StateFlow
+            updateCartFlows()
+            
+            android.util.Log.d("DataRepository", "Loaded and converted ${convertedItems.size} cart items from assets")
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Error loading initial cart data from assets", e)
         }
     }
     
@@ -357,14 +422,42 @@ class DataRepository private constructor(private val context: Context) {
             android.util.Log.d("DataRepository", "Loaded ${staticOrders.size} static orders")
             android.util.Log.d("DataRepository", "Runtime orders: ${runtimeOrders.size}")
             
-            // 合并静态订单和运行时订单，运行时订单排在前面（最新的）
-            val allOrders = runtimeOrders + staticOrders
-            android.util.Log.d("DataRepository", "Total orders: ${allOrders.size}")
+            // 去重合并：运行时订单优先，静态订单中已存在于运行时的订单会被过滤掉
+            val runtimeOrderIds = runtimeOrders.map { it.id }.toSet()
+            val uniqueStaticOrders = staticOrders.filter { it.id !in runtimeOrderIds }
+            val allOrders = runtimeOrders + uniqueStaticOrders
+            
+            android.util.Log.d("DataRepository", "Total orders after deduplication: ${allOrders.size}")
             
             allOrders
         } catch (e: Exception) {
             android.util.Log.e("DataRepository", "Error loading orders from JSON", e)
             runtimeOrders.toList()
+        }
+    }
+    
+    /**
+     * 清理运行时订单中可能存在的重复或无效状态
+     */
+    fun cleanupRuntimeOrders() {
+        try {
+            val jsonString = context.assets.open("data/orders.json").bufferedReader().use { it.readText() }
+            val listType = object : TypeToken<List<Order>>() {}.type
+            val staticOrders: List<Order> = gson.fromJson(jsonString, listType)
+            
+            // 移除运行时订单中与静态订单相同ID但状态相同的订单（可能是无效的重复）
+            val initialSize = runtimeOrders.size
+            runtimeOrders.removeAll { runtimeOrder ->
+                val staticOrder = staticOrders.find { it.id == runtimeOrder.id }
+                staticOrder != null && staticOrder.status == runtimeOrder.status
+            }
+            
+            if (runtimeOrders.size != initialSize) {
+                android.util.Log.d("DataRepository", "Cleaned up ${initialSize - runtimeOrders.size} duplicate runtime orders")
+                saveOrders()
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Error cleaning up runtime orders", e)
         }
     }
     
@@ -550,6 +643,9 @@ class DataRepository private constructor(private val context: Context) {
             }
             // 初始化时加载持久化数据
             loadPersistentData()
+            
+            // 清理可能存在的重复运行时订单
+            cleanupRuntimeOrders()
             
             // 初始化订单计数器
             initializeOrderCounter()
@@ -763,7 +859,7 @@ class DataRepository private constructor(private val context: Context) {
         if (runtimeIndex != -1) {
             val order = runtimeOrders[runtimeIndex]
             if (order.status == OrderStatus.PENDING_PAYMENT) {
-                // 更新订单状态为待收货（模拟快速发货）
+                // 更新订单状态为待收货
                 runtimeOrders[runtimeIndex] = order.copy(
                     status = OrderStatus.PENDING_RECEIPT,
                     payTime = System.currentTimeMillis(),

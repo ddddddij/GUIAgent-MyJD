@@ -56,6 +56,11 @@ fun CartScreen(
     LaunchedEffect(Unit) {
         TaskNineLogger.logTaskStart(context)
         TaskNineLogger.logCartPageEntered(context)
+        
+        // 强制加载购物车数据（如果为空）
+        if (specCartItems.isEmpty()) {
+            repository.forceLoadCartDataFromAssets()
+        }
     }
     
     // 日志记录购物车数据变化

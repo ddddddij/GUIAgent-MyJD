@@ -1,0 +1,21 @@
+2025-10-30 17:17:26.974  6085-6085  DataRepository          com.example.MyJD                     D  Found order order_001 in runtime orders
+2025-10-30 17:17:26.994  6085-6104  EGL_emulation           com.example.MyJD                     D  app_time_stats: avg=64.85ms min=2.81ms max=2609.74ms count=52
+2025-10-30 17:18:13.925  6085-6085  TaskSixLogger           com.example.MyJD                     D  [2025-10-30 17:18:13] 点击付款按钮
+2025-10-30 17:18:13.925  6085-6085  OrderPresenter          com.example.MyJD                     D  Attempting to pay order: order_001
+2025-10-30 17:18:13.925  6085-6085  TaskSixLogger           com.example.MyJD                     D  [2025-10-30 17:18:13] 确认付款操作
+2025-10-30 17:18:13.926  6085-6085  OrderPresenter          com.example.MyJD                     W  Failed to pay order: order_001
+2025-10-30 17:18:13.979  6085-6104  EGL_emulation           com.example.MyJD                     D  app_time_stats: avg=886.50ms min=9.91ms max=46128.24ms count=53
+2025-10-30 17:18:14.743  6085-6085  TaskEighteenLogger      com.example.MyJD                     D  [2025-10-30 17:18:14] 任务十八开始：取消我所有的待付款订单，然后在全部订单中删除已取消的订单
+2025-10-30 17:18:14.743  6085-6085  TaskEighteenLogger      com.example.MyJD                     D  [2025-10-30 17:18:14] 尝试取消订单：order_001
+2025-10-30 17:18:14.743  6085-6085  OrderPresenter          com.example.MyJD                     D  Attempting to cancel order: order_001
+2025-10-30 17:18:14.743  6085-6085  DataRepository          com.example.MyJD                     W  Order order_001 cannot be cancelled (status: PENDING_RECEIPT)
+2025-10-30 17:18:14.743  6085-6085  OrderPresenter          com.example.MyJD                     W  Failed to cancel order: order_001
+2025-10-30 17:18:14.743  6085-6085  DataRepository          com.example.MyJD                     D  Found order order_001 in runtime orders
+2025-10-30 17:18:14.984  6085-6104  EGL_emulation           com.example.MyJD                     D  app_time_stats: avg=15.35ms min=2.56ms max=21.68ms count=60
+2025-10-30 17:18:16.671  6085-6085  TaskEighteenLogger      com.example.MyJD                     D  [2025-10-30 17:18:16] 任务十八开始：取消我所有的待付款订单，然后在全部订单中删除已取消的订单
+2025-10-30 17:18:16.671  6085-6085  TaskEighteenLogger      com.example.MyJD                     D  [2025-10-30 17:18:16] 尝试取消订单：order_001
+2025-10-30 17:18:16.671  6085-6085  OrderPresenter          com.example.MyJD                     D  Attempting to cancel order: order_001
+2025-10-30 17:18:16.671  6085-6085  DataRepository          com.example.MyJD                     W  Order order_001 cannot be cancelled (status: PENDING_RECEIPT)
+2025-10-30 17:18:16.671  6085-6085  OrderPresenter          com.example.MyJD                     W  Failed to cancel order: order_001
+2025-10-30 17:18:16.671  6085-6085  DataRepository          com.example.MyJD                     D  Found order order_001 in runtime orders
+2025-10-30 17:18:16.687  6085-6104  EGL_emulation           com.example.MyJD                     D  app_time_stats: avg=43.65ms min=15.17ms max=1070.80ms count=39
