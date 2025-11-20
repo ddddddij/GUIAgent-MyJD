@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rmdir:*)",
+      "Bash(for:*)",
+      "Bash(do mv task_$i.py eval_$i.py)",
+      "Bash(done)"
+    ],
+    "deny": []
+  }
+}

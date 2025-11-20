@@ -1,0 +1,152 @@
+{
+  "shopInfo": {
+    "id": "apple_jd_flagship",
+    "name": "Apple产品京东自营旗舰店",
+    "avatar": "🍎",
+    "followers": "9090.3万",
+    "isFollowed": true,
+    "serviceBanner": "Apple 全方位服务，尽在京东",
+    "description": "京东Apple授权经销商，正品保障，全国联保"
+  },
+  "statistics": [
+    {
+      "label": "近30天新增关注",
+      "value": "2.1万",
+      "icon": "👥"
+    },
+    {
+      "label": "商品满意度",
+      "value": "99.2%",
+      "icon": "⭐"
+    },
+    {
+      "label": "服务态度",
+      "value": "4.9分",
+      "icon": "👍"
+    },
+    {
+      "label": "物流速度",
+      "value": "4.8分",
+      "icon": "🚚"
+    }
+  ],
+  "categories": [
+    {
+      "id": "recommend",
+      "name": "推荐",
+      "isSelected": true
+    },
+    {
+      "id": "sales",
+      "name": "销量",
+      "isSelected": false
+    },
+    {
+      "id": "new_products",
+      "name": "新品",
+      "isSelected": false
+    },
+    {
+      "id": "price",
+      "name": "价格",
+      "isSelected": false
+    },
+    {
+      "id": "in_stock_only",
+      "name": "仅看有货",
+      "isSelected": false
+    }
+  ],
+  "products": [
+    {
+      "id": "iphone15_blue",
+      "name": "Apple/苹果 iPhone 15 (A3092) 128GB 蓝色",
+      "price": 3799,
+      "originalPrice": 3899,
+      "brand": "苹果",
+      "category": "手机",
+      "imageUrl": "📱",
+      "storeId": "apple_jd_flagship",
+      "storeName": "Apple产品京东自营旗舰店",
+      "colors": ["蓝色", "粉色", "黄色", "绿色", "黑色"],
+      "versions": ["128GB", "256GB", "512GB"],
+      "stock": 100,
+      "isInStock": true,
+      "rating": 4.8,
+      "reviewCount": 2580,
+      "description": "iPhone 15 采用全新设计，配备动态岛，48MP主摄像头系统"
+    },
+    {
+      "id": "iphone15_pink", 
+      "name": "Apple/苹果 iPhone 15 (A3092) 256GB 粉色",
+      "price": 4199,
+      "originalPrice": 4299,
+      "brand": "苹果",
+      "category": "手机", 
+      "imageUrl": "📱",
+      "storeId": "apple_jd_flagship",
+      "storeName": "Apple产品京东自营旗舰店",
+      "colors": ["蓝色", "粉色", "黄色", "绿色", "黑色"],
+      "versions": ["128GB", "256GB", "512GB"],
+      "stock": 85,
+      "isInStock": true,
+      "rating": 4.8,
+      "reviewCount": 1960,
+      "description": "iPhone 15 粉色版本，时尚配色，展现个性魅力"
+    },
+    {
+      "id": "iphone16pro_white",
+      "name": "Apple/苹果 iPhone 16 Pro (A3294) 128GB 白色钛金属", 
+      "price": 6199,
+      "originalPrice": 6399,
+      "brand": "苹果",
+      "category": "手机",
+      "imageUrl": "📱",
+      "storeId": "apple_jd_flagship", 
+      "storeName": "Apple产品京东自营旗舰店",
+      "colors": ["白色钛金属", "黑色钛金属", "蓝色钛金属", "原色钛金属"],
+      "versions": ["128GB", "256GB", "512GB", "1TB"],
+      "stock": 60,
+      "isInStock": true,
+      "rating": 4.9,
+      "reviewCount": 1450,
+      "description": "iPhone 16 Pro 配备强大的A18 Pro芯片，专业级摄像头系统"
+    },
+    {
+      "id": "iphone15plus_yellow",
+      "name": "Apple/苹果 iPhone 15 Plus (A3093) 256GB 黄色",
+      "price": 4699,
+      "originalPrice": 4799,
+      "brand": "苹果",
+      "category": "手机",
+      "imageUrl": "📱", 
+      "storeId": "apple_jd_flagship",
+      "storeName": "Apple产品京东自营旗舰店",
+      "colors": ["蓝色", "粉色", "黄色", "绿色", "黑色"],
+      "versions": ["128GB", "256GB", "512GB"],
+      "stock": 75,
+      "isInStock": true,
+      "rating": 4.7,
+      "reviewCount": 890,
+      "description": "iPhone 15 Plus 大屏设计，更长续航，适合影音娱乐"
+    },
+    {
+      "id": "iphone14_midnight",
+      "name": "Apple/苹果 iPhone 14 (A2884) 256GB 午夜色",
+      "price": 3999,
+      "originalPrice": 4199,
+      "brand": "苹果",
+      "category": "手机",
+      "imageUrl": "📱",
+      "storeId": "apple_jd_flagship",
+      "storeName": "Apple产品京东自营旗舰店", 
+      "colors": ["午夜色", "星光色", "蓝色", "紫色", "红色"],
+      "versions": ["128GB", "256GB", "512GB"],
+      "stock": 120,
+      "isInStock": true,
+      "rating": 4.6,
+      "reviewCount": 3200,
+      "description": "iPhone 14 经典之选，性能强劲，性价比出色"
+    }
+  ]
+}

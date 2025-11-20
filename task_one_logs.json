@@ -1,0 +1,46 @@
+[
+  {
+    "action": "SEARCH_INITIATED",
+    "details": {
+      "keyword": "iPhone 15",
+      "searchTime": "1763025419402"
+    },
+    "id": "task1_log_1763025419401_5037",
+    "sessionId": "task1_session_1763025419400_79568",
+    "timestamp": 1763025419402
+  },
+  {
+    "action": "SEARCH_RESULTS_LOADED",
+    "details": {
+      "keyword": "iPhone 15",
+      "resultCount": "5",
+      "loadTime": "1763025420478"
+    },
+    "id": "task1_log_1763025420478_2689",
+    "sessionId": "task1_session_1763025420478_88851",
+    "timestamp": 1763025420478
+  },
+  {
+    "action": "FIRST_PRODUCT_VIEWED",
+    "details": {
+      "productId": "iphone15_pro_max_001",
+      "productName": "iPhone 15 Pro Max 256GB",
+      "viewTime": "1763025421237"
+    },
+    "id": "task1_log_1763025421237_7433",
+    "sessionId": "task1_session_1763025421237_63335",
+    "timestamp": 1763025421237
+  },
+  {
+    "action": "TASK_COMPLETED",
+    "details": {
+      "searchKeyword": "iPhone 15",
+      "viewedProductName": "iPhone 15 Pro Max 256GB",
+      "completionTime": "1763025421239",
+      "success": "true"
+    },
+    "id": "task1_log_1763025421239_1386",
+    "sessionId": "task1_session_1763025421239_82080",
+    "timestamp": 1763025421240
+  }
+]

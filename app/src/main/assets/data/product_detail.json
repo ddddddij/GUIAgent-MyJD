@@ -1,0 +1,143 @@
+{
+  "id": "iphone15_128gb",
+  "title": "Apple iPhone 15 (A3092) 128GB 蓝色 支持移动联通电信5G 双卡双待手机",
+  "images": [
+    "image/iPhone15图1.JPG",
+    "image/iPhone15图2.JPG",
+    "image/iPhone15图3.JPG",
+    "image/iPhone15图4.JPG",
+    "image/iPhone15图5.JPG"
+  ],
+  "currentPrice": 3799.0,
+  "originalPrice": 3899.0,
+  "subsidyPrice": "政府补贴价",
+  "soldCount": "已售 500万+",
+  "storeName": "Apple产品京东自营旗舰店",
+  "colors": [
+    {
+      "name": "粉色",
+      "colorCode": "#FFB6C1",
+      "image": "📱",
+      "subsidyTags": ["政府补贴", "已减100"]
+    },
+    {
+      "name": "蓝色",
+      "colorCode": "#87CEEB",
+      "image": "📱",
+      "subsidyTags": ["政府补贴", "已减100"]
+    },
+    {
+      "name": "绿色",
+      "colorCode": "#90EE90",
+      "image": "📱",
+      "subsidyTags": ["政府补贴", "已减100"]
+    },
+    {
+      "name": "黑色",
+      "colorCode": "#333333",
+      "image": "📱",
+      "subsidyTags": ["政府补贴", "已减100"]
+    },
+    {
+      "name": "黄色",
+      "colorCode": "#FFD700",
+      "image": "📱",
+      "subsidyTags": ["政府补贴", "已减100"]
+    }
+  ],
+  "selectedColorIndex": 1,
+  "purchaseTypes": ["单品购买", "以旧换新"],
+  "selectedPurchaseType": 0,
+  "specifications": {
+    "releaseDate": "2023-09-13",
+    "processor": "A16",
+    "screenSize": "6.1英寸",
+    "displayTech": "OLED"
+  },
+  "tags": [
+    "榜单排名 第4名",
+    "免举证退换货",
+    "免费上门退换",
+    "12期免息",
+    "国家贴息"
+  ],
+  "isFavorite": false,
+  "deliveryInfo": {
+    "deliveryTime": "明天 18:00前付款，预计10月22日（周三）送达",
+    "address": "武汉纺织大学(阳光校区)-北门",
+    "shippingFee": "59元免基础运费",
+    "logistics": "京东物流 预约送货 · 部分收货",
+    "returnPolicy": "7天无理由退货（防伪签、密封条损毁不支持） · 一年质保",
+    "warranty": "🎁 80元立减金"
+  },
+  "tradeIn": {
+    "title": "高价回收 领2200元新人专属补贴",
+    "maxPrice": 3200.0,
+    "applicableModel": "Apple iPhone 13 Pro Max"
+  },
+  "stores": [
+    {
+      "name": "京东手机数码-湖北武汉江夏九全嘉店",
+      "distance": "2.3km",
+      "address": "湖北武汉市江夏区红坊街道江夏大道与...",
+      "totalStores": 49
+    }
+  ],
+  "reviews": {
+    "totalCount": "300万+",
+    "positiveRate": "超 95% 买家赞不绝口",
+    "tags": [
+      {
+        "text": "拍照效果超清晰",
+        "count": 7034,
+        "isSelected": false
+      },
+      {
+        "text": "手感很舒服",
+        "count": 3940,
+        "isSelected": false
+      },
+      {
+        "text": "运行超顺畅",
+        "count": 4272,
+        "isSelected": false
+      },
+      {
+        "text": "外观很漂亮",
+        "count": 2156,
+        "isSelected": false
+      },
+      {
+        "text": "电池续航强",
+        "count": 1899,
+        "isSelected": false
+      }
+    ],
+    "list": [
+      {
+        "username": "吕***葛",
+        "memberLevel": "钻石会员",
+        "content": "使用 iPhone15 128GB 版本已有一段时间，体验非常出色。手机运行流畅，拍照效果惊艳，特别是夜拍模式真的很强大！电池续航也比预期的要好，一天重度使用完全没问题。",
+        "images": ["📸"],
+        "imageCount": 1,
+        "isLiked": false
+      },
+      {
+        "username": "李***燃",
+        "memberLevel": "钻石会员", 
+        "content": "这款手机果然没让我失望！触感丝滑，性能爆表🚀。拍照效果也非常出色，特别是夜晚模式，随手一拍都是大片的感觉。京东物流也很给力，次日就送到了。",
+        "images": ["📸", "📸"],
+        "imageCount": 2,
+        "isLiked": false
+      },
+      {
+        "username": "张***明",
+        "memberLevel": "PLUS会员",
+        "content": "这款手机心心念念了有一段时间了，抢国补券一直抢不到，前两天看到有政府消费券可以叠加使用，果断下单了！手机质量很好，运行很流畅。",
+        "images": ["📸"],
+        "imageCount": 1,
+        "isLiked": false
+      }
+    ]
+  }
+}

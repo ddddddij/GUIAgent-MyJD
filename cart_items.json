@@ -1,0 +1,214 @@
+[
+  {
+    "color": "",
+    "id": "cart_001",
+    "image": "image/五常大米封面.JPG",
+    "originalPrice": 68.8,
+    "price": 58.8,
+    "productId": "rice_001",
+    "productName": "五常大米东北珍珠米5kg",
+    "promotionTags": [
+      "保价"
+    ],
+    "quantity": 2,
+    "selected": false,
+    "series": "5kg",
+    "storage": "5kg",
+    "storeName": "京东超市",
+    "storeTag": "自营",
+    "subsidyInfo": "政府补贴满1000减100"
+  },
+  {
+    "color": "樱语粉",
+    "id": "cart_002",
+    "image": "image/华为nova11封面.JPG",
+    "originalPrice": 3999.0,
+    "price": 3499.0,
+    "productId": "huawei_nova11_001",
+    "productName": "华为nova11 256GB",
+    "promotionTags": [
+      "保价"
+    ],
+    "quantity": 1,
+    "selected": false,
+    "series": "256GB",
+    "storage": "256GB",
+    "storeName": "华为官方旗舰店",
+    "storeTag": "自营",
+    "subsidyInfo": "政府补贴满1000减100"
+  },
+  {
+    "color": "蓝色",
+    "id": "cart_003",
+    "image": "image/索尼WH-1000XM4封面.JPG",
+    "originalPrice": 2299.0,
+    "price": 1899.0,
+    "productId": "headphone_001",
+    "productName": "索尼WH-1000XM4无线降噪耳机",
+    "promotionTags": [
+      "保价"
+    ],
+    "quantity": 1,
+    "selected": false,
+    "series": "标准版",
+    "storage": "标准版",
+    "storeName": "索尼官方旗舰店",
+    "storeTag": "自营",
+    "subsidyInfo": "政府补贴满1000减100"
+  },
+  {
+    "color": "",
+    "id": "cart_004",
+    "image": "image/特仑苏封面.JPG",
+    "originalPrice": 99.9,
+    "price": 89.9,
+    "productId": "milk_001",
+    "productName": "蒙牛特仑苏纯牛奶250ml*16盒",
+    "promotionTags": [
+      "保价"
+    ],
+    "quantity": 3,
+    "selected": false,
+    "series": "250ml*16盒",
+    "storage": "250ml*16盒",
+    "storeName": "京东超市",
+    "storeTag": "自营",
+    "subsidyInfo": "政府补贴满1000减100"
+  },
+  {
+    "color": "蓝色",
+    "id": "cart_005",
+    "image": "image/iPhone15封面.JPG",
+    "originalPrice": 6999.0,
+    "price": 5999.0,
+    "productId": "iphone15_001",
+    "productName": "iPhone 15 128GB",
+    "promotionTags": [
+      "保价"
+    ],
+    "quantity": 1,
+    "selected": true,
+    "series": "128GB",
+    "storage": "128GB",
+    "storeName": "Apple官方旗舰店",
+    "storeTag": "自营",
+    "subsidyInfo": "政府补贴满1000减100"
+  },
+  {
+    "color": "雅川青",
+    "id": "cart_006",
+    "image": "image/华为Mate60封面.JPG",
+    "originalPrice": 6999.0,
+    "price": 4999.0,
+    "productId": "huawei_mate60_001",
+    "productName": "华为Mate60 512GB",
+    "promotionTags": [
+      "保价"
+    ],
+    "quantity": 1,
+    "selected": false,
+    "series": "512GB",
+    "storage": "512GB",
+    "storeName": "华为官方旗舰店",
+    "storeTag": "自营",
+    "subsidyInfo": "政府补贴满1000减100"
+  },
+  {
+    "color": "黑色",
+    "id": "cart_007",
+    "image": "image/联想ThinkPad封面.JPG",
+    "originalPrice": 5999.0,
+    "price": 4999.0,
+    "productId": "thinkpad_001",
+    "productName": "联想ThinkPad E14 14英寸笔记本电脑",
+    "promotionTags": [
+      "保价"
+    ],
+    "quantity": 1,
+    "selected": false,
+    "series": "i5/8G/512G",
+    "storage": "i5/8G/512G",
+    "storeName": "联想官方旗舰店",
+    "storeTag": "自营",
+    "subsidyInfo": "政府补贴满1000减100"
+  },
+  {
+    "color": "",
+    "id": "cart_008",
+    "image": "image/兰蔻小黑瓶封面.JPG",
+    "originalPrice": 880.0,
+    "price": 780.0,
+    "productId": "cosmetic_001",
+    "productName": "兰蔻小黑瓶精华肌底液30ml",
+    "promotionTags": [
+      "保价"
+    ],
+    "quantity": 2,
+    "selected": false,
+    "series": "30ml",
+    "storage": "30ml",
+    "storeName": "兰蔻官方旗舰店",
+    "storeTag": "自营",
+    "subsidyInfo": "政府补贴满1000减100"
+  },
+  {
+    "color": "蓝色",
+    "id": "iphone15_001_1762953140796",
+    "image": "image/iPhone15图3.JPG",
+    "originalPrice": 4099.0,
+    "price": 3699.0,
+    "productId": "iphone15_001",
+    "productName": "Apple/苹果 iPhone 15 (A3092) 128GB",
+    "promotionTags": [
+      "政府补贴已减100",
+      "国家贴息 12期免息"
+    ],
+    "quantity": 1,
+    "selected": true,
+    "series": "iPhone 15",
+    "storage": "128GB",
+    "storeName": "Apple产品京东自营旗舰店",
+    "storeTag": "自营",
+    "subsidyInfo": "比加入时降¥100"
+  },
+  {
+    "color": "黑色",
+    "id": "iphone15_001_1762953147537",
+    "image": "image/iPhone15图1.JPG",
+    "originalPrice": 5099.0,
+    "price": 4699.0,
+    "productId": "iphone15_001",
+    "productName": "Apple/苹果 iPhone 15 (A3092) 256GB",
+    "promotionTags": [
+      "政府补贴已减100",
+      "国家贴息 12期免息"
+    ],
+    "quantity": 2,
+    "selected": true,
+    "series": "iPhone 15",
+    "storage": "256GB",
+    "storeName": "Apple产品京东自营旗舰店",
+    "storeTag": "自营",
+    "subsidyInfo": "比加入时降¥100"
+  },
+  {
+    "color": "粉色",
+    "id": "iphone15_001_1762953167387",
+    "image": "image/iPhone15图2.JPG",
+    "originalPrice": 4099.0,
+    "price": 3699.0,
+    "productId": "iphone15_001",
+    "productName": "Apple/苹果 iPhone 15 (A3092) 128GB",
+    "promotionTags": [
+      "政府补贴已减100",
+      "国家贴息 12期免息"
+    ],
+    "quantity": 3,
+    "selected": true,
+    "series": "iPhone 15",
+    "storage": "128GB",
+    "storeName": "Apple产品京东自营旗舰店",
+    "storeTag": "自营",
+    "subsidyInfo": "比加入时降¥100"
+  }
+]

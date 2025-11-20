@@ -1,0 +1,280 @@
+{
+  "legacy_messages": [
+    {
+      "id": "msg_001",
+      "type": "CUSTOMER_SERVICE",
+      "subType": "ALL",
+      "senderName": "京东客服",
+      "senderAvatar": "👨‍💼",
+      "content": "京东客服很高兴为您服务",
+      "timestamp": 1704153600000,
+      "isRead": false,
+      "isOfficial": true,
+      "hasUnreadDot": false
+    },
+    {
+      "id": "msg_002",
+      "type": "LOGISTICS",
+      "subType": "SHOPPING",
+      "senderName": "得力装订文具旗舰店",
+      "senderAvatar": "🏪",
+      "content": "～嗨好😊",
+      "timestamp": 1703980800000,
+      "isRead": true,
+      "isOfficial": false,
+      "hasUnreadDot": false
+    },
+    {
+      "id": "msg_003",
+      "type": "LOGISTICS",
+      "subType": "SHOPPING",
+      "senderName": "文轩网旗舰店",
+      "senderAvatar": "📚",
+      "content": "您好，智能客服助手为您服务！",
+      "timestamp": 1703894400000,
+      "isRead": true,
+      "isOfficial": false,
+      "hasUnreadDot": false
+    },
+    {
+      "id": "msg_004",
+      "type": "REVIEW",
+      "subType": "SHOPPING",
+      "senderName": "爱启航图书旗舰店",
+      "senderAvatar": "🚀",
+      "content": "是的",
+      "timestamp": 1703808000000,
+      "isRead": true,
+      "isOfficial": false,
+      "hasUnreadDot": false
+    },
+    {
+      "id": "msg_005",
+      "type": "PROMOTION",
+      "subType": "SHOPPING",
+      "senderName": "罗技G502官方旗舰店",
+      "senderAvatar": "🖱️",
+      "content": "好的哦",
+      "timestamp": 1703721600000,
+      "isRead": true,
+      "isOfficial": false,
+      "hasUnreadDot": false
+    },
+    {
+      "id": "msg_006",
+      "type": "REVIEW",
+      "subType": "SHOPPING",
+      "senderName": "博汇文轩图书专营店",
+      "senderAvatar": "🌹",
+      "content": "🌹",
+      "timestamp": 1703635200000,
+      "isRead": true,
+      "isOfficial": false,
+      "hasUnreadDot": false
+    },
+    {
+      "id": "msg_007",
+      "type": "PROMOTION",
+      "subType": "SHOPPING",
+      "senderName": "Apple产品京东自营旗舰店",
+      "senderAvatar": "🍎",
+      "content": "您有一条新消息",
+      "timestamp": 1703548800000,
+      "isRead": true,
+      "isOfficial": true,
+      "hasUnreadDot": false
+    },
+    {
+      "id": "msg_008",
+      "type": "CUSTOMER_SERVICE",
+      "subType": "SHOPPING",
+      "senderName": "艾本数码旗舰店",
+      "senderAvatar": "💻",
+      "content": "[卡片]",
+      "timestamp": 1703462400000,
+      "isRead": true,
+      "isOfficial": false,
+      "hasUnreadDot": false
+    },
+    {
+      "id": "msg_009",
+      "type": "LOGISTICS",
+      "subType": "INSTANT_DELIVERY",
+      "senderName": "京东秒送",
+      "senderAvatar": "🚚",
+      "content": "您的订单正在配送中，预计30分钟内送达",
+      "timestamp": 1704120000000,
+      "isRead": false,
+      "isOfficial": true,
+      "hasUnreadDot": true
+    },
+    {
+      "id": "msg_010",
+      "type": "REMINDER",
+      "subType": "TAKEAWAY",
+      "senderName": "京东外卖",
+      "senderAvatar": "🍔",
+      "content": "您有一个外卖订单待确认",
+      "timestamp": 1704100000000,
+      "isRead": false,
+      "isOfficial": true,
+      "hasUnreadDot": true
+    }
+  ],
+  "conversations": [
+    {
+      "id": "C20251021001",
+      "chatName": "京东客服",
+      "chatAvatar": "👨‍💼",
+      "messages": [
+        {
+          "id": "msg_c001_001",
+          "sender": "other",
+          "type": "text",
+          "content": "您好，智能客服助手为您服务！有什么可以帮助您的吗？",
+          "timestamp": 1704153600000
+        },
+        {
+          "id": "msg_c001_002",
+          "sender": "user",
+          "type": "text",
+          "content": "我想问一下退款到账时间？",
+          "timestamp": 1704153720000
+        },
+        {
+          "id": "msg_c001_003",
+          "sender": "other",
+          "type": "text",
+          "content": "您的退款已成功，预计1-3个工作日到账，请耐心等待。",
+          "timestamp": 1704153780000
+        },
+        {
+          "id": "msg_c001_004",
+          "sender": "other",
+          "type": "system",
+          "content": "京东已退款成功，款项将原路退回。",
+          "timestamp": 1704153840000
+        }
+      ]
+    },
+    {
+      "id": "C20251021002",
+      "chatName": "得力装订文具旗舰店",
+      "chatAvatar": "🏪",
+      "messages": [
+        {
+          "id": "msg_c002_001",
+          "sender": "other",
+          "type": "text",
+          "content": "您好，请问您是想咨询哪款商品？～嗨好😊",
+          "timestamp": 1703980800000
+        },
+        {
+          "id": "msg_c002_002",
+          "sender": "user",
+          "type": "text",
+          "content": "得力台灯还在保修期内吗？",
+          "timestamp": 1703980920000
+        },
+        {
+          "id": "msg_c002_003",
+          "sender": "other",
+          "type": "text",
+          "content": "台灯提供1年保修服务，您可提供订单号，我们帮您核实。",
+          "timestamp": 1703980980000
+        },
+        {
+          "id": "msg_c002_004",
+          "sender": "other",
+          "type": "product",
+          "content": "{\"productId\":\"prod_001\",\"productName\":\"得力LED护眼台灯\",\"productPrice\":\"89.00\",\"productImage\":\"🔦\"}",
+          "timestamp": 1703981040000
+        }
+      ]
+    },
+    {
+      "id": "C20251021003",
+      "chatName": "文轩网旗舰店",
+      "chatAvatar": "📚",
+      "messages": [
+        {
+          "id": "msg_c003_001",
+          "sender": "other",
+          "type": "text",
+          "content": "您好，智能客服助手为您服务！",
+          "timestamp": 1703894400000
+        },
+        {
+          "id": "msg_c003_002",
+          "sender": "user",
+          "type": "text",
+          "content": "请问这本书什么时候能发货？",
+          "timestamp": 1703894520000
+        },
+        {
+          "id": "msg_c003_003",
+          "sender": "other",
+          "type": "text",
+          "content": "您好，您订购的图书现货充足，今日下单明日发货。",
+          "timestamp": 1703894580000
+        }
+      ]
+    },
+    {
+      "id": "C20251021004",
+      "chatName": "Apple产品京东自营旗舰店",
+      "chatAvatar": "🍎",
+      "messages": [
+        {
+          "id": "msg_c004_001",
+          "sender": "other",
+          "type": "text",
+          "content": "您有一条新消息，感谢您选择Apple产品！",
+          "timestamp": 1703548800000
+        },
+        {
+          "id": "msg_c004_002",
+          "sender": "user",
+          "type": "text",
+          "content": "请问iPhone 15什么时候有货？",
+          "timestamp": 1703548920000
+        },
+        {
+          "id": "msg_c004_003",
+          "sender": "other",
+          "type": "text",
+          "content": "iPhone 15现货充足，您可以直接下单购买。",
+          "timestamp": 1703548980000
+        },
+        {
+          "id": "msg_c004_004",
+          "sender": "other",
+          "type": "product",
+          "content": "{\"productId\":\"iphone15\",\"productName\":\"Apple iPhone 15 128GB 蓝色\",\"productPrice\":\"5999.00\",\"productImage\":\"📱\"}",
+          "timestamp": 1703549040000
+        }
+      ]
+    },
+    {
+      "id": "C20251021005",
+      "chatName": "京东秒送",
+      "chatAvatar": "🚚",
+      "messages": [
+        {
+          "id": "msg_c005_001",
+          "sender": "other",
+          "type": "text",
+          "content": "您的订单正在配送中，预计30分钟内送达",
+          "timestamp": 1704120000000
+        },
+        {
+          "id": "msg_c005_002",
+          "sender": "other",
+          "type": "system",
+          "content": "配送员已取货，正在前往您的地址。",
+          "timestamp": 1704120300000
+        }
+      ]
+    }
+  ]
+}
