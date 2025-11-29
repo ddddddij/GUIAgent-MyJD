@@ -51,24 +51,26 @@ fun SettleScreen(
     val context = LocalContext.current
     val repository = remember { DataRepository.getInstance(context) }
     val viewModel: SettleViewModel = viewModel(
-        factory = ViewModelFactory(repository, context)
+        key = fromOrder,
+        factory = ViewModelFactory(repository, context, fromOrder)
     )
-    
+
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    
+
     // Handle selected address from address list
     LaunchedEffect(selectedAddress) {
         selectedAddress?.let { address ->
             viewModel.onAddressSelected(address)
         }
     }
-    
-    // Load settle data
-    LaunchedEffect(Unit) {
-        when {
-            fromCart -> viewModel.loadCartSettleData()
-            fromOrder != null -> viewModel.loadOrderSettleData(fromOrder)
-            else -> viewModel.loadSettleData(productId, productName, spec, price, imageUrl)
+
+    // Load settle data from cart (if applicable)
+    // The fromOrder case is handled by the ViewModel's init block
+    LaunchedEffect(fromCart, fromOrder) {
+        if (fromCart && uiState.settleData == null) {
+            viewModel.loadCartSettleData()
+        } else if (fromOrder != null && uiState.settleData == null) {
+            viewModel.loadOrderSettleData(fromOrder)
         }
     }
     

@@ -50,10 +50,8 @@ fun AddressListScreen(
     val showDeleteDialog by viewModel.showDeleteDialog.collectAsStateWithLifecycle()
     
     // Handle refresh trigger
-    LaunchedEffect(refresh) {
-        if (refresh) {
-            viewModel.loadAddresses()
-        }
+    LaunchedEffect(Unit) {
+        viewModel.loadAddresses()
     }
     
     // Handle navigation events

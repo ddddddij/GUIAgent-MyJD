@@ -166,8 +166,8 @@ fun AppNavigation(navController: NavHostController) {
                 onCartClick = {
                     navController.navigate("cart")
                 },
-                onBuyNowClick = {
-                    navController.navigate("order_confirm")
+                onBuyNowClick = { orderId ->
+                    navController.navigate("order_confirm?fromOrder=$orderId")
                 },
                 onShopClick = { shopName ->
                     navController.navigate("shop_page/$shopName")
@@ -384,12 +384,28 @@ fun AppNavigation(navController: NavHostController) {
                     navController.navigate("payment_success/$orderAmount")
                 },
                 onNavigateToAddressList = {
-                    navController.navigate("address_from_settle")
+                    val routeParams = buildString {
+                        append("address_from_settle")
+                        val params = mutableListOf<String>()
+                        if (fromCart) {
+                            params.add("fromCart=true")
+                        }
+                        if (fromOrder != null && fromOrder != "null") {
+                            params.add("fromOrder=$fromOrder")
+                        }
+                        if (params.isNotEmpty()) {
+                            append("?${params.joinToString("&")}")
+                        }
+                    }
+                    navController.navigate(routeParams)
                 }
             )
         }
         
-        composable("address_from_settle") {
+        composable("address_from_settle?fromCart={fromCart}&fromOrder={fromOrder}") { backStackEntry ->
+            val fromCart = backStackEntry.arguments?.getString("fromCart")?.toBooleanStrictOrNull() ?: false
+            val fromOrder = backStackEntry.arguments?.getString("fromOrder")
+            
             AddressListScreen(
                 onBackClick = {
                     navController.popBackStack()
@@ -398,7 +414,20 @@ fun AppNavigation(navController: NavHostController) {
                     navController.navigate("address_detail?addressId=$addressId")
                 },
                 onNavigateToSettleScreen = { selectedAddress ->
-                    navController.navigate("order_confirm?selectedAddressId=${selectedAddress.id}") {
+                    val routeParams = buildString {
+                        append("order_confirm?selectedAddressId=${selectedAddress.id}")
+                        val params = mutableListOf<String>()
+                        if (fromCart) {
+                            params.add("fromCart=true")
+                        }
+                        if (fromOrder != null && fromOrder != "null") {
+                            params.add("fromOrder=$fromOrder")
+                        }
+                        if (params.isNotEmpty()) {
+                            append("&${params.joinToString("&")}")
+                        }
+                    }
+                    navController.navigate(routeParams) {
                         popUpTo("order_confirm") { inclusive = true }
                     }
                 }

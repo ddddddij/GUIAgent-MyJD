@@ -44,9 +44,11 @@ data class SettlePricing(
     companion object {
         fun from(product: SettleProduct, couponDiscount: Double = 0.0): SettlePricing {
             val productAmount = product.totalPrice
-            val finalAmount = (productAmount - couponDiscount).coerceAtLeast(0.0)
+            val shippingFee = 0.0 // 假设运费为0，可以根据实际逻辑调整
+            val finalAmount = (productAmount + shippingFee - couponDiscount).coerceAtLeast(0.0)
             return SettlePricing(
                 productAmount = productAmount,
+                shippingFee = shippingFee,
                 couponDiscount = couponDiscount,
                 totalAmount = finalAmount
             )

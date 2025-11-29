@@ -197,10 +197,10 @@ class OrderViewModel(
     fun initializeWithTab(orderType: String) {
         val tabIndex = when (orderType) {
             "all" -> 0
-            "pending_payment" -> 1
-            "pending_receipt" -> 2
-            "pending_use" -> 3
-            "pending_review" -> 4
+            "order_pending_payment" -> 1
+            "order_pending_delivery" -> 2
+            "order_pending_use" -> 3
+            "order_pending_review" -> 4
             else -> 0
         }
         

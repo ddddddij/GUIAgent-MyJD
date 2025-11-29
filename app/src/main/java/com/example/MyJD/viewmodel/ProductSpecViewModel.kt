@@ -163,11 +163,14 @@ class ProductSpecViewModel(
         return true
     }
 
-    fun buyNow(): String? {
-        val selection = _specSelection.value
-        if (!selection.isValid()) return null
+    private val _createdOrderId = MutableStateFlow<String?>(null)
+    val createdOrderId: StateFlow<String?> = _createdOrderId.asStateFlow()
 
-        _productSpec.value ?: return null
+    fun buyNow() {
+        val selection = _specSelection.value
+        if (!selection.isValid()) return
+
+        _productSpec.value ?: return
         
         val productName = "Apple/苹果 iPhone 15 (A3092) ${selection.selectedStorage}"
         
@@ -182,7 +185,7 @@ class ProductSpecViewModel(
             selectedVersion = selection.selectedStorage
         )
         
-        return orderId
+        _createdOrderId.value = orderId
     }
 
     fun canAddToCart(): Boolean {

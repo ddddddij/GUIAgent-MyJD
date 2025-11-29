@@ -83,8 +83,7 @@ class SettlePresenter(
                 }
                 
                 if (selectedItems.isNotEmpty()) {
-                    // 创建订单
-                    cartOrderIds = repository.createOrdersFromCart()
+                    // 不立即创建订单，等到支付时再创建
                     
                     // 计算总价
                     val totalPrice = selectedItems.sumOf { it.totalPrice }
@@ -267,9 +266,44 @@ class SettlePresenter(
                 android.util.Log.d("SettlePresenter", "Payment clicked. CartOrderIds: $cartOrderIds, isCartMode: $isCartMode")
                 
                 when {
-                    // 购物车支付或从订单页面进入的支付
+                    // 购物车支付模式
+                    isCartMode -> {
+                        android.util.Log.d("SettlePresenter", "Processing cart payment with coupon")
+                        // 如果选择了优惠券，先通过 onCouponSelected 更新价格状态
+                        data.selectedCoupon?.let {
+                            onCouponSelected(it)
+                        }
+                        // 创建带优惠券的订单，使用当前选择的地址
+                        cartOrderIds = repository.createOrdersFromCartWithCoupon(data.selectedCoupon?.id, data.address)
+                        
+                        if (cartOrderIds.isNotEmpty()) {
+                            // 支付订单
+                            val paymentSuccess = repository.payOrders(cartOrderIds)
+                            if (paymentSuccess) {
+                                // 跳转到支付成功页面
+                                val totalAmount = settleData?.pricing?.totalAmount ?: data.pricing.totalAmount
+                                android.util.Log.d("SettlePresenter", "Cart payment successful for orders: $cartOrderIds")
+                                view?.navigateToPaymentSuccess("¥${totalAmount.toInt()}.00")
+                            } else {
+                                android.util.Log.w("SettlePresenter", "Cart payment failed for orders: $cartOrderIds")
+                                view?.showToast("支付失败，请重试")
+                            }
+                        } else {
+                            android.util.Log.w("SettlePresenter", "No orders created from cart")
+                            view?.showToast("创建订单失败")
+                        }
+                    }
+                    // 从订单页面进入的支付
                     cartOrderIds.isNotEmpty() -> {
-                        android.util.Log.d("SettlePresenter", "Processing payment for orders: $cartOrderIds")
+                        android.util.Log.d("SettlePresenter", "Processing payment for existing orders: $cartOrderIds")
+                        
+                        // 更新所有订单的配送地址（如果用户选择了其他地址）
+                        data.address?.let { address ->
+                            cartOrderIds.forEach { orderId ->
+                                repository.updateOrderShippingAddress(orderId, address)
+                            }
+                        }
+                        
                         val paymentSuccess = repository.payOrders(cartOrderIds)
                         if (paymentSuccess) {
                             // 支付成功，使用优惠券
@@ -291,6 +325,11 @@ class SettlePresenter(
                         val orderId = repository.getLatestPendingOrderId()
                         android.util.Log.d("SettlePresenter", "Immediate purchase payment. Latest pending order: $orderId")
                         if (orderId != null) {
+                            // 更新订单的配送地址（如果用户选择了其他地址）
+                            data.address?.let { address ->
+                                repository.updateOrderShippingAddress(orderId, address)
+                            }
+                            
                             val paymentSuccess = repository.payOrder(orderId)
                             if (paymentSuccess) {
                                 // 支付成功，使用优惠券

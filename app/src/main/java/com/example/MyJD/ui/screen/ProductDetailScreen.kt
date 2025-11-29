@@ -22,7 +22,7 @@ fun ProductDetailScreen(
     productId: String,
     onBackClick: () -> Unit,
     onCartClick: () -> Unit,
-    onBuyNowClick: () -> Unit,
+    onBuyNowClick: (String) -> Unit,
     onShopClick: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
@@ -230,9 +230,9 @@ fun ProductDetailScreen(
                     showSpecDialog = false
                     Toast.makeText(context, if (isAddToCartMode) "已加入购物车" else "正在跳转到订单页", Toast.LENGTH_SHORT).show()
                 },
-                onNavigateToOrder = {
+                onNavigateToOrder = { orderId ->
                     showSpecDialog = false
-                    onBuyNowClick()
+                    onBuyNowClick(orderId)
                 }
             )
         }

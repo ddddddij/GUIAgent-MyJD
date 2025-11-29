@@ -89,8 +89,13 @@ fun ConversationSummaryItem(
                 Spacer(modifier = Modifier.height(4.dp))
                 
                 // 最新消息内容
+                val lastMessage = if (conversationSummary.chatName == "得力装订文具旗舰店" || conversationSummary.chatName == "Apple产品京东自营旗舰店") {
+                    "<好物分享>"
+                } else {
+                    conversationSummary.lastMessage
+                }
                 Text(
-                    text = conversationSummary.lastMessage,
+                    text = lastMessage,
                     fontSize = 12.sp,
                     color = JDTextSecondary,
                     maxLines = 2,

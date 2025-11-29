@@ -32,7 +32,7 @@ fun ProductSpecDialog(
     isAddToCart: Boolean = true, // true为加入购物车，false为立即购买
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,
-    onNavigateToOrder: () -> Unit = {},
+    onNavigateToOrder: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -44,13 +44,22 @@ fun ProductSpecDialog(
     val productSpec by viewModel.productSpec.collectAsState()
     val specSelection by viewModel.specSelection.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
-    
+    val createdOrderId by viewModel.createdOrderId.collectAsState()
+
     var showDialog by remember { mutableStateOf(true) }
     val alpha by animateFloatAsState(
         targetValue = if (showDialog) 1f else 0f,
         animationSpec = tween(durationMillis = 300),
         label = "dialog_alpha"
     )
+
+    LaunchedEffect(createdOrderId) {
+        createdOrderId?.let { orderId ->
+            Toast.makeText(context, "订单创建成功，正在跳转到结算页", Toast.LENGTH_SHORT).show()
+            showDialog = false
+            onNavigateToOrder(orderId)
+        }
+    }
     
     if (alpha > 0f) {
         Dialog(
@@ -194,7 +203,7 @@ fun ProductSpecDialog(
                                 
                                 item {
                                     Spacer(modifier = Modifier.height(16.dp))
-                                }
+                                 }
                             }
                             
                             // 底部确认按钮
@@ -216,14 +225,7 @@ fun ProductSpecDialog(
                                                 }
                                             } else {
                                                 // 立即购买流程
-                                                val orderId = viewModel.buyNow()
-                                                if (orderId != null) {
-                                                    Toast.makeText(context, "订单创建成功，正在跳转到结算页", Toast.LENGTH_SHORT).show()
-                                                    showDialog = false
-                                                    onNavigateToOrder()
-                                                } else {
-                                                    Toast.makeText(context, "创建订单失败，请重试", Toast.LENGTH_SHORT).show()
-                                                }
+                                                viewModel.buyNow()
                                             }
                                         } else {
                                             Toast.makeText(context, "请选择完整的商品规格", Toast.LENGTH_SHORT).show()

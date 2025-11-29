@@ -7,7 +7,8 @@ import com.example.MyJD.repository.DataRepository
 
 class ViewModelFactory(
     private val repository: DataRepository,
-    private val context: Context
+    private val context: Context,
+    private val fromOrder: String? = null
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -16,7 +17,7 @@ class ViewModelFactory(
             ChatViewModel::class.java -> ChatViewModel(repository, context) as T
             MeViewModel::class.java -> MeViewModel(repository) as T
             OrderViewModel::class.java -> OrderViewModel(repository, context) as T
-            SettleViewModel::class.java -> SettleViewModel(repository, context) as T
+            SettleViewModel::class.java -> SettleViewModel(repository, context, fromOrder) as T
             AddressListViewModel::class.java -> AddressListViewModel(repository) as T
             AddressDetailViewModel::class.java -> AddressDetailViewModel(repository) as T
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

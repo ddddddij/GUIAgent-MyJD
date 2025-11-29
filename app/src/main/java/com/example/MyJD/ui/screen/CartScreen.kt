@@ -50,6 +50,8 @@ fun CartScreen(
     // 使用StateFlow响应式获取购物车数据
     val specCartItems by repository.specCartFlow.collectAsStateWithLifecycle()
     var selectedTab by remember { mutableStateOf("全部") }
+    var showDeleteDialog by remember { mutableStateOf(false) }
+    var itemToDelete by remember { mutableStateOf<CartItemSpec?>(null) }
 
     // 计算是否全选
     val allSelected = remember(specCartItems) {
@@ -98,6 +100,21 @@ fun CartScreen(
     val totalCount = repository.getSpecCartTotalCount()
     val selectedCount = repository.getSelectedSpecCartCount()
     val totalPrice = repository.getSelectedSpecCartTotalPrice()
+
+    if (showDeleteDialog && itemToDelete != null) {
+        DeleteConfirmationDialog(
+            cartItem = itemToDelete!!,
+            onConfirm = {
+                repository.removeFromSpecCart(itemToDelete!!.id)
+                showDeleteDialog = false
+                itemToDelete = null
+            },
+            onDismiss = {
+                showDeleteDialog = false
+                itemToDelete = null
+            }
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -185,7 +202,8 @@ fun CartScreen(
                                 Toast.makeText(context, "规格修改功能开发中", Toast.LENGTH_SHORT).show()
                             },
                             onRemove = {
-                                repository.removeFromSpecCart(cartItem.id)
+                                itemToDelete = it
+                                showDeleteDialog = true
                             }
                         )
                     }
@@ -198,6 +216,33 @@ fun CartScreen(
         }
     }
 }
+
+@Composable
+fun DeleteConfirmationDialog(
+    cartItem: CartItemSpec,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("确认删除") },
+        text = { Text("您确定要删除商品 '${cartItem.productName}' 吗？") },
+        confirmButton = {
+            Button(
+                onClick = onConfirm,
+                colors = ButtonDefaults.buttonColors(containerColor = JDRed)
+            ) {
+                Text("确认")
+            }
+        },
+        dismissButton = {
+            Button(onClick = onDismiss) {
+                Text("取消")
+            }
+        }
+    )
+}
+
 
 @Composable
 private fun EmptyCartContent(

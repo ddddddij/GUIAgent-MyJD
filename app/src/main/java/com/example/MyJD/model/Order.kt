@@ -2,8 +2,8 @@ package com.example.MyJD.model
 
 enum class OrderStatus {
     PENDING_PAYMENT,    // 待付款
-    PENDING_SHIPMENT,   // 待发货
     PENDING_RECEIPT,    // 待收货
+    PENDING_SHIPMENT,   // 待使用
     PENDING_REVIEW,     // 待评价
     COMPLETED,          // 已完成
     CANCELLED           // 已取消
@@ -48,7 +48,9 @@ data class Order(
     val cancelTime: Long? = null,
     val cancelReason: CancelReason? = null,
     val trackingNumber: String? = null,
-    val isReviewed: Boolean = false
+    val isReviewed: Boolean = false,
+    val usedCouponId: String? = null,
+    val usedCouponDescription: String? = null
 ) {
     val itemCount: Int
         get() = items.sumOf { it.quantity }

@@ -29,7 +29,8 @@ data class SettleUiState(
 
 class SettleViewModel(
     private val repository: DataRepository,
-    private val context: Context
+    private val context: Context,
+    private val fromOrder: String? = null
 ) : ViewModel(), SettleContract.View {
     
     private val _uiState = MutableStateFlow(SettleUiState())
@@ -39,6 +40,9 @@ class SettleViewModel(
     
     init {
         presenter.attach(this)
+        if (fromOrder != null) {
+            loadOrderSettleData(fromOrder)
+        }
     }
     
     override fun onCleared() {

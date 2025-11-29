@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -29,7 +30,7 @@ fun CartProductCard(
     onSelectionToggle: () -> Unit,
     onQuantityChange: (Int) -> Unit,
     onSpecChange: () -> Unit = {},
-    onRemove: () -> Unit = {},
+    onRemove: (CartItemSpec) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -66,15 +67,31 @@ fun CartProductCard(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    // 商品标题
-                    Text(
-                        text = cartItem.productName,
-                        fontSize = 14.sp,
-                        color = Color(0xFF333333),
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                        lineHeight = 20.sp
-                    )
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        // 商品标题
+                        Text(
+                            text = cartItem.productName,
+                            fontSize = 14.sp,
+                            color = Color(0xFF333333),
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                            lineHeight = 20.sp,
+                            modifier = Modifier.padding(end = 32.dp) // 避免与按钮重叠
+                        )
+                        
+                        // 删除按钮
+                        IconButton(
+                            onClick = { onRemove(cartItem) },
+                            modifier = Modifier.align(Alignment.TopEnd).size(24.dp)
+                        ) {
+                            Icon(
+                                Icons.Filled.Delete,
+                                contentDescription = "删除",
+                                tint = Color.Gray,
+                                modifier = Modifier.size(18.dp)
+                            )
+                        }
+                    }
                     
                     // 规格信息
                     ProductSpecInfo(
@@ -101,7 +118,7 @@ fun CartProductCard(
                     // 价格和数量选择
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.Bottom,
+                        verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         // 价格信息
