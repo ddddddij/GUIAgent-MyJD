@@ -3,10 +3,10 @@ package com.example.MyJD.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.MyJD.model.ProductDetail
-import com.example.MyJD.presenter.ThinkPadDetailContract
-import com.example.MyJD.presenter.ThinkPadDetailPresenter
-import com.example.MyJD.repository.DataRepository
+import com.example.MyJD.data.model.ProductDetail
+import com.example.MyJD.presentation.presenter.ThinkPadDetailContract
+import com.example.MyJD.presentation.presenter.ThinkPadDetailPresenter
+import com.example.MyJD.data.repository.DataRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

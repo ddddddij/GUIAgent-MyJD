@@ -1,10 +1,10 @@
 package com.example.MyJD.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.MyJD.model.Address
-import com.example.MyJD.presenter.AddressDetailContract
-import com.example.MyJD.presenter.AddressDetailPresenter
-import com.example.MyJD.repository.DataRepository
+import com.example.MyJD.domain.model.Address
+import com.example.MyJD.presentation.presenter.AddressDetailContract
+import com.example.MyJD.presentation.presenter.AddressDetailPresenter
+import com.example.MyJD.data.repository.DataRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

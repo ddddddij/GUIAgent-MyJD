@@ -3,10 +3,10 @@ package com.example.MyJD.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.MyJD.model.Banner
-import com.example.MyJD.model.Product
-import com.example.MyJD.model.ShoppingCart
-import com.example.MyJD.repository.DataRepository
+import com.example.MyJD.data.model.Banner
+import com.example.MyJD.domain.model.Product
+import com.example.MyJD.domain.model.ShoppingCart
+import com.example.MyJD.data.repository.DataRepository
 import com.example.MyJD.utils.TaskEightLogger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
