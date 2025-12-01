@@ -1,0 +1,78 @@
+{
+  "productId": "huawei_nova11_001",
+  "defaultSeries": "Huawei Nova 11",
+  "defaultColor": "曜金黑",
+  "defaultStorage": "256GB",
+  "series": [
+    {
+      "name": "Huawei Nova 11",
+      "available": true,
+      "selected": true
+    },
+    {
+      "name": "Huawei Nova 11 SE",
+      "available": true,
+      "selected": false
+    }
+  ],
+  "colors": [
+    {
+      "name": "曜金黑",
+      "colorCode": "#2c2c2c",
+      "image": "image/华为nova11封面.JPG",
+      "price": 0,
+      "originalPrice": 0,
+      "available": true,
+      "stockTag": "万人购买",
+      "selected": true
+    },
+    {
+      "name": "雪域白",
+      "colorCode": "#f8f8f8",
+      "image": "image/华为nova11封面.JPG",
+      "price": 0,
+      "originalPrice": 0,
+      "available": true,
+      "stockTag": "万人购买",
+      "selected": false
+    },
+    {
+      "name": "11号色",
+      "colorCode": "#e6d5c3",
+      "image": "image/华为nova11封面.JPG",
+      "price": 0,
+      "originalPrice": 0,
+      "available": true,
+      "stockTag": "万人购买",
+      "selected": false
+    }
+  ],
+  "storage": [
+    {
+      "capacity": "128GB",
+      "available": true,
+      "selected": false,
+      "priceIncrease": 0.0
+    },
+    {
+      "capacity": "256GB",
+      "available": true,
+      "selected": true,
+      "priceIncrease": 500.0
+    },
+    {
+      "capacity": "512GB",
+      "available": true,
+      "selected": false,
+      "priceIncrease": 1000.0
+    }
+  ],
+  "promotionInfo": {
+    "subsidyText": "含补贴价",
+    "subsidyAmount": 381,
+    "tags": [
+      "含补贴价",
+      "已减381"
+    ]
+  }
+}

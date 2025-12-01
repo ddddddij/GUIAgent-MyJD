@@ -29,6 +29,7 @@ import android.widget.Toast
 @Composable
 fun ProductSpecDialog(
     productId: String,
+    productType: String,
     isAddToCart: Boolean = true, // true为加入购物车，false为立即购买
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,
@@ -37,217 +38,239 @@ fun ProductSpecDialog(
 ) {
     val context = LocalContext.current
     val repository = remember { DataRepository.getInstance(context) }
-    val viewModel: ProductSpecViewModel = viewModel(
-        factory = ProductSpecViewModel.Factory(repository, productId, context)
-    )
     
-    val productSpec by viewModel.productSpec.collectAsState()
-    val specSelection by viewModel.specSelection.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
-    val createdOrderId by viewModel.createdOrderId.collectAsState()
+    var productDetail by remember { mutableStateOf<com.example.MyJD.model.ProductDetail?>(null) }
+    var isLoadingDetail by remember { mutableStateOf(true) }
 
-    var showDialog by remember { mutableStateOf(true) }
-    val alpha by animateFloatAsState(
-        targetValue = if (showDialog) 1f else 0f,
-        animationSpec = tween(durationMillis = 300),
-        label = "dialog_alpha"
-    )
-
-    LaunchedEffect(createdOrderId) {
-        createdOrderId?.let { orderId ->
-            Toast.makeText(context, "订单创建成功，正在跳转到结算页", Toast.LENGTH_SHORT).show()
-            showDialog = false
-            onNavigateToOrder(orderId)
-        }
+    LaunchedEffect(productId) {
+        isLoadingDetail = true
+        productDetail = repository.loadProductDetail(productId)
+        isLoadingDetail = false
     }
-    
-    if (alpha > 0f) {
-        Dialog(
-            onDismissRequest = {
+
+    if (isLoadingDetail) {
+        Dialog(onDismissRequest = onDismiss) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
+        }
+    } else if (productDetail != null) {
+        // 直接使用productDetail.currentPrice作为基础价格
+        // currentPrice现在已经在detail.json中设置为正确的基础价格
+        val basePrice = productDetail!!.currentPrice
+        
+        val viewModel: ProductSpecViewModel = viewModel(
+            factory = ProductSpecViewModel.Factory(repository, productId, productType, basePrice, context)
+        )
+        
+        val productSpec by viewModel.productSpec.collectAsState()
+        val specSelection by viewModel.specSelection.collectAsState()
+        val isLoading by viewModel.isLoading.collectAsState()
+        val createdOrderId by viewModel.createdOrderId.collectAsState()
+
+        var showDialog by remember { mutableStateOf(true) }
+        val alpha by animateFloatAsState(
+            targetValue = if (showDialog) 1f else 0f,
+            animationSpec = tween(durationMillis = 300),
+            label = "dialog_alpha"
+        )
+
+        LaunchedEffect(createdOrderId) {
+            createdOrderId?.let { orderId ->
+                Toast.makeText(context, "订单创建成功，正在跳转到结算页", Toast.LENGTH_SHORT).show()
                 showDialog = false
-                onDismiss()
-            },
-            properties = DialogProperties(
-                usePlatformDefaultWidth = false,
-                decorFitsSystemWindows = false
-            )
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .alpha(alpha)
-                    .background(Color.Black.copy(alpha = 0.5f))
-                    .clickable { 
-                        showDialog = false
-                        onDismiss()
-                    }
+                onNavigateToOrder(orderId)
+            }
+        }
+        
+        if (alpha > 0f) {
+            Dialog(
+                onDismissRequest = {
+                    showDialog = false
+                    onDismiss()
+                },
+                properties = DialogProperties(
+                    usePlatformDefaultWidth = false,
+                    decorFitsSystemWindows = false
+                )
             ) {
-                Card(
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(0.8f)
-                        .align(Alignment.BottomCenter)
-                        .clickable(enabled = false) { /* 阻止事件传播 */ },
-                    shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
-                ) {
-                    Column(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        // 顶部关闭按钮
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp)
-                        ) {
-                            IconButton(
-                                onClick = {
-                                    showDialog = false
-                                    onDismiss()
-                                },
-                                modifier = Modifier.align(Alignment.CenterEnd)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Filled.Close,
-                                    contentDescription = "关闭",
-                                    tint = Color(0xFF666666),
-                                    modifier = Modifier.size(24.dp)
-                                )
-                            }
+                        .fillMaxSize()
+                        .alpha(alpha)
+                        .background(Color.Black.copy(alpha = 0.5f))
+                        .clickable { 
+                            showDialog = false
+                            onDismiss()
                         }
-                        
-                        if (isLoading) {
+                ) {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(0.8f)
+                            .align(Alignment.BottomCenter)
+                            .clickable(enabled = false) { /* 阻止事件传播 */ },
+                        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.White),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            // 顶部关闭按钮
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .weight(1f),
-                                contentAlignment = Alignment.Center
+                                    .padding(16.dp)
                             ) {
-                                CircularProgressIndicator(
-                                    color = Color(0xFFE2231A)
-                                )
-                            }
-                        } else if (productSpec != null) {
-                            LazyColumn(
-                                modifier = Modifier.weight(1f),
-                                contentPadding = PaddingValues(horizontal = 16.dp),
-                                verticalArrangement = Arrangement.spacedBy(16.dp)
-                            ) {
-                                item {
-                                    // 商品信息头部
-                                    ProductSpecHeader(
-                                        selection = specSelection,
-                                        promotionInfo = productSpec!!.promotionInfo
+                                IconButton(
+                                    onClick = {
+                                        showDialog = false
+                                        onDismiss()
+                                    },
+                                    modifier = Modifier.align(Alignment.CenterEnd)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Close,
+                                        contentDescription = "关闭",
+                                        tint = Color(0xFF666666),
+                                        modifier = Modifier.size(24.dp)
                                     )
                                 }
-                                
-                                item {
-                                    // 数量选择
-                                    QuantitySelectorWithLabel(
-                                        quantity = specSelection.quantity,
-                                        onQuantityChange = viewModel::updateQuantity
-                                    )
-                                }
-                                
-                                item {
-                                    HorizontalDivider(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        color = Color(0xFFF0F0F0)
-                                    )
-                                }
-                                
-                                item {
-                                    // 系列选择
-                                    SeriesSelector(
-                                        seriesOptions = productSpec!!.series,
-                                        selectedSeries = specSelection.selectedSeries,
-                                        onSeriesSelected = viewModel::selectSeries
-                                    )
-                                }
-                                
-                                item {
-                                    HorizontalDivider(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        color = Color(0xFFF0F0F0)
-                                    )
-                                }
-                                
-                                item {
-                                    // 颜色选择
-                                    ColorSelector(
-                                        colorOptions = productSpec!!.colors,
-                                        selectedColor = specSelection.selectedColor,
-                                        onColorSelected = viewModel::selectColor,
-                                        onZoomClick = { 
-                                            Toast.makeText(context, "查看大图功能开发中", Toast.LENGTH_SHORT).show()
-                                        }
-                                    )
-                                }
-                                
-                                item {
-                                    HorizontalDivider(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        color = Color(0xFFF0F0F0)
-                                    )
-                                }
-                                
-                                item {
-                                    // 存储容量选择
-                                    StorageSelector(
-                                        storageOptions = productSpec!!.storage,
-                                        selectedStorage = specSelection.selectedStorage,
-                                        onStorageSelected = viewModel::selectStorage
-                                    )
-                                }
-                                
-                                item {
-                                    Spacer(modifier = Modifier.height(16.dp))
-                                 }
                             }
                             
-                            // 底部确认按钮
-                            Card(
-                                modifier = Modifier.fillMaxWidth(),
-                                colors = CardDefaults.cardColors(containerColor = Color.White),
-                                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                                shape = RoundedCornerShape(0.dp)
-                            ) {
-                                Button(
-                                    onClick = {
-                                        if (viewModel.canAddToCart()) {
-                                            if (isAddToCart) {
-                                                val success = viewModel.addToCart()
-                                                if (success) {
-                                                    Toast.makeText(context, "已加入购物车", Toast.LENGTH_SHORT).show()
-                                                    showDialog = false
-                                                    onConfirm()
-                                                }
-                                            } else {
-                                                // 立即购买流程
-                                                viewModel.buyNow()
-                                            }
-                                        } else {
-                                            Toast.makeText(context, "请选择完整的商品规格", Toast.LENGTH_SHORT).show()
-                                        }
-                                    },
-                                    enabled = viewModel.canAddToCart(),
+                            if (isLoading) {
+                                Box(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(16.dp)
-                                        .height(48.dp),
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = Color(0xFFE2231A),
-                                        disabledContainerColor = Color(0xFFCCCCCC)
-                                    ),
-                                    shape = RoundedCornerShape(24.dp)
+                                        .weight(1f),
+                                    contentAlignment = Alignment.Center
                                 ) {
-                                    Text(
-                                        text = "确定",
-                                        fontSize = 16.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = Color.White
+                                    CircularProgressIndicator(
+                                        color = Color(0xFFE2231A)
                                     )
+                                }
+                            } else if (productSpec != null) {
+                                LazyColumn(
+                                    modifier = Modifier.weight(1f),
+                                    contentPadding = PaddingValues(horizontal = 16.dp),
+                                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                                ) {
+                                    item {
+                                        // 商品信息头部
+                                        ProductSpecHeader(
+                                            selection = specSelection,
+                                            promotionInfo = productSpec!!.promotionInfo
+                                        )
+                                    }
+                                    
+                                    item {
+                                        // 数量选择
+                                        QuantitySelectorWithLabel(
+                                            quantity = specSelection.quantity,
+                                            onQuantityChange = viewModel::updateQuantity
+                                        )
+                                    }
+                                    
+                                    item {
+                                        HorizontalDivider(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            color = Color(0xFFF0F0F0)
+                                        )
+                                    }
+                                    
+                                    item {
+                                        // 系列选择
+                                        SeriesSelector(
+                                            seriesOptions = productSpec!!.series,
+                                            selectedSeries = specSelection.selectedSeries,
+                                            onSeriesSelected = viewModel::selectSeries
+                                        )
+                                    }
+                                    
+                                    item {
+                                        HorizontalDivider(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            color = Color(0xFFF0F0F0)
+                                        )
+                                    }
+                                    
+                                    item {
+                                        // 颜色选择
+                                        ColorSelector(
+                                            colorOptions = productSpec!!.colors,
+                                            selectedColor = specSelection.selectedColor,
+                                            onColorSelected = viewModel::selectColor,
+                                            onZoomClick = { 
+                                                Toast.makeText(context, "查看大图功能开发中", Toast.LENGTH_SHORT).show()
+                                            }
+                                        )
+                                    }
+                                    
+                                    item {
+                                        HorizontalDivider(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            color = Color(0xFFF0F0F0)
+                                        )
+                                    }
+                                    
+                                    item {
+                                        // 存储容量选择
+                                        StorageSelector(
+                                            storageOptions = productSpec!!.storage,
+                                            selectedStorage = specSelection.selectedStorage,
+                                            onStorageSelected = viewModel::selectStorage
+                                        )
+                                    }
+                                    
+                                    item {
+                                        Spacer(modifier = Modifier.height(16.dp))
+                                     }
+                                }
+                                
+                                // 底部确认按钮
+                                Card(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                                    elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                                    shape = RoundedCornerShape(0.dp)
+                                ) {
+                                    Button(
+                                        onClick = {
+                                            if (viewModel.canAddToCart()) {
+                                                if (isAddToCart) {
+                                                    val success = viewModel.addToCart()
+                                                    if (success) {
+                                                        Toast.makeText(context, "已加入购物车", Toast.LENGTH_SHORT).show()
+                                                        showDialog = false
+                                                        onConfirm()
+                                                    }
+                                                } else {
+                                                    // 立即购买流程
+                                                    viewModel.buyNow()
+                                                }
+                                            } else {
+                                                Toast.makeText(context, "请选择完整的商品规格", Toast.LENGTH_SHORT).show()
+                                            }
+                                        },
+                                        enabled = viewModel.canAddToCart(),
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(16.dp)
+                                            .height(48.dp),
+                                        colors = ButtonDefaults.buttonColors(
+                                            containerColor = Color(0xFFE2231A),
+                                            disabledContainerColor = Color(0xFFCCCCCC)
+                                        ),
+                                        shape = RoundedCornerShape(24.dp)
+                                    ) {
+                                        Text(
+                                            text = "确定",
+                                            fontSize = 16.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            color = Color.White
+                                        )
+                                    }
                                 }
                             }
                         }

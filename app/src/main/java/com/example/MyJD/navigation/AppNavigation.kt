@@ -175,53 +175,92 @@ fun AppNavigation(navController: NavHostController) {
             )
         }
         
-        composable("huawei_p60_detail/{productId}") { backStackEntry ->
-            val productId = backStackEntry.arguments?.getString("productId") ?: ""
-            HuaweiP60DetailScreen(
-                productId = productId,
-                onBackClick = {
-                    navController.popBackStack()
-                },
-                onCartClick = {
-                    navController.navigate("cart")
-                },
-                onBuyNowClick = {
-                    navController.navigate("order_confirm")
+                composable("huawei_p60_detail/{productId}") { backStackEntry ->
+                    val productId = backStackEntry.arguments?.getString("productId") ?: ""
+                    HuaweiP60DetailScreen(
+                        productId = productId,
+                        onBackClick = {
+                            navController.popBackStack()
+                        },
+                        onCartClick = {
+                            navController.navigate("cart")
+                        },
+                        onBuyNowClick = { orderId ->
+                            navController.navigate("order_confirm?fromOrder=$orderId")
+                        },
+                        onShopClick = { shopName ->
+                            navController.navigate("huawei_shop_page/$shopName")
+                        }
+                    )
                 }
-            )
-        }
         
-        composable("huawei_mate60_detail/{productId}") { backStackEntry ->
-            val productId = backStackEntry.arguments?.getString("productId") ?: ""
-            HuaweiMate60DetailScreen(
-                productId = productId,
-                onBackClick = {
-                    navController.popBackStack()
-                },
-                onCartClick = {
-                    navController.navigate("cart")
-                },
-                onBuyNowClick = {
-                    navController.navigate("order_confirm")
-                }
-            )
-        }
+                        composable("huawei_mate60_detail/{productId}") { backStackEntry ->
         
-        composable("huawei_nova11_detail/{productId}") { backStackEntry ->
-            val productId = backStackEntry.arguments?.getString("productId") ?: ""
-            HuaweiNova11DetailScreen(
-                productId = productId,
-                onBackClick = {
-                    navController.popBackStack()
-                },
-                onCartClick = {
-                    navController.navigate("cart")
-                },
-                onBuyNowClick = {
-                    navController.navigate("order_confirm")
-                }
-            )
-        }
+                            val productId = backStackEntry.arguments?.getString("productId") ?: ""
+        
+                            HuaweiMate60DetailScreen(
+        
+                                productId = productId,
+        
+                                onBackClick = {
+        
+                                    navController.popBackStack()
+        
+                                },
+        
+                                onCartClick = {
+        
+                                    navController.navigate("cart")
+        
+                                },
+        
+                                onBuyNowClick = { orderId ->
+        
+                                    navController.navigate("order_confirm?fromOrder=$orderId")
+        
+                                },
+                                onShopClick = { shopName ->
+                                    navController.navigate("huawei_shop_page/$shopName")
+                                }
+        
+                            )
+        
+                        }
+        
+                
+        
+                        composable("huawei_nova11_detail/{productId}") { backStackEntry ->
+        
+                            val productId = backStackEntry.arguments?.getString("productId") ?: ""
+        
+                            HuaweiNova11DetailScreen(
+        
+                                productId = productId,
+        
+                                onBackClick = {
+        
+                                    navController.popBackStack()
+        
+                                },
+        
+                                onCartClick = {
+        
+                                    navController.navigate("cart")
+        
+                                },
+        
+                                onBuyNowClick = { orderId ->
+        
+                                    navController.navigate("order_confirm?fromOrder=$orderId")
+        
+                                },
+                                onShopClick = { shopName ->
+                                    navController.navigate("huawei_shop_page/$shopName")
+                                }
+        
+                            )
+        
+                        }
         
         composable("thinkpad_detail/{productId}") { backStackEntry ->
             val productId = backStackEntry.arguments?.getString("productId") ?: ""
@@ -296,6 +335,21 @@ fun AppNavigation(navController: NavHostController) {
         composable("shop_page/{shopName}") { backStackEntry ->
             val shopName = backStackEntry.arguments?.getString("shopName") ?: "店铺主页"
             ShopPageScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onProductClick = { productId ->
+                    navController.navigate("product/$productId")
+                },
+                onCartClick = {
+                    navController.navigate("shopping_cart")
+                }
+            )
+        }
+
+        composable("huawei_shop_page/{shopName}") { backStackEntry ->
+            val shopName = backStackEntry.arguments?.getString("shopName") ?: "店铺主页"
+            com.example.MyJD.ui.screen.HuaweiShopScreen(
                 onBackClick = {
                     navController.popBackStack()
                 },

@@ -31,7 +31,8 @@ data class ColorOption(
 data class StorageOption(
     val capacity: String,
     val available: Boolean,
-    val selected: Boolean = false
+    val selected: Boolean = false,
+    val priceIncrease: Double = 0.0
 )
 
 data class PromotionInfo(

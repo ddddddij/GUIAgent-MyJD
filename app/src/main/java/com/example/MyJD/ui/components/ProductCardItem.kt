@@ -62,17 +62,11 @@ fun ProductCardItem(
             ) {
                 val context = LocalContext.current
                 
-                // 根据商品ID和名称组合哈希值确保每个商品使用不同的iPhone15图片
-                val iPhoneImages = listOf("iPhone15图1.JPG", "iPhone15图2.JPG", "iPhone15图3.JPG", "iPhone15图4.JPG", "iPhone15图5.JPG")
-                val combinedHash = (product.id + product.name).hashCode()
-                val imageIndex = kotlin.math.abs(combinedHash) % iPhoneImages.size
-                val imageName = iPhoneImages[imageIndex]
-                
                 // 使用remember和derivedStateOf来处理图片加载
-                val bitmap by remember(imageName) {
+                val bitmap by remember(product.imageUrl) {
                     derivedStateOf {
                         try {
-                            val inputStream = context.assets.open("image/$imageName")
+                            val inputStream = context.assets.open(product.imageUrl)
                             val loadedBitmap = BitmapFactory.decodeStream(inputStream)
                             inputStream.close()
                             loadedBitmap
@@ -92,7 +86,7 @@ fun ProductCardItem(
                         contentScale = ContentScale.Crop
                     )
                 } ?: Text(
-                    text = product.imageUrl,
+                    text = "📱",
                     fontSize = 48.sp
                 )
             }
@@ -116,7 +110,7 @@ fun ProductCardItem(
                 verticalAlignment = Alignment.Bottom
             ) {
                 Text(
-                    text = "¥${priceFormatter.format(product.price.toInt())}",
+                    text = "¥${priceFormatter.format(product.price)}",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFFE53935)
@@ -126,7 +120,7 @@ fun ProductCardItem(
                     if (originalPrice > product.price) {
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "¥${priceFormatter.format(originalPrice.toInt())}",
+                            text = "¥${priceFormatter.format(originalPrice)}",
                             fontSize = 12.sp,
                             color = Color(0xFF999999),
                             textDecoration = TextDecoration.LineThrough

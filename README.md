@@ -957,3 +957,48 @@ app/src/main/java/com/example/MyJD/
 - ✅ 建立项目架构和导航体系
 - ✅ 应用京东品牌色彩主题
 - ✅ 集成Banner轮播和商品展示
+### v1.0.15 (2024-12-20)
+- ✅ 修复商品定价系统，实现基于规格的阶梯定价
+- ✅ 更新iPhone 15基础价格为3699元（128GB），符合商品定价要求
+- ✅ 更新华为产品定价逻辑，基于products.json中的实际价格
+  - 华为P60 Pro: 基础价3988元（128GB），256GB +500元，512GB +1000元
+  - 华为Mate60: 基础价4499元（256GB），512GB +500元，1TB +1000元
+  - 华为Nova11 SE: 基础价2999元（128GB），256GB +500元，512GB +1000元
+- ✅ 优化PricingUtils工具类，支持iPhone和华为产品的独立定价逻辑
+- ✅ 修复ProductSpecViewModel价格计算逻辑，使用PricingUtils动态计算价格
+- ✅ 确保首页、商品详情、店铺页面和规格选择中的价格显示一致
+- 🎯 存储容量影响价格，颜色不影响价格
+- 🐛 修复华为官方旗舰店商品显示问题（品牌过滤条件从"Huawei"改为"华为"）
+
+### v1.0.16 (2024-12-20)
+- 🐛 修复华为店铺页面进入商品详情后规格选择价格错误问题
+- ✅ ProductSpecDialog现在根据productType使用PricingUtils获取正确的基础价格
+  - HuaweiP60: 使用128GB基础价3988元
+  - HuaweiMate60: 使用256GB基础价4499元
+  - HuaweiNova11: 使用128GB基础价2999元
+- ✅ ProductSpecViewModel在加载后自动调用updatePriceBasedOnSpecs()计算初始价格
+- ✅ 确保从首页和店铺页面进入商品详情的价格逻辑完全一致
+- 🎯 现在所有路径的商品价格都使用相同的阶梯定价逻辑
+
+### v1.0.17 (2024-12-20)
+- ✅ 统一华为商品在首页和店铺中的定价逻辑
+- ✅ 更新华为商品detail.json文件，使currentPrice与products.json中的默认规格价格一致
+  - 华为P60 Pro 256GB: 4488元（与products.json一致）
+  - 华为Mate60 512GB: 4999元（与products.json一致）
+  - 华为Nova11 SE 256GB: 3499元（与products.json一致）
+- ✅ 简化ProductSpecDialog价格初始化逻辑，直接使用productDetail.currentPrice
+- ✅ ProductSpecViewModel自动根据选中规格使用PricingUtils重新计算价格
+- 🎯 现在同一商品在首页和店铺中的价格显示、规格选择、阶梯定价完全一致
+- 📊 所有定价均基于products.json作为唯一数据源
+
+### v1.0.18 (2024-12-20)
+- ✅ 验证并优化华为店铺商品规格选择的阶梯定价逻辑
+- ✅ 确认ProductSpecViewModel的updatePriceBasedOnSpecs()正确调用PricingUtils
+- ✅ 清理调试代码，优化价格计算性能
+- ✅ 验证StorageSelector组件正确触发价格更新
+- ✅ 确认所有价格配置文件（products.json, detail.json, specs.json）数据一致性
+- 📊 定价验证：
+  - 华为P60: 128GB=3988, 256GB=4488, 512GB=4988
+  - 华为Mate60: 256GB=4499, 512GB=4999, 1TB=5499
+  - 华为Nova11: 128GB=2999, 256GB=3499, 512GB=3999
+- 🎯 价格更新流程：选择存储 → selectStorage → updatePriceBasedOnSpecs → UI自动刷新

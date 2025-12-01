@@ -224,6 +224,7 @@ fun ProductDetailScreen(
         if (showSpecDialog) {
             ProductSpecDialog(
                 productId = productId,
+                productType = "iPhone",
                 isAddToCart = isAddToCartMode,
                 onDismiss = { showSpecDialog = false },
                 onConfirm = { 

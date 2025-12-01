@@ -87,7 +87,7 @@ fun HomeScreen(
         
         item {
             RecommendSection(
-                products = products.take(10), // 直接使用状态中的products而不是调用方法
+                products = products,
                 onProductClick = onNavigateToProduct,
                 onAddToCart = { product ->
                     viewModel.addToCart(product)

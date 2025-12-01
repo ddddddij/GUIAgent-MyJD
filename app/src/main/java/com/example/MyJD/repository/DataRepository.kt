@@ -177,10 +177,8 @@ class DataRepository private constructor(private val context: Context) {
                 }
             }
             
-            // 初始化产品数据到持久化文件
-            if (!productsFile.exists()) {
-                copyProductsFromAssetsToFile()
-            }
+            // 初始化产品数据到持久化文件（总是从assets重新复制以确保数据最新）
+            copyProductsFromAssetsToFile()
             
             // 初始化搜索结果数据到持久化文件
             if (!searchResultsFile.exists()) {
@@ -500,6 +498,61 @@ class DataRepository private constructor(private val context: Context) {
         }
     }
 
+    suspend fun loadHuaweiShopPageData(): ShopPageData = withContext(Dispatchers.IO) {
+        try {
+            val allProducts = loadProducts()
+            val huaweiProducts = allProducts.filter { it.brand == "华为" }
+
+            val shopInfo = com.example.MyJD.model.ShopInfo(
+                id = "huawei_store",
+                name = "华为官方旗舰店",
+                avatar = "https://example.com/huawei_logo.png", // Replace with actual logo if available
+                followers = "1.2M",
+                isFollowed = false,
+                serviceBanner = "官方授权 | 正品保障 | 极速发货"
+            )
+
+            val statistics = listOf(
+                com.example.MyJD.model.ShopStatistic(label = "商品评价", value = "99%", icon = "👍"),
+                com.example.MyJD.model.ShopStatistic(label = "退换货", value = "98%", icon = "♻️"),
+                com.example.MyJD.model.ShopStatistic(label = "客服咨询", value = "97%", icon = "💬")
+            )
+
+            val categories = listOf(
+                com.example.MyJD.model.ShopCategory(id = "all", name = "全部商品", isSelected = true),
+                com.example.MyJD.model.ShopCategory(id = "phones", name = "手机"),
+                com.example.MyJD.model.ShopCategory(id = "laptops", name = "笔记本"),
+                com.example.MyJD.model.ShopCategory(id = "wearables", name = "穿戴")
+            )
+
+            val shopPageData = ShopPageData(
+                shopInfo = shopInfo,
+                statistics = statistics,
+                categories = categories,
+                products = huaweiProducts
+            )
+
+            android.util.Log.d("DataRepository", "Loaded Huawei shop data with ${huaweiProducts.size} products")
+            return@withContext shopPageData
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Error loading Huawei shop page data", e)
+            // 返回默认数据结构
+            ShopPageData(
+                shopInfo = com.example.MyJD.model.ShopInfo(
+                    id = "default",
+                    name = "店铺加载失败",
+                    avatar = "🏪",
+                    followers = "0",
+                    isFollowed = false,
+                    serviceBanner = ""
+                ),
+                statistics = emptyList(),
+                categories = emptyList(),
+                products = emptyList()
+            )
+        }
+    }
+
     suspend fun loadMeTabData(): MeTabData = withContext(Dispatchers.IO) {
         try {
             val jsonString = context.assets.open("data/me_tab.json").bufferedReader().use { it.readText() }
@@ -717,7 +770,13 @@ class DataRepository private constructor(private val context: Context) {
 
     suspend fun loadProductDetail(productId: String): ProductDetail = withContext(Dispatchers.IO) {
         try {
-            val jsonString = context.assets.open("data/product_detail.json").bufferedReader().use { it.readText() }
+            val jsonFileName = when {
+                productId.contains("huawei_mate60", ignoreCase = true) -> "data/huawei_mate60_detail.json"
+                productId.contains("huawei_p60", ignoreCase = true) -> "data/huawei_p60_detail.json"
+                productId.contains("huawei_nova11", ignoreCase = true) -> "data/huawei_nova11_detail.json"
+                else -> "data/product_detail.json"
+            }
+            val jsonString = context.assets.open(jsonFileName).bufferedReader().use { it.readText() }
             gson.fromJson(jsonString, ProductDetail::class.java)
         } catch (e: Exception) {
             // Return a default ProductDetail if loading fails
@@ -783,7 +842,13 @@ class DataRepository private constructor(private val context: Context) {
 
     suspend fun loadProductSpec(productId: String): ProductSpec = withContext(Dispatchers.IO) {
         try {
-            val jsonString = context.assets.open("data/product_specs.json").bufferedReader().use { it.readText() }
+            val jsonFileName = when {
+                productId.contains("huawei_mate60", ignoreCase = true) -> "data/huawei_mate60_specs.json"
+                productId.contains("huawei_p60", ignoreCase = true) -> "data/huawei_p60_specs.json"
+                productId.contains("huawei_nova11", ignoreCase = true) -> "data/huawei_nova11_specs.json"
+                else -> "data/product_specs.json"
+            }
+            val jsonString = context.assets.open(jsonFileName).bufferedReader().use { it.readText() }
             gson.fromJson(jsonString, ProductSpec::class.java)
         } catch (e: Exception) {
             // Return default spec if loading fails
@@ -792,6 +857,63 @@ class DataRepository private constructor(private val context: Context) {
                 defaultSeries = "iPhone 15",
                 defaultColor = "蓝色",
                 defaultStorage = "128GB",
+                series = emptyList(),
+                colors = emptyList(),
+                storage = emptyList(),
+                promotionInfo = com.example.MyJD.model.PromotionInfo("", 0, emptyList())
+            )
+        }
+    }
+
+    suspend fun loadHuaweiP60ProductSpec(productId: String): ProductSpec = withContext(Dispatchers.IO) {
+        try {
+            val jsonString = context.assets.open("data/huawei_p60_specs.json").bufferedReader().use { it.readText() }
+            gson.fromJson(jsonString, ProductSpec::class.java)
+        } catch (e: Exception) {
+            // Return default spec if loading fails
+            ProductSpec(
+                productId = productId,
+                defaultSeries = "Huawei P60",
+                defaultColor = "曜金黑",
+                defaultStorage = "256GB",
+                series = emptyList(),
+                colors = emptyList(),
+                storage = emptyList(),
+                promotionInfo = com.example.MyJD.model.PromotionInfo("", 0, emptyList())
+            )
+        }
+    }
+
+    suspend fun loadHuaweiMate60ProductSpec(productId: String): ProductSpec = withContext(Dispatchers.IO) {
+        try {
+            val jsonString = context.assets.open("data/huawei_mate60_specs.json").bufferedReader().use { it.readText() }
+            gson.fromJson(jsonString, ProductSpec::class.java)
+        } catch (e: Exception) {
+            // Return default spec if loading fails
+            ProductSpec(
+                productId = productId,
+                defaultSeries = "Huawei Mate 60",
+                defaultColor = "雅丹黑",
+                defaultStorage = "512GB",
+                series = emptyList(),
+                colors = emptyList(),
+                storage = emptyList(),
+                promotionInfo = com.example.MyJD.model.PromotionInfo("", 0, emptyList())
+            )
+        }
+    }
+
+    suspend fun loadHuaweiNova11ProductSpec(productId: String): ProductSpec = withContext(Dispatchers.IO) {
+        try {
+            val jsonString = context.assets.open("data/huawei_nova11_specs.json").bufferedReader().use { it.readText() }
+            gson.fromJson(jsonString, ProductSpec::class.java)
+        } catch (e: Exception) {
+            // Return default spec if loading fails
+            ProductSpec(
+                productId = productId,
+                defaultSeries = "Huawei Nova 11",
+                defaultColor = "曜金黑",
+                defaultStorage = "256GB",
                 series = emptyList(),
                 colors = emptyList(),
                 storage = emptyList(),

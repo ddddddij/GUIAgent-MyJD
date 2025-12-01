@@ -1,0 +1,78 @@
+{
+  "productId": "huawei_p60_001",
+  "defaultSeries": "Huawei P60",
+  "defaultColor": "曜金黑",
+  "defaultStorage": "256GB",
+  "series": [
+    {
+      "name": "Huawei P60",
+      "available": true,
+      "selected": true
+    },
+    {
+      "name": "Huawei P60 Pro",
+      "available": true,
+      "selected": false
+    }
+  ],
+  "colors": [
+    {
+      "name": "曜金黑",
+      "colorCode": "#1a1a1a",
+      "image": "image/华为P60封面.JPG",
+      "price": 0,
+      "originalPrice": 0,
+      "available": true,
+      "stockTag": "万人购买",
+      "selected": true
+    },
+    {
+      "name": "珠光贝母",
+      "colorCode": "#f5f5dc",
+      "image": "image/华为P60封面.JPG",
+      "price": 0,
+      "originalPrice": 0,
+      "available": true,
+      "stockTag": "万人购买",
+      "selected": false
+    },
+    {
+      "name": "翡冷翠",
+      "colorCode": "#40826d",
+      "image": "image/华为P60封面.JPG",
+      "price": 0,
+      "originalPrice": 0,
+      "available": true,
+      "stockTag": "万人购买",
+      "selected": false
+    }
+  ],
+  "storage": [
+    {
+      "capacity": "128GB",
+      "available": true,
+      "selected": false,
+      "priceIncrease": 0.0
+    },
+    {
+      "capacity": "256GB",
+      "available": true,
+      "selected": true,
+      "priceIncrease": 500.0
+    },
+    {
+      "capacity": "512GB",
+      "available": true,
+      "selected": false,
+      "priceIncrease": 1000.0
+    }
+  ],
+  "promotionInfo": {
+    "subsidyText": "限时特价",
+    "subsidyAmount": 500,
+    "tags": [
+      "限时特价",
+      "已减500"
+    ]
+  }
+}
