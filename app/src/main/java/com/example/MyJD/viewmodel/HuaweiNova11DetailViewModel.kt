@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.MyJD.data.model.ProductDetail
-import com.example.MyJD.data.repository.DataRepository
+import com.example.MyJD.model.ProductDetail
+import com.example.MyJD.repository.DataRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -73,7 +73,7 @@ class HuaweiNova11DetailViewModel(
     fun addToCart() {
         _productDetail.value?.let { detail ->
             // Convert ProductDetail to Product for cart
-            val product = com.example.MyJD.domain.model.Product(
+            val product = com.example.MyJD.model.Product(
                 id = detail.id,
                 name = detail.title,
                 price = detail.currentPrice,

@@ -4,12 +4,7 @@
       "Bash(rmdir:*)",
       "Bash(for:*)",
       "Bash(do mv task_$i.py eval_$i.py)",
-      "Bash(done)",
-      "Bash(find:*)",
-      "Bash(./gradlew build:*)",
-      "Bash(grep:*)",
-      "Bash(./gradlew assembleDebug:*)",
-      "Bash(./gradlew clean assembleDebug:*)"
+      "Bash(done)"
     ],
     "deny": []
   }

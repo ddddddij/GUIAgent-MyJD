@@ -2,8 +2,8 @@ package com.example.MyJD.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.MyJD.data.model.MeTabData
-import com.example.MyJD.data.repository.DataRepository
+import com.example.MyJD.model.MeTabData
+import com.example.MyJD.repository.DataRepository
 import com.google.gson.JsonObject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

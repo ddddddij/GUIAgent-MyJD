@@ -3,7 +3,7 @@ package com.example.MyJD.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.MyJD.data.repository.DataRepository
+import com.example.MyJD.repository.DataRepository
 
 class ViewModelFactory(
     private val repository: DataRepository,

@@ -4,10 +4,10 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.MyJD.data.model.ProductSpec
-import com.example.MyJD.presentation.model.SpecSelection
-import com.example.MyJD.presentation.model.CartItemSpec
-import com.example.MyJD.data.repository.DataRepository
+import com.example.MyJD.model.ProductSpec
+import com.example.MyJD.model.SpecSelection
+import com.example.MyJD.model.CartItemSpec
+import com.example.MyJD.repository.DataRepository
 import com.example.MyJD.utils.PricingUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

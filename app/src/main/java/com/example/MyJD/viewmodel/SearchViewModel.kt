@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import com.example.MyJD.presentation.presenter.SearchContract
-import com.example.MyJD.presentation.presenter.SearchPresenter
-import com.example.MyJD.data.repository.DataRepository
+import com.example.MyJD.presenter.SearchContract
+import com.example.MyJD.presenter.SearchPresenter
+import com.example.MyJD.repository.DataRepository
 import com.example.MyJD.utils.TaskSixteenLogger
 
 class SearchViewModel(

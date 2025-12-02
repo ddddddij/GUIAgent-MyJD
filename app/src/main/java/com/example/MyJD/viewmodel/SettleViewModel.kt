@@ -2,12 +2,12 @@ package com.example.MyJD.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
-import com.example.MyJD.data.model.SettleData
-import com.example.MyJD.data.model.SettlePricing
-import com.example.MyJD.domain.model.Coupon
-import com.example.MyJD.presentation.presenter.SettleContract
-import com.example.MyJD.presentation.presenter.SettlePresenter
-import com.example.MyJD.data.repository.DataRepository
+import com.example.MyJD.model.SettleData
+import com.example.MyJD.model.SettlePricing
+import com.example.MyJD.model.Coupon
+import com.example.MyJD.presenter.SettleContract
+import com.example.MyJD.presenter.SettlePresenter
+import com.example.MyJD.repository.DataRepository
 import com.example.MyJD.utils.TaskSixteenLogger
 import com.example.MyJD.utils.TaskSeventeenLogger
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -151,7 +151,7 @@ class SettleViewModel(
         presenter.onAddressClick()
     }
     
-    fun onAddressSelected(address: com.example.MyJD.domain.model.Address) {
+    fun onAddressSelected(address: com.example.MyJD.model.Address) {
         presenter.onAddressSelected(address)
     }
     
