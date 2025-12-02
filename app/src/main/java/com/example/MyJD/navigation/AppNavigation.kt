@@ -19,7 +19,7 @@ import com.example.MyJD.ui.screen.ProductDetailScreen
 import com.example.MyJD.ui.screen.OrderScreen
 import com.example.MyJD.ui.screen.SettleScreen
 import com.example.MyJD.ui.screen.PaymentSuccessScreen
-import com.example.MyJD.ui.screen.SearchScreen
+
 import com.example.MyJD.ui.screen.SearchResultScreen
 import com.example.MyJD.ui.screen.MessageDetailScreen
 import com.example.MyJD.ui.screen.MessageSettingScreen
@@ -40,7 +40,7 @@ fun AppNavigation(navController: NavHostController) {
         composable("home") {
             HomeScreen(
                 onNavigateToSearch = { query ->
-                    navController.navigate("search/$query")
+                    navController.navigate("search_result/$query")
                 },
                 onNavigateToProduct = { productId ->
                     // 根据产品ID进行条件路由
@@ -121,17 +121,7 @@ fun AppNavigation(navController: NavHostController) {
             )
         }
         
-        composable("search/{query}") { backStackEntry ->
-            val query = backStackEntry.arguments?.getString("query") ?: ""
-            SearchScreen(
-                onBackClick = {
-                    navController.popBackStack()
-                },
-                onNavigateToSearchResult = { keyword ->
-                    navController.navigate("search_result/$keyword")
-                }
-            )
-        }
+
         
         composable("search_result/{keyword}") { backStackEntry ->
             val keyword = backStackEntry.arguments?.getString("keyword") ?: ""
