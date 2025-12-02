@@ -180,10 +180,7 @@ class DataRepository private constructor(private val context: Context) {
             // 初始化产品数据到持久化文件（总是从assets重新复制以确保数据最新）
             copyProductsFromAssetsToFile()
             
-            // 初始化搜索结果数据到持久化文件
-            if (!searchResultsFile.exists()) {
-                copySearchResultsFromAssetsToFile()
-            }
+
             
             // 初始化店铺数据到持久化文件
             if (!shopDataFile.exists()) {
@@ -330,62 +327,53 @@ class DataRepository private constructor(private val context: Context) {
         }
     }
     
-    private fun copySearchResultsFromAssetsToFile() {
-        try {
-            val jsonString = context.assets.open("data/search_results.json").bufferedReader().use { it.readText() }
-            searchResultsFile.writeText(jsonString)
-            android.util.Log.d("DataRepository", "Copied search results data from assets to ${searchResultsFile.absolutePath}")
-        } catch (e: Exception) {
-            android.util.Log.e("DataRepository", "Error copying search results from assets to ${searchResultsFile.absolutePath}", e)
+        private fun copyShopDataFromAssetsToFile() {
+            try {
+                val jsonString = context.assets.open("data/shop_data.json").bufferedReader().use { it.readText() }
+                shopDataFile.writeText(jsonString)
+                android.util.Log.d("DataRepository", "Copied shop data from assets to ${shopDataFile.absolutePath}")
+            } catch (e: Exception) {
+                android.util.Log.e("DataRepository", "Error copying shop data from assets to ${shopDataFile.absolutePath}", e)
+            }
         }
-    }
     
-    private fun copyShopDataFromAssetsToFile() {
-        try {
-            val jsonString = context.assets.open("data/shop_data.json").bufferedReader().use { it.readText() }
-            shopDataFile.writeText(jsonString)
-            android.util.Log.d("DataRepository", "Copied shop data from assets to ${shopDataFile.absolutePath}")
-        } catch (e: Exception) {
-            android.util.Log.e("DataRepository", "Error copying shop data from assets to ${shopDataFile.absolutePath}", e)
-        }
-    }
-
-    suspend fun loadProducts(): List<Product> = withContext(Dispatchers.IO) {
-        try {
-            if (productsFile.exists()) {
-                val jsonContent = productsFile.readText()
-                if (jsonContent.isNotBlank()) {
-                    val listType = object : TypeToken<List<Product>>() {}.type
-                    val products: List<Product>? = gson.fromJson(jsonContent, listType)
-                    android.util.Log.d("DataRepository", "Loaded ${products?.size ?: 0} products from persistent file: ${productsFile.absolutePath}")
-                    return@withContext products ?: emptyList()
+        suspend fun loadProducts(): List<Product> = withContext(Dispatchers.IO) {
+            try {
+                if (productsFile.exists()) {
+                    val jsonContent = productsFile.readText()
+                    if (jsonContent.isNotBlank()) {
+                        val listType = object : TypeToken<List<Product>>() {}.type
+                        val products: List<Product>? = gson.fromJson(jsonContent, listType)
+                        android.util.Log.d("DataRepository", "Loaded ${products?.size ?: 0} products from persistent file: ${productsFile.absolutePath}")
+                        return@withContext products ?: emptyList()
+                    }
                 }
+                emptyList()
+            } catch (e: Exception) {
+                android.util.Log.e("DataRepository", "Error loading products from ${productsFile.absolutePath}", e)
+                emptyList()
             }
-            emptyList()
-        } catch (e: Exception) {
-            android.util.Log.e("DataRepository", "Error loading products from ${productsFile.absolutePath}", e)
-            emptyList()
         }
-    }
-
-    fun getSearchResults(): List<Product> {
-        return try {
-            if (searchResultsFile.exists()) {
-                val jsonContent = searchResultsFile.readText()
-                if (jsonContent.isNotBlank()) {
-                    val listType = object : TypeToken<List<Product>>() {}.type
-                    val results: List<Product>? = gson.fromJson(jsonContent, listType)
-                    android.util.Log.d("DataRepository", "Loaded ${results?.size ?: 0} search results from persistent file: ${searchResultsFile.absolutePath}")
-                    return results ?: emptyList()
+    
+        suspend fun getSearchResults(query: String): List<Product> = withContext(Dispatchers.IO) {
+            try {
+                val allProducts = loadProducts()
+                if (query.isBlank()) {
+                    return@withContext emptyList()
                 }
+                val results = allProducts.filter {
+                    it.name.contains(query, ignoreCase = true) ||
+                    it.description.contains(query, ignoreCase = true) ||
+                    it.brand.contains(query, ignoreCase = true) ||
+                    it.category.contains(query, ignoreCase = true)
+                }
+                android.util.Log.d("DataRepository", "Found ${results.size} products for query '$query'")
+                return@withContext results
+            } catch (e: Exception) {
+                android.util.Log.e("DataRepository", "Error performing search for query '$query'", e)
+                return@withContext emptyList()
             }
-            emptyList()
-        } catch (e: Exception) {
-            android.util.Log.e("DataRepository", "Error loading search results from ${searchResultsFile.absolutePath}", e)
-            emptyList()
         }
-    }
-
     suspend fun loadBanners(): List<Banner> = withContext(Dispatchers.IO) {
         try {
             val jsonString = context.assets.open("data/banners.json").bufferedReader().use { it.readText() }

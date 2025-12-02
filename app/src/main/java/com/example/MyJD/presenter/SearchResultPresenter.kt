@@ -2,6 +2,10 @@ package com.example.MyJD.presenter
 
 import com.example.MyJD.model.Product
 import com.example.MyJD.repository.DataRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class SearchResultPresenter(
     private val repository: DataRepository
@@ -13,24 +17,27 @@ class SearchResultPresenter(
     private var currentSortType: SearchSortType = SearchSortType.COMPREHENSIVE
     private var currentFilter: SearchFilter = SearchFilter()
     
+    private var job = Job()
+    private val coroutineScope = CoroutineScope(Dispatchers.Main + job)
+    
     override fun attach(view: SearchResultContract.View) {
         this.view = view
+        job = Job() // Re-create job on attach
     }
     
     override fun detach() {
+        job.cancel() // Cancel job on detach to avoid leaks
         this.view = null
     }
     
     override fun loadSearchResults(keyword: String) {
         view?.showLoading(true)
-        
-        // 模拟从search_results.json加载数据
-        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
-            allProducts = repository.getSearchResults()
+        coroutineScope.launch {
+            allProducts = repository.getSearchResults(keyword)
             filteredProducts = allProducts
             applyCurrentSortAndFilter()
             view?.showLoading(false)
-        }, 500)
+        }
     }
     
     override fun sortProducts(sortType: SearchSortType) {
