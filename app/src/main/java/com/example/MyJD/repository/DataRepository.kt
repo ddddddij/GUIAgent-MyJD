@@ -506,8 +506,8 @@ class DataRepository private constructor(private val context: Context) {
             val shopInfo = com.example.MyJD.model.ShopInfo(
                 id = "huawei_store",
                 name = "华为官方旗舰店",
-                avatar = "https://example.com/huawei_logo.png", // Replace with actual logo if available
-                followers = "1.2M",
+                avatar = "image/华为店铺logo.PNG", // Use relative path for local assets
+                followers = "2.3亿",
                 isFollowed = false,
                 serviceBanner = "官方授权 | 正品保障 | 极速发货"
             )

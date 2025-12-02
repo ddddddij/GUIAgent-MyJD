@@ -23,8 +23,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.MyJD.model.ShopPageData
+import coil.compose.AsyncImage
+import androidx.compose.foundation.Image
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import com.example.MyJD.model.ShopCategory
+import com.example.MyJD.model.ShopPageData
 import com.example.MyJD.model.Product
 import com.example.MyJD.presenter.ShopPageContract
 import com.example.MyJD.presenter.ShopPagePresenter
@@ -78,7 +82,7 @@ fun ShopPageScreen(
     LaunchedEffect(Unit) {
         presenter.attach(view)
         presenter.loadShopData()
-        
+
         // 任务十七日志记录：加载店铺页面数据
         TaskSeventeenLogger.logShopPageDataLoading(context)
     }
@@ -257,20 +261,15 @@ fun ShopHeaderSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             // 店铺头像
-            Box(
+            AsyncImage(
+                model = "file:///android_asset/${shopInfo.avatar}",
+                contentDescription = "店铺头像",
                 modifier = Modifier
                     .size(60.dp)
-                    .background(
-                        Color(0xFFF5F5F5),
-                        CircleShape
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = shopInfo.avatar,
-                    fontSize = 32.sp
-                )
-            }
+                    .clip(CircleShape)
+                    .background(Color(0xFFF5F5F5)),
+                contentScale = ContentScale.Crop
+            )
             
             Spacer(modifier = Modifier.width(12.dp))
             
