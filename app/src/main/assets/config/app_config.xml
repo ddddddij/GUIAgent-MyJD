@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+    <!-- 应用基本配置 -->
+    <app>
+        <name>MyJD</name>
+        <version>1.0</version>
+        <debug>true</debug>
+    </app>
+    
+    <!-- 网络配置 -->
+    <network>
+        <timeout>30000</timeout>
+        <retry_count>3</retry_count>
+        <base_url>https://api.example.com</base_url>
+    </network>
+    
+    <!-- 缓存配置 -->
+    <cache>
+        <max_size>50MB</max_size>
+        <expiry_time>3600</expiry_time>
+    </cache>
+    
+    <!-- 日志配置 -->
+    <logging>
+        <level>DEBUG</level>
+        <file_enabled>true</file_enabled>
+        <max_file_size>10MB</max_file_size>
+    </logging>
+</configuration>
