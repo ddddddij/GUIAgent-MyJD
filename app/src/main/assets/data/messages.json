@@ -76,7 +76,7 @@
       "id": "msg_007",
       "type": "PROMOTION",
       "subType": "SHOPPING",
-      "senderName": "Apple产品京东自营旗舰店",
+      "senderName": "Apple官方旗舰店",
       "senderAvatar": "🍎",
       "content": "您有一条新消息",
       "timestamp": 1703548800000,
@@ -222,7 +222,7 @@
     },
     {
       "id": "C20251021004",
-      "chatName": "Apple产品京东自营旗舰店",
+      "chatName": "Apple官方旗舰店",
       "chatAvatar": "🍎",
       "messages": [
         {

@@ -106,7 +106,7 @@ fun ShopPageScreen(
             TopAppBar(
                 title = { 
                     Text(
-                        text = shopData?.shopInfo?.name ?: "Apple产品京东自营旗舰店",
+                        text = shopData?.shopInfo?.name ?: "Apple官方旗舰店",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium,
                         maxLines = 1

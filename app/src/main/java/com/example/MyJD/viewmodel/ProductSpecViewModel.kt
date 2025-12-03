@@ -499,7 +499,7 @@ class ProductSpecViewModel(
 
 
 
-                storeName = if (productType.startsWith("Huawei")) "Huawei产品京东自营旗舰店" else "Apple产品京东自营旗舰店"
+                storeName = if (productType.startsWith("Huawei")) "Huawei产品京东自营旗舰店" else "Apple官方旗舰店"
 
 
 
@@ -615,7 +615,7 @@ class ProductSpecViewModel(
 
 
 
-                storeName = if (productType.startsWith("Huawei")) "Huawei产品京东自营旗舰店" else "Apple产品京东自营旗舰店",
+                storeName = if (productType.startsWith("Huawei")) "Huawei产品京东自营旗舰店" else "Apple官方旗舰店",
 
 
 

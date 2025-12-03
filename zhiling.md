@@ -6,7 +6,7 @@
 4	在「我的」页面查看我的全部订单。	检查task_four_logs.json文件中是否包含"TASK_COMPLETED"。
 5	在购物车中勾选一个商品，然后结算。	任务执行前检查cart_items.json文件中包含的商品条目，执行后检查orders.json文件中新增的待收货订单与cart_items.json文件中减少商品条目是否对应。
 6	结算我的第一个待付款订单。	检查task_six_log.txt文件中是否包含"找到第一个待付款订单, 订单ID:xxx"，“点击付款按钮”，“确认付款操作”，“付款成功，订单ID: xxx”。
-7	给Apple产品京东自营旗舰店发消息问手机什么时候发货。	检查new_messages.json文件中是否包含"什么时候发货"。
+7	给Apple官方旗舰店发消息问手机什么时候发货。	检查new_messages.json文件中是否包含"什么时候发货"。
 8	计算首页共展示了多少件商品。	检查task_eight_log.txt文件中"任务八完成：首页共展示了 xx 件商品"这一条与AI报告的数字是否相同。
 9	计算购物车中所有商品的总价。	检查task_nine_log.txt文件中"任务九完成：购物车中所有商品的总价为xxx"这一条与AI报告的数字是否相同。
 10	计算待收货的订单有多少项。	检查task_ten_log.txt文件中"任务十完成：待收货的订单有xxx项"这一条与AI报告的数字是否相同。
@@ -19,7 +19,7 @@
 17	进入首页iPhone15商品详情并进入店铺主页，然后立即购买店铺中"iPhone 15 粉色 256GB 1件"后，查看待收货订单。	检查task_seventeen_log.txt文件中是否包含"进入商品详情页"，"进入店铺主页"，"加载店铺页面数据"，"在店铺中选择商品:xxx"，然后检查orders.json文件中是否包含"iPhone 15 粉色 256GB 1件"商品购买订单。
 18	取消我所有的待付款订单，然后在全部订单中删除已取消的订单。	检查task_eighteen_log.txt文件中是否包含"尝试取消订单"，"订单取消成功"，"尝试删除已取消订单"，"已取消订单删除成功"的条目。
 19	新建地址"湖北省武汉市洪山区文秀街9号"并设为默认地址。	检查addresses.json文件中是否包含"湖北省武汉市洪山区文秀街9号"，并且"isDefault"应该为true。
-20	设置Apple产品京东自营旗舰店的聊天为消息免打扰。	检查mute_settings.json文件中是否包含"isMuted: false"，"senderName: "Apple产品京东自营旗舰店""。
+20	设置Apple官方旗舰店的聊天为消息免打扰。	检查mute_settings.json文件中是否包含"isMuted: false"，"senderName: "Apple官方旗舰店""。
 #指令开发要求
 你看看上面的检验方法是不是找静态json数据，如果是则用下面
 def validate_coupons_page(result=None,device_id=None):

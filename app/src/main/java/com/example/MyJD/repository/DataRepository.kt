@@ -182,10 +182,8 @@ class DataRepository private constructor(private val context: Context) {
             
 
             
-            // 初始化店铺数据到持久化文件
-            if (!shopDataFile.exists()) {
-                copyShopDataFromAssetsToFile()
-            }
+            // 初始化店铺数据到持久化文件（总是从assets重新复制以确保数据最新）
+            copyShopDataFromAssetsToFile()
             
             // 更新购物车计数
             updateCartFlows()
@@ -361,12 +359,47 @@ class DataRepository private constructor(private val context: Context) {
                 if (query.isBlank()) {
                     return@withContext emptyList()
                 }
-                val results = allProducts.filter {
-                    it.name.contains(query, ignoreCase = true) ||
-                    it.description.contains(query, ignoreCase = true) ||
-                    it.brand.contains(query, ignoreCase = true) ||
-                    it.category.contains(query, ignoreCase = true)
+                
+                // 品牌别名映射
+                val brandAliases = mapOf(
+                    "apple" to listOf("苹果", "apple", "iphone", "ipad", "mac", "airpods"),
+                    "huawei" to listOf("华为", "huawei"),
+                    "lenovo" to listOf("联想", "lenovo", "thinkpad")
+                )
+                
+                // 将搜索词拆分成关键词
+                val keywords = query.split(" ", "　").filter { it.isNotBlank() }
+                
+                val results = allProducts.filter { product ->
+                    // 完整匹配
+                    val exactMatch = product.name.contains(query, ignoreCase = true) ||
+                        product.description.contains(query, ignoreCase = true) ||
+                        product.brand.contains(query, ignoreCase = true) ||
+                        product.category.contains(query, ignoreCase = true) ||
+                        product.storeName.contains(query, ignoreCase = true)
+                    
+                    // 关键词匹配：所有关键词都能在产品信息中找到
+                    val keywordMatch = keywords.all { keyword ->
+                        val directMatch = product.name.contains(keyword, ignoreCase = true) ||
+                            product.description.contains(keyword, ignoreCase = true) ||
+                            product.brand.contains(keyword, ignoreCase = true) ||
+                            product.category.contains(keyword, ignoreCase = true) ||
+                            product.storeName.contains(keyword, ignoreCase = true)
+                        
+                        // 品牌别名匹配
+                        val brandMatch = brandAliases.any { (_, aliases) ->
+                            aliases.any { alias -> alias.equals(keyword, ignoreCase = true) } &&
+                            aliases.any { alias -> product.brand.equals(alias, ignoreCase = true) || 
+                                                   product.name.contains(alias, ignoreCase = true) ||
+                                                   product.storeName.contains(alias, ignoreCase = true) }
+                        }
+                        
+                        directMatch || brandMatch
+                    }
+                    
+                    exactMatch || keywordMatch
                 }
+                
                 android.util.Log.d("DataRepository", "Found ${results.size} products for query '$query'")
                 return@withContext results
             } catch (e: Exception) {
@@ -2237,7 +2270,7 @@ class DataRepository private constructor(private val context: Context) {
         TaskSeventeenLogger.logTaskStart(context)
         TaskSeventeenLogger.logHomePageEntered(context)
         TaskSeventeenLogger.logProductDetailEntered(context, "iPhone 15")
-        TaskSeventeenLogger.logShopPageEntered(context, "Apple产品京东自营旗舰店")
+        TaskSeventeenLogger.logShopPageEntered(context, "Apple官方旗舰店")
         TaskSeventeenLogger.logShopProductSelected(context, "iPhone 15 粉色 256GB")
         TaskSeventeenLogger.logProductSpecSelected(context, "粉色", "256GB", 1)
         TaskSeventeenLogger.logBuyNowClicked(context, "iPhone 15 粉色 256GB")

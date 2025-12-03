@@ -111,7 +111,7 @@ fun MessageItem(
                 Spacer(modifier = Modifier.height(4.dp))
                 
                 // 消息内容
-                val content = if (message.senderName == "得力装订文具旗舰店" || message.senderName == "Apple产品京东自营旗舰店") {
+                val content = if (message.senderName == "得力装订文具旗舰店" || message.senderName == "Apple官方旗舰店") {
                     "<好物分享>"
                 } else {
                     message.content

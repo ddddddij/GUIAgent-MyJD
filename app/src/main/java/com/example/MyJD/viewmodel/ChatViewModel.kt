@@ -177,7 +177,7 @@ class ChatViewModel(
             "京东客服" -> "C20251021001"
             "得力装订文具旗舰店" -> "C20251021002"
             "文轩网旗舰店" -> "C20251021003"
-            "Apple产品京东自营旗舰店" -> "C20251021004"
+            "Apple官方旗舰店" -> "C20251021004"
             "京东秒送" -> "C20251021005"
             else -> {
                 // For other senders, create a fallback conversation ID based on the message type
