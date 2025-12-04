@@ -19,15 +19,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.myjd.repository.DataRepository
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myjd.ui.components.SettingItemView
 import com.example.myjd.ui.components.SettingSection
 import com.example.myjd.ui.components.SettingDivider
 import com.example.myjd.viewmodel.MessageSettingViewModel
 import com.example.myjd.viewmodel.MessageSettingUiState
 import com.example.myjd.viewmodel.MessageSettingNavigationEvent
-import com.example.myjd.viewmodel.ViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,13 +33,10 @@ fun MessageSettingScreen(
     shopName: String,
     shopAvatar: String,
     onBackClick: () -> Unit,
-    onNavigateToShop: () -> Unit
+    onNavigateToShop: () -> Unit,
+    viewModel: MessageSettingViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val repository = remember { DataRepository.getInstance(context) }
-    val viewModel: MessageSettingViewModel = viewModel(
-        factory = ViewModelFactory(repository, context)
-    )
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 

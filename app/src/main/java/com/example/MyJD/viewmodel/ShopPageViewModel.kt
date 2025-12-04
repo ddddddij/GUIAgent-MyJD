@@ -8,15 +8,19 @@ import com.example.myjd.domain.model.Product
 import com.example.myjd.domain.model.ShopCategory
 import com.example.myjd.domain.model.ShopPageData
 import com.example.myjd.repository.DataRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import android.util.Log
+import javax.inject.Inject
 
-class ShopPageViewModel(
+@HiltViewModel
+class ShopPageViewModel @Inject constructor(
     private val repository: DataRepository,
-    private val context: Context
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private val _shopData = MutableStateFlow<ShopPageData?>(null)

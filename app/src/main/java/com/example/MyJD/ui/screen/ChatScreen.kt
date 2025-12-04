@@ -6,8 +6,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.myjd.repository.DataRepository
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myjd.viewmodel.ChatViewModel
 import com.example.myjd.ui.components.*
 
@@ -15,13 +14,10 @@ import com.example.myjd.ui.components.*
 @Composable
 fun ChatScreen(
     onNavigateToCart: () -> Unit = {},
-    onNavigateToDetail: (String) -> Unit = {}
+    onNavigateToDetail: (String) -> Unit = {},
+    viewModel: ChatViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val repository = remember { DataRepository.getInstance(context) }
-    val viewModel: ChatViewModel = viewModel(
-        factory = com.example.myjd.viewmodel.ViewModelFactory(repository, context)
-    )
     
     val filteredMessages by viewModel.filteredMessages.collectAsState()
     val conversationSummaries by viewModel.conversationSummaries.collectAsState()

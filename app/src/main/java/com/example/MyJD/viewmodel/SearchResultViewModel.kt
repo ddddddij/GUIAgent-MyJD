@@ -4,10 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myjd.repository.DataRepository
 import com.example.myjd.domain.model.Product
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 // Placeholder for SearchSortType and SearchFilter, will be defined properly
 enum class SearchSortType {
@@ -23,7 +25,8 @@ data class SearchFilter(
     val categories: List<String> = emptyList()
 )
 
-class SearchResultViewModel(
+@HiltViewModel
+class SearchResultViewModel @Inject constructor(
     private val repository: DataRepository
 ) : ViewModel() {
 

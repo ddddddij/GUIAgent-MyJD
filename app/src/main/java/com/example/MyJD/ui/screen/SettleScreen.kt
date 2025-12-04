@@ -23,14 +23,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.myjd.domain.model.SettleData
 import com.example.myjd.domain.model.SettlePricing
 import com.example.myjd.domain.model.Coupon
-import com.example.myjd.repository.DataRepository
 import com.example.myjd.viewmodel.SettleViewModel
-import com.example.myjd.viewmodel.ViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,14 +44,10 @@ fun SettleScreen(
     onBackClick: () -> Unit,
     onNavigateToPaymentSuccess: (String) -> Unit = {},
     onNavigateToAddressList: () -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: SettleViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val repository = remember { DataRepository.getInstance(context) }
-    val viewModel: SettleViewModel = viewModel(
-        key = fromOrder,
-        factory = ViewModelFactory(repository, context, fromOrder)
-    )
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 

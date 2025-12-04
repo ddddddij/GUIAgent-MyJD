@@ -10,10 +10,13 @@ import com.example.myjd.common.utils.TaskSixLogger
 import com.example.myjd.common.utils.TaskTenLogger
 import com.example.myjd.common.utils.TaskSeventeenLogger
 import com.example.myjd.common.utils.TaskEighteenLogger
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 data class OrderUiState(
     val orders: List<Order> = emptyList(),
@@ -25,21 +28,22 @@ data class OrderUiState(
     val showPaymentSuccessDialog: Boolean = false
 )
 
-class OrderViewModel(
+@HiltViewModel
+class OrderViewModel @Inject constructor(
     private val repository: DataRepository,
-    private val context: Context
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
-    
+
     private val _uiState = MutableStateFlow(OrderUiState())
     val uiState: StateFlow<OrderUiState> = _uiState.asStateFlow()
-    
+
     private var allOrders: List<Order> = emptyList() // Store all fetched orders
-    
+
     init {
         // 任务十日志记录：进入订单页面
         TaskTenLogger.logTaskStart(context)
         TaskTenLogger.logOrderPageEntered(context)
-        
+
         loadOrders()
     }
     

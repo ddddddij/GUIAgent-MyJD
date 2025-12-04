@@ -4,12 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myjd.domain.model.Address
 import com.example.myjd.repository.DataRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AddressListViewModel(
+@HiltViewModel
+class AddressListViewModel @Inject constructor(
     private val repository: DataRepository
 ) : ViewModel() {
 

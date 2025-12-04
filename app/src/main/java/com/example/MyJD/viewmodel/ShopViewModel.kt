@@ -7,16 +7,19 @@ import com.example.myjd.domain.model.CartItemSpec
 import com.example.myjd.domain.model.Product
 import com.example.myjd.domain.model.ShopPageData
 import com.example.myjd.repository.DataRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import android.util.Log
+import javax.inject.Inject
 
-class ShopViewModel(
+@HiltViewModel
+class ShopViewModel @Inject constructor(
     private val repository: DataRepository,
-    private val context: Context,
-    private val shopName: String
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private val _shopData = MutableStateFlow<ShopPageData?>(null)
@@ -31,7 +34,7 @@ class ShopViewModel(
     private val _navigationEvent = MutableStateFlow<NavigationEvent?>(null)
     val navigationEvent: StateFlow<NavigationEvent?> = _navigationEvent.asStateFlow()
 
-    init {
+    fun initialize(shopName: String) {
         loadShopData(shopName)
     }
 

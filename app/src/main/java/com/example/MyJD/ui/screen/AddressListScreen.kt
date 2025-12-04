@@ -19,12 +19,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myjd.domain.model.Address
-import com.example.myjd.repository.DataRepository
 import com.example.myjd.ui.components.AddressItemCard
 import com.example.myjd.viewmodel.AddressListViewModel
-import com.example.myjd.viewmodel.ViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,13 +31,10 @@ fun AddressListScreen(
     onBackClick: () -> Unit,
     onNavigateToAddressDetail: (String?) -> Unit = {},
     onNavigateToSettleScreen: (Address) -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: AddressListViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val repository = remember { DataRepository.getInstance(context) }
-    val viewModel: AddressListViewModel = viewModel(
-        factory = ViewModelFactory(repository, context)
-    )
     
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
     val addresses by viewModel.addresses.collectAsStateWithLifecycle()

@@ -24,16 +24,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.myjd.domain.model.Product
 import com.example.myjd.viewmodel.SearchSortType
-import com.example.myjd.repository.DataRepository
 import com.example.myjd.ui.components.FilterBottomSheet
 import com.example.myjd.ui.theme.JDRed
 import com.example.myjd.viewmodel.SearchFilter
 import com.example.myjd.viewmodel.SearchResultViewModel
-import com.example.myjd.viewmodel.SearchResultViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,13 +39,10 @@ fun SearchResultScreen(
     keyword: String,
     onBackClick: () -> Unit = {},
     onNavigateToProduct: (String) -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: SearchResultViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val repository = remember { DataRepository.getInstance(context) }
-    val viewModel: SearchResultViewModel = viewModel(
-        factory = SearchResultViewModelFactory(repository)
-    )
 
     LaunchedEffect(keyword) {
         viewModel.loadSearchResults(keyword)

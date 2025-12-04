@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myjd.repository.DataRepository
 import com.example.myjd.viewmodel.ProductSpecViewModel
 import android.widget.Toast
@@ -34,11 +34,12 @@ fun ProductSpecDialog(
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,
     onNavigateToOrder: (String) -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: ProductSpecViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val repository = remember { DataRepository.getInstance(context) }
-    
+
     var productDetail by remember { mutableStateOf<com.example.myjd.domain.model.ProductDetail?>(null) }
     var isLoadingDetail by remember { mutableStateOf(true) }
 
@@ -46,6 +47,11 @@ fun ProductSpecDialog(
         isLoadingDetail = true
         productDetail = repository.loadProductDetail(productId)
         isLoadingDetail = false
+
+        // Initialize ViewModel with runtime parameters
+        if (productDetail != null) {
+            viewModel.initialize(productId, productType, productDetail!!.currentPrice)
+        }
     }
 
     if (isLoadingDetail) {
@@ -55,13 +61,6 @@ fun ProductSpecDialog(
             }
         }
     } else if (productDetail != null) {
-        // 直接使用productDetail.currentPrice作为基础价格
-        // currentPrice现在已经在detail.json中设置为正确的基础价格
-        val basePrice = productDetail!!.currentPrice
-        
-        val viewModel: ProductSpecViewModel = viewModel(
-            factory = ProductSpecViewModel.Factory(repository, productId, productType, basePrice, context)
-        )
         
         val productSpec by viewModel.productSpec.collectAsState()
         val specSelection by viewModel.specSelection.collectAsState()

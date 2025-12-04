@@ -4,11 +4,14 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myjd.repository.DataRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 data class SearchUiState(
     val suggestions: List<String> = emptyList(),
@@ -23,9 +26,10 @@ sealed class SearchNavigationEvent {
     object None : SearchNavigationEvent()
 }
 
-class SearchViewModel(
-    private val repository: DataRepository, // Although not directly used by presenter, keep for future expansion
-    private val context: Context // Context might be needed for Toast, but generally avoid in ViewModel
+@HiltViewModel
+class SearchViewModel @Inject constructor(
+    private val repository: DataRepository,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SearchUiState())

@@ -28,13 +28,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myjd.domain.model.*
-import com.example.myjd.repository.DataRepository
 import com.example.myjd.viewmodel.MessageDetailViewModel
 import com.example.myjd.viewmodel.MessageDetailUiState
 import com.example.myjd.viewmodel.NavigationEvent
-import com.example.myjd.viewmodel.ViewModelFactory
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -46,13 +44,10 @@ fun MessageDetailScreen(
     conversationId: String,
     onBackClick: () -> Unit,
     onNavigateToProduct: (String) -> Unit,
-    onNavigateToSettings: (String, String) -> Unit = { _, _ -> }
+    onNavigateToSettings: (String, String) -> Unit = { _, _ -> },
+    viewModel: MessageDetailViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val repository = remember { DataRepository.getInstance(context) }
-    val viewModel: MessageDetailViewModel = viewModel(
-        factory = ViewModelFactory(repository, context)
-    )
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     

@@ -9,11 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.myjd.repository.DataRepository
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myjd.ui.components.*
 import com.example.myjd.viewmodel.HuaweiP60DetailViewModel
-import com.example.myjd.viewmodel.HuaweiP60DetailViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,10 +24,7 @@ fun HuaweiP60DetailScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val repository = DataRepository.getInstance(context)
-    val viewModel: HuaweiP60DetailViewModel = viewModel(
-        factory = HuaweiP60DetailViewModelFactory(repository, context)
-    )
+    val viewModel: HuaweiP60DetailViewModel = hiltViewModel()
 
     val productDetail by viewModel.productDetail.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()

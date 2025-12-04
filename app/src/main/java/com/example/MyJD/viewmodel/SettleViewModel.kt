@@ -6,15 +6,18 @@ import androidx.lifecycle.viewModelScope
 import com.example.myjd.domain.model.SettleData
 import com.example.myjd.domain.model.SettlePricing
 import com.example.myjd.domain.model.Coupon
-import com.example.myjd.domain.model.OrderStatus 
+import com.example.myjd.domain.model.OrderStatus
 import com.example.myjd.repository.DataRepository
 import com.example.myjd.common.utils.TaskSixteenLogger
 import com.example.myjd.common.utils.TaskSeventeenLogger
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch 
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 data class SettleUiState(
     val settleData: SettleData? = null,
@@ -29,23 +32,17 @@ data class SettleUiState(
     val currentOrderAmount: Double = 0.0
 )
 
-class SettleViewModel(
+@HiltViewModel
+class SettleViewModel @Inject constructor(
     private val repository: DataRepository,
-    private val context: Context,
-    private val fromOrder: String? = null
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
-    
+
     private val _uiState = MutableStateFlow(SettleUiState())
     val uiState: StateFlow<SettleUiState> = _uiState.asStateFlow()
-    
+
     private var isCartMode = false
     private var cartOrderIds: List<String> = emptyList()
-
-    init {
-        if (fromOrder != null) {
-            loadOrderSettleData(fromOrder)
-        }
-    }
 
     // Public methods for UI interaction
     fun loadSettleData(

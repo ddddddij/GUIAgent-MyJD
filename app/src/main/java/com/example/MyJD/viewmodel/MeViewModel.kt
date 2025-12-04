@@ -5,19 +5,24 @@ import androidx.lifecycle.viewModelScope
 import com.example.myjd.domain.model.MeTabData
 import com.example.myjd.repository.DataRepository
 import com.google.gson.JsonObject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MeViewModel(private val repository: DataRepository) : ViewModel() {
-    
+@HiltViewModel
+class MeViewModel @Inject constructor(
+    private val repository: DataRepository
+) : ViewModel() {
+
     private val _meTabData = MutableStateFlow<MeTabData?>(null)
     val meTabData: StateFlow<MeTabData?> = _meTabData.asStateFlow()
-    
+
     private val _userProfile = MutableStateFlow<JsonObject?>(null)
     val userProfile: StateFlow<JsonObject?> = _userProfile.asStateFlow()
-    
+
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
@@ -67,5 +72,11 @@ class MeViewModel(private val repository: DataRepository) : ViewModel() {
 
     fun getRedPacketStatus(): String {
         return "您有红包未领取"
+    }
+
+    fun logTaskFourMePageVisited() {
+        viewModelScope.launch {
+            repository.logTaskFourMePageVisited()
+        }
     }
 }

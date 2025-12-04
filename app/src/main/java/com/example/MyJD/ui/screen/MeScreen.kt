@@ -10,8 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.myjd.repository.DataRepository
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myjd.viewmodel.MeViewModel
 import com.example.myjd.ui.components.*
 
@@ -20,20 +19,17 @@ fun MeScreen(
     onNavigateToSettings: () -> Unit = {},
     onNavigateToAddress: () -> Unit = {},
     onNavigateToChat: () -> Unit = {},
-    onNavigateToOrderList: (String) -> Unit = {}
+    onNavigateToOrderList: (String) -> Unit = {},
+    viewModel: MeViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val repository = remember { DataRepository.getInstance(context) }
-    val viewModel: MeViewModel = viewModel(
-        factory = com.example.myjd.viewmodel.ViewModelFactory(repository, context)
-    )
-    
+
     val meTabData by viewModel.meTabData.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
-    
+
     // 任务四日志记录：访问「我的」页面
     LaunchedEffect(Unit) {
-        repository.logTaskFourMePageVisited()
+        viewModel.logTaskFourMePageVisited()
     }
 
     if (isLoading) {

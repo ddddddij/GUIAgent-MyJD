@@ -23,13 +23,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.myjd.domain.model.Order
 import com.example.myjd.domain.model.OrderStatus
-import com.example.myjd.repository.DataRepository
 import com.example.myjd.viewmodel.OrderViewModel
-import com.example.myjd.viewmodel.ViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,13 +35,10 @@ fun OrderScreen(
     orderType: String = "all",
     onBackClick: () -> Unit,
     onNavigateToPayment: (String) -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: OrderViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val repository = remember { DataRepository.getInstance(context) }
-    val viewModel: OrderViewModel = viewModel(
-        factory = ViewModelFactory(repository, context)
-    )
     
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     

@@ -9,11 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.myjd.repository.DataRepository
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myjd.ui.components.*
 import com.example.myjd.viewmodel.ProductDetailViewModel
-import com.example.myjd.viewmodel.ProductDetailViewModelFactory
 import com.example.myjd.common.utils.TaskSeventeenLogger
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -24,13 +22,10 @@ fun ProductDetailScreen(
     onCartClick: () -> Unit,
     onBuyNowClick: (String) -> Unit,
     onShopClick: (String) -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: ProductDetailViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val repository = DataRepository.getInstance(context)
-    val viewModel: ProductDetailViewModel = viewModel(
-        factory = ProductDetailViewModelFactory(repository, context)
-    )
     
     val productDetail by viewModel.productDetail.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()

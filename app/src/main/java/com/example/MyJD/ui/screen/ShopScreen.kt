@@ -27,13 +27,11 @@ import androidx.compose.ui.unit.sp
 import com.example.myjd.domain.model.ShopPageData
 import com.example.myjd.domain.model.ShopCategory
 import com.example.myjd.domain.model.Product
-import com.example.myjd.repository.DataRepository
 import com.example.myjd.ui.components.ProductCardItem
 
 import com.example.myjd.domain.model.ShopStatistic
 import com.example.myjd.viewmodel.ShopViewModel
-import com.example.myjd.viewmodel.ShopViewModelFactory
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.myjd.domain.model.ShopInfo
@@ -44,13 +42,10 @@ fun ShopScreen(
     shopName: String,
     onBackClick: () -> Unit,
     onProductClick: (String) -> Unit = {},
-    onCartClick: () -> Unit = {}
+    onCartClick: () -> Unit = {},
+    viewModel: ShopViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val repository = remember { DataRepository.getInstance(context) }
-    val viewModel: ShopViewModel = viewModel(
-        factory = ShopViewModelFactory(repository, context, shopName)
-    )
 
     val shopData by viewModel.shopData.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
@@ -58,7 +53,7 @@ fun ShopScreen(
     val navigationEvent by viewModel.navigationEvent.collectAsState()
 
     LaunchedEffect(key1 = shopName) {
-        viewModel.loadShopData(shopName)
+        viewModel.initialize(shopName)
     }
 
     LaunchedEffect(navigationEvent) {

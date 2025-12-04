@@ -9,11 +9,14 @@ import com.example.myjd.domain.model.ChatMessageType
 import com.example.myjd.domain.model.Conversation
 import com.example.myjd.repository.DataRepository
 import com.google.gson.Gson
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
+import javax.inject.Inject
 
 data class MessageDetailUiState(
     val conversation: Conversation? = null,
@@ -33,9 +36,10 @@ sealed class NavigationEvent {
     object None : NavigationEvent()
 }
 
-class MessageDetailViewModel(
+@HiltViewModel
+class MessageDetailViewModel @Inject constructor(
     private val repository: DataRepository,
-    private val context: Context // Context might be needed for Toast, but generally avoid in ViewModel
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MessageDetailUiState())

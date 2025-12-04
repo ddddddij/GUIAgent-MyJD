@@ -7,16 +7,20 @@ import androidx.lifecycle.viewModelScope
 import com.example.myjd.domain.model.CartItemSpec
 import com.example.myjd.domain.model.ProductDetail
 import com.example.myjd.repository.DataRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import android.util.Log
 import com.example.myjd.common.utils.TaskFourteenLogger
+import javax.inject.Inject
 
-class HuaweiP60DetailViewModel(
+@HiltViewModel
+class HuaweiP60DetailViewModel @Inject constructor(
     private val repository: DataRepository,
-    private val context: Context
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private val _productDetail = MutableStateFlow<ProductDetail?>(null)
@@ -125,18 +129,5 @@ class HuaweiP60DetailViewModel(
 
     fun clearErrorMessage() {
         _errorMessage.value = null
-    }
-}
-
-class HuaweiP60DetailViewModelFactory(
-    private val repository: DataRepository,
-    private val context: Context
-) : ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(HuaweiP60DetailViewModel::class.java)) {
-            return HuaweiP60DetailViewModel(repository, context) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

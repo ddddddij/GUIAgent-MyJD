@@ -25,10 +25,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.myjd.repository.DataRepository
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myjd.viewmodel.AddressDetailViewModel
-import com.example.myjd.viewmodel.ViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,13 +34,10 @@ fun AddressDetailScreen(
     addressId: String?,
     onBackClick: () -> Unit,
     onSaveSuccess: () -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: AddressDetailViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val repository = remember { DataRepository.getInstance(context) }
-    val viewModel: AddressDetailViewModel = viewModel(
-        factory = ViewModelFactory(repository, context)
-    )
     
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
     val formData by viewModel.formData.collectAsStateWithLifecycle()

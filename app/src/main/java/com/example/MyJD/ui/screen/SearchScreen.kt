@@ -24,23 +24,20 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myjd.ui.theme.JDRed
 import com.example.myjd.viewmodel.SearchViewModel
 import com.example.myjd.viewmodel.SearchNavigationEvent
-import com.example.myjd.viewmodel.ViewModelFactory
-import com.example.myjd.repository.DataRepository
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
     onBackClick: () -> Unit = {},
     onNavigateToSearchResult: (String) -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: SearchViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val repository = DataRepository.getInstance(context)
-    val viewModel: SearchViewModel = viewModel(factory = ViewModelFactory(repository, context))
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     
     // 处理Toast消息

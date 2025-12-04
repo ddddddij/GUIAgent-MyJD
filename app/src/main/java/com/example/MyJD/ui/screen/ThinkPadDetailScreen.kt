@@ -20,14 +20,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.myjd.repository.DataRepository
 import com.example.myjd.ui.theme.JDRed
 import com.example.myjd.ui.theme.JDTextPrimary
 import com.example.myjd.viewmodel.ThinkPadDetailViewModel
-import com.example.myjd.viewmodel.ThinkPadDetailViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,10 +37,7 @@ fun ThinkPadDetailScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val repository = DataRepository.getInstance(context)
-    val viewModel: ThinkPadDetailViewModel = viewModel(
-        factory = ThinkPadDetailViewModelFactory(repository, context)
-    )
+    val viewModel: ThinkPadDetailViewModel = hiltViewModel()
     
     val productDetail by viewModel.productDetail.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()

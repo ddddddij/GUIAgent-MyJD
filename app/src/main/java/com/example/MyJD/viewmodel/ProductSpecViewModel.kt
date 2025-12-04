@@ -9,79 +9,47 @@ import com.example.myjd.domain.model.SpecSelection
 import com.example.myjd.domain.model.CartItemSpec
 import com.example.myjd.repository.DataRepository
 import com.example.myjd.common.utils.PricingUtils
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-
-
-class ProductSpecViewModel(
-
-
-
+@HiltViewModel
+class ProductSpecViewModel @Inject constructor(
     private val repository: DataRepository,
-
-
-
-    private val productId: String,
-
-
-
-    private val productType: String,
-
-
-
-    private val basePrice: Double, // Add basePrice parameter
-
-
-
-    private val context: Context
-
-
-
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
-
+    private var productId: String = ""
+    private var productType: String = ""
+    private var basePrice: Double = 0.0
 
     private val _productSpec = MutableStateFlow<ProductSpec?>(null)
-
     val productSpec: StateFlow<ProductSpec?> = _productSpec.asStateFlow()
 
-
-
     private val _specSelection = MutableStateFlow(
-
         SpecSelection(
-
-            productId = productId,
-
+            productId = "",
             selectedSeries = "",
-
             selectedColor = "",
-
             selectedStorage = "",
-
             quantity = 1
-
         )
-
     )
-
     val specSelection: StateFlow<SpecSelection> = _specSelection.asStateFlow()
 
-
-
     private val _isLoading = MutableStateFlow(false)
-
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-
-
-    init {
-
+    fun initialize(productId: String, productType: String, basePrice: Double) {
+        this.productId = productId
+        this.productType = productType
+        this.basePrice = basePrice
+        _specSelection.value = _specSelection.value.copy(productId = productId)
         loadProductSpec()
-
     }
 
 
@@ -664,69 +632,6 @@ class ProductSpecViewModel(
 
 
     fun getCartTotalCount(): Int {
-
         return repository.getSpecCartTotalCount()
-
     }
-
-
-
-        class Factory(
-
-
-
-            private val repository: DataRepository,
-
-
-
-            private val productId: String,
-
-
-
-            private val productType: String,
-
-
-
-            private val basePrice: Double, // Add basePrice to Factory
-
-
-
-            private val context: Context
-
-
-
-        ) : ViewModelProvider.Factory {
-
-
-
-            @Suppress("UNCHECKED_CAST")
-
-
-
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-
-
-
-                if (modelClass.isAssignableFrom(ProductSpecViewModel::class.java)) {
-
-
-
-                    return ProductSpecViewModel(repository, productId, productType, basePrice, context) as T
-
-
-
-                }
-
-
-
-                throw IllegalArgumentException("Unknown ViewModel class")
-
-
-
-            }
-
-
-
-        }
-
 }
