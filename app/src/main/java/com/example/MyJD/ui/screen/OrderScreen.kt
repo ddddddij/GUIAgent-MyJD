@@ -21,12 +21,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.MyJD.model.Order
 import com.example.MyJD.model.OrderStatus
-import com.example.MyJD.presenter.OrderTab
 import com.example.MyJD.repository.DataRepository
 import com.example.MyJD.viewmodel.OrderViewModel
 import com.example.MyJD.viewmodel.ViewModelFactory
@@ -169,13 +169,13 @@ fun OrderScreen(
             containerColor = Color.White,
             contentColor = Color(0xFFE53E3E)
         ) {
-            OrderTab.values().forEachIndexed { index, tab ->
+            (0 until 5).forEachIndexed { index, _ ->
                 Tab(
                     selected = uiState.selectedTabIndex == index,
                     onClick = { viewModel.onTabSelected(index) },
                     text = {
                         Text(
-                            text = tab.displayName,
+                            text = viewModel.getTabDisplayName(index),
                             fontSize = 14.sp,
                             fontWeight = if (uiState.selectedTabIndex == index) FontWeight.Bold else FontWeight.Normal
                         )
