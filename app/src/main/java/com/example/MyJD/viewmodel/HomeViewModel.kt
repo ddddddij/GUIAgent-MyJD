@@ -7,14 +7,18 @@ import com.example.myjd.domain.model.Banner
 import com.example.myjd.domain.model.Product
 import com.example.myjd.repository.DataRepository
 import com.example.myjd.common.utils.TaskEightLogger
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel(
+@HiltViewModel
+class HomeViewModel @Inject constructor(
     private val repository: DataRepository,
-    private val context: Context
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
     
     private val _banners = MutableStateFlow<List<Banner>>(emptyList())

@@ -1,7 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    // Removed kotlinx.serialization plugin
+    id("com.google.dagger.hilt.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -72,9 +73,12 @@ dependencies {
     
     // FlowRow for flexible layouts
     implementation("com.google.accompanist:accompanist-flowlayout:0.32.0")
-    
-    // Using Gson instead of kotlinx.serialization
-    
+
+    // Hilt for dependency injection
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

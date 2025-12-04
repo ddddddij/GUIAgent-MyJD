@@ -18,12 +18,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myjd.domain.model.CartItem
 import com.example.myjd.domain.model.CartItemSpec
-import com.example.myjd.repository.DataRepository
-import com.example.myjd.viewmodel.HomeViewModel
-import com.example.myjd.viewmodel.ViewModelFactory
+import com.example.myjd.viewmodel.CartViewModel
 import com.example.myjd.ui.theme.JDRed
 import com.example.myjd.ui.theme.JDTextPrimary
 import com.example.myjd.ui.theme.JDTextSecondary
@@ -39,43 +37,40 @@ import android.widget.Toast
 fun CartScreen(
     onNavigateBack: () -> Unit = {},
     onNavigateToHome: () -> Unit = {},
-    onNavigateToCheckout: () -> Unit = {}
+    onNavigateToCheckout: () -> Unit = {},
+    viewModel: CartViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val repository = remember { DataRepository.getInstance(context) }
-    val viewModel: HomeViewModel = viewModel(
-        factory = ViewModelFactory(repository, context)
-    )
-    
+
     // 使用StateFlow响应式获取购物车数据
-    val specCartItems by repository.specCartFlow.collectAsStateWithLifecycle()
+    val specCartItems by viewModel.specCartFlow.collectAsStateWithLifecycle()
     var selectedTab by remember { mutableStateOf("全部") }
     var showDeleteDialog by remember { mutableStateOf(false) }
     var itemToDelete by remember { mutableStateOf<CartItemSpec?>(null) }
 
     // 计算是否全选
     val allSelected = remember(specCartItems) {
-        repository.isAllSpecCartSelected()
+        viewModel.isAllSpecCartSelected()
     }
-    
+
     // 任务九日志记录：进入购物车页面和数据加载
     LaunchedEffect(Unit) {
         TaskNineLogger.logTaskStart(context)
         TaskNineLogger.logCartPageEntered(context)
-        
+
         // 强制加载购物车数据（如果为空）
         if (specCartItems.isEmpty()) {
-            repository.forceLoadCartDataFromAssets()
+            viewModel.forceLoadCartDataFromAssets()
         }
     }
-    
+
     // 日志记录购物车数据变化
     LaunchedEffect(specCartItems) {
         android.util.Log.d("CartScreen", "Cart data updated via StateFlow: ${specCartItems.size} items")
-        
+
         // 任务九日志记录：商品加载和总价计算
         TaskNineLogger.logCartItemsLoaded(context, specCartItems.size)
-        val calculatedTotalPrice = repository.getSelectedSpecCartTotalPrice()
+        val calculatedTotalPrice = viewModel.getSelectedSpecCartTotalPrice()
         TaskNineLogger.logTotalPriceCalculated(context, calculatedTotalPrice)
         TaskNineLogger.logTaskCompleted(context, calculatedTotalPrice)
         
@@ -96,16 +91,16 @@ fun CartScreen(
     }
     
     // StateFlow会自动更新，无需手动刷新函数
-    
-    val totalCount = repository.getSpecCartTotalCount()
-    val selectedCount = repository.getSelectedSpecCartCount()
-    val totalPrice = repository.getSelectedSpecCartTotalPrice()
+
+    val totalCount = viewModel.getSpecCartTotalCount()
+    val selectedCount = viewModel.getSelectedSpecCartCount()
+    val totalPrice = viewModel.getSelectedSpecCartTotalPrice()
 
     if (showDeleteDialog && itemToDelete != null) {
         DeleteConfirmationDialog(
             cartItem = itemToDelete!!,
             onConfirm = {
-                repository.removeFromSpecCart(itemToDelete!!.id)
+                viewModel.removeFromSpecCart(itemToDelete!!.id)
                 showDeleteDialog = false
                 itemToDelete = null
             },
@@ -136,7 +131,7 @@ fun CartScreen(
                 NewCartBottomBar(
                     isAllSelected = allSelected,
                     onAllSelectToggle = {
-                        repository.toggleAllSpecCartSelection()
+                        viewModel.toggleAllSpecCartSelection()
                     },
                     selectedCount = selectedCount,
                     totalPrice = totalPrice,
@@ -181,22 +176,22 @@ fun CartScreen(
                             subsidyInfo = "政府补贴满1000减100",
                             isSelected = items.all { it.selected },
                             onSelectionToggle = {
-                                repository.toggleStoreSpecCartSelection(storeName)
+                                viewModel.toggleStoreSpecCartSelection(storeName)
                             },
                             onCouponClick = {
                                 Toast.makeText(context, "领券功能开发中", Toast.LENGTH_SHORT).show()
                             }
                         )
                     }
-                    
+
                     items(items) { cartItem ->
                         CartProductCard(
                             cartItem = cartItem,
                             onSelectionToggle = {
-                                repository.toggleSpecCartItemSelection(cartItem.id)
+                                viewModel.toggleSpecCartItemSelection(cartItem.id)
                             },
                             onQuantityChange = { newQuantity ->
-                                repository.updateSpecCartItemQuantity(cartItem.id, newQuantity)
+                                viewModel.updateSpecCartItemQuantity(cartItem.id, newQuantity)
                             },
                             onSpecChange = {
                                 Toast.makeText(context, "规格修改功能开发中", Toast.LENGTH_SHORT).show()

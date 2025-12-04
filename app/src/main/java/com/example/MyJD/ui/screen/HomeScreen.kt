@@ -5,10 +5,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.myjd.repository.DataRepository
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myjd.viewmodel.HomeViewModel
 import com.example.myjd.ui.components.HomeHeader
 import com.example.myjd.ui.components.BannerSection
@@ -20,13 +18,9 @@ fun HomeScreen(
     onNavigateToSearch: (String) -> Unit = {},
     onNavigateToProduct: (String) -> Unit = {},
     onNavigateToCart: () -> Unit = {},
-    onNavigateToSupermarket: () -> Unit = {}
+    onNavigateToSupermarket: () -> Unit = {},
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val context = LocalContext.current
-    val repository = remember { DataRepository.getInstance(context) }
-    val viewModel: HomeViewModel = viewModel(
-        factory = com.example.myjd.viewmodel.ViewModelFactory(repository, context)
-    )
     
     val banners by viewModel.banners.collectAsState()
     val products by viewModel.products.collectAsState()

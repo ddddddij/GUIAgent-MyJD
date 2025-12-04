@@ -1,17 +1,27 @@
 package com.example.myjd.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myjd.domain.model.CartItem
+import com.example.myjd.domain.model.CartItemSpec
 import com.example.myjd.repository.DataRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CartViewModel(
-    private val repository: DataRepository
+@HiltViewModel
+class CartViewModel @Inject constructor(
+    private val repository: DataRepository,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
+
+    // Expose repository's specCartFlow directly
+    val specCartFlow: StateFlow<List<CartItemSpec>> = repository.specCartFlow
 
     // UI State
     private val _isLoading = MutableStateFlow(false)
@@ -25,10 +35,10 @@ class CartViewModel(
 
     private val _selectedItems = MutableStateFlow<Set<String>>(emptySet())
     val selectedItems: StateFlow<Set<String>> = _selectedItems.asStateFlow()
-    
+
     private val _totalPrice = MutableStateFlow(0.0)
     val totalPrice: StateFlow<Double> = _totalPrice.asStateFlow()
-    
+
     private val _selectAll = MutableStateFlow(false)
     val selectAll: StateFlow<Boolean> = _selectAll.asStateFlow()
 
@@ -108,5 +118,50 @@ class CartViewModel(
 
     fun clearErrorMessage() {
         _errorMessage.value = null
+    }
+
+    // Methods for spec cart operations (used by CartScreen)
+    fun isAllSpecCartSelected(): Boolean {
+        return repository.isAllSpecCartSelected()
+    }
+
+    fun forceLoadCartDataFromAssets() {
+        viewModelScope.launch {
+            repository.forceLoadCartDataFromAssets()
+        }
+    }
+
+    fun getSelectedSpecCartTotalPrice(): Double {
+        return repository.getSelectedSpecCartTotalPrice()
+    }
+
+    fun getSpecCartTotalCount(): Int {
+        return repository.getSpecCartTotalCount()
+    }
+
+    fun getSelectedSpecCartCount(): Int {
+        return repository.getSelectedSpecCartCount()
+    }
+
+    fun removeFromSpecCart(itemId: String) {
+        viewModelScope.launch {
+            repository.removeFromSpecCart(itemId)
+        }
+    }
+
+    fun toggleAllSpecCartSelection() {
+        repository.toggleAllSpecCartSelection()
+    }
+
+    fun toggleStoreSpecCartSelection(storeName: String) {
+        repository.toggleStoreSpecCartSelection(storeName)
+    }
+
+    fun toggleSpecCartItemSelection(itemId: String) {
+        repository.toggleSpecCartItemSelection(itemId)
+    }
+
+    fun updateSpecCartItemQuantity(itemId: String, quantity: Int) {
+        repository.updateSpecCartItemQuantity(itemId, quantity)
     }
 }
