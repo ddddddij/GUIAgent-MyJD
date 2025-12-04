@@ -40,7 +40,7 @@ fun SettleScreen(
     imageUrl: String? = null,
     fromCart: Boolean = false,
     fromOrder: String? = null,
-    selectedAddress: com.example.myjd.domain.model.Address? = null,
+    selectedAddressId: String? = null,
     onBackClick: () -> Unit,
     onNavigateToPaymentSuccess: (String) -> Unit = {},
     onNavigateToAddressList: () -> Unit = {},
@@ -51,10 +51,10 @@ fun SettleScreen(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    // Handle selected address from address list
-    LaunchedEffect(selectedAddress) {
-        selectedAddress?.let { address ->
-            viewModel.onAddressSelected(address)
+    // Handle selected address ID from address list
+    LaunchedEffect(selectedAddressId) {
+        selectedAddressId?.let { addressId ->
+            viewModel.loadAddressById(addressId)
         }
     }
 

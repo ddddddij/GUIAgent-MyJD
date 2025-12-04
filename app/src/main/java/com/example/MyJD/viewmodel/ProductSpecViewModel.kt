@@ -30,6 +30,12 @@ class ProductSpecViewModel @Inject constructor(
     private val _productSpec = MutableStateFlow<ProductSpec?>(null)
     val productSpec: StateFlow<ProductSpec?> = _productSpec.asStateFlow()
 
+    private val _productDetail = MutableStateFlow<com.example.myjd.domain.model.ProductDetail?>(null)
+    val productDetail: StateFlow<com.example.myjd.domain.model.ProductDetail?> = _productDetail.asStateFlow()
+
+    private val _isLoadingDetail = MutableStateFlow(false)
+    val isLoadingDetail: StateFlow<Boolean> = _isLoadingDetail.asStateFlow()
+
     private val _specSelection = MutableStateFlow(
         SpecSelection(
             productId = "",
@@ -44,12 +50,27 @@ class ProductSpecViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    fun initialize(productId: String, productType: String, basePrice: Double) {
+    fun initialize(productId: String, productType: String) {
         this.productId = productId
         this.productType = productType
-        this.basePrice = basePrice
         _specSelection.value = _specSelection.value.copy(productId = productId)
-        loadProductSpec()
+        loadProductDetail()
+    }
+
+    private fun loadProductDetail() {
+        viewModelScope.launch {
+            _isLoadingDetail.value = true
+            try {
+                val detail = repository.loadProductDetail(productId)
+                _productDetail.value = detail
+                if (detail != null) {
+                    basePrice = detail.currentPrice
+                    loadProductSpec()
+                }
+            } finally {
+                _isLoadingDetail.value = false
+            }
+        }
     }
 
 

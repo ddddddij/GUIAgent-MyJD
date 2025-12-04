@@ -79,4 +79,16 @@ class MeViewModel @Inject constructor(
             repository.logTaskFourMePageVisited()
         }
     }
+
+    fun logTaskFourOrdersSectionFound() {
+        viewModelScope.launch {
+            repository.logTaskFourOrdersSectionFound()
+        }
+    }
+
+    fun logTaskFourAllOrdersClicked() {
+        viewModelScope.launch {
+            repository.logTaskFourAllOrdersClicked()
+        }
+    }
 }

@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.myjd.repository.DataRepository
 import com.example.myjd.viewmodel.ProductSpecViewModel
 import android.widget.Toast
 
@@ -38,20 +37,14 @@ fun ProductSpecDialog(
     viewModel: ProductSpecViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val repository = remember { DataRepository.getInstance(context) }
 
-    var productDetail by remember { mutableStateOf<com.example.myjd.domain.model.ProductDetail?>(null) }
-    var isLoadingDetail by remember { mutableStateOf(true) }
+    // Use ViewModel's productDetail instead of direct repository call
+    val productDetail by viewModel.productDetail.collectAsState()
+    val isLoadingDetail by viewModel.isLoadingDetail.collectAsState()
 
     LaunchedEffect(productId) {
-        isLoadingDetail = true
-        productDetail = repository.loadProductDetail(productId)
-        isLoadingDetail = false
-
         // Initialize ViewModel with runtime parameters
-        if (productDetail != null) {
-            viewModel.initialize(productId, productType, productDetail!!.currentPrice)
-        }
+        viewModel.initialize(productId, productType)
     }
 
     if (isLoadingDetail) {

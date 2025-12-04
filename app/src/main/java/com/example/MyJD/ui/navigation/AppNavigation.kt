@@ -10,7 +10,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.myjd.repository.DataRepository
 import com.example.myjd.ui.screen.HomeScreen
 import com.example.myjd.ui.screen.ChatScreen
 import com.example.myjd.ui.screen.MeScreen
@@ -392,21 +391,11 @@ fun AppNavigation(navController: NavHostController) {
             val fromCart = backStackEntry.arguments?.getString("fromCart")?.toBooleanStrictOrNull() ?: false
             val fromOrder = backStackEntry.arguments?.getString("fromOrder")
             val selectedAddressId = backStackEntry.arguments?.getString("selectedAddressId")?.takeIf { it != "null" }
-            
-            // Load selected address if provided
-            val repository = DataRepository.getInstance(LocalContext.current)
-            var selectedAddress by remember { mutableStateOf<com.example.myjd.domain.model.Address?>(null) }
-            
-            LaunchedEffect(selectedAddressId) {
-                selectedAddressId?.let { addressId ->
-                    selectedAddress = repository.getAddressById(addressId)
-                }
-            }
-            
+
             SettleScreen(
                 fromCart = fromCart,
                 fromOrder = fromOrder,
-                selectedAddress = selectedAddress,
+                selectedAddressId = selectedAddressId,
                 onBackClick = {
                     navController.popBackStack()
                 },

@@ -14,21 +14,21 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import com.example.myjd.domain.model.MeTabOrderStatus
-import com.example.myjd.repository.DataRepository
 import com.example.myjd.common.utils.TaskSixLogger
 
 @Composable
 fun OrderSection(
     orderStatuses: List<MeTabOrderStatus>,
     onOrderStatusClick: (MeTabOrderStatus) -> Unit,
-    onViewAllClick: () -> Unit
+    onViewAllClick: () -> Unit,
+    onOrdersSectionFound: () -> Unit = {},
+    onAllOrdersClick: () -> Unit = {}
 ) {
     val context = LocalContext.current
-    val repository = DataRepository.getInstance(context)
-    
+
     // 任务四日志记录：找到订单管理区域
     LaunchedEffect(Unit) {
-        repository.logTaskFourOrdersSectionFound()
+        onOrdersSectionFound()
     }
     Card(
         modifier = Modifier
@@ -60,10 +60,10 @@ fun OrderSection(
                     text = "查看全部 >",
                     fontSize = 12.sp,
                     color = Color.Gray,
-                    modifier = Modifier.clickable { 
+                    modifier = Modifier.clickable {
                         // 任务四日志记录：点击「全部订单」
-                        repository.logTaskFourAllOrdersClicked()
-                        onViewAllClick() 
+                        onAllOrdersClick()
+                        onViewAllClick()
                     }
                 )
             }
@@ -136,10 +136,10 @@ fun OrderSection(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
                         .weight(1f)
-                        .clickable { 
+                        .clickable {
                             // 任务四日志记录：点击「全部订单」
-                            repository.logTaskFourAllOrdersClicked()
-                            onViewAllClick() 
+                            onAllOrdersClick()
+                            onViewAllClick()
                         }
                         .padding(vertical = 8.dp)
                 ) {

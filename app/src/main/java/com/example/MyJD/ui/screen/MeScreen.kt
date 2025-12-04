@@ -97,6 +97,12 @@ fun MeScreen(
                         },
                         onViewAllClick = {
                             onNavigateToOrderList("all")
+                        },
+                        onOrdersSectionFound = {
+                            viewModel.logTaskFourOrdersSectionFound()
+                        },
+                        onAllOrdersClick = {
+                            viewModel.logTaskFourAllOrdersClicked()
                         }
                     )
                 }

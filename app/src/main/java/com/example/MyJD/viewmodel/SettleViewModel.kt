@@ -272,6 +272,19 @@ class SettleViewModel @Inject constructor(
             )
         }
     }
+
+    fun loadAddressById(addressId: String) {
+        viewModelScope.launch {
+            try {
+                val address = repository.getAddressById(addressId)
+                address?.let { onAddressSelected(it) }
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    toastMessage = "加载地址失败：${e.message}"
+                )
+            }
+        }
+    }
     
     fun clearAddressListNavigation() {
         _uiState.value = _uiState.value.copy(shouldNavigateToAddressList = false)
