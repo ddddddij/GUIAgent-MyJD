@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.myjd.model.CartItemSpec
 import com.example.myjd.model.ProductDetail
 import com.example.myjd.repository.DataRepository
-import com.example.myjd.utils.TaskFourteenLogger
+import com.example.myjd.common.utils.TaskFourteenLogger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -5,7 +5,9 @@
       "Bash(for:*)",
       "Bash(do mv task_$i.py eval_$i.py)",
       "Bash(done)",
-      "Bash(./gradlew clean build:*)"
+      "Bash(./gradlew clean build:*)",
+      "Bash(tree:*)",
+      "Bash(wc:*)"
     ],
     "deny": []
   }

@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import android.util.Log
-import com.example.myjd.utils.TaskFourteenLogger
+import com.example.myjd.common.utils.TaskFourteenLogger
 
 class HuaweiP60DetailViewModel(
     private val repository: DataRepository,

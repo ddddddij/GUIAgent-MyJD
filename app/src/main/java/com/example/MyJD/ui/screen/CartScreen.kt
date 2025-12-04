@@ -31,8 +31,8 @@ import com.example.myjd.ui.components.CartHeader
 import com.example.myjd.ui.components.CartTabs
 import com.example.myjd.ui.components.CartStoreSection
 import com.example.myjd.ui.components.CartProductCard
-import com.example.myjd.utils.TaskNineLogger
-import com.example.myjd.utils.TaskSixteenLogger
+import com.example.myjd.common.utils.TaskNineLogger
+import com.example.myjd.common.utils.TaskSixteenLogger
 import android.widget.Toast
 
 @Composable

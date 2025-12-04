@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.myjd.model.Banner
 import com.example.myjd.model.Product
 import com.example.myjd.repository.DataRepository
-import com.example.myjd.utils.TaskEightLogger
+import com.example.myjd.common.utils.TaskEightLogger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

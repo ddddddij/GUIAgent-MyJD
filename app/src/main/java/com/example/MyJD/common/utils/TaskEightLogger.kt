@@ -1,4 +1,4 @@
-package com.example.myjd.utils
+package com.example.myjd.common.utils
 
 import android.content.Context
 import android.util.Log
@@ -7,9 +7,9 @@ import java.io.FileWriter
 import java.text.SimpleDateFormat
 import java.util.*
 
-object TaskTenLogger {
-    private const val TAG = "TaskTenLogger"
-    private const val LOG_FILE_NAME = "task_ten_log.txt"
+object TaskEightLogger {
+    private const val TAG = "TaskEightLogger"
+    private const val LOG_FILE_NAME = "task_eight_log.txt"
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
     
     private fun getLogFile(context: Context): File {
@@ -22,31 +22,25 @@ object TaskTenLogger {
     
     fun logTaskStart(context: Context) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 任务十开始：计算待收货的订单有多少项"
+        val message = "[$timestamp] 任务八开始：计算首页共展示了多少件商品"
         writeToLog(context, message)
     }
     
-    fun logOrderPageEntered(context: Context) {
+    fun logHomePageEntered(context: Context) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 进入订单页面"
+        val message = "[$timestamp] 进入首页"
         writeToLog(context, message)
     }
     
-    fun logPendingReceiptTabSelected(context: Context) {
+    fun logProductsLoaded(context: Context, productCount: Int) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 选择待收货订单标签页"
+        val message = "[$timestamp] 首页商品加载完成，共计：$productCount 件商品"
         writeToLog(context, message)
     }
     
-    fun logPendingReceiptOrdersLoaded(context: Context, orderCount: Int) {
+    fun logTaskCompleted(context: Context, totalProducts: Int) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 待收货订单加载完成，共计：$orderCount 项订单"
-        writeToLog(context, message)
-    }
-    
-    fun logTaskCompleted(context: Context, orderCount: Int) {
-        val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 任务十完成：待收货的订单有 $orderCount 项"
+        val message = "[$timestamp] 任务八完成：首页共展示了 $totalProducts 件商品"
         writeToLog(context, message)
     }
     
@@ -96,12 +90,12 @@ object TaskTenLogger {
     
     fun isTaskCompleted(context: Context): Boolean {
         val logContent = readLog(context)
-        return logContent.contains("任务十完成：待收货的订单有")
+        return logContent.contains("任务八完成：首页共展示了")
     }
     
-    fun getPendingReceiptOrderCount(context: Context): Int {
+    fun getProductCount(context: Context): Int {
         val logContent = readLog(context)
-        val regex = "任务十完成：待收货的订单有 (\\d+) 项".toRegex()
+        val regex = "任务八完成：首页共展示了 (\\d+) 件商品".toRegex()
         val matchResult = regex.find(logContent)
         return matchResult?.groupValues?.get(1)?.toIntOrNull() ?: 0
     }

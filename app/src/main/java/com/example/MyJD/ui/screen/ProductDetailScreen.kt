@@ -14,7 +14,7 @@ import com.example.myjd.repository.DataRepository
 import com.example.myjd.ui.components.*
 import com.example.myjd.viewmodel.ProductDetailViewModel
 import com.example.myjd.viewmodel.ProductDetailViewModelFactory
-import com.example.myjd.utils.TaskSeventeenLogger
+import com.example.myjd.common.utils.TaskSeventeenLogger
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

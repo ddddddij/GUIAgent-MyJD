@@ -1,4 +1,4 @@
-package com.example.myjd.utils
+package com.example.myjd.common.utils
 
 import android.content.Context
 import android.util.Log
@@ -7,9 +7,9 @@ import java.io.FileWriter
 import java.text.SimpleDateFormat
 import java.util.*
 
-object TaskEighteenLogger {
-    private const val TAG = "TaskEighteenLogger"
-    private const val LOG_FILE_NAME = "task_eighteen_log.txt"
+object TaskSeventeenLogger {
+    private const val TAG = "TaskSeventeenLogger"
+    private const val LOG_FILE_NAME = "task_seventeen_log.txt"
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
     
     private fun getLogFile(context: Context): File {
@@ -22,103 +22,95 @@ object TaskEighteenLogger {
     
     fun logTaskStart(context: Context) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 任务十八开始：取消我所有的待付款订单，然后在全部订单中删除已取消的订单"
+        val message = "[$timestamp] 任务十七开始：进入首页iPhone15商品详情并进入店铺主页，然后立即购买店铺中\"iPhone 15 粉色 256GB 1件\"后，查看待收货订单"
         writeToLog(context, message)
     }
     
-    fun logOrderPageEntered(context: Context) {
+    fun logHomePageEntered(context: Context) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 进入订单页面"
+        val message = "[$timestamp] 进入首页"
         writeToLog(context, message)
     }
     
-    fun logPendingPaymentOrdersFound(context: Context, orderCount: Int) {
+    fun logProductDetailEntered(context: Context, productName: String) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 找到待付款订单：$orderCount 项"
+        val message = "[$timestamp] 进入商品详情页：$productName"
         writeToLog(context, message)
     }
     
-    fun logOrderCancelled(context: Context, orderId: String) {
+    fun logShopPageEntered(context: Context, shopName: String) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 取消订单：$orderId"
+        val message = "[$timestamp] 进入店铺主页：$shopName"
         writeToLog(context, message)
     }
     
-    fun logAllPendingOrdersCancelled(context: Context, totalCancelled: Int) {
+    fun logShopEntered(context: Context, shopName: String) {
+        logShopPageEntered(context, shopName)
+    }
+    
+    fun logShopPageDataLoading(context: Context) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 所有待付款订单已取消，共计：$totalCancelled 项"
+        val message = "[$timestamp] 加载店铺页面数据"
         writeToLog(context, message)
     }
     
-    fun logAllOrdersTabSelected(context: Context) {
+    fun logShopProductSelected(context: Context, productName: String, productId: String) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 切换到全部订单标签页"
+        val message = "[$timestamp] 在店铺中选择商品：$productName (ID: $productId)"
         writeToLog(context, message)
     }
     
-    fun logCancelledOrdersFound(context: Context, orderCount: Int) {
+    fun logShopProductSelected(context: Context, productName: String) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 在全部订单中找到已取消订单：$orderCount 项"
+        val message = "[$timestamp] 在店铺中选择商品：$productName"
         writeToLog(context, message)
     }
     
-    fun logOrderDeleted(context: Context, orderId: String) {
+    fun logImmediatePurchaseInitiated(context: Context, productName: String, spec: String, price: Double) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 删除已取消订单：$orderId"
+        val message = "[$timestamp] 发起立即购买：$productName $spec，价格：¥$price"
         writeToLog(context, message)
     }
     
-    fun logAllCancelledOrdersDeleted(context: Context, totalDeleted: Int) {
+    fun logImmediatePurchaseCompleted(context: Context, orderAmount: Double) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 所有已取消订单已删除，共计：$totalDeleted 项"
+        val message = "[$timestamp] 立即购买完成，金额：¥$orderAmount"
         writeToLog(context, message)
     }
     
-    fun logTaskCompleted(context: Context, cancelledCount: Int, deletedCount: Int) {
+    fun logProductSpecSelected(context: Context, color: String, storage: String, quantity: Int) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 任务十八完成：已取消 $cancelledCount 项待付款订单，并删除了 $deletedCount 项已取消订单"
+        val message = "[$timestamp] 选择商品规格：$color $storage $quantity 件"
+        writeToLog(context, message)
+    }
+    
+    fun logBuyNowClicked(context: Context, productName: String) {
+        val timestamp = dateFormat.format(Date())
+        val message = "[$timestamp] 点击立即购买：$productName"
+        writeToLog(context, message)
+    }
+    
+    fun logOrderCreated(context: Context, orderId: String) {
+        val timestamp = dateFormat.format(Date())
+        val message = "[$timestamp] 创建订单：$orderId"
+        writeToLog(context, message)
+    }
+    
+    fun logPaymentCompleted(context: Context, orderId: String) {
+        val timestamp = dateFormat.format(Date())
+        val message = "[$timestamp] 支付完成，订单ID：$orderId"
+        writeToLog(context, message)
+    }
+    
+    fun logPendingReceiptOrdersViewed(context: Context, orderCount: Int) {
+        val timestamp = dateFormat.format(Date())
+        val message = "[$timestamp] 查看待收货订单，共有：$orderCount 项"
         writeToLog(context, message)
     }
     
     fun logTaskCompleted(context: Context) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 任务十八完成：所有待付款订单已取消，所有已取消订单已删除"
-        writeToLog(context, message)
-    }
-    
-    fun logCancelOrderAttempted(context: Context, orderId: String) {
-        val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 尝试取消订单：$orderId"
-        writeToLog(context, message)
-    }
-    
-    fun logCancelOrderSuccess(context: Context) {
-        val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 订单取消成功"
-        writeToLog(context, message)
-    }
-    
-    fun logDeleteCancelledOrderAttempted(context: Context, orderId: String) {
-        val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 尝试删除已取消订单：$orderId"
-        writeToLog(context, message)
-    }
-    
-    fun logDeleteCancelledOrderSuccess(context: Context) {
-        val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 已取消订单删除成功"
-        writeToLog(context, message)
-    }
-    
-    fun logAllPendingPaymentOrdersCancelled(context: Context) {
-        val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 所有待付款订单已取消"
-        writeToLog(context, message)
-    }
-    
-    fun logAllCancelledOrdersDeleted(context: Context) {
-        val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 所有已取消订单已删除"
+        val message = "[$timestamp] 任务十七完成：已成功从首页进入iPhone15商品详情，进入店铺主页，立即购买iPhone 15 粉色 256GB 1件，并查看了待收货订单"
         writeToLog(context, message)
     }
     
@@ -168,15 +160,6 @@ object TaskEighteenLogger {
     
     fun isTaskCompleted(context: Context): Boolean {
         val logContent = readLog(context)
-        return logContent.contains("任务十八完成：已取消")
-    }
-    
-    fun getCancelledAndDeletedCounts(context: Context): Pair<Int, Int> {
-        val logContent = readLog(context)
-        val regex = "任务十八完成：已取消 (\\d+) 项待付款订单，并删除了 (\\d+) 项已取消订单".toRegex()
-        val matchResult = regex.find(logContent)
-        val cancelledCount = matchResult?.groupValues?.get(1)?.toIntOrNull() ?: 0
-        val deletedCount = matchResult?.groupValues?.get(2)?.toIntOrNull() ?: 0
-        return Pair(cancelledCount, deletedCount)
+        return logContent.contains("任务十七完成：已成功从首页进入iPhone15商品详情")
     }
 }

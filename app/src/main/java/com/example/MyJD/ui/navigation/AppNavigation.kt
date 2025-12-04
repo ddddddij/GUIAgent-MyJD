@@ -1,4 +1,4 @@
-package com.example.myjd.navigation
+package com.example.myjd.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

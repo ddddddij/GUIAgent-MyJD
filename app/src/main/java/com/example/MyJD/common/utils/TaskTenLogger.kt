@@ -1,4 +1,4 @@
-package com.example.myjd.utils
+package com.example.myjd.common.utils
 
 import android.content.Context
 import android.util.Log
@@ -7,9 +7,9 @@ import java.io.FileWriter
 import java.text.SimpleDateFormat
 import java.util.*
 
-object TaskSixLogger {
-    private const val TAG = "TaskSixLogger"
-    private const val LOG_FILE_NAME = "task_six_log.txt"
+object TaskTenLogger {
+    private const val TAG = "TaskTenLogger"
+    private const val LOG_FILE_NAME = "task_ten_log.txt"
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
     
     private fun getLogFile(context: Context): File {
@@ -22,55 +22,31 @@ object TaskSixLogger {
     
     fun logTaskStart(context: Context) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 任务六开始：结算我的第一个待付款订单"
+        val message = "[$timestamp] 任务十开始：计算待收货的订单有多少项"
         writeToLog(context, message)
     }
     
-    fun logOrderFound(context: Context, orderId: String) {
+    fun logOrderPageEntered(context: Context) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 找到第一个待付款订单，订单ID: $orderId"
+        val message = "[$timestamp] 进入订单页面"
         writeToLog(context, message)
     }
     
-    fun logNavigateToOrder(context: Context, orderId: String) {
+    fun logPendingReceiptTabSelected(context: Context) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 导航到订单详情页面，订单ID: $orderId"
+        val message = "[$timestamp] 选择待收货订单标签页"
         writeToLog(context, message)
     }
     
-    fun logClickPayButton(context: Context) {
+    fun logPendingReceiptOrdersLoaded(context: Context, orderCount: Int) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 点击付款按钮"
+        val message = "[$timestamp] 待收货订单加载完成，共计：$orderCount 项订单"
         writeToLog(context, message)
     }
     
-    fun logPaymentPageDisplayed(context: Context) {
+    fun logTaskCompleted(context: Context, orderCount: Int) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 付款页面显示"
-        writeToLog(context, message)
-    }
-    
-    fun logConfirmPayment(context: Context) {
-        val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 确认付款操作"
-        writeToLog(context, message)
-    }
-    
-    fun logPaymentSuccess(context: Context, orderId: String) {
-        val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 付款成功，订单ID: $orderId"
-        writeToLog(context, message)
-    }
-    
-    fun logPaymentFailed(context: Context, reason: String) {
-        val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 付款失败，原因: $reason"
-        writeToLog(context, message)
-    }
-    
-    fun logTaskCompleted(context: Context) {
-        val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 任务六完成：第一个待付款订单已成功结算"
+        val message = "[$timestamp] 任务十完成：待收货的订单有 $orderCount 项"
         writeToLog(context, message)
     }
     
@@ -120,6 +96,13 @@ object TaskSixLogger {
     
     fun isTaskCompleted(context: Context): Boolean {
         val logContent = readLog(context)
-        return logContent.contains("任务六完成：第一个待付款订单已成功结算")
+        return logContent.contains("任务十完成：待收货的订单有")
+    }
+    
+    fun getPendingReceiptOrderCount(context: Context): Int {
+        val logContent = readLog(context)
+        val regex = "任务十完成：待收货的订单有 (\\d+) 项".toRegex()
+        val matchResult = regex.find(logContent)
+        return matchResult?.groupValues?.get(1)?.toIntOrNull() ?: 0
     }
 }

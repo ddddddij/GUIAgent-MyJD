@@ -6,10 +6,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.myjd.model.Order
 import com.example.myjd.model.OrderStatus
 import com.example.myjd.repository.DataRepository
-import com.example.myjd.utils.TaskSixLogger
-import com.example.myjd.utils.TaskTenLogger
-import com.example.myjd.utils.TaskSeventeenLogger
-import com.example.myjd.utils.TaskEighteenLogger
+import com.example.myjd.common.utils.TaskSixLogger
+import com.example.myjd.common.utils.TaskTenLogger
+import com.example.myjd.common.utils.TaskSeventeenLogger
+import com.example.myjd.common.utils.TaskEighteenLogger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

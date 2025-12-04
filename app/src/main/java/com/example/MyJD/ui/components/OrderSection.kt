@@ -15,7 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import com.example.myjd.model.MeTabOrderStatus
 import com.example.myjd.repository.DataRepository
-import com.example.myjd.utils.TaskSixLogger
+import com.example.myjd.common.utils.TaskSixLogger
 
 @Composable
 fun OrderSection(

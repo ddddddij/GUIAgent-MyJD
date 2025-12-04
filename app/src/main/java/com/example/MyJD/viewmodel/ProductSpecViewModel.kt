@@ -8,7 +8,7 @@ import com.example.myjd.model.ProductSpec
 import com.example.myjd.model.SpecSelection
 import com.example.myjd.model.CartItemSpec
 import com.example.myjd.repository.DataRepository
-import com.example.myjd.utils.PricingUtils
+import com.example.myjd.common.utils.PricingUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

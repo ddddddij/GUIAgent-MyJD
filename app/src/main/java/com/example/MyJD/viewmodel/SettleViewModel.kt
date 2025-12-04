@@ -8,8 +8,8 @@ import com.example.myjd.model.SettlePricing
 import com.example.myjd.model.Coupon
 import com.example.myjd.model.OrderStatus 
 import com.example.myjd.repository.DataRepository
-import com.example.myjd.utils.TaskSixteenLogger
-import com.example.myjd.utils.TaskSeventeenLogger
+import com.example.myjd.common.utils.TaskSixteenLogger
+import com.example.myjd.common.utils.TaskSeventeenLogger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

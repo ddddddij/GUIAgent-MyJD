@@ -1,4 +1,4 @@
-package com.example.myjd.utils
+package com.example.myjd.common.utils
 
 import android.content.Context
 import android.util.Log
@@ -7,9 +7,9 @@ import java.io.FileWriter
 import java.text.SimpleDateFormat
 import java.util.*
 
-object TaskFourteenLogger {
-    private const val TAG = "TaskFourteenLogger"
-    private const val LOG_FILE_NAME = "task_fourteen_log.txt"
+object TaskNineLogger {
+    private const val TAG = "TaskNineLogger"
+    private const val LOG_FILE_NAME = "task_nine_log.txt"
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
     
     private fun getLogFile(context: Context): File {
@@ -22,37 +22,31 @@ object TaskFourteenLogger {
     
     fun logTaskStart(context: Context) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 任务十四开始：查看iPhone15商品详情页共有多少条评论"
+        val message = "[$timestamp] 任务九开始：计算购物车中所有商品的总价"
         writeToLog(context, message)
     }
     
-    fun logProductDetailEntered(context: Context, productName: String) {
+    fun logCartPageEntered(context: Context) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 进入商品详情页：$productName"
+        val message = "[$timestamp] 进入购物车页面"
         writeToLog(context, message)
     }
     
-    fun logReviewSectionViewed(context: Context) {
+    fun logCartItemsLoaded(context: Context, itemCount: Int) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 查看商品评论区域"
+        val message = "[$timestamp] 购物车商品加载完成，共计：$itemCount 件商品"
         writeToLog(context, message)
     }
     
-    fun logReviewsLoaded(context: Context, reviewCount: Int) {
+    fun logTotalPriceCalculated(context: Context, totalPrice: Double) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 评论加载完成，共计：$reviewCount 条评论"
+        val message = "[$timestamp] 购物车总价计算完成：¥$totalPrice"
         writeToLog(context, message)
     }
     
-    fun logTaskCompleted(context: Context, reviewCount: Int) {
+    fun logTaskCompleted(context: Context, totalPrice: Double) {
         val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 任务十四完成：iPhone15商品详情页共有 $reviewCount 条评论"
-        writeToLog(context, message)
-    }
-
-    fun logAddToCart(context: Context, productName: String) {
-        val timestamp = dateFormat.format(Date())
-        val message = "[$timestamp] 将商品添加到购物车: $productName"
+        val message = "[$timestamp] 任务九完成：购物车中所有商品的总价为 ¥$totalPrice"
         writeToLog(context, message)
     }
     
@@ -102,13 +96,13 @@ object TaskFourteenLogger {
     
     fun isTaskCompleted(context: Context): Boolean {
         val logContent = readLog(context)
-        return logContent.contains("任务十四完成：iPhone15商品详情页共有")
+        return logContent.contains("任务九完成：购物车中所有商品的总价为")
     }
     
-    fun getReviewCount(context: Context): Int {
+    fun getTotalPrice(context: Context): Double {
         val logContent = readLog(context)
-        val regex = "任务十四完成：iPhone15商品详情页共有 (\\d+) 条评论".toRegex()
+        val regex = "任务九完成：购物车中所有商品的总价为 ¥([\\d.]+)".toRegex()
         val matchResult = regex.find(logContent)
-        return matchResult?.groupValues?.get(1)?.toIntOrNull() ?: 0
+        return matchResult?.groupValues?.get(1)?.toDoubleOrNull() ?: 0.0
     }
 }

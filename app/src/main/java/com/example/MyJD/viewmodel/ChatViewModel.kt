@@ -12,7 +12,7 @@ import com.example.myjd.model.ChatMessage
 import com.example.myjd.model.ChatSender
 import com.example.myjd.model.ChatMessageType
 import com.example.myjd.repository.DataRepository
-import com.example.myjd.utils.TaskElevenLogger
+import com.example.myjd.common.utils.TaskElevenLogger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
