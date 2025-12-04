@@ -1,4 +1,4 @@
-package com.example.MyJD.ui.screen
+package com.example.myjd.ui.screen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,12 +8,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.MyJD.repository.DataRepository
-import com.example.MyJD.viewmodel.HomeViewModel
-import com.example.MyJD.ui.components.HomeHeader
-import com.example.MyJD.ui.components.BannerSection
-import com.example.MyJD.ui.components.FunctionGrid
-import com.example.MyJD.ui.components.RecommendSection
+import com.example.myjd.repository.DataRepository
+import com.example.myjd.viewmodel.HomeViewModel
+import com.example.myjd.ui.components.HomeHeader
+import com.example.myjd.ui.components.BannerSection
+import com.example.myjd.ui.components.FunctionGrid
+import com.example.myjd.ui.components.RecommendSection
 
 @Composable
 fun HomeScreen(
@@ -25,7 +25,7 @@ fun HomeScreen(
     val context = LocalContext.current
     val repository = remember { DataRepository.getInstance(context) }
     val viewModel: HomeViewModel = viewModel(
-        factory = com.example.MyJD.viewmodel.ViewModelFactory(repository, context)
+        factory = com.example.myjd.viewmodel.ViewModelFactory(repository, context)
     )
     
     val banners by viewModel.banners.collectAsState()

@@ -1,14 +1,15 @@
-package com.example.MyJD.viewmodel
+package com.example.myjd.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.MyJD.model.Product
-import com.example.MyJD.repository.DataRepository
+import com.example.myjd.repository.DataRepository
+import com.example.myjd.model.Product
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+// Placeholder for SearchSortType and SearchFilter, will be defined properly
 enum class SearchSortType {
     COMPREHENSIVE,
     SALES,
@@ -22,9 +23,9 @@ data class SearchFilter(
     val categories: List<String> = emptyList()
 )
 
-class SearchResultViewModel(private val repository: DataRepository) : ViewModel() {
-
-    private var allProducts: List<Product> = emptyList()
+class SearchResultViewModel(
+    private val repository: DataRepository
+) : ViewModel() {
 
     private val _products = MutableStateFlow<List<Product>>(emptyList())
     val products: StateFlow<List<Product>> = _products.asStateFlow()
@@ -32,60 +33,67 @@ class SearchResultViewModel(private val repository: DataRepository) : ViewModel(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    private val _sortType = MutableStateFlow(SearchSortType.COMPREHENSIVE)
-    val sortType: StateFlow<SearchSortType> = _sortType.asStateFlow()
+    private val _currentSortType = MutableStateFlow(SearchSortType.COMPREHENSIVE)
+    val currentSortType: StateFlow<SearchSortType> = _currentSortType.asStateFlow()
+    
+    private val _currentFilter = MutableStateFlow(SearchFilter())
+    val currentFilter: StateFlow<SearchFilter> = _currentFilter.asStateFlow()
 
-    private val _filter = MutableStateFlow(SearchFilter())
-    val filter: StateFlow<SearchFilter> = _filter.asStateFlow()
+    private var allProducts: List<Product> = emptyList()
 
-    fun searchProducts(query: String) {
+    fun loadSearchResults(keyword: String) {
         viewModelScope.launch {
             _isLoading.value = true
-            try {
-                allProducts = repository.getSearchResults(query)
-                applySortAndFilter()
-            } catch (e: Exception) {
-                // Handle error
-            } finally {
-                _isLoading.value = false
-            }
+            allProducts = repository.getSearchResults(keyword)
+            applyCurrentSortAndFilter()
+            _isLoading.value = false
         }
     }
 
-    fun setSortType(sortType: SearchSortType) {
-        _sortType.value = sortType
-        applySortAndFilter()
+    fun sortProducts(sortType: SearchSortType) {
+        _currentSortType.value = sortType
+        applyCurrentSortAndFilter()
     }
 
-    fun setFilter(filter: SearchFilter) {
-        _filter.value = filter
-        applySortAndFilter()
+    fun filterProducts(filter: SearchFilter) {
+        _currentFilter.value = filter
+        applyCurrentSortAndFilter()
     }
     
-    private fun applySortAndFilter() {
-        var filteredProducts = allProducts
+    fun resetFilter() {
+        _currentFilter.value = SearchFilter()
+        applyCurrentSortAndFilter()
+    }
 
-        // Apply filter
-        _filter.value.priceMin?.let { min ->
-            filteredProducts = filteredProducts.filter { it.price >= min }
+    private fun applyCurrentSortAndFilter() {
+        var products = allProducts.toList()
+        
+        // 应用筛选
+        if (_currentFilter.value.priceMin != null) {
+            products = products.filter { it.price >= _currentFilter.value.priceMin!! }
         }
-        _filter.value.priceMax?.let { max ->
-            filteredProducts = filteredProducts.filter { it.price <= max }
+        if (_currentFilter.value.priceMax != null) {
+            products = products.filter { it.price <= _currentFilter.value.priceMax!! }
         }
-        if (_filter.value.categories.isNotEmpty()) {
-            filteredProducts = filteredProducts.filter { it.category in _filter.value.categories }
+        if (_currentFilter.value.categories.isNotEmpty()) {
+            products = products.filter { it.category in _currentFilter.value.categories }
         }
-
-        // Apply sort
-        _products.value = when (_sortType.value) {
-            SearchSortType.COMPREHENSIVE -> filteredProducts.sortedByDescending { product -> (product.sales ?: 0) * 0.6 + product.rating * 1000 + (10000 - product.price) * 0.1 }
-            SearchSortType.SALES -> filteredProducts.sortedByDescending { product -> product.sales ?: 0 }
-            SearchSortType.PRICE_ASC -> filteredProducts.sortedBy { product -> product.price }
-            SearchSortType.PRICE_DESC -> filteredProducts.sortedByDescending { product -> product.price }
+        
+        // 应用排序
+        products = when (_currentSortType.value) {
+            SearchSortType.COMPREHENSIVE -> products.sortedByDescending { 
+                (it.sales ?: 0) * 0.6 + it.rating * 1000 + (10000 - it.price) * 0.1
+            }
+            SearchSortType.SALES -> products.sortedByDescending { it.sales ?: 0 }
+            SearchSortType.PRICE_ASC -> products.sortedBy { it.price }
+            SearchSortType.PRICE_DESC -> products.sortedByDescending { it.price }
         }
+        
+        _products.value = products
     }
 }
 
+// Extension property for sales, consider moving this to a more appropriate file.
 val Product.sales: Int?
     get() = when (this.id) {
         "iphone15_001" -> 12580

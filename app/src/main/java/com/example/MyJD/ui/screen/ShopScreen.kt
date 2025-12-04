@@ -1,4 +1,4 @@
-package com.example.MyJD.ui.screen
+package com.example.myjd.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,19 +24,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.MyJD.model.ShopPageData
-import com.example.MyJD.model.ShopCategory
-import com.example.MyJD.model.Product
-import com.example.MyJD.repository.DataRepository
-import com.example.MyJD.ui.components.ProductCardItem
+import com.example.myjd.model.ShopPageData
+import com.example.myjd.model.ShopCategory
+import com.example.myjd.model.Product
+import com.example.myjd.repository.DataRepository
+import com.example.myjd.ui.components.ProductCardItem
 
-import com.example.MyJD.model.ShopStatistic
-import com.example.MyJD.viewmodel.ShopViewModel
-import com.example.MyJD.viewmodel.ShopViewModelFactory
+import com.example.myjd.model.ShopStatistic
+import com.example.myjd.viewmodel.ShopViewModel
+import com.example.myjd.viewmodel.ShopViewModelFactory
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.MyJD.model.ShopInfo
+import com.example.myjd.model.ShopInfo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

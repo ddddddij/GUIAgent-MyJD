@@ -1,4 +1,4 @@
-package com.example.MyJD.model
+package com.example.myjd.model
 
 data class CartItem(
     val id: String,

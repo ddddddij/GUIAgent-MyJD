@@ -1,4 +1,4 @@
-package com.example.MyJD.ui.screen
+package com.example.myjd.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

@@ -1,4 +1,4 @@
-package com.example.MyJD.ui.screen
+package com.example.myjd.ui.screen
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
@@ -10,10 +10,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.MyJD.repository.DataRepository
-import com.example.MyJD.ui.components.*
-import com.example.MyJD.viewmodel.HuaweiNova11DetailViewModel
-import com.example.MyJD.viewmodel.HuaweiNova11DetailViewModelFactory
+import com.example.myjd.repository.DataRepository
+import com.example.myjd.ui.components.*
+import com.example.myjd.viewmodel.HuaweiNova11DetailViewModel
+import com.example.myjd.viewmodel.HuaweiNova11DetailViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -1,4 +1,4 @@
-package com.example.MyJD.utils
+package com.example.myjd.utils
 
 object PricingUtils {
     

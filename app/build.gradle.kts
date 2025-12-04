@@ -5,12 +5,12 @@ plugins {
 }
 
 android {
-    namespace = "com.example.MyJD"
+    namespace = "com.example.myjd"
     compileSdk = 36
     buildToolsVersion = "36.0.0"
 
     defaultConfig {
-        applicationId = "com.example.MyJD"
+        applicationId = "com.example.myjd"
         minSdk = 33
         targetSdk = 33
         versionCode = 1

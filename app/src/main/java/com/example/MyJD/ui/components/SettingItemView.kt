@@ -1,4 +1,4 @@
-package com.example.MyJD.ui.components
+package com.example.myjd.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

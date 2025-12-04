@@ -1,4 +1,4 @@
-package com.example.MyJD.ui.components
+package com.example.myjd.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.MyJD.model.SeriesOption
+import com.example.myjd.model.SeriesOption
 import com.google.accompanist.flowlayout.FlowRow
 
 @Composable

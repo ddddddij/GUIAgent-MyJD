@@ -1,4 +1,4 @@
-package com.example.MyJD.ui.components
+package com.example.myjd.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,7 +23,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.MyJD.model.Product
+import com.example.myjd.model.Product
 import java.text.DecimalFormat
 import android.graphics.BitmapFactory
 

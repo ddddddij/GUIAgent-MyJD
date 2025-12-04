@@ -1,41 +1,41 @@
-package com.example.MyJD.repository
+package com.example.myjd.repository
 
 import android.content.Context
-import com.example.MyJD.model.Banner
-import com.example.MyJD.model.Product
-import com.example.MyJD.model.CartItem
-import com.example.MyJD.model.ShoppingCart
-import com.example.MyJD.model.Message
-import com.example.MyJD.model.MuteSetting
-import com.example.MyJD.model.MeTabData
-import com.example.MyJD.model.ProductDetail
-import com.example.MyJD.model.ProductSpec
-import com.example.MyJD.model.CartItemSpec
-import com.example.MyJD.model.Order
-import com.example.MyJD.model.OrderItem
-import com.example.MyJD.model.OrderStatus
-import com.example.MyJD.model.PaymentMethod
-import com.example.MyJD.model.CancelReason
-import com.example.MyJD.model.Address
-import com.example.MyJD.model.ConversationData
-import com.example.MyJD.model.Conversation
-import com.example.MyJD.model.ConversationSummary
-import com.example.MyJD.model.Coupon
-import com.example.MyJD.model.ChatMessage
-import com.example.MyJD.model.ChatSender
-import com.example.MyJD.model.ChatMessageType
-import com.example.MyJD.model.ShopPageData
-import com.example.MyJD.utils.TaskOneLogger
-import com.example.MyJD.utils.TaskFourLogger
-import com.example.MyJD.utils.TaskSixLogger
-import com.example.MyJD.utils.TaskEightLogger
-import com.example.MyJD.utils.TaskNineLogger
-import com.example.MyJD.utils.TaskTenLogger
-import com.example.MyJD.utils.TaskElevenLogger
-import com.example.MyJD.utils.TaskFourteenLogger
-import com.example.MyJD.utils.TaskSixteenLogger
-import com.example.MyJD.utils.TaskSeventeenLogger
-import com.example.MyJD.utils.TaskEighteenLogger
+import com.example.myjd.model.Banner
+import com.example.myjd.model.Product
+import com.example.myjd.model.CartItem
+import com.example.myjd.model.ShoppingCart
+import com.example.myjd.model.Message
+import com.example.myjd.model.MuteSetting
+import com.example.myjd.model.MeTabData
+import com.example.myjd.model.ProductDetail
+import com.example.myjd.model.ProductSpec
+import com.example.myjd.model.CartItemSpec
+import com.example.myjd.model.Order
+import com.example.myjd.model.OrderItem
+import com.example.myjd.model.OrderStatus
+import com.example.myjd.model.PaymentMethod
+import com.example.myjd.model.CancelReason
+import com.example.myjd.model.Address
+import com.example.myjd.model.ConversationData
+import com.example.myjd.model.Conversation
+import com.example.myjd.model.ConversationSummary
+import com.example.myjd.model.Coupon
+import com.example.myjd.model.ChatMessage
+import com.example.myjd.model.ChatSender
+import com.example.myjd.model.ChatMessageType
+import com.example.myjd.model.ShopPageData
+import com.example.myjd.utils.TaskOneLogger
+import com.example.myjd.utils.TaskFourLogger
+import com.example.myjd.utils.TaskSixLogger
+import com.example.myjd.utils.TaskEightLogger
+import com.example.myjd.utils.TaskNineLogger
+import com.example.myjd.utils.TaskTenLogger
+import com.example.myjd.utils.TaskElevenLogger
+import com.example.myjd.utils.TaskFourteenLogger
+import com.example.myjd.utils.TaskSixteenLogger
+import com.example.myjd.utils.TaskSeventeenLogger
+import com.example.myjd.utils.TaskEighteenLogger
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.google.gson.Gson
@@ -504,7 +504,7 @@ class DataRepository private constructor(private val context: Context) {
             android.util.Log.e("DataRepository", "Error loading shop page data", e)
             // 返回默认数据结构
             ShopPageData(
-                shopInfo = com.example.MyJD.model.ShopInfo(
+                shopInfo = com.example.myjd.model.ShopInfo(
                     id = "default",
                     name = "店铺加载失败",
                     avatar = "🏪",
@@ -524,7 +524,7 @@ class DataRepository private constructor(private val context: Context) {
             val allProducts = loadProducts()
             val huaweiProducts = allProducts.filter { it.brand == "华为" }
 
-            val shopInfo = com.example.MyJD.model.ShopInfo(
+            val shopInfo = com.example.myjd.model.ShopInfo(
                 id = "huawei_store",
                 name = "华为官方旗舰店",
                 avatar = "image/华为店铺logo.PNG", // Use relative path for local assets
@@ -534,16 +534,16 @@ class DataRepository private constructor(private val context: Context) {
             )
 
             val statistics = listOf(
-                com.example.MyJD.model.ShopStatistic(label = "商品评价", value = "99%", icon = "👍"),
-                com.example.MyJD.model.ShopStatistic(label = "退换货", value = "98%", icon = "♻️"),
-                com.example.MyJD.model.ShopStatistic(label = "客服咨询", value = "97%", icon = "💬")
+                com.example.myjd.model.ShopStatistic(label = "商品评价", value = "99%", icon = "👍"),
+                com.example.myjd.model.ShopStatistic(label = "退换货", value = "98%", icon = "♻️"),
+                com.example.myjd.model.ShopStatistic(label = "客服咨询", value = "97%", icon = "💬")
             )
 
             val categories = listOf(
-                com.example.MyJD.model.ShopCategory(id = "all", name = "全部商品", isSelected = true),
-                com.example.MyJD.model.ShopCategory(id = "phones", name = "手机"),
-                com.example.MyJD.model.ShopCategory(id = "laptops", name = "笔记本"),
-                com.example.MyJD.model.ShopCategory(id = "wearables", name = "穿戴")
+                com.example.myjd.model.ShopCategory(id = "all", name = "全部商品", isSelected = true),
+                com.example.myjd.model.ShopCategory(id = "phones", name = "手机"),
+                com.example.myjd.model.ShopCategory(id = "laptops", name = "笔记本"),
+                com.example.myjd.model.ShopCategory(id = "wearables", name = "穿戴")
             )
 
             val shopPageData = ShopPageData(
@@ -559,7 +559,7 @@ class DataRepository private constructor(private val context: Context) {
             android.util.Log.e("DataRepository", "Error loading Huawei shop page data", e)
             // 返回默认数据结构
             ShopPageData(
-                shopInfo = com.example.MyJD.model.ShopInfo(
+                shopInfo = com.example.myjd.model.ShopInfo(
                     id = "default",
                     name = "店铺加载失败",
                     avatar = "🏪",
@@ -604,7 +604,7 @@ class DataRepository private constructor(private val context: Context) {
                 serviceItems = emptyList(),
                 interactionItems = emptyList(),
                 quickActions = emptyList(),
-                userStats = com.example.MyJD.model.UserStats(0, 0, 0, 0)
+                userStats = com.example.myjd.model.UserStats(0, 0, 0, 0)
             )
         }
     }
@@ -828,12 +828,12 @@ class DataRepository private constructor(private val context: Context) {
                 soldCount = "",
                 storeName = "京东自营",
                 colors = emptyList(),
-                specifications = com.example.MyJD.model.ProductSpecifications("", "", "", ""),
+                specifications = com.example.myjd.model.ProductSpecifications("", "", "", ""),
                 tags = emptyList(),
-                deliveryInfo = com.example.MyJD.model.DeliveryInfo("", "", "", "", "", ""),
-                tradeIn = com.example.MyJD.model.TradeInInfo("", 0.0, ""),
+                deliveryInfo = com.example.myjd.model.DeliveryInfo("", "", "", "", "", ""),
+                tradeIn = com.example.myjd.model.TradeInInfo("", 0.0, ""),
                 stores = emptyList(),
-                reviews = com.example.MyJD.model.ReviewInfo("", "", emptyList(), emptyList())
+                reviews = com.example.myjd.model.ReviewInfo("", "", emptyList(), emptyList())
             )
         }
     }
@@ -898,7 +898,7 @@ class DataRepository private constructor(private val context: Context) {
                 series = emptyList(),
                 colors = emptyList(),
                 storage = emptyList(),
-                promotionInfo = com.example.MyJD.model.PromotionInfo("", 0, emptyList())
+                promotionInfo = com.example.myjd.model.PromotionInfo("", 0, emptyList())
             )
         }
     }
@@ -917,7 +917,7 @@ class DataRepository private constructor(private val context: Context) {
                 series = emptyList(),
                 colors = emptyList(),
                 storage = emptyList(),
-                promotionInfo = com.example.MyJD.model.PromotionInfo("", 0, emptyList())
+                promotionInfo = com.example.myjd.model.PromotionInfo("", 0, emptyList())
             )
         }
     }
@@ -936,7 +936,7 @@ class DataRepository private constructor(private val context: Context) {
                 series = emptyList(),
                 colors = emptyList(),
                 storage = emptyList(),
-                promotionInfo = com.example.MyJD.model.PromotionInfo("", 0, emptyList())
+                promotionInfo = com.example.myjd.model.PromotionInfo("", 0, emptyList())
             )
         }
     }
@@ -955,7 +955,7 @@ class DataRepository private constructor(private val context: Context) {
                 series = emptyList(),
                 colors = emptyList(),
                 storage = emptyList(),
-                promotionInfo = com.example.MyJD.model.PromotionInfo("", 0, emptyList())
+                promotionInfo = com.example.myjd.model.PromotionInfo("", 0, emptyList())
             )
         }
     }

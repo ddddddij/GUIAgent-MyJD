@@ -1,15 +1,15 @@
-package com.example.MyJD.viewmodel
+package com.example.myjd.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.MyJD.model.SettleData
-import com.example.MyJD.model.SettlePricing
-import com.example.MyJD.model.Coupon
-import com.example.MyJD.model.OrderStatus 
-import com.example.MyJD.repository.DataRepository
-import com.example.MyJD.utils.TaskSixteenLogger
-import com.example.MyJD.utils.TaskSeventeenLogger
+import com.example.myjd.model.SettleData
+import com.example.myjd.model.SettlePricing
+import com.example.myjd.model.Coupon
+import com.example.myjd.model.OrderStatus 
+import com.example.myjd.repository.DataRepository
+import com.example.myjd.utils.TaskSixteenLogger
+import com.example.myjd.utils.TaskSeventeenLogger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -266,7 +266,7 @@ class SettleViewModel(
         _uiState.value = _uiState.value.copy(shouldNavigateToAddressList = true)
     }
     
-    fun onAddressSelected(address: com.example.MyJD.model.Address) {
+    fun onAddressSelected(address: com.example.myjd.model.Address) {
         _uiState.value.settleData?.let { currentData ->
             val updatedData = currentData.copy(address = address)
             _uiState.value = _uiState.value.copy(

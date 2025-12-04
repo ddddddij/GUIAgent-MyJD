@@ -1,4 +1,4 @@
-package com.example.MyJD.model
+package com.example.myjd.model
 
 enum class NotificationType {
     SYSTEM,             // 系统通知

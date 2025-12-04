@@ -1,4 +1,4 @@
-package com.example.MyJD.model
+package com.example.myjd.model
 
 enum class RefundServiceType {
     REFUND_ONLY,        // 仅退款

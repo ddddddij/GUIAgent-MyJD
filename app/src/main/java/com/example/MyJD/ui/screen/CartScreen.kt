@@ -1,4 +1,4 @@
-package com.example.MyJD.ui.screen
+package com.example.myjd.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -19,20 +19,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.MyJD.model.CartItem
-import com.example.MyJD.model.CartItemSpec
-import com.example.MyJD.repository.DataRepository
-import com.example.MyJD.viewmodel.HomeViewModel
-import com.example.MyJD.viewmodel.ViewModelFactory
-import com.example.MyJD.ui.theme.JDRed
-import com.example.MyJD.ui.theme.JDTextPrimary
-import com.example.MyJD.ui.theme.JDTextSecondary
-import com.example.MyJD.ui.components.CartHeader
-import com.example.MyJD.ui.components.CartTabs
-import com.example.MyJD.ui.components.CartStoreSection
-import com.example.MyJD.ui.components.CartProductCard
-import com.example.MyJD.utils.TaskNineLogger
-import com.example.MyJD.utils.TaskSixteenLogger
+import com.example.myjd.model.CartItem
+import com.example.myjd.model.CartItemSpec
+import com.example.myjd.repository.DataRepository
+import com.example.myjd.viewmodel.HomeViewModel
+import com.example.myjd.viewmodel.ViewModelFactory
+import com.example.myjd.ui.theme.JDRed
+import com.example.myjd.ui.theme.JDTextPrimary
+import com.example.myjd.ui.theme.JDTextSecondary
+import com.example.myjd.ui.components.CartHeader
+import com.example.myjd.ui.components.CartTabs
+import com.example.myjd.ui.components.CartStoreSection
+import com.example.myjd.ui.components.CartProductCard
+import com.example.myjd.utils.TaskNineLogger
+import com.example.myjd.utils.TaskSixteenLogger
 import android.widget.Toast
 
 @Composable

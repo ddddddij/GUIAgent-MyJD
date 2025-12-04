@@ -1,4 +1,4 @@
-package com.example.MyJD.ui.components
+package com.example.myjd.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,9 +27,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.MyJD.model.ReviewInfo
-import com.example.MyJD.model.ReviewItem
-import com.example.MyJD.model.ReviewTag
+import com.example.myjd.model.ReviewInfo
+import com.example.myjd.model.ReviewItem
+import com.example.myjd.model.ReviewTag
 import android.graphics.BitmapFactory
 
 @Composable

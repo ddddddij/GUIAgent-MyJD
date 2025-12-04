@@ -1,4 +1,4 @@
-package com.example.MyJD.ui.components
+package com.example.myjd.ui.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.MyJD.model.Banner
+import com.example.myjd.model.Banner
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalFoundationApi::class)

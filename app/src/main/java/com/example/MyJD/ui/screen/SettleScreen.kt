@@ -1,4 +1,4 @@
-package com.example.MyJD.ui.screen
+package com.example.myjd.ui.screen
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -25,12 +25,12 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import com.example.MyJD.model.SettleData
-import com.example.MyJD.model.SettlePricing
-import com.example.MyJD.model.Coupon
-import com.example.MyJD.repository.DataRepository
-import com.example.MyJD.viewmodel.SettleViewModel
-import com.example.MyJD.viewmodel.ViewModelFactory
+import com.example.myjd.model.SettleData
+import com.example.myjd.model.SettlePricing
+import com.example.myjd.model.Coupon
+import com.example.myjd.repository.DataRepository
+import com.example.myjd.viewmodel.SettleViewModel
+import com.example.myjd.viewmodel.ViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,7 +42,7 @@ fun SettleScreen(
     imageUrl: String? = null,
     fromCart: Boolean = false,
     fromOrder: String? = null,
-    selectedAddress: com.example.MyJD.model.Address? = null,
+    selectedAddress: com.example.myjd.model.Address? = null,
     onBackClick: () -> Unit,
     onNavigateToPaymentSuccess: (String) -> Unit = {},
     onNavigateToAddressList: () -> Unit = {},
@@ -227,7 +227,7 @@ fun SettleScreen(
 
 @Composable
 private fun AddressSection(
-    address: com.example.MyJD.model.Address?,
+    address: com.example.myjd.model.Address?,
     onClick: () -> Unit
 ) {
     Card(
@@ -329,7 +329,7 @@ private fun AddressSection(
 
 @Composable
 private fun ProductSection(
-    product: com.example.MyJD.model.SettleProduct,
+    product: com.example.myjd.model.SettleProduct,
     quantity: Int,
     onQuantityIncrease: () -> Unit,
     onQuantityDecrease: () -> Unit
@@ -464,8 +464,8 @@ private fun ProductSection(
 
 @Composable
 private fun ServiceDeliverySection(
-    service: com.example.MyJD.model.SettleService,
-    delivery: com.example.MyJD.model.SettleDelivery,
+    service: com.example.myjd.model.SettleService,
+    delivery: com.example.myjd.model.SettleDelivery,
     onServiceClick: () -> Unit,
     onDeliveryClick: () -> Unit
 ) {

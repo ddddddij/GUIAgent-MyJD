@@ -1,4 +1,4 @@
-package com.example.MyJD.utils
+package com.example.myjd.utils
 
 import android.content.Context
 import android.util.Log

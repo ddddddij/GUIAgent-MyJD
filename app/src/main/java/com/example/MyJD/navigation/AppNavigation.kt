@@ -1,4 +1,4 @@
-package com.example.MyJD.navigation
+package com.example.myjd.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -10,26 +10,26 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.MyJD.repository.DataRepository
-import com.example.MyJD.ui.screen.HomeScreen
-import com.example.MyJD.ui.screen.ChatScreen
-import com.example.MyJD.ui.screen.MeScreen
-import com.example.MyJD.ui.screen.PlaceholderScreen
-import com.example.MyJD.ui.screen.ProductDetailScreen
-import com.example.MyJD.ui.screen.OrderScreen
-import com.example.MyJD.ui.screen.SettleScreen
-import com.example.MyJD.ui.screen.PaymentSuccessScreen
+import com.example.myjd.repository.DataRepository
+import com.example.myjd.ui.screen.HomeScreen
+import com.example.myjd.ui.screen.ChatScreen
+import com.example.myjd.ui.screen.MeScreen
+import com.example.myjd.ui.screen.PlaceholderScreen
+import com.example.myjd.ui.screen.ProductDetailScreen
+import com.example.myjd.ui.screen.OrderScreen
+import com.example.myjd.ui.screen.SettleScreen
+import com.example.myjd.ui.screen.PaymentSuccessScreen
 
-import com.example.MyJD.ui.screen.SearchResultScreen
-import com.example.MyJD.ui.screen.MessageDetailScreen
-import com.example.MyJD.ui.screen.MessageSettingScreen
-import com.example.MyJD.ui.screen.ShopScreen
-import com.example.MyJD.ui.screen.AddressListScreen
-import com.example.MyJD.ui.screen.AddressDetailScreen
-import com.example.MyJD.ui.screen.HuaweiP60DetailScreen
-import com.example.MyJD.ui.screen.HuaweiMate60DetailScreen
-import com.example.MyJD.ui.screen.HuaweiNova11DetailScreen
-import com.example.MyJD.ui.screen.ThinkPadDetailScreen
+import com.example.myjd.ui.screen.SearchResultScreen
+import com.example.myjd.ui.screen.MessageDetailScreen
+import com.example.myjd.ui.screen.MessageSettingScreen
+import com.example.myjd.ui.screen.ShopScreen
+import com.example.myjd.ui.screen.AddressListScreen
+import com.example.myjd.ui.screen.AddressDetailScreen
+import com.example.myjd.ui.screen.HuaweiP60DetailScreen
+import com.example.myjd.ui.screen.HuaweiMate60DetailScreen
+import com.example.myjd.ui.screen.HuaweiNova11DetailScreen
+import com.example.myjd.ui.screen.ThinkPadDetailScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
@@ -89,7 +89,7 @@ fun AppNavigation(navController: NavHostController) {
         }
         
         composable("cart") {
-            com.example.MyJD.ui.screen.CartScreen(
+            com.example.myjd.ui.screen.CartScreen(
                 onNavigateBack = {
                     navController.popBackStack()
                 },
@@ -395,7 +395,7 @@ fun AppNavigation(navController: NavHostController) {
             
             // Load selected address if provided
             val repository = DataRepository.getInstance(LocalContext.current)
-            var selectedAddress by remember { mutableStateOf<com.example.MyJD.model.Address?>(null) }
+            var selectedAddress by remember { mutableStateOf<com.example.myjd.model.Address?>(null) }
             
             LaunchedEffect(selectedAddressId) {
                 selectedAddressId?.let { addressId ->

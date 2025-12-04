@@ -1,4 +1,4 @@
-package com.example.MyJD.utils
+package com.example.myjd.utils
 
 import android.content.Context
 import android.util.Log
@@ -13,7 +13,7 @@ object TaskEightLogger {
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
     
     private fun getLogFile(context: Context): File {
-        val dataDir = File("/data/data/com.example.MyJD/files/persistent_data")
+        val dataDir = File("/data/data/com.example.myjd/files/persistent_data")
         if (!dataDir.exists()) {
             dataDir.mkdirs()
         }

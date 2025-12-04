@@ -1,8 +1,8 @@
-package com.example.MyJD.viewmodel
+package com.example.myjd.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.MyJD.repository.DataRepository
+import com.example.myjd.repository.DataRepository
 
 class SearchResultViewModelFactory(
     private val repository: DataRepository

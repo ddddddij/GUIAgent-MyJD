@@ -1,4 +1,4 @@
-package com.example.MyJD.ui.screen
+package com.example.myjd.ui.screen
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -26,9 +26,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.MyJD.repository.DataRepository
-import com.example.MyJD.viewmodel.AddressDetailViewModel
-import com.example.MyJD.viewmodel.ViewModelFactory
+import com.example.myjd.repository.DataRepository
+import com.example.myjd.viewmodel.AddressDetailViewModel
+import com.example.myjd.viewmodel.ViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

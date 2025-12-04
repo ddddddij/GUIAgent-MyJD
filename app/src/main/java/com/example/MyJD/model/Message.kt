@@ -1,4 +1,4 @@
-package com.example.MyJD.model
+package com.example.myjd.model
 
 enum class MessageType {
     CUSTOMER_SERVICE,    // 客服

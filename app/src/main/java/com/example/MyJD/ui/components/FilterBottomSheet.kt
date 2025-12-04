@@ -1,4 +1,4 @@
-package com.example.MyJD.ui.components
+package com.example.myjd.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -20,8 +20,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.MyJD.viewmodel.SearchFilter
-import com.example.MyJD.ui.theme.JDRed
+import com.example.myjd.viewmodel.SearchFilter
+import com.example.myjd.ui.theme.JDRed
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

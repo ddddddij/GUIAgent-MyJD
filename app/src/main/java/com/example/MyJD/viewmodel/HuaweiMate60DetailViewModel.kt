@@ -1,18 +1,18 @@
-package com.example.MyJD.viewmodel
+package com.example.myjd.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.MyJD.model.CartItemSpec
-import com.example.MyJD.model.Product
-import com.example.MyJD.model.ProductDetail
-import com.example.MyJD.repository.DataRepository
+import com.example.myjd.model.CartItemSpec
+import com.example.myjd.model.Product
+import com.example.myjd.model.ProductDetail
+import com.example.myjd.repository.DataRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import com.example.MyJD.utils.TaskFourteenLogger
+import com.example.myjd.utils.TaskFourteenLogger
 import android.util.Log
 
 class HuaweiMate60DetailViewModel(

@@ -1,4 +1,4 @@
-package com.example.MyJD.ui.screen
+package com.example.myjd.ui.screen
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -23,11 +23,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.MyJD.repository.DataRepository
-import com.example.MyJD.ui.theme.JDRed
-import com.example.MyJD.ui.theme.JDTextPrimary
-import com.example.MyJD.viewmodel.ThinkPadDetailViewModel
-import com.example.MyJD.viewmodel.ThinkPadDetailViewModelFactory
+import com.example.myjd.repository.DataRepository
+import com.example.myjd.ui.theme.JDRed
+import com.example.myjd.ui.theme.JDTextPrimary
+import com.example.myjd.viewmodel.ThinkPadDetailViewModel
+import com.example.myjd.viewmodel.ThinkPadDetailViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

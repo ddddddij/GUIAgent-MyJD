@@ -1,4 +1,4 @@
-package com.example.MyJD.ui.components
+package com.example.myjd.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,8 +20,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.MyJD.ui.theme.JDRed
-import com.example.MyJD.ui.theme.JDTextHint
+import com.example.myjd.ui.theme.JDRed
+import com.example.myjd.ui.theme.JDTextHint
 
 @Composable
 fun HomeHeader(

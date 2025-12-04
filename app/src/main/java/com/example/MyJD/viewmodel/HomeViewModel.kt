@@ -1,12 +1,12 @@
-package com.example.MyJD.viewmodel
+package com.example.myjd.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.MyJD.model.Banner
-import com.example.MyJD.model.Product
-import com.example.MyJD.repository.DataRepository
-import com.example.MyJD.utils.TaskEightLogger
+import com.example.myjd.model.Banner
+import com.example.myjd.model.Product
+import com.example.myjd.repository.DataRepository
+import com.example.myjd.utils.TaskEightLogger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -60,7 +60,7 @@ class HomeViewModel(
 
     fun addToCart(product: Product, selectedColor: String, selectedVersion: String, quantity: Int = 1) {
         viewModelScope.launch {
-            val cartItemSpec = com.example.MyJD.model.CartItemSpec(
+            val cartItemSpec = com.example.myjd.model.CartItemSpec(
                 id = "${product.id}_${System.currentTimeMillis()}",
                 productId = product.id,
                 productName = product.name,

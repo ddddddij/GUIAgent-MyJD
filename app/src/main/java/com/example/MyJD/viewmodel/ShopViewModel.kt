@@ -1,12 +1,12 @@
-package com.example.MyJD.viewmodel
+package com.example.myjd.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.MyJD.model.CartItemSpec
-import com.example.MyJD.model.Product
-import com.example.MyJD.model.ShopPageData
-import com.example.MyJD.repository.DataRepository
+import com.example.myjd.model.CartItemSpec
+import com.example.myjd.model.Product
+import com.example.myjd.model.ShopPageData
+import com.example.myjd.repository.DataRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

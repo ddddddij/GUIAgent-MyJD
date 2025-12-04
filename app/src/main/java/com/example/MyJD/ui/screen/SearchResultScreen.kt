@@ -1,4 +1,4 @@
-package com.example.MyJD.ui.screen
+package com.example.myjd.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -26,14 +26,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import com.example.MyJD.model.Product
-import com.example.MyJD.viewmodel.SearchSortType
-import com.example.MyJD.repository.DataRepository
-import com.example.MyJD.ui.components.FilterBottomSheet
-import com.example.MyJD.ui.theme.JDRed
-import com.example.MyJD.viewmodel.SearchFilter
-import com.example.MyJD.viewmodel.SearchResultViewModel
-import com.example.MyJD.viewmodel.SearchResultViewModelFactory
+import com.example.myjd.model.Product
+import com.example.myjd.viewmodel.SearchSortType
+import com.example.myjd.repository.DataRepository
+import com.example.myjd.ui.components.FilterBottomSheet
+import com.example.myjd.ui.theme.JDRed
+import com.example.myjd.viewmodel.SearchFilter
+import com.example.myjd.viewmodel.SearchResultViewModel
+import com.example.myjd.viewmodel.SearchResultViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,14 +50,14 @@ fun SearchResultScreen(
     )
 
     LaunchedEffect(keyword) {
-        viewModel.searchProducts(keyword)
+        viewModel.loadSearchResults(keyword)
     }
 
     val products by viewModel.products.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
-    val currentSortType by viewModel.sortType.collectAsState()
+    val currentSortType by viewModel.currentSortType.collectAsState()
     var showFilterDialog by remember { mutableStateOf(false) }
-    val currentFilter by viewModel.filter.collectAsState()
+    val currentFilter by viewModel.currentFilter.collectAsState()
 
     Column(
         modifier = modifier
@@ -68,14 +68,14 @@ fun SearchResultScreen(
         SearchResultTopBar(
             searchKeyword = keyword,
             onBackClick = onBackClick,
-            onSearchClick = { viewModel.searchProducts(keyword) },
+            onSearchClick = { viewModel.loadSearchResults(keyword) },
             onKeywordChange = { /* Implement if search keyword can be changed on this screen */ }
         )
 
         // 筛选排序栏
         SortAndFilterBar(
             currentSortType = currentSortType,
-            onSortClick = { viewModel.setSortType(it) },
+            onSortClick = { viewModel.sortProducts(it) },
             onFilterClick = { showFilterDialog = true }
         )
 
@@ -112,11 +112,11 @@ fun SearchResultScreen(
         FilterBottomSheet(
             currentFilter = currentFilter,
             onApplyFilter = { filter ->
-                viewModel.setFilter(filter)
+                viewModel.filterProducts(filter)
                 showFilterDialog = false
             },
             onResetFilter = {
-                viewModel.setFilter(com.example.MyJD.viewmodel.SearchFilter())
+                viewModel.resetFilter()
             },
             onDismiss = {
                 showFilterDialog = false

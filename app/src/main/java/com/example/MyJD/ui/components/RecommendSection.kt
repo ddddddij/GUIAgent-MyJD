@@ -1,4 +1,4 @@
-package com.example.MyJD.ui.components
+package com.example.myjd.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,12 +23,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.MyJD.model.Product
-import com.example.MyJD.repository.DataRepository
-import com.example.MyJD.ui.theme.JDRed
-import com.example.MyJD.ui.theme.JDTextPrimary
-import com.example.MyJD.ui.theme.JDTextSecondary
-import com.example.MyJD.ui.theme.JDTextHint
+import com.example.myjd.model.Product
+import com.example.myjd.repository.DataRepository
+import com.example.myjd.ui.theme.JDRed
+import com.example.myjd.ui.theme.JDTextPrimary
+import com.example.myjd.ui.theme.JDTextSecondary
+import com.example.myjd.ui.theme.JDTextHint
 
 @Composable
 fun RecommendSection(

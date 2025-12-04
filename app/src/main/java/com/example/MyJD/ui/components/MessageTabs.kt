@@ -1,4 +1,4 @@
-package com.example.MyJD.ui.components
+package com.example.myjd.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,10 +12,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.MyJD.model.MessageType
-import com.example.MyJD.ui.theme.JDRed
-import com.example.MyJD.ui.theme.JDTextPrimary
-import com.example.MyJD.ui.theme.JDTextSecondary
+import com.example.myjd.model.MessageType
+import com.example.myjd.ui.theme.JDRed
+import com.example.myjd.ui.theme.JDTextPrimary
+import com.example.myjd.ui.theme.JDTextSecondary
 
 @Composable
 fun MessageTabs(

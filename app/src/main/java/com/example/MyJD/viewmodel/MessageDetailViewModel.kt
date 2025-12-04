@@ -1,13 +1,13 @@
-package com.example.MyJD.viewmodel
+package com.example.myjd.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.MyJD.model.ChatMessage
-import com.example.MyJD.model.ChatSender
-import com.example.MyJD.model.ChatMessageType
-import com.example.MyJD.model.Conversation
-import com.example.MyJD.repository.DataRepository
+import com.example.myjd.model.ChatMessage
+import com.example.myjd.model.ChatSender
+import com.example.myjd.model.ChatMessageType
+import com.example.myjd.model.Conversation
+import com.example.myjd.repository.DataRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -1,4 +1,4 @@
-package com.example.MyJD.ui.screen
+package com.example.myjd.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,11 +25,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.MyJD.ui.theme.JDRed
-import com.example.MyJD.viewmodel.SearchViewModel
-import com.example.MyJD.viewmodel.SearchNavigationEvent
-import com.example.MyJD.viewmodel.ViewModelFactory
-import com.example.MyJD.repository.DataRepository
+import com.example.myjd.ui.theme.JDRed
+import com.example.myjd.viewmodel.SearchViewModel
+import com.example.myjd.viewmodel.SearchNavigationEvent
+import com.example.myjd.viewmodel.ViewModelFactory
+import com.example.myjd.repository.DataRepository
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

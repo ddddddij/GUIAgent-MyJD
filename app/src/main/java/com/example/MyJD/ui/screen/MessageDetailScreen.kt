@@ -1,4 +1,4 @@
-package com.example.MyJD.ui.screen
+package com.example.myjd.ui.screen
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -29,12 +29,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.MyJD.model.*
-import com.example.MyJD.repository.DataRepository
-import com.example.MyJD.viewmodel.MessageDetailViewModel
-import com.example.MyJD.viewmodel.MessageDetailUiState
-import com.example.MyJD.viewmodel.NavigationEvent
-import com.example.MyJD.viewmodel.ViewModelFactory
+import com.example.myjd.model.*
+import com.example.myjd.repository.DataRepository
+import com.example.myjd.viewmodel.MessageDetailViewModel
+import com.example.myjd.viewmodel.MessageDetailUiState
+import com.example.myjd.viewmodel.NavigationEvent
+import com.example.myjd.viewmodel.ViewModelFactory
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat

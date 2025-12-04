@@ -1,4 +1,4 @@
-package com.example.MyJD.ui.components
+package com.example.myjd.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,9 +13,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
-import com.example.MyJD.model.MeTabOrderStatus
-import com.example.MyJD.repository.DataRepository
-import com.example.MyJD.utils.TaskSixLogger
+import com.example.myjd.model.MeTabOrderStatus
+import com.example.myjd.repository.DataRepository
+import com.example.myjd.utils.TaskSixLogger
 
 @Composable
 fun OrderSection(

@@ -1,4 +1,4 @@
-package com.example.MyJD
+package com.example.myjd
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -23,9 +23,9 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.MyJD.navigation.AppNavigation
-import com.example.MyJD.repository.DataRepository
-import com.example.MyJD.ui.theme.MyJDTheme
+import com.example.myjd.navigation.AppNavigation
+import com.example.myjd.repository.DataRepository
+import com.example.myjd.ui.theme.MyJDTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

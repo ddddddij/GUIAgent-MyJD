@@ -1,4 +1,4 @@
-package com.example.MyJD.ui.components
+package com.example.myjd.ui.components
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -22,8 +22,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.MyJD.repository.DataRepository
-import com.example.MyJD.viewmodel.ProductSpecViewModel
+import com.example.myjd.repository.DataRepository
+import com.example.myjd.viewmodel.ProductSpecViewModel
 import android.widget.Toast
 
 @Composable
@@ -39,7 +39,7 @@ fun ProductSpecDialog(
     val context = LocalContext.current
     val repository = remember { DataRepository.getInstance(context) }
     
-    var productDetail by remember { mutableStateOf<com.example.MyJD.model.ProductDetail?>(null) }
+    var productDetail by remember { mutableStateOf<com.example.myjd.model.ProductDetail?>(null) }
     var isLoadingDetail by remember { mutableStateOf(true) }
 
     LaunchedEffect(productId) {

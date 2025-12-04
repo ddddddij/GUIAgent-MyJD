@@ -1,15 +1,15 @@
-package com.example.MyJD.viewmodel
+package com.example.myjd.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.MyJD.model.Order
-import com.example.MyJD.model.OrderStatus
-import com.example.MyJD.repository.DataRepository
-import com.example.MyJD.utils.TaskSixLogger
-import com.example.MyJD.utils.TaskTenLogger
-import com.example.MyJD.utils.TaskSeventeenLogger
-import com.example.MyJD.utils.TaskEighteenLogger
+import com.example.myjd.model.Order
+import com.example.myjd.model.OrderStatus
+import com.example.myjd.repository.DataRepository
+import com.example.myjd.utils.TaskSixLogger
+import com.example.myjd.utils.TaskTenLogger
+import com.example.myjd.utils.TaskSeventeenLogger
+import com.example.myjd.utils.TaskEighteenLogger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
