@@ -3,8 +3,8 @@ package com.example.myjd.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myjd.model.Order
-import com.example.myjd.model.OrderStatus
+import com.example.myjd.domain.model.Order
+import com.example.myjd.domain.model.OrderStatus
 import com.example.myjd.repository.DataRepository
 import com.example.myjd.common.utils.TaskSixLogger
 import com.example.myjd.common.utils.TaskTenLogger

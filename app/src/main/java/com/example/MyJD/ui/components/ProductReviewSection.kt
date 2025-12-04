@@ -27,9 +27,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myjd.model.ReviewInfo
-import com.example.myjd.model.ReviewItem
-import com.example.myjd.model.ReviewTag
+import com.example.myjd.domain.model.ReviewInfo
+import com.example.myjd.domain.model.ReviewItem
+import com.example.myjd.domain.model.ReviewTag
 import android.graphics.BitmapFactory
 
 @Composable

@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.myjd.model.ColorOption
+import com.example.myjd.domain.model.ColorOption
 
 @Composable
 fun ColorSelector(

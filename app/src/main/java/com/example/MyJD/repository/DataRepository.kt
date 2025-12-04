@@ -1,30 +1,30 @@
 package com.example.myjd.repository
 
 import android.content.Context
-import com.example.myjd.model.Banner
-import com.example.myjd.model.Product
-import com.example.myjd.model.CartItem
-import com.example.myjd.model.ShoppingCart
-import com.example.myjd.model.Message
-import com.example.myjd.model.MuteSetting
-import com.example.myjd.model.MeTabData
-import com.example.myjd.model.ProductDetail
-import com.example.myjd.model.ProductSpec
-import com.example.myjd.model.CartItemSpec
-import com.example.myjd.model.Order
-import com.example.myjd.model.OrderItem
-import com.example.myjd.model.OrderStatus
-import com.example.myjd.model.PaymentMethod
-import com.example.myjd.model.CancelReason
-import com.example.myjd.model.Address
-import com.example.myjd.model.ConversationData
-import com.example.myjd.model.Conversation
-import com.example.myjd.model.ConversationSummary
-import com.example.myjd.model.Coupon
-import com.example.myjd.model.ChatMessage
-import com.example.myjd.model.ChatSender
-import com.example.myjd.model.ChatMessageType
-import com.example.myjd.model.ShopPageData
+import com.example.myjd.domain.model.Banner
+import com.example.myjd.domain.model.Product
+import com.example.myjd.domain.model.CartItem
+import com.example.myjd.domain.model.ShoppingCart
+import com.example.myjd.domain.model.Message
+import com.example.myjd.domain.model.MuteSetting
+import com.example.myjd.domain.model.MeTabData
+import com.example.myjd.domain.model.ProductDetail
+import com.example.myjd.domain.model.ProductSpec
+import com.example.myjd.domain.model.CartItemSpec
+import com.example.myjd.domain.model.Order
+import com.example.myjd.domain.model.OrderItem
+import com.example.myjd.domain.model.OrderStatus
+import com.example.myjd.domain.model.PaymentMethod
+import com.example.myjd.domain.model.CancelReason
+import com.example.myjd.domain.model.Address
+import com.example.myjd.domain.model.ConversationData
+import com.example.myjd.domain.model.Conversation
+import com.example.myjd.domain.model.ConversationSummary
+import com.example.myjd.domain.model.Coupon
+import com.example.myjd.domain.model.ChatMessage
+import com.example.myjd.domain.model.ChatSender
+import com.example.myjd.domain.model.ChatMessageType
+import com.example.myjd.domain.model.ShopPageData
 import com.example.myjd.common.utils.TaskOneLogger
 import com.example.myjd.common.utils.TaskFourLogger
 import com.example.myjd.common.utils.TaskSixLogger
@@ -504,7 +504,7 @@ class DataRepository private constructor(private val context: Context) {
             android.util.Log.e("DataRepository", "Error loading shop page data", e)
             // 返回默认数据结构
             ShopPageData(
-                shopInfo = com.example.myjd.model.ShopInfo(
+                shopInfo = com.example.myjd.domain.model.ShopInfo(
                     id = "default",
                     name = "店铺加载失败",
                     avatar = "🏪",
@@ -524,7 +524,7 @@ class DataRepository private constructor(private val context: Context) {
             val allProducts = loadProducts()
             val huaweiProducts = allProducts.filter { it.brand == "华为" }
 
-            val shopInfo = com.example.myjd.model.ShopInfo(
+            val shopInfo = com.example.myjd.domain.model.ShopInfo(
                 id = "huawei_store",
                 name = "华为官方旗舰店",
                 avatar = "image/华为店铺logo.PNG", // Use relative path for local assets
@@ -534,16 +534,16 @@ class DataRepository private constructor(private val context: Context) {
             )
 
             val statistics = listOf(
-                com.example.myjd.model.ShopStatistic(label = "商品评价", value = "99%", icon = "👍"),
-                com.example.myjd.model.ShopStatistic(label = "退换货", value = "98%", icon = "♻️"),
-                com.example.myjd.model.ShopStatistic(label = "客服咨询", value = "97%", icon = "💬")
+                com.example.myjd.domain.model.ShopStatistic(label = "商品评价", value = "99%", icon = "👍"),
+                com.example.myjd.domain.model.ShopStatistic(label = "退换货", value = "98%", icon = "♻️"),
+                com.example.myjd.domain.model.ShopStatistic(label = "客服咨询", value = "97%", icon = "💬")
             )
 
             val categories = listOf(
-                com.example.myjd.model.ShopCategory(id = "all", name = "全部商品", isSelected = true),
-                com.example.myjd.model.ShopCategory(id = "phones", name = "手机"),
-                com.example.myjd.model.ShopCategory(id = "laptops", name = "笔记本"),
-                com.example.myjd.model.ShopCategory(id = "wearables", name = "穿戴")
+                com.example.myjd.domain.model.ShopCategory(id = "all", name = "全部商品", isSelected = true),
+                com.example.myjd.domain.model.ShopCategory(id = "phones", name = "手机"),
+                com.example.myjd.domain.model.ShopCategory(id = "laptops", name = "笔记本"),
+                com.example.myjd.domain.model.ShopCategory(id = "wearables", name = "穿戴")
             )
 
             val shopPageData = ShopPageData(
@@ -559,7 +559,7 @@ class DataRepository private constructor(private val context: Context) {
             android.util.Log.e("DataRepository", "Error loading Huawei shop page data", e)
             // 返回默认数据结构
             ShopPageData(
-                shopInfo = com.example.myjd.model.ShopInfo(
+                shopInfo = com.example.myjd.domain.model.ShopInfo(
                     id = "default",
                     name = "店铺加载失败",
                     avatar = "🏪",
@@ -604,7 +604,7 @@ class DataRepository private constructor(private val context: Context) {
                 serviceItems = emptyList(),
                 interactionItems = emptyList(),
                 quickActions = emptyList(),
-                userStats = com.example.myjd.model.UserStats(0, 0, 0, 0)
+                userStats = com.example.myjd.domain.model.UserStats(0, 0, 0, 0)
             )
         }
     }
@@ -828,12 +828,12 @@ class DataRepository private constructor(private val context: Context) {
                 soldCount = "",
                 storeName = "京东自营",
                 colors = emptyList(),
-                specifications = com.example.myjd.model.ProductSpecifications("", "", "", ""),
+                specifications = com.example.myjd.domain.model.ProductSpecifications("", "", "", ""),
                 tags = emptyList(),
-                deliveryInfo = com.example.myjd.model.DeliveryInfo("", "", "", "", "", ""),
-                tradeIn = com.example.myjd.model.TradeInInfo("", 0.0, ""),
+                deliveryInfo = com.example.myjd.domain.model.DeliveryInfo("", "", "", "", "", ""),
+                tradeIn = com.example.myjd.domain.model.TradeInInfo("", 0.0, ""),
                 stores = emptyList(),
-                reviews = com.example.myjd.model.ReviewInfo("", "", emptyList(), emptyList())
+                reviews = com.example.myjd.domain.model.ReviewInfo("", "", emptyList(), emptyList())
             )
         }
     }
@@ -898,7 +898,7 @@ class DataRepository private constructor(private val context: Context) {
                 series = emptyList(),
                 colors = emptyList(),
                 storage = emptyList(),
-                promotionInfo = com.example.myjd.model.PromotionInfo("", 0, emptyList())
+                promotionInfo = com.example.myjd.domain.model.PromotionInfo("", 0, emptyList())
             )
         }
     }
@@ -917,7 +917,7 @@ class DataRepository private constructor(private val context: Context) {
                 series = emptyList(),
                 colors = emptyList(),
                 storage = emptyList(),
-                promotionInfo = com.example.myjd.model.PromotionInfo("", 0, emptyList())
+                promotionInfo = com.example.myjd.domain.model.PromotionInfo("", 0, emptyList())
             )
         }
     }
@@ -936,7 +936,7 @@ class DataRepository private constructor(private val context: Context) {
                 series = emptyList(),
                 colors = emptyList(),
                 storage = emptyList(),
-                promotionInfo = com.example.myjd.model.PromotionInfo("", 0, emptyList())
+                promotionInfo = com.example.myjd.domain.model.PromotionInfo("", 0, emptyList())
             )
         }
     }
@@ -955,7 +955,7 @@ class DataRepository private constructor(private val context: Context) {
                 series = emptyList(),
                 colors = emptyList(),
                 storage = emptyList(),
-                promotionInfo = com.example.myjd.model.PromotionInfo("", 0, emptyList())
+                promotionInfo = com.example.myjd.domain.model.PromotionInfo("", 0, emptyList())
             )
         }
     }

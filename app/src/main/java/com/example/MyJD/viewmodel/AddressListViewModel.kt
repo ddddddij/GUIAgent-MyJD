@@ -2,7 +2,7 @@ package com.example.myjd.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myjd.model.Address
+import com.example.myjd.domain.model.Address
 import com.example.myjd.repository.DataRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

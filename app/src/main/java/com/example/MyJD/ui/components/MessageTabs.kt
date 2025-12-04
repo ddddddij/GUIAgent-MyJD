@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myjd.model.MessageType
+import com.example.myjd.domain.model.MessageType
 import com.example.myjd.ui.theme.JDRed
 import com.example.myjd.ui.theme.JDTextPrimary
 import com.example.myjd.ui.theme.JDTextSecondary

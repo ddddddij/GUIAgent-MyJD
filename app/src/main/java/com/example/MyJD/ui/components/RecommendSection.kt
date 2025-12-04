@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.myjd.model.Product
+import com.example.myjd.domain.model.Product
 import com.example.myjd.repository.DataRepository
 import com.example.myjd.ui.theme.JDRed
 import com.example.myjd.ui.theme.JDTextPrimary

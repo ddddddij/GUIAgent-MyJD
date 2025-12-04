@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.myjd.model.Banner
+import com.example.myjd.domain.model.Banner
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalFoundationApi::class)

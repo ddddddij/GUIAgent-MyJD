@@ -19,8 +19,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.myjd.model.CartItem
-import com.example.myjd.model.CartItemSpec
+import com.example.myjd.domain.model.CartItem
+import com.example.myjd.domain.model.CartItemSpec
 import com.example.myjd.repository.DataRepository
 import com.example.myjd.viewmodel.HomeViewModel
 import com.example.myjd.viewmodel.ViewModelFactory

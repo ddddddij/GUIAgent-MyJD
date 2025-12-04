@@ -25,9 +25,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import com.example.myjd.model.SettleData
-import com.example.myjd.model.SettlePricing
-import com.example.myjd.model.Coupon
+import com.example.myjd.domain.model.SettleData
+import com.example.myjd.domain.model.SettlePricing
+import com.example.myjd.domain.model.Coupon
 import com.example.myjd.repository.DataRepository
 import com.example.myjd.viewmodel.SettleViewModel
 import com.example.myjd.viewmodel.ViewModelFactory
@@ -42,7 +42,7 @@ fun SettleScreen(
     imageUrl: String? = null,
     fromCart: Boolean = false,
     fromOrder: String? = null,
-    selectedAddress: com.example.myjd.model.Address? = null,
+    selectedAddress: com.example.myjd.domain.model.Address? = null,
     onBackClick: () -> Unit,
     onNavigateToPaymentSuccess: (String) -> Unit = {},
     onNavigateToAddressList: () -> Unit = {},
@@ -227,7 +227,7 @@ fun SettleScreen(
 
 @Composable
 private fun AddressSection(
-    address: com.example.myjd.model.Address?,
+    address: com.example.myjd.domain.model.Address?,
     onClick: () -> Unit
 ) {
     Card(
@@ -329,7 +329,7 @@ private fun AddressSection(
 
 @Composable
 private fun ProductSection(
-    product: com.example.myjd.model.SettleProduct,
+    product: com.example.myjd.domain.model.SettleProduct,
     quantity: Int,
     onQuantityIncrease: () -> Unit,
     onQuantityDecrease: () -> Unit
@@ -464,8 +464,8 @@ private fun ProductSection(
 
 @Composable
 private fun ServiceDeliverySection(
-    service: com.example.myjd.model.SettleService,
-    delivery: com.example.myjd.model.SettleDelivery,
+    service: com.example.myjd.domain.model.SettleService,
+    delivery: com.example.myjd.domain.model.SettleDelivery,
     onServiceClick: () -> Unit,
     onDeliveryClick: () -> Unit
 ) {

@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.myjd.model.ProductSpec
-import com.example.myjd.model.SpecSelection
-import com.example.myjd.model.CartItemSpec
+import com.example.myjd.domain.model.ProductSpec
+import com.example.myjd.domain.model.SpecSelection
+import com.example.myjd.domain.model.CartItemSpec
 import com.example.myjd.repository.DataRepository
 import com.example.myjd.common.utils.PricingUtils
 import kotlinx.coroutines.flow.MutableStateFlow

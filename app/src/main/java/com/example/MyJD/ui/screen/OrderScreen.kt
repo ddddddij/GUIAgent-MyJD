@@ -25,8 +25,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import com.example.myjd.model.Order
-import com.example.myjd.model.OrderStatus
+import com.example.myjd.domain.model.Order
+import com.example.myjd.domain.model.OrderStatus
 import com.example.myjd.repository.DataRepository
 import com.example.myjd.viewmodel.OrderViewModel
 import com.example.myjd.viewmodel.ViewModelFactory

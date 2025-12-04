@@ -3,10 +3,10 @@ package com.example.myjd.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myjd.model.ChatMessage
-import com.example.myjd.model.ChatSender
-import com.example.myjd.model.ChatMessageType
-import com.example.myjd.model.Conversation
+import com.example.myjd.domain.model.ChatMessage
+import com.example.myjd.domain.model.ChatSender
+import com.example.myjd.domain.model.ChatMessageType
+import com.example.myjd.domain.model.Conversation
 import com.example.myjd.repository.DataRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableStateFlow

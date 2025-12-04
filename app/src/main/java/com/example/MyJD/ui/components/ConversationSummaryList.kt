@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.myjd.model.ConversationSummary
+import com.example.myjd.domain.model.ConversationSummary
 
 @Composable
 fun ConversationSummaryList(

@@ -3,10 +3,10 @@ package com.example.myjd.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myjd.model.SettleData
-import com.example.myjd.model.SettlePricing
-import com.example.myjd.model.Coupon
-import com.example.myjd.model.OrderStatus 
+import com.example.myjd.domain.model.SettleData
+import com.example.myjd.domain.model.SettlePricing
+import com.example.myjd.domain.model.Coupon
+import com.example.myjd.domain.model.OrderStatus 
 import com.example.myjd.repository.DataRepository
 import com.example.myjd.common.utils.TaskSixteenLogger
 import com.example.myjd.common.utils.TaskSeventeenLogger
@@ -266,7 +266,7 @@ class SettleViewModel(
         _uiState.value = _uiState.value.copy(shouldNavigateToAddressList = true)
     }
     
-    fun onAddressSelected(address: com.example.myjd.model.Address) {
+    fun onAddressSelected(address: com.example.myjd.domain.model.Address) {
         _uiState.value.settleData?.let { currentData ->
             val updatedData = currentData.copy(address = address)
             _uiState.value = _uiState.value.copy(

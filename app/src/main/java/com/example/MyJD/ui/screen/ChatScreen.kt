@@ -74,7 +74,7 @@ fun ChatScreen(
                 }
             } else {
                 // 当选择客服消息类型时，显示对话摘要列表
-                if (selectedMessageType == com.example.myjd.model.MessageType.CUSTOMER_SERVICE) {
+                if (selectedMessageType == com.example.myjd.domain.model.MessageType.CUSTOMER_SERVICE) {
                     ConversationSummaryList(
                         conversationSummaries = conversationSummaries,
                         onConversationClick = { conversationSummary ->

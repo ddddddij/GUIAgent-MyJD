@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.myjd.model.*
+import com.example.myjd.domain.model.*
 import com.example.myjd.repository.DataRepository
 import com.example.myjd.viewmodel.MessageDetailViewModel
 import com.example.myjd.viewmodel.MessageDetailUiState

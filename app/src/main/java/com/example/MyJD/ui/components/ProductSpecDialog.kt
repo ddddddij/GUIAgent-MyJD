@@ -39,7 +39,7 @@ fun ProductSpecDialog(
     val context = LocalContext.current
     val repository = remember { DataRepository.getInstance(context) }
     
-    var productDetail by remember { mutableStateOf<com.example.myjd.model.ProductDetail?>(null) }
+    var productDetail by remember { mutableStateOf<com.example.myjd.domain.model.ProductDetail?>(null) }
     var isLoadingDetail by remember { mutableStateOf(true) }
 
     LaunchedEffect(productId) {

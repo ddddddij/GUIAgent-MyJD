@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import com.example.myjd.model.Product
+import com.example.myjd.domain.model.Product
 import com.example.myjd.viewmodel.SearchSortType
 import com.example.myjd.repository.DataRepository
 import com.example.myjd.ui.components.FilterBottomSheet

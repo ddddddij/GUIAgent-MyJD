@@ -20,7 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myjd.model.QuickAction
+import com.example.myjd.domain.model.QuickAction
 import com.example.myjd.ui.theme.JDRed
 import android.graphics.BitmapFactory
 

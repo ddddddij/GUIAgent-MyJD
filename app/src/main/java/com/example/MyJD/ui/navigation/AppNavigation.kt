@@ -395,7 +395,7 @@ fun AppNavigation(navController: NavHostController) {
             
             // Load selected address if provided
             val repository = DataRepository.getInstance(LocalContext.current)
-            var selectedAddress by remember { mutableStateOf<com.example.myjd.model.Address?>(null) }
+            var selectedAddress by remember { mutableStateOf<com.example.myjd.domain.model.Address?>(null) }
             
             LaunchedEffect(selectedAddressId) {
                 selectedAddressId?.let { addressId ->

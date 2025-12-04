@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
-import com.example.myjd.model.MeTabOrderStatus
+import com.example.myjd.domain.model.MeTabOrderStatus
 import com.example.myjd.repository.DataRepository
 import com.example.myjd.common.utils.TaskSixLogger
 
