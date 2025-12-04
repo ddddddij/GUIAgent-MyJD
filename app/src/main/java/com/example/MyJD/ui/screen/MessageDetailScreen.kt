@@ -1,5 +1,6 @@
 package com.example.MyJD.ui.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -26,10 +27,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.MyJD.model.*
-import com.example.MyJD.presenter.MessageDetailContract
-import com.example.MyJD.presenter.MessageDetailPresenter
 import com.example.MyJD.repository.DataRepository
+import com.example.MyJD.viewmodel.MessageDetailViewModel
+import com.example.MyJD.viewmodel.MessageDetailUiState
+import com.example.MyJD.viewmodel.NavigationEvent
+import com.example.MyJD.viewmodel.ViewModelFactory
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -45,77 +50,53 @@ fun MessageDetailScreen(
 ) {
     val context = LocalContext.current
     val repository = remember { DataRepository.getInstance(context) }
-    val presenter = remember { MessageDetailPresenter(repository) }
-    
-    var conversation by remember { mutableStateOf<Conversation?>(null) }
-    var messages by remember { mutableStateOf<List<ChatMessage>>(emptyList()) }
-    var isLoading by remember { mutableStateOf(true) }
-    var inputText by remember { mutableStateOf("") }
-    var title by remember { mutableStateOf("消息详情") }
-    var avatar by remember { mutableStateOf("") }
+    val viewModel: MessageDetailViewModel = viewModel(
+        factory = ViewModelFactory(repository, context)
+    )
+
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
     val keyboardController = LocalSoftwareKeyboardController.current
-    
-    // MVP View implementation
-    val view = remember {
-        object : MessageDetailContract.View {
-            override fun showConversation(newConversation: Conversation) {
-                conversation = newConversation
-            }
-            
-            override fun showMessages(newMessages: List<ChatMessage>) {
-                messages = newMessages
-            }
-            
-            override fun addMessage(message: ChatMessage) {
-                messages = messages + message
-            }
-            
-            override fun showToast(message: String) {
-                android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_SHORT).show()
-            }
-            
-            override fun clearInputText() {
-                inputText = ""
-            }
-            
-            override fun scrollToBottom() {
-                scope.launch {
-                    if (messages.isNotEmpty()) {
-                        listState.animateScrollToItem(messages.size - 1)
-                    }
-                }
-            }
-            
-            override fun showLoading(show: Boolean) {
-                isLoading = show
-            }
-            
-            override fun navigateToProduct(productId: String) {
-                onNavigateToProduct(productId)
-            }
-            
-            override fun setTitle(newTitle: String) {
-                title = newTitle
-            }
-            
-            override fun setAvatar(newAvatar: String) {
-                avatar = newAvatar
-            }
+
+    // Load conversation data when screen is first displayed or conversationId changes
+    LaunchedEffect(conversationId) {
+        viewModel.loadConversation(conversationId)
+    }
+
+    // Handle toast messages
+    LaunchedEffect(uiState.toastMessage) {
+        uiState.toastMessage?.let { message ->
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            viewModel.clearToast()
         }
     }
-    
-    // Attach presenter
-    LaunchedEffect(Unit) {
-        presenter.attach(view)
-        presenter.loadConversation(conversationId)
+
+    // Handle navigation events
+    LaunchedEffect(uiState.navigationEvent) {
+        when (val event = uiState.navigationEvent) {
+            is NavigationEvent.ToProductDetail -> {
+                onNavigateToProduct(event.productId)
+                viewModel.clearNavigationEvent()
+            }
+            NavigationEvent.NavigateBack -> {
+                onBackClick()
+                viewModel.clearNavigationEvent()
+            }
+            NavigationEvent.None, null -> { /* Do nothing */ }
+        }
     }
-    
-    DisposableEffect(Unit) {
-        onDispose {
-            presenter.detach()
+
+    // Handle scroll to bottom event
+    LaunchedEffect(uiState.scrollToBottomEvent) {
+        if (uiState.scrollToBottomEvent) {
+            scope.launch {
+                if (uiState.messages.isNotEmpty()) {
+                    listState.animateScrollToItem(uiState.messages.size - 1)
+                }
+                viewModel.clearScrollToBottomEvent()
+            }
         }
     }
     
@@ -127,28 +108,25 @@ fun MessageDetailScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = avatar,
+                            text = uiState.avatar,
                             fontSize = 20.sp,
                             modifier = Modifier.padding(end = 8.dp)
                         )
                         Text(
-                            text = title,
+                            text = uiState.title,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Medium
                         )
                     }
                 },
                 navigationIcon = {
-                    IconButton(onClick = {
-                        presenter.onBackClick()
-                        onBackClick()
-                    }) {
+                    IconButton(onClick = { viewModel.onBackClick() }) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "返回")
                     }
                 },
                 actions = {
                     IconButton(onClick = {
-                        onNavigateToSettings(title, avatar)
+                        onNavigateToSettings(uiState.title, uiState.avatar)
                     }) {
                         Icon(Icons.Filled.Settings, contentDescription = "设置")
                     }
@@ -157,15 +135,13 @@ fun MessageDetailScreen(
         },
         bottomBar = {
             MessageInputBar(
-                inputText = inputText,
-                onInputChange = { inputText = it },
+                inputText = uiState.inputText,
+                onInputChange = viewModel::onInputTextChange,
                 onSendClick = {
                     keyboardController?.hide()
-                    presenter.sendMessage(inputText)
+                    viewModel.sendMessage(uiState.inputText)
                 },
-                onQuickActionClick = { action ->
-                    presenter.onQuickActionClick(action)
-                }
+                onQuickActionClick = viewModel::onQuickActionClick
             )
         }
     ) { paddingValues ->
@@ -175,7 +151,7 @@ fun MessageDetailScreen(
                 .padding(paddingValues)
                 .background(Color(0xFFF5F5F5))
         ) {
-            if (isLoading) {
+            if (uiState.isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center)
                 )
@@ -186,13 +162,11 @@ fun MessageDetailScreen(
                     contentPadding = PaddingValues(8.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(messages) { message ->
+                    items(uiState.messages) { message ->
                         MessageItem(
                             message = message,
-                            chatAvatar = avatar,
-                            onProductClick = { productId ->
-                                presenter.onProductCardClick(productId)
-                            }
+                            chatAvatar = uiState.avatar,
+                            onProductClick = viewModel::onProductCardClick
                         )
                     }
                 }

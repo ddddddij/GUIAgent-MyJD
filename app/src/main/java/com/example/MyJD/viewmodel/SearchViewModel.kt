@@ -2,123 +2,104 @@ package com.example.MyJD.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import com.example.MyJD.repository.DataRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import com.example.MyJD.presenter.SearchContract
-import com.example.MyJD.presenter.SearchPresenter
-import com.example.MyJD.repository.DataRepository
-import com.example.MyJD.utils.TaskSixteenLogger
+import kotlinx.coroutines.launch
 
-class SearchViewModel(
-    private val repository: DataRepository,
-    private val context: Context
-) : ViewModel(), SearchContract.View {
-    
-    private val presenter: SearchContract.Presenter = SearchPresenter()
-    
-    private val _suggestions = MutableStateFlow<List<String>>(emptyList())
-    val suggestions: StateFlow<List<String>> = _suggestions.asStateFlow()
-    
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
-    
-    private val _toastMessage = MutableStateFlow<String?>(null)
-    val toastMessage: StateFlow<String?> = _toastMessage.asStateFlow()
-    
-    private val _navigationEvent = MutableStateFlow<String?>(null)
-    val navigationEvent: StateFlow<String?> = _navigationEvent.asStateFlow()
-    
-    private val _searchKeyword = MutableStateFlow("iPhone 15")
-    val searchKeyword: StateFlow<String> = _searchKeyword.asStateFlow()
-    
-    init {
-        presenter.attach(this)
-        loadSuggestions()
-    }
-    
-    override fun onCleared() {
-        super.onCleared()
-        presenter.detach()
-    }
-    
-    fun loadSuggestions() {
-        presenter.loadSuggestions()
-    }
-    
-    fun onSuggestionClicked(suggestion: String) {
-        presenter.onSuggestionClicked(suggestion)
-    }
-    
-    fun onSearchClicked(keyword: String = _searchKeyword.value) {
-        // 任务一日志记录：搜索发起
-        if (keyword.contains("iPhone 15", ignoreCase = true)) {
-            repository.logTaskOneSearchInitiated(keyword)
-        }
-        
-        // 任务十六日志记录：搜索iPhone15
-        if (keyword.contains("iPhone15") || keyword.contains("iPhone 15")) {
-            TaskSixteenLogger.logTaskStart(context)
-            TaskSixteenLogger.logSearchInitiated(context, keyword)
-        }
-        
-        presenter.onSearchClicked(keyword)
-    }
-    
-    fun updateSearchKeyword(keyword: String) {
-        _searchKeyword.value = keyword
-    }
-    
-    fun clearToast() {
-        _toastMessage.value = null
-    }
-    
-    fun clearNavigationEvent() {
-        _navigationEvent.value = null
-    }
-    
-    fun onPriceFilterApplied(minPrice: Int, maxPrice: Int) {
-        // 任务十六日志记录：价格筛选
-        if (minPrice == 5000 && maxPrice == 8000) {
-            TaskSixteenLogger.logPriceFilterApplied(context, minPrice, maxPrice)
-        }
-    }
-    
-    fun onCategoryFilterApplied(category: String) {
-        // 任务十六日志记录：类别筛选
-        if (category.contains("手机")) {
-            TaskSixteenLogger.logCategoryFilterApplied(context, category)
-        }
-    }
-    
-    // SearchContract.View implementations
-    override fun showSuggestions(suggestions: List<String>) {
-        _suggestions.value = suggestions
-    }
-    
-    override fun showToast(message: String) {
-        _toastMessage.value = message
-    }
-    
-    override fun navigateToSearchResult(keyword: String) {
-        _navigationEvent.value = keyword
-    }
-    
-    override fun showLoading(isLoading: Boolean) {
-        _isLoading.value = isLoading
-    }
+data class SearchUiState(
+    val suggestions: List<String> = emptyList(),
+    val toastMessage: String? = null,
+    val isLoading: Boolean = false,
+    val navigationEvent: SearchNavigationEvent? = null,
+    val searchText: String = ""
+)
+
+sealed class SearchNavigationEvent {
+    data class ToSearchResult(val keyword: String) : SearchNavigationEvent()
+    object None : SearchNavigationEvent()
 }
 
-class SearchViewModelFactory(
-    private val repository: DataRepository,
-    private val context: Context
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(SearchViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return SearchViewModel(repository, context) as T
+class SearchViewModel(
+    private val repository: DataRepository, // Although not directly used by presenter, keep for future expansion
+    private val context: Context // Context might be needed for Toast, but generally avoid in ViewModel
+) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(SearchUiState())
+    val uiState: StateFlow<SearchUiState> = _uiState.asStateFlow()
+
+    private val defaultKeyword = "iPhone 15"
+    private val searchSuggestions = listOf(
+        "iphone15promax",
+        "iphone15",
+        "iphone15pro", 
+        "iphone15plus",
+        "iphone15 256g",
+        "iphone15pro max 国行原装全新",
+        "iphone15promax 分期",
+        "iphone15pm",
+        "iphone15plus512g",
+        "iphone15pro max 分期付款 24期",
+        "iphone15pro max 苹果官方旗舰国行",
+        "iphone15pro max 全新京东自营",
+        "iphone15pro 全新未激活未拆封国行",
+        "iphone15 512g",
+        "iphone15pro512g",
+        "iphone15pro max 苹果官方旗舰全新",
+        "iphone15pro max 全新国行未激活",
+        "iphone15promax 国行百亿补贴",
+        "iphone15 手机 pro max"
+    )
+
+    init {
+        loadSuggestions()
+    }
+
+    fun loadSuggestions(query: String = "") {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true)
+            delay(300) // Simulate network delay
+            // In a real app, filter suggestions based on query
+            _uiState.value = _uiState.value.copy(
+                suggestions = searchSuggestions,
+                isLoading = false
+            )
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+
+    fun onSuggestionClicked(suggestion: String) {
+        // As per presenter, it always navigates with defaultKeyword for suggestion clicks
+        _uiState.value = _uiState.value.copy(
+            toastMessage = "正在搜索 $defaultKeyword…",
+            navigationEvent = SearchNavigationEvent.ToSearchResult(defaultKeyword)
+        )
+    }
+
+    fun onSearchClicked(keyword: String) {
+        val searchKeyword = if (keyword.isBlank()) defaultKeyword else keyword
+        _uiState.value = _uiState.value.copy(
+            toastMessage = "正在搜索 $searchKeyword…",
+            navigationEvent = SearchNavigationEvent.ToSearchResult(searchKeyword)
+        )
+    }
+
+    fun onSearchTextChange(newText: String) {
+        _uiState.value = _uiState.value.copy(searchText = newText)
+    }
+
+    fun clearToast() {
+        _uiState.value = _uiState.value.copy(toastMessage = null)
+    }
+
+    fun clearNavigationEvent() {
+        _uiState.value = _uiState.value.copy(navigationEvent = SearchNavigationEvent.None)
+    }
+    
+    // This function remains in ViewModel as it provides data, but actual highlighting will be in UI
+    fun highlightKeyword(text: String, keyword: String): String {
+        return text // Highlighting logic will be in UI layer
     }
 }

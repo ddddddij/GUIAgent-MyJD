@@ -20,6 +20,8 @@ class ViewModelFactory(
             SettleViewModel::class.java -> SettleViewModel(repository, context, fromOrder) as T
             AddressListViewModel::class.java -> AddressListViewModel(repository) as T
             AddressDetailViewModel::class.java -> AddressDetailViewModel(repository) as T
+            MessageDetailViewModel::class.java -> MessageDetailViewModel(repository, context) as T
+            MessageSettingViewModel::class.java -> MessageSettingViewModel(repository, context) as T
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
     }

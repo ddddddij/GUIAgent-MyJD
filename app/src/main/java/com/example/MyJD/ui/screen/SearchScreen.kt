@@ -23,10 +23,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.MyJD.ui.theme.JDRed
 import com.example.MyJD.viewmodel.SearchViewModel
-import com.example.MyJD.viewmodel.SearchViewModelFactory
+import com.example.MyJD.viewmodel.SearchNavigationEvent
+import com.example.MyJD.viewmodel.ViewModelFactory
 import com.example.MyJD.repository.DataRepository
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,26 +40,25 @@ fun SearchScreen(
 ) {
     val context = LocalContext.current
     val repository = DataRepository.getInstance(context)
-    val viewModel: SearchViewModel = viewModel(factory = SearchViewModelFactory(repository, context))
-    val suggestions by viewModel.suggestions.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
-    val toastMessage by viewModel.toastMessage.collectAsState()
-    val navigationEvent by viewModel.navigationEvent.collectAsState()
-    val searchKeyword by viewModel.searchKeyword.collectAsState()
+    val viewModel: SearchViewModel = viewModel(factory = ViewModelFactory(repository, context))
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     
     // 处理Toast消息
-    LaunchedEffect(toastMessage) {
-        toastMessage?.let { message ->
-            android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_SHORT).show()
+    LaunchedEffect(uiState.toastMessage) {
+        uiState.toastMessage?.let { message ->
+            android.widget.Toast.makeText(context, message as CharSequence, android.widget.Toast.LENGTH_SHORT).show()
             viewModel.clearToast()
         }
     }
     
     // 处理导航事件
-    LaunchedEffect(navigationEvent) {
-        navigationEvent?.let { keyword ->
-            onNavigateToSearchResult(keyword)
-            viewModel.clearNavigationEvent()
+    LaunchedEffect(uiState.navigationEvent) {
+        when (val event = uiState.navigationEvent) {
+            is SearchNavigationEvent.ToSearchResult -> {
+                onNavigateToSearchResult(event.keyword)
+                viewModel.clearNavigationEvent()
+            }
+            SearchNavigationEvent.None, null -> { /* Do nothing */ }
         }
     }
     
@@ -68,14 +69,14 @@ fun SearchScreen(
     ) {
         // 顶部搜索栏
         SearchTopBar(
-            searchKeyword = searchKeyword,
+            searchKeyword = uiState.searchText,
             onBackClick = onBackClick,
-            onSearchClick = { viewModel.onSearchClicked(searchKeyword) },
-            onKeywordChange = { viewModel.updateSearchKeyword(it) }
+            onSearchClick = { viewModel.onSearchClicked(uiState.searchText) },
+            onKeywordChange = viewModel::onSearchTextChange
         )
         
         // 搜索建议列表
-        if (isLoading) {
+        if (uiState.isLoading) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -89,13 +90,13 @@ fun SearchScreen(
                     .background(Color.White)
                     .padding(horizontal = 16.dp)
             ) {
-                items(suggestions) { suggestion ->
+                items(uiState.suggestions) { suggestion ->
                     SearchSuggestionItem(
                         suggestion = suggestion,
-                        highlightKeyword = "iphone15",
+                        highlightKeyword = uiState.searchText,
                         onClick = { viewModel.onSuggestionClicked(suggestion) }
                     )
-                    if (suggestion != suggestions.last()) {
+                    if (suggestion != uiState.suggestions.last()) {
                         Divider(
                             color = Color(0xFFE5E5E5),
                             thickness = 0.5.dp,

@@ -1,5 +1,6 @@
 package com.example.MyJD.ui.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -17,12 +18,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.MyJD.presenter.MessageSettingContract
-import com.example.MyJD.presenter.MessageSettingPresenter
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.MyJD.repository.DataRepository
 import com.example.MyJD.ui.components.SettingItemView
 import com.example.MyJD.ui.components.SettingSection
 import com.example.MyJD.ui.components.SettingDivider
+import com.example.MyJD.viewmodel.MessageSettingViewModel
+import com.example.MyJD.viewmodel.MessageSettingUiState
+import com.example.MyJD.viewmodel.MessageSettingNavigationEvent
+import com.example.MyJD.viewmodel.ViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,47 +39,37 @@ fun MessageSettingScreen(
 ) {
     val context = LocalContext.current
     val repository = remember { DataRepository.getInstance(context) }
-    val presenter = remember { MessageSettingPresenter(repository) }
-    
-    var displayShopName by remember { mutableStateOf(shopName) }
-    var displayShopAvatar by remember { mutableStateOf(shopAvatar) }
-    var notificationEnabled by remember { mutableStateOf(false) }
-    
-    // MVP View implementation
-    val view = remember {
-        object : MessageSettingContract.View {
-            override fun setShopInfo(shopName: String, shopAvatar: String) {
-                displayShopName = shopName
-                displayShopAvatar = shopAvatar
-            }
-            
-            override fun showToast(message: String) {
-                android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_SHORT).show()
-            }
-            
-            override fun updateNotificationSwitch(enabled: Boolean) {
-                notificationEnabled = enabled
-            }
-            
-            override fun navigateToShop() {
-                onNavigateToShop()
-            }
-            
-            override fun navigateBack() {
-                onBackClick()
-            }
+    val viewModel: MessageSettingViewModel = viewModel(
+        factory = ViewModelFactory(repository, context)
+    )
+
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    // Load shop info when screen is first displayed or shopName/shopAvatar changes
+    LaunchedEffect(shopName, shopAvatar) {
+        viewModel.loadShopInfo(shopName, shopAvatar)
+    }
+
+    // Handle toast messages
+    LaunchedEffect(uiState.toastMessage) {
+        uiState.toastMessage?.let { message ->
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            viewModel.clearToast()
         }
     }
-    
-    // Attach presenter
-    LaunchedEffect(Unit) {
-        presenter.attach(view)
-        presenter.loadShopInfo(shopName, shopAvatar)
-    }
-    
-    DisposableEffect(Unit) {
-        onDispose {
-            presenter.detach()
+
+    // Handle navigation events
+    LaunchedEffect(uiState.navigationEvent) {
+        when (val event = uiState.navigationEvent) {
+            MessageSettingNavigationEvent.ToShop -> {
+                onNavigateToShop()
+                viewModel.clearNavigationEvent()
+            }
+            MessageSettingNavigationEvent.NavigateBack -> {
+                onBackClick()
+                viewModel.clearNavigationEvent()
+            }
+            MessageSettingNavigationEvent.None, null -> { /* Do nothing */ }
         }
     }
     
@@ -89,9 +84,7 @@ fun MessageSettingScreen(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = {
-                        presenter.onBackClick()
-                    }) {
+                    IconButton(onClick = { viewModel.onBackClick() }) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "返回")
                     }
                 },
@@ -112,8 +105,8 @@ fun MessageSettingScreen(
         ) {
             // 店铺信息头部区域
             ShopInfoHeader(
-                shopName = displayShopName,
-                shopAvatar = displayShopAvatar,
+                shopName = uiState.shopName,
+                shopAvatar = uiState.shopAvatar,
                 modifier = Modifier.padding(vertical = 24.dp)
             )
             
@@ -121,14 +114,14 @@ fun MessageSettingScreen(
             SettingSection {
                 SettingItemView(
                     title = "进入店铺",
-                    onClick = { presenter.onEnterShopClick() }
+                    onClick = { viewModel.onEnterShopClick() }
                 )
                 
                 SettingDivider()
                 
                 SettingItemView(
                     title = "搜索聊天记录",
-                    onClick = { presenter.onSearchChatHistoryClick() }
+                    onClick = { viewModel.onSearchChatHistoryClick() }
                 )
                 
                 SettingDivider()
@@ -137,9 +130,9 @@ fun MessageSettingScreen(
                     title = "消息免打扰",
                     showArrow = false,
                     showSwitch = true,
-                    switchEnabled = !notificationEnabled, // 免打扰开关与通知开关相反
+                    switchEnabled = !uiState.isNotificationEnabled, // 免打扰状态是通知开启的反向
                     onSwitchChanged = { enabled ->
-                        presenter.onNotificationSwitchChanged(!enabled) // 传递通知开关状态
+                        viewModel.onNotificationSwitchChanged(!enabled) // 传递通知开启状态（免打扰的反向）
                     }
                 )
                 
@@ -147,7 +140,7 @@ fun MessageSettingScreen(
                 
                 SettingItemView(
                     title = "消息接收设置",
-                    onClick = { presenter.onMessageSettingsClick() }
+                    onClick = { viewModel.onMessageSettingsClick() }
                 )
             }
             
@@ -155,7 +148,7 @@ fun MessageSettingScreen(
             
             // 清除本地记录按钮
             ClearRecordsButton(
-                onClick = { presenter.onClearLocalRecordsClick() },
+                onClick = { viewModel.onClearLocalRecordsClick() },
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
             
