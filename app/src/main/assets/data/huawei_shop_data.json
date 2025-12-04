@@ -1,0 +1,82 @@
+{
+  "shopInfo": {
+    "id": "huawei_jd_flagship",
+    "name": "华为官方旗舰店",
+    "avatar": "image/华为店铺logo.PNG",
+    "followers": "2.3亿",
+    "isFollowed": false,
+    "serviceBanner": "官方授权 | 正品保障 | 极速发货",
+    "description": "华为官方授权经销商，品质保证，服务一流"
+  },
+  "statistics": [
+    {
+      "label": "商品评价",
+      "value": "99%",
+      "icon": "👍"
+    },
+    {
+      "label": "退换货",
+      "value": "98%",
+      "icon": "♻️"
+    },
+    {
+      "label": "客服咨询",
+      "value": "97%",
+      "icon": "💬"
+    }
+  ],
+  "categories": [
+    {
+      "id": "all",
+      "name": "全部商品",
+      "isSelected": true
+    },
+    {
+      "id": "phones",
+      "name": "手机"
+    },
+    {
+      "id": "laptops",
+      "name": "笔记本"
+    },
+    {
+      "id": "wearables",
+      "name": "穿戴"
+    }
+  ],
+  "products": [
+    {
+      "id": "huawei_mate60_001",
+      "name": "华为 HUAWEI Mate 60 Pro+ 5G手机 16GB+1TB 宣白",
+      "price": 8999.0,
+      "originalPrice": 9999.0,
+      "brand": "华为",
+      "category": "手机",
+      "imageUrl": "image/华为Mate60封面.JPG",
+      "storeId": "huawei_jd_flagship",
+      "storeName": "华为官方旗舰店"
+    },
+    {
+      "id": "huawei_p60_001",
+      "name": "华为 HUAWEI P60 Art 12GB+512GB 蔚蓝海",
+      "price": 8988.0,
+      "originalPrice": 8988.0,
+      "brand": "华为",
+      "category": "手机",
+      "imageUrl": "image/华为P60封面.JPG",
+      "storeId": "huawei_jd_flagship",
+      "storeName": "华为官方旗舰店"
+    },
+    {
+      "id": "huawei_nova11_001",
+      "name": "华为 HUAWEI nova 11 256GB 11号色",
+      "price": 2799.0,
+      "originalPrice": 2799.0,
+      "brand": "华为",
+      "category": "手机",
+      "imageUrl": "image/华为nova11封面.JPG",
+      "storeId": "huawei_jd_flagship",
+      "storeName": "华为官方旗舰店"
+    }
+  ]
+}

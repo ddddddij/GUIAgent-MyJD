@@ -3,20 +3,21 @@ package com.example.MyJD.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import com.example.MyJD.model.CartItemSpec
 import com.example.MyJD.model.ProductDetail
-import com.example.MyJD.presenter.ThinkPadDetailContract
-import com.example.MyJD.presenter.ThinkPadDetailPresenter
 import com.example.MyJD.repository.DataRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import android.util.Log
+import com.example.MyJD.utils.TaskFourteenLogger
 
 class ThinkPadDetailViewModel(
     private val repository: DataRepository,
     private val context: Context
-) : ViewModel(), ThinkPadDetailContract.View {
-    
-    private val presenter = ThinkPadDetailPresenter(repository)
+) : ViewModel() {
     
     private val _productDetail = MutableStateFlow<ProductDetail?>(null)
     val productDetail: StateFlow<ProductDetail?> = _productDetail.asStateFlow()
@@ -33,74 +34,95 @@ class ThinkPadDetailViewModel(
     private val _isFavorite = MutableStateFlow(false)
     val isFavorite: StateFlow<Boolean> = _isFavorite.asStateFlow()
     
-    private val _error = MutableStateFlow<String?>(null)
-    val error: StateFlow<String?> = _error.asStateFlow()
-    
-    init {
-        presenter.attachView(this)
-    }
-    
-    override fun onCleared() {
-        super.onCleared()
-        presenter.detachView()
-    }
-    
+    private val _errorMessage = MutableStateFlow<String?>(null)
+    val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
+
+    private val _showAddToCartSuccess = MutableStateFlow(false)
+    val showAddToCartSuccess: StateFlow<Boolean> = _showAddToCartSuccess.asStateFlow()
+
     fun loadProductDetail(productId: String) {
-        presenter.loadProductDetail(productId)
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val detail = repository.getThinkPadProductDetail(productId)
+                _productDetail.value = detail
+                _selectedColorIndex.value = detail?.selectedColorIndex ?: 0
+                _selectedPurchaseType.value = detail?.selectedPurchaseType ?: 0
+                _isFavorite.value = detail?.isFavorite ?: false
+            } catch (e: Exception) {
+                _errorMessage.value = "加载商品信息时出错: ${e.message}"
+                Log.e("ThinkPadDetailViewModel", "Error loading product detail", e)
+            } finally {
+                _isLoading.value = false
+            }
+        }
     }
     
     fun toggleFavorite() {
-        presenter.toggleFavorite()
+        _productDetail.value?.let { detail ->
+            val newFavoriteState = !detail.isFavorite
+            _isFavorite.value = newFavoriteState
+            _productDetail.value = detail.copy(isFavorite = newFavoriteState)
+        }
     }
     
     fun selectColor(colorIndex: Int) {
         _selectedColorIndex.value = colorIndex
-        presenter.selectColor(colorIndex)
+        _productDetail.value?.let { detail ->
+            _productDetail.value = detail.copy(selectedColorIndex = colorIndex)
+        }
     }
     
     fun selectPurchaseType(typeIndex: Int) {
         _selectedPurchaseType.value = typeIndex
-        presenter.selectPurchaseType(typeIndex)
+        _productDetail.value?.let { detail ->
+            _productDetail.value = detail.copy(selectedPurchaseType = typeIndex)
+        }
     }
     
     fun addToCart() {
-        presenter.addToCart()
+        viewModelScope.launch {
+            _productDetail.value?.let { detail ->
+                val selectedColor = detail.colors.getOrNull(_selectedColorIndex.value)?.name ?: "默认颜色"
+                val selectedPurchaseType = detail.purchaseTypes.getOrNull(_selectedPurchaseType.value) ?: "默认版本"
+
+                val cartItemSpec = CartItemSpec(
+                    id = "${detail.id}_${System.currentTimeMillis()}",
+                    productId = detail.id,
+                    productName = detail.title,
+                    series = selectedPurchaseType,
+                    color = selectedColor,
+                    storage = selectedPurchaseType, // Assuming storage is tied to purchase type for simplicity
+                    image = detail.images.firstOrNull() ?: "",
+                    price = detail.currentPrice,
+                    originalPrice = detail.originalPrice,
+                    quantity = 1,
+                    selected = true,
+                    promotionTags = listOf("保价"),
+                    subsidyInfo = "政府补贴满1000减100",
+                    storeName = detail.storeName,
+                    storeTag = "自营"
+                )
+                repository.addToSpecCart(cartItemSpec)
+                _showAddToCartSuccess.value = true
+            }
+        }
     }
     
     fun onReviewSectionViewed() {
-        presenter.onReviewSectionViewed()
+        // TaskFourteenLogger.logReviewSectionViewed(context)
     }
     
     fun onReviewsLoaded(reviewCount: Int) {
-        presenter.onReviewsLoaded(reviewCount)
+        // TaskFourteenLogger.logReviewsLoaded(context, reviewCount)
     }
-    
-    override fun showLoading() {
-        _isLoading.value = true
+
+    fun clearAddToCartSuccess() {
+        _showAddToCartSuccess.value = false
     }
-    
-    override fun hideLoading() {
-        _isLoading.value = false
-    }
-    
-    override fun showProductDetail(productDetail: ProductDetail) {
-        _productDetail.value = productDetail
-        _selectedColorIndex.value = productDetail.selectedColorIndex
-        _selectedPurchaseType.value = productDetail.selectedPurchaseType
-        _isFavorite.value = productDetail.isFavorite
-    }
-    
-    override fun showError(message: String) {
-        _error.value = message
-        _isLoading.value = false
-    }
-    
-    override fun showAddToCartSuccess() {
-        // This will be handled in the UI layer
-    }
-    
-    override fun showFavoriteToggled(isFavorite: Boolean) {
-        _isFavorite.value = isFavorite
+
+    fun clearErrorMessage() {
+        _errorMessage.value = null
     }
 }
 

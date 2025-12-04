@@ -27,10 +27,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.MyJD.model.Product
-import com.example.MyJD.presenter.SearchSortType
+import com.example.MyJD.viewmodel.SearchSortType
 import com.example.MyJD.repository.DataRepository
 import com.example.MyJD.ui.components.FilterBottomSheet
 import com.example.MyJD.ui.theme.JDRed
+import com.example.MyJD.viewmodel.SearchFilter
 import com.example.MyJD.viewmodel.SearchResultViewModel
 import com.example.MyJD.viewmodel.SearchResultViewModelFactory
 
@@ -45,34 +46,19 @@ fun SearchResultScreen(
     val context = LocalContext.current
     val repository = remember { DataRepository.getInstance(context) }
     val viewModel: SearchResultViewModel = viewModel(
-        factory = SearchResultViewModelFactory(repository, keyword, context)
+        factory = SearchResultViewModelFactory(repository)
     )
-    
+
+    LaunchedEffect(keyword) {
+        viewModel.searchProducts(keyword)
+    }
+
     val products by viewModel.products.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
-    val toastMessage by viewModel.toastMessage.collectAsState()
-    val currentSortType by viewModel.currentSortType.collectAsState()
-    val showFilterDialog by viewModel.showFilterDialog.collectAsState()
-    val navigationEvent by viewModel.navigationEvent.collectAsState()
-    val searchKeyword by viewModel.searchKeyword.collectAsState()
-    val currentFilter by viewModel.currentFilter.collectAsState()
-    
-    // 处理Toast消息
-    LaunchedEffect(toastMessage) {
-        toastMessage?.let { message ->
-            android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_SHORT).show()
-            viewModel.clearToast()
-        }
-    }
-    
-    // 处理导航事件
-    LaunchedEffect(navigationEvent) {
-        navigationEvent?.let { productId ->
-            onNavigateToProduct(productId)
-            viewModel.clearNavigationEvent()
-        }
-    }
-    
+    val currentSortType by viewModel.sortType.collectAsState()
+    var showFilterDialog by remember { mutableStateOf(false) }
+    val currentFilter by viewModel.filter.collectAsState()
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -80,19 +66,19 @@ fun SearchResultScreen(
     ) {
         // 顶部搜索栏
         SearchResultTopBar(
-            searchKeyword = searchKeyword,
+            searchKeyword = keyword,
             onBackClick = onBackClick,
-            onSearchClick = { viewModel.onSearchClicked() },
-            onKeywordChange = { viewModel.updateSearchKeyword(it) }
+            onSearchClick = { viewModel.searchProducts(keyword) },
+            onKeywordChange = { /* Implement if search keyword can be changed on this screen */ }
         )
-        
+
         // 筛选排序栏
         SortAndFilterBar(
             currentSortType = currentSortType,
-            onSortClick = { viewModel.onSortClicked(it) },
-            onFilterClick = { viewModel.onFilterClicked() }
+            onSortClick = { viewModel.setSortType(it) },
+            onFilterClick = { showFilterDialog = true }
         )
-        
+
         // 商品列表
         if (isLoading) {
             Box(
@@ -114,32 +100,28 @@ fun SearchResultScreen(
                 items(products) { product ->
                     ProductCard(
                         product = product,
-                        onClick = { viewModel.onProductClicked(product.id) }
+                        onClick = { onNavigateToProduct(product.id) }
                     )
                 }
             }
         }
     }
-    
+
     // 筛选弹窗
     if (showFilterDialog) {
-        ModalBottomSheetLayout(
-            sheetContent = {
-                FilterBottomSheet(
-                    currentFilter = currentFilter,
-                    onApplyFilter = { filter ->
-                        viewModel.applyFilter(filter)
-                    },
-                    onResetFilter = {
-                        viewModel.resetFilter()
-                    },
-                    onDismiss = {
-                        viewModel.dismissFilterDialog()
-                    }
-                )
+        FilterBottomSheet(
+            currentFilter = currentFilter,
+            onApplyFilter = { filter ->
+                viewModel.setFilter(filter)
+                showFilterDialog = false
             },
-            modifier = Modifier.fillMaxSize()
-        ) {}
+            onResetFilter = {
+                viewModel.setFilter(com.example.MyJD.viewmodel.SearchFilter())
+            },
+            onDismiss = {
+                showFilterDialog = false
+            }
+        )
     }
 }
 

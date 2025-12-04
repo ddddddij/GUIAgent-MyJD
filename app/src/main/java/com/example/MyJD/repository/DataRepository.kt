@@ -574,6 +574,23 @@ class DataRepository private constructor(private val context: Context) {
         }
     }
 
+    suspend fun getShopData(shopName: String): ShopPageData? = withContext(Dispatchers.IO) {
+        try {
+            val fileName = when {
+                shopName.contains("Apple", ignoreCase = true) -> "data/apple_shop_data.json"
+                shopName.contains("华为", ignoreCase = true) -> "data/huawei_shop_data.json"
+                else -> return@withContext null // Or a default empty state
+            }
+            val jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
+            val shopData = gson.fromJson(jsonString, ShopPageData::class.java)
+            android.util.Log.d("DataRepository", "Loaded shop data from $fileName")
+            return@withContext shopData
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Error loading shop data for $shopName from assets", e)
+            return@withContext null
+        }
+    }
+
     suspend fun loadMeTabData(): MeTabData = withContext(Dispatchers.IO) {
         try {
             val jsonString = context.assets.open("data/me_tab.json").bufferedReader().use { it.readText() }
@@ -986,57 +1003,6 @@ class DataRepository private constructor(private val context: Context) {
     
     private val _cartCountFlow = MutableStateFlow(0)
     val cartCountFlow: StateFlow<Int> = _cartCountFlow.asStateFlow()
-
-    fun getShoppingCart(): ShoppingCart {
-        return shoppingCart
-    }
-
-    fun addToCart(product: Product, quantity: Int = 1) {
-        val existingItem = shoppingCart.items.find { it.product.id == product.id }
-        val updatedItems = if (existingItem != null) {
-            shoppingCart.items.map { item ->
-                if (item.product.id == product.id) {
-                    item.copy(quantity = item.quantity + quantity)
-                } else {
-                    item
-                }
-            }
-        } else {
-            shoppingCart.items + CartItem(
-                id = "${product.id}_${System.currentTimeMillis()}",
-                product = product,
-                quantity = quantity
-            )
-        }
-        shoppingCart = ShoppingCart(updatedItems)
-    }
-
-    fun removeFromCart(cartItemId: String) {
-        val updatedItems = shoppingCart.items.filter { it.id != cartItemId }
-        shoppingCart = ShoppingCart(updatedItems)
-    }
-
-    fun updateCartItemQuantity(cartItemId: String, quantity: Int) {
-        val updatedItems = shoppingCart.items.map { item ->
-            if (item.id == cartItemId) {
-                item.copy(quantity = quantity)
-            } else {
-                item
-            }
-        }
-        shoppingCart = ShoppingCart(updatedItems)
-    }
-
-    fun toggleCartItemSelection(cartItemId: String) {
-        val updatedItems = shoppingCart.items.map { item ->
-            if (item.id == cartItemId) {
-                item.copy(isSelected = !item.isSelected)
-            } else {
-                item
-            }
-        }
-        shoppingCart = ShoppingCart(updatedItems)
-    }
 
     // 规格购物车相关方法
     fun getSpecShoppingCart(): List<CartItemSpec> {
@@ -1979,6 +1945,63 @@ class DataRepository private constructor(private val context: Context) {
     
     // ==================== 任务四日志管理功能 ====================
     
+    /**
+     * 获取购物车所有商品
+     */
+    suspend fun getCartItems(): List<CartItem> = withContext(Dispatchers.IO) {
+        // This is a placeholder implementation.
+        // You should replace this with your actual logic to fetch cart items.
+        try {
+            if (cartItemsFile.exists()) {
+                val jsonContent = cartItemsFile.readText()
+                if (jsonContent.isNotBlank()) {
+                    val listType = object : TypeToken<List<CartItem>>() {}.type
+                    val cartItems: List<CartItem>? = gson.fromJson(jsonContent, listType)
+                    return@withContext cartItems ?: emptyList()
+                }
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Error loading cart items from ${cartItemsFile.absolutePath}", e)
+        }
+        return@withContext emptyList()
+    }
+
+    /**
+     * 更新购物车商品数量
+     */
+    suspend fun updateCartItemQuantity(itemId: String, newQuantity: Int): Boolean = withContext(Dispatchers.IO) {
+        try {
+            val itemIndex = specShoppingCart.indexOfFirst { it.id == itemId }
+            if (itemIndex != -1) {
+                specShoppingCart[itemIndex] = specShoppingCart[itemIndex].copy(quantity = newQuantity)
+                updateCartFlows()
+                saveCartItems()
+                return@withContext true
+            }
+            return@withContext false
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Error updating cart item quantity for $itemId", e)
+            return@withContext false
+        }
+    }
+
+    /**
+     * 从购物车移除商品
+     */
+    suspend fun removeCartItem(itemId: String): Boolean = withContext(Dispatchers.IO) {
+        try {
+            val removed = specShoppingCart.removeAll { it.id == itemId }
+            if (removed) {
+                updateCartFlows()
+                saveCartItems()
+            }
+            return@withContext removed
+        } catch (e: Exception) {
+            android.util.Log.e("DataRepository", "Error removing cart item $itemId", e)
+            return@withContext false
+        }
+    }
+
     /**
      * 记录访问「我的」页面（任务四相关）
      */

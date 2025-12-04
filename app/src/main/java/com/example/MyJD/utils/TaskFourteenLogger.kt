@@ -49,6 +49,12 @@ object TaskFourteenLogger {
         val message = "[$timestamp] 任务十四完成：iPhone15商品详情页共有 $reviewCount 条评论"
         writeToLog(context, message)
     }
+
+    fun logAddToCart(context: Context, productName: String) {
+        val timestamp = dateFormat.format(Date())
+        val message = "[$timestamp] 将商品添加到购物车: $productName"
+        writeToLog(context, message)
+    }
     
     fun logError(context: Context, error: String) {
         val timestamp = dateFormat.format(Date())

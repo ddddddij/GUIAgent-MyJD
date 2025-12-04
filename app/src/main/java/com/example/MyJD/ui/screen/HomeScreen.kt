@@ -90,7 +90,11 @@ fun HomeScreen(
                 products = products,
                 onProductClick = onNavigateToProduct,
                 onAddToCart = { product ->
-                    viewModel.addToCart(product)
+                    viewModel.addToCart(
+                        product = product,
+                        selectedColor = product.selectedColor ?: "",
+                        selectedVersion = product.selectedVersion ?: ""
+                    )
                 }
             )
         }

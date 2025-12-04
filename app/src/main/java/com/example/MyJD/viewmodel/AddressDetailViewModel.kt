@@ -1,72 +1,173 @@
 package com.example.MyJD.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.MyJD.model.Address
-import com.example.MyJD.presenter.AddressDetailContract
-import com.example.MyJD.presenter.AddressDetailPresenter
 import com.example.MyJD.repository.DataRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 class AddressDetailViewModel(
     private val repository: DataRepository
-) : ViewModel(), AddressDetailContract.View {
-    
-    private val presenter: AddressDetailPresenter = AddressDetailPresenter(repository)
-    
+) : ViewModel() {
+
     // UI State
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
-    
+
     private val _address = MutableStateFlow<Address?>(null)
     val address: StateFlow<Address?> = _address.asStateFlow()
-    
+
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
-    
+
     private val _validationErrors = MutableStateFlow<Map<String, String>>(emptyMap())
     val validationErrors: StateFlow<Map<String, String>> = _validationErrors.asStateFlow()
-    
+
     private val _navigationEvent = MutableStateFlow<NavigationEvent?>(null)
     val navigationEvent: StateFlow<NavigationEvent?> = _navigationEvent.asStateFlow()
-    
+
     private val _toastMessage = MutableStateFlow<String?>(null)
     val toastMessage: StateFlow<String?> = _toastMessage.asStateFlow()
-    
+
     // Form data
     private val _formData = MutableStateFlow(FormData())
     val formData: StateFlow<FormData> = _formData.asStateFlow()
-    
-    init {
-        presenter.attachView(this)
-    }
-    
-    override fun onCleared() {
-        super.onCleared()
-        presenter.detachView()
-    }
-    
+
     // Public methods for UI
     fun loadAddress(addressId: String?) {
-        presenter.loadAddress(addressId)
+        if (addressId == null) {
+            // 新增地址，清空表单
+            clearForm()
+            return
+        }
+
+        _isLoading.value = true
+
+        viewModelScope.launch {
+            try {
+                val address = repository.getAddressById(addressId)
+                _isLoading.value = false
+                if (address != null) {
+                    _address.value = address
+                    setFormData(
+                        name = address.recipientName,
+                        phone = address.phoneNumber,
+                        province = address.province,
+                        city = address.city,
+                        district = address.district,
+                        detailAddress = address.detailAddress,
+                        isDefault = address.isDefault,
+                        tag = address.tag
+                    )
+                } else {
+                    _errorMessage.value = "地址不存在"
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("AddressDetailViewModel", "Error loading address", e)
+                _isLoading.value = false
+                _errorMessage.value = "加载地址失败：${e.message}"
+            }
+        }
     }
-    
+
     fun saveAddress(addressId: String?) {
         val form = _formData.value
-        presenter.saveAddress(
-            addressId = addressId,
-            name = form.name,
-            phone = form.phone,
-            province = form.province,
-            city = form.city,
-            district = form.district,
-            detailAddress = form.detailAddress,
-            isDefault = form.isDefault,
-            tag = form.tag
-        )
+        if (!validateForm(form.name, form.phone, form.province, form.city, form.district, form.detailAddress)) {
+            return
+        }
+
+        _isLoading.value = true
+
+        viewModelScope.launch {
+            try {
+                val address = Address(
+                    id = addressId ?: "addr_${System.currentTimeMillis()}",
+                    recipientName = form.name.trim(),
+                    phoneNumber = form.phone.trim(),
+                    province = form.province.trim(),
+                    city = form.city.trim(),
+                    district = form.district.trim(),
+                    detailAddress = form.detailAddress.trim(),
+                    isDefault = form.isDefault,
+                    tag = form.tag,
+                    createTime = System.currentTimeMillis()
+                )
+
+                val success = if (addressId == null) {
+                    repository.addAddress(address)
+                } else {
+                    repository.updateAddress(address)
+                }
+
+                _isLoading.value = false
+                if (success) {
+                    _toastMessage.value = "地址保存成功"
+                    _navigationEvent.value = NavigationEvent.SaveSuccess
+                } else {
+                    _errorMessage.value = "保存地址失败"
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("AddressDetailViewModel", "Error saving address", e)
+                _isLoading.value = false
+                _errorMessage.value = "保存地址失败：${e.message}"
+            }
+        }
     }
-    
+
+    private fun validateForm(
+        name: String,
+        phone: String,
+        province: String,
+        city: String,
+        district: String,
+        detailAddress: String
+    ): Boolean {
+        val currentErrors = _validationErrors.value.toMutableMap()
+
+        // 验证收货人姓名
+        if (name.trim().isEmpty()) {
+            currentErrors["name"] = "请输入收货人姓名"
+        } else if (name.trim().length > 20) {
+            currentErrors["name"] = "收货人姓名不能超过20个字符"
+        }
+
+        // 验证手机号码
+        if (phone.trim().isEmpty()) {
+            currentErrors["phone"] = "请输入手机号码"
+        } else {
+            val phonePattern = "^1[3-9]\\d{9}$".toRegex()
+            if (!phone.trim().matches(phonePattern)) {
+                currentErrors["phone"] = "请输入正确的手机号码"
+            }
+        }
+
+        // 验证省市区
+        if (province.trim().isEmpty()) {
+            currentErrors["province"] = "请选择省份"
+        }
+        if (city.trim().isEmpty()) {
+            currentErrors["city"] = "请选择城市"
+        }
+        if (district.trim().isEmpty()) {
+            currentErrors["district"] = "请选择区县"
+        }
+
+        // 验证详细地址
+        if (detailAddress.trim().isEmpty()) {
+            currentErrors["detailAddress"] = "请输入详细地址"
+        } else if (detailAddress.trim().length < 5) {
+            currentErrors["detailAddress"] = "详细地址至少需要5个字符"
+        } else if (detailAddress.trim().length > 100) {
+            currentErrors["detailAddress"] = "详细地址不能超过100个字符"
+        }
+
+        _validationErrors.value = currentErrors
+        return currentErrors.isEmpty()
+    }
+
     fun updateFormData(
         name: String? = null,
         phone: String? = null,
@@ -89,63 +190,31 @@ class AddressDetailViewModel(
             tag = tag ?: current.tag
         )
     }
-    
+
     fun clearNavigationEvent() {
         _navigationEvent.value = null
     }
-    
+
     fun clearToastMessage() {
         _toastMessage.value = null
     }
-    
+
     fun clearErrorMessage() {
         _errorMessage.value = null
     }
-    
+
     fun clearValidationError(field: String) {
         val currentErrors = _validationErrors.value.toMutableMap()
         currentErrors.remove(field)
         _validationErrors.value = currentErrors
     }
-    
-    // AddressDetailContract.View implementation
-    override fun showLoading() {
-        _isLoading.value = true
-    }
-    
-    override fun hideLoading() {
-        _isLoading.value = false
-    }
-    
-    override fun showAddress(address: Address) {
-        _address.value = address
-    }
-    
-    override fun showError(message: String) {
-        _errorMessage.value = message
-    }
-    
-    override fun showValidationError(field: String, message: String) {
-        val currentErrors = _validationErrors.value.toMutableMap()
-        currentErrors[field] = message
-        _validationErrors.value = currentErrors
-    }
-    
-    override fun showSaveSuccess() {
-        _toastMessage.value = "地址保存成功"
-        _navigationEvent.value = NavigationEvent.SaveSuccess
-    }
-    
-    override fun navigateBack() {
-        _navigationEvent.value = NavigationEvent.Back
-    }
-    
-    override fun clearForm() {
+
+    private fun clearForm() {
         _formData.value = FormData()
         _validationErrors.value = emptyMap()
     }
-    
-    override fun setFormData(
+
+    private fun setFormData(
         name: String,
         phone: String,
         province: String,
@@ -166,7 +235,7 @@ class AddressDetailViewModel(
             tag = tag
         )
     }
-    
+
     data class FormData(
         val name: String = "",
         val phone: String = "",
@@ -177,7 +246,7 @@ class AddressDetailViewModel(
         val isDefault: Boolean = false,
         val tag: String = "家"
     )
-    
+
     sealed class NavigationEvent {
         object Back : NavigationEvent()
         object SaveSuccess : NavigationEvent()

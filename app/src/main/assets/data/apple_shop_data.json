@@ -1,0 +1,153 @@
+{
+  "shopInfo": {
+    "id": "apple_jd_flagship",
+    "name": "Apple官方旗舰店",
+    "avatar": "📱",
+    "followers": "2.5亿",
+    "isFollowed": true,
+    "serviceBanner": "Apple全方位服务，尽在京东",
+    "description": "京东Apple授权经销商，正品保障，全国联保"
+  },
+  "statistics": [
+    {
+      "label": "近30天新增关注",
+      "value": "2.1万",
+      "icon": "👥"
+    },
+    {
+      "label": "商品满意度",
+      "value": "99.2%",
+      "icon": "⭐"
+    },
+    {
+      "label": "服务态度",
+      "value": "4.9分",
+      "icon": "👍"
+    },
+    {
+      "label": "物流速度",
+      "value": "4.8分",
+      "icon": "🚚"
+    }
+  ],
+  "categories": [
+    {
+      "id": "recommend",
+      "name": "推荐",
+      "isSelected": true
+    },
+    {
+      "id": "sales",
+      "name": "销量",
+      "isSelected": false
+    },
+    {
+      "id": "new_products",
+      "name": "新品",
+      "isSelected": false
+    },
+    {
+      "id": "price",
+      "name": "价格",
+      "isSelected": false
+    },
+    {
+      "id": "in_stock_only",
+      "name": "仅看有货",
+      "isSelected": false
+    }
+  ],
+  "products": [
+    {
+      "id": "iphone15_001",
+      "name": "Apple iPhone 15 (A3092) 256GB 蓝色",
+      "price": 3799.0,
+      "originalPrice": 3899.0,
+      "brand": "Apple",
+      "category": "手机",
+      "imageUrl": "image/iPhone15图1.JPG",
+      "storeId": "apple_jd_flagship",
+      "storeName": "Apple官方旗舰店",
+      "colors": ["粉色", "蓝色", "绿色", "黑色", "黄色"],
+      "versions": ["128GB", "256GB", "512GB"],
+      "stock": 150,
+      "isInStock": true,
+      "rating": 4.9,
+      "reviewCount": 3000000,
+      "description": "A16仿生芯片，OLED超瓷晶面板"
+    },
+    {
+      "id": "iphone15_002",
+      "name": "Apple iPhone 15 (A3092) 256GB 粉色",
+      "price": 3799.0,
+      "originalPrice": 3899.0,
+      "brand": "Apple",
+      "category": "手机",
+      "imageUrl": "image/iPhone15图2.JPG",
+      "storeId": "apple_jd_flagship",
+      "storeName": "Apple官方旗舰店",
+      "colors": ["粉色", "蓝色", "绿色", "黑色", "黄色"],
+      "versions": ["128GB", "256GB", "512GB"],
+      "stock": 120,
+      "isInStock": true,
+      "rating": 4.9,
+      "reviewCount": 3000000,
+      "description": "A16仿生芯片，OLED超瓷晶面板"
+    },
+    {
+      "id": "iphone15_003",
+      "name": "Apple iPhone 15 (A3092) 256GB 绿色",
+      "price": 3799.0,
+      "originalPrice": 3899.0,
+      "brand": "Apple",
+      "category": "手机",
+      "imageUrl": "image/iPhone15图3.JPG",
+      "storeId": "apple_jd_flagship",
+      "storeName": "Apple官方旗舰店",
+      "colors": ["粉色", "蓝色", "绿色", "黑色", "黄色"],
+      "versions": ["128GB", "256GB", "512GB"],
+      "stock": 180,
+      "isInStock": true,
+      "rating": 4.9,
+      "reviewCount": 3000000,
+      "description": "A16仿生芯片，OLED超瓷晶面板"
+    },
+
+    {
+      "id": "iphone15_004",
+      "name": "Apple iPhone 15 (A3092) 256GB 黑色",
+      "price": 3799.0,
+      "originalPrice": 3899.0,
+      "brand": "Apple",
+      "category": "手机",
+      "imageUrl": "image/iPhone15图4.JPG",
+      "storeId": "apple_jd_flagship",
+      "storeName": "Apple官方旗舰店",
+      "colors": ["粉色", "蓝色", "绿色", "黑色", "黄色"],
+      "versions": ["128GB", "256GB", "512GB"],
+      "stock": 200,
+      "isInStock": true,
+      "rating": 4.9,
+      "reviewCount": 3000000,
+      "description": "A16仿生芯片，OLED超瓷晶面板"
+    },
+    {
+      "id": "iphone15_005",
+      "name": "Apple iPhone 15 (A3092) 256GB 黄色",
+      "price": 3799.0,
+      "originalPrice": 3899.0,
+      "brand": "Apple",
+      "category": "手机",
+      "imageUrl": "image/iPhone15图5.JPG",
+      "storeId": "apple_jd_flagship",
+      "storeName": "Apple官方旗舰店",
+      "colors": ["粉色", "蓝色", "绿色", "黑色", "黄色"],
+      "versions": ["128GB", "256GB", "512GB"],
+      "stock": 160,
+      "isInStock": true,
+      "rating": 4.9,
+      "reviewCount": 3000000,
+      "description": "A16仿生芯片，OLED超瓷晶面板"
+    }
+  ]
+}

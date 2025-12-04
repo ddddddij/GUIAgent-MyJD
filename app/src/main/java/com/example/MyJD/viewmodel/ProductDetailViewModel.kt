@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.MyJD.model.CartItemSpec
 import com.example.MyJD.model.ProductDetail
 import com.example.MyJD.repository.DataRepository
 import com.example.MyJD.utils.TaskFourteenLogger
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import android.util.Log
 
 class ProductDetailViewModel(
     private val repository: DataRepository,
@@ -32,6 +34,9 @@ class ProductDetailViewModel(
     private val _isFavorite = MutableStateFlow(false)
     val isFavorite: StateFlow<Boolean> = _isFavorite.asStateFlow()
     
+    private val _showAddToCartSuccess = MutableStateFlow(false)
+    val showAddToCartSuccess: StateFlow<Boolean> = _showAddToCartSuccess.asStateFlow()
+
     fun loadProductDetail(productId: String) {
         viewModelScope.launch {
             _isLoading.value = true
@@ -48,7 +53,7 @@ class ProductDetailViewModel(
                     TaskFourteenLogger.logProductDetailEntered(context, detail.title)
                 }
             } catch (e: Exception) {
-                // Handle error
+                Log.e("ProductDetailViewModel", "Error loading product detail", e)
             } finally {
                 _isLoading.value = false
             }
@@ -78,25 +83,31 @@ class ProductDetailViewModel(
     }
     
     fun addToCart() {
-        _productDetail.value?.let { detail ->
-            // Convert ProductDetail to Product for cart
-            val product = com.example.MyJD.model.Product(
-                id = detail.id,
-                name = detail.title,
-                price = detail.currentPrice,
-                originalPrice = detail.originalPrice,
-                brand = "Apple",
-                category = "手机数码",
-                imageUrl = detail.images.firstOrNull() ?: "📱",
-                storeId = "jd_official",
-                storeName = "京东自营",
-                colors = detail.colors.map { it.name },
-                stock = 100,
-                rating = 4.8f,
-                reviewCount = 1000,
-                description = detail.title
-            )
-            repository.addToCart(product, 1)
+        viewModelScope.launch {
+            _productDetail.value?.let { detail ->
+                val selectedColor = detail.colors.getOrNull(_selectedColorIndex.value)?.name ?: "默认颜色"
+                val selectedPurchaseType = detail.purchaseTypes.getOrNull(_selectedPurchaseType.value) ?: "默认版本"
+
+                val cartItemSpec = CartItemSpec(
+                    id = "${detail.id}_${System.currentTimeMillis()}",
+                    productId = detail.id,
+                    productName = detail.title,
+                    series = selectedPurchaseType,
+                    color = selectedColor,
+                    storage = selectedPurchaseType, // Assuming storage is tied to purchase type for simplicity
+                    image = detail.images.firstOrNull() ?: "",
+                    price = detail.currentPrice,
+                    originalPrice = detail.originalPrice,
+                    quantity = 1,
+                    selected = true,
+                    promotionTags = listOf("保价"),
+                    subsidyInfo = "政府补贴满1000减100",
+                    storeName = detail.storeName,
+                    storeTag = "自营"
+                )
+                repository.addToSpecCart(cartItemSpec)
+                _showAddToCartSuccess.value = true
+            }
         }
     }
     
@@ -129,6 +140,10 @@ class ProductDetailViewModel(
                 TaskFourteenLogger.logTaskCompleted(context, reviewCount)
             }
         }
+    }
+
+    fun clearAddToCartSuccess() {
+        _showAddToCartSuccess.value = false
     }
 }
 

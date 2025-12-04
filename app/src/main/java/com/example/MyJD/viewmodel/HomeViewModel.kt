@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.MyJD.model.Banner
 import com.example.MyJD.model.Product
-import com.example.MyJD.model.ShoppingCart
 import com.example.MyJD.repository.DataRepository
 import com.example.MyJD.utils.TaskEightLogger
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,9 +22,6 @@ class HomeViewModel(
     
     private val _products = MutableStateFlow<List<Product>>(emptyList())
     val products: StateFlow<List<Product>> = _products.asStateFlow()
-    
-    private val _shoppingCart = MutableStateFlow<ShoppingCart>(ShoppingCart())
-    val shoppingCart: StateFlow<ShoppingCart> = _shoppingCart.asStateFlow()
     
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
@@ -54,7 +50,6 @@ class HomeViewModel(
                 TaskEightLogger.logProductsLoaded(context, productsData.size)
                 TaskEightLogger.logTaskCompleted(context, productsData.size)
                 
-                updateShoppingCart()
             } catch (e: Exception) {
                 e.printStackTrace()
             } finally {
@@ -63,28 +58,27 @@ class HomeViewModel(
         }
     }
 
-    fun addToCart(product: Product) {
-        repository.addToCart(product)
-        updateShoppingCart()
-    }
-
-    fun removeFromCart(cartItemId: String) {
-        repository.removeFromCart(cartItemId)
-        updateShoppingCart()
-    }
-
-    fun updateCartItemQuantity(cartItemId: String, quantity: Int) {
-        repository.updateCartItemQuantity(cartItemId, quantity)
-        updateShoppingCart()
-    }
-
-    fun toggleCartItemSelection(cartItemId: String) {
-        repository.toggleCartItemSelection(cartItemId)
-        updateShoppingCart()
-    }
-
-    private fun updateShoppingCart() {
-        _shoppingCart.value = repository.getShoppingCart()
+    fun addToCart(product: Product, selectedColor: String, selectedVersion: String, quantity: Int = 1) {
+        viewModelScope.launch {
+            val cartItemSpec = com.example.MyJD.model.CartItemSpec(
+                id = "${product.id}_${System.currentTimeMillis()}",
+                productId = product.id,
+                productName = product.name,
+                series = selectedVersion,
+                color = selectedColor,
+                storage = selectedVersion, // Assuming storage is tied to version for simplicity
+                image = product.imageUrl,
+                price = product.price,
+                originalPrice = product.originalPrice ?: product.price * 1.2,
+                quantity = quantity,
+                selected = true,
+                promotionTags = listOf("保价"),
+                subsidyInfo = "政府补贴满1000减100",
+                storeName = product.storeName,
+                storeTag = "自营"
+            )
+            repository.addToSpecCart(cartItemSpec)
+        }
     }
 
     fun getRecommendedProducts(): List<Product> {

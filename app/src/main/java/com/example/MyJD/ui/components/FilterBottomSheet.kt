@@ -20,7 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.MyJD.presenter.SearchFilter
+import com.example.MyJD.viewmodel.SearchFilter
 import com.example.MyJD.ui.theme.JDRed
 
 @OptIn(ExperimentalMaterial3Api::class)

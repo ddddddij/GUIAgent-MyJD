@@ -23,7 +23,7 @@ import com.example.MyJD.ui.screen.PaymentSuccessScreen
 import com.example.MyJD.ui.screen.SearchResultScreen
 import com.example.MyJD.ui.screen.MessageDetailScreen
 import com.example.MyJD.ui.screen.MessageSettingScreen
-import com.example.MyJD.ui.screen.ShopPageScreen
+import com.example.MyJD.ui.screen.ShopScreen
 import com.example.MyJD.ui.screen.AddressListScreen
 import com.example.MyJD.ui.screen.AddressDetailScreen
 import com.example.MyJD.ui.screen.HuaweiP60DetailScreen
@@ -179,7 +179,7 @@ fun AppNavigation(navController: NavHostController) {
                             navController.navigate("order_confirm?fromOrder=$orderId")
                         },
                         onShopClick = { shopName ->
-                            navController.navigate("huawei_shop_page/$shopName")
+                            navController.navigate("shop_page/$shopName")
                         }
                     )
                 }
@@ -210,7 +210,7 @@ fun AppNavigation(navController: NavHostController) {
         
                                 },
                                 onShopClick = { shopName ->
-                                    navController.navigate("huawei_shop_page/$shopName")
+                                    navController.navigate("shop_page/$shopName")
                                 }
         
                             )
@@ -245,7 +245,7 @@ fun AppNavigation(navController: NavHostController) {
         
                                 },
                                 onShopClick = { shopName ->
-                                    navController.navigate("huawei_shop_page/$shopName")
+                                    navController.navigate("shop_page/$shopName")
                                 }
         
                             )
@@ -324,22 +324,8 @@ fun AppNavigation(navController: NavHostController) {
         
         composable("shop_page/{shopName}") { backStackEntry ->
             val shopName = backStackEntry.arguments?.getString("shopName") ?: "店铺主页"
-            ShopPageScreen(
-                onBackClick = {
-                    navController.popBackStack()
-                },
-                onProductClick = { productId ->
-                    navController.navigate("product/$productId")
-                },
-                onCartClick = {
-                    navController.navigate("shopping_cart")
-                }
-            )
-        }
-
-        composable("huawei_shop_page/{shopName}") { backStackEntry ->
-            val shopName = backStackEntry.arguments?.getString("shopName") ?: "店铺主页"
-            com.example.MyJD.ui.screen.HuaweiShopScreen(
+            ShopScreen(
+                shopName = shopName,
                 onBackClick = {
                     navController.popBackStack()
                 },
