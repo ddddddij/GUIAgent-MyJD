@@ -173,7 +173,6 @@ class ProductSpecViewModel @Inject constructor(
         val selection = _specSelection.value
         if (!selection.isValid()) return false
         val spec = _productSpec.value ?: return false
-        val productType = _productDetail.value?.title?.let { getProductTypeFromTitle(it) } ?: "Default"
         val cartItem = CartItemSpec(
             id = "${productId}_${System.currentTimeMillis()}",
             productId = productId,
@@ -187,7 +186,7 @@ class ProductSpecViewModel @Inject constructor(
             quantity = selection.quantity,
             promotionTags = spec.promotionInfo.tags,
             subsidyInfo = "比加入时降¥${spec.promotionInfo.subsidyAmount}",
-            storeName = if (productType.startsWith("Huawei")) "Huawei产品京东自营旗舰店" else if (productType == "ThinkPad") "联想ThinkPad京东自营旗舰店" else "Apple官方旗舰店"
+            storeName = _productDetail.value?.storeName ?: "京东自营"
         )
         android.util.Log.d("ProductSpecViewModel", "Attempting to add item to cart...")
         android.util.Log.d("ProductSpecViewModel", "Cart before adding: ${repository.getSpecCartTotalCount()} items")
@@ -206,11 +205,10 @@ class ProductSpecViewModel @Inject constructor(
         if (!selection.isValid()) return
         _productSpec.value ?: return
         val productName = "${selection.selectedSeries} ${selection.selectedStorage}"
-        val productType = _productDetail.value?.title?.let { getProductTypeFromTitle(it) } ?: "Default"
         val orderId = repository.createOrder(
             productId = productId,
             productName = productName,
-            storeName = if (productType.startsWith("Huawei")) "Huawei产品京东自营旗舰店" else if (productType == "ThinkPad") "联想ThinkPad京东自营旗舰店" else "Apple官方旗舰店",
+            storeName = _productDetail.value?.storeName ?: "京东自营",
             imageUrl = selection.currentImage,
             price = selection.currentPrice,
             quantity = selection.quantity,
