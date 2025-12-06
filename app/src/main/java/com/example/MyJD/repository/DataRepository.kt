@@ -38,7 +38,6 @@ import com.example.myjd.common.utils.TaskSeventeenLogger
 import com.example.myjd.common.utils.TaskEighteenLogger
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
@@ -61,7 +60,6 @@ class DataRepository private constructor(private val context: Context) {
     private val newMessagesFile = File(dataDir, "new_messages.json")
     private val muteSettingsFile = File(dataDir, "mute_settings.json")
     private val productsFile = File(dataDir, "products.json")
-    private val searchResultsFile = File(dataDir, "search_results.json")
     private val shopDataFile = File(dataDir, "shop_data.json")
     
     companion object {
@@ -812,7 +810,7 @@ class DataRepository private constructor(private val context: Context) {
                 productId.contains("huawei_mate60", ignoreCase = true) -> "data/huawei_mate60_detail.json"
                 productId.contains("huawei_p60", ignoreCase = true) -> "data/huawei_p60_detail.json"
                 productId.contains("huawei_nova11", ignoreCase = true) -> "data/huawei_nova11_detail.json"
-                else -> "data/product_detail.json"
+                else -> "data/apple_iphone15_detail.json"
             }
             val jsonString = context.assets.open(jsonFileName).bufferedReader().use { it.readText() }
             gson.fromJson(jsonString, ProductDetail::class.java)
@@ -870,7 +868,7 @@ class DataRepository private constructor(private val context: Context) {
 
     suspend fun getThinkPadProductDetail(productId: String): ProductDetail? = withContext(Dispatchers.IO) {
         try {
-            val jsonString = context.assets.open("data/thinkpad_detail.json").bufferedReader().use { it.readText() }
+            val jsonString = context.assets.open("data/lenovo_thinkpad_detail.json").bufferedReader().use { it.readText() }
             gson.fromJson(jsonString, ProductDetail::class.java)
         } catch (e: Exception) {
             android.util.Log.e("DataRepository", "Failed to load ThinkPad detail", e)
@@ -884,7 +882,7 @@ class DataRepository private constructor(private val context: Context) {
                 productId.contains("huawei_mate60", ignoreCase = true) -> "data/huawei_mate60_specs.json"
                 productId.contains("huawei_p60", ignoreCase = true) -> "data/huawei_p60_specs.json"
                 productId.contains("huawei_nova11", ignoreCase = true) -> "data/huawei_nova11_specs.json"
-                else -> "data/product_specs.json"
+                else -> "data/apple_iphone15_specs.json"
             }
             val jsonString = context.assets.open(jsonFileName).bufferedReader().use { it.readText() }
             gson.fromJson(jsonString, ProductSpec::class.java)
