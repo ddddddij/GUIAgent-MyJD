@@ -28,7 +28,6 @@ import android.widget.Toast
 @Composable
 fun ProductSpecDialog(
     productId: String,
-    productType: String,
     isAddToCart: Boolean = true, // true为加入购物车，false为立即购买
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,
@@ -44,7 +43,7 @@ fun ProductSpecDialog(
 
     LaunchedEffect(productId) {
         // Initialize ViewModel with runtime parameters
-        viewModel.initialize(productId, productType)
+        viewModel.initialize(productId)
     }
 
     if (isLoadingDetail) {

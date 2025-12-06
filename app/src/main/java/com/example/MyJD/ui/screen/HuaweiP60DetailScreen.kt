@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myjd.ui.components.*
-import com.example.myjd.viewmodel.HuaweiP60DetailViewModel
+import com.example.myjd.viewmodel.ProductDetailViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -24,7 +24,7 @@ fun HuaweiP60DetailScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val viewModel: HuaweiP60DetailViewModel = hiltViewModel()
+    val viewModel: ProductDetailViewModel = hiltViewModel()
 
     val productDetail by viewModel.productDetail.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
@@ -199,11 +199,9 @@ fun HuaweiP60DetailScreen(
             }
         }
 
-        // 规格选择弹窗
         if (showSpecDialog) {
             ProductSpecDialog(
                 productId = productId,
-                productType = "HuaweiP60",
                 isAddToCart = isAddToCartMode,
                 onDismiss = { showSpecDialog = false },
                 onConfirm = {

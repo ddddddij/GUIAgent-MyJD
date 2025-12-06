@@ -22,24 +22,27 @@ class ProductDetailViewModel @Inject constructor(
     private val repository: DataRepository,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
-    
+
     private val _productDetail = MutableStateFlow<ProductDetail?>(null)
     val productDetail: StateFlow<ProductDetail?> = _productDetail.asStateFlow()
-    
+
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
-    
+
     private val _selectedColorIndex = MutableStateFlow(0)
     val selectedColorIndex: StateFlow<Int> = _selectedColorIndex.asStateFlow()
-    
+
     private val _selectedPurchaseType = MutableStateFlow(0)
     val selectedPurchaseType: StateFlow<Int> = _selectedPurchaseType.asStateFlow()
-    
+
     private val _isFavorite = MutableStateFlow(false)
     val isFavorite: StateFlow<Boolean> = _isFavorite.asStateFlow()
-    
+
     private val _showAddToCartSuccess = MutableStateFlow(false)
     val showAddToCartSuccess: StateFlow<Boolean> = _showAddToCartSuccess.asStateFlow()
+
+    private val _errorMessage = MutableStateFlow<String?>(null)
+    val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
 
     fun loadProductDetail(productId: String) {
         viewModelScope.launch {
@@ -50,34 +53,34 @@ class ProductDetailViewModel @Inject constructor(
                 _selectedColorIndex.value = detail.selectedColorIndex
                 _selectedPurchaseType.value = detail.selectedPurchaseType
                 _isFavorite.value = detail.isFavorite
-                
                 // 任务十四日志记录：如果是iPhone15商品，记录相关操作
                 if (detail.title.contains("iPhone15") || detail.title.contains("iPhone 15")) {
                     TaskFourteenLogger.logTaskStart(context)
                     TaskFourteenLogger.logProductDetailEntered(context, detail.title)
                 }
             } catch (e: Exception) {
+                _errorMessage.value = "商品详情加载失败: ${e.message}"
                 Log.e("ProductDetailViewModel", "Error loading product detail", e)
             } finally {
                 _isLoading.value = false
             }
         }
     }
-    
+
     fun selectColor(index: Int) {
         _selectedColorIndex.value = index
         _productDetail.value?.let { detail ->
             _productDetail.value = detail.copy(selectedColorIndex = index)
         }
     }
-    
+
     fun selectPurchaseType(index: Int) {
         _selectedPurchaseType.value = index
         _productDetail.value?.let { detail ->
             _productDetail.value = detail.copy(selectedPurchaseType = index)
         }
     }
-    
+
     fun toggleFavorite() {
         val newFavoriteState = !_isFavorite.value
         _isFavorite.value = newFavoriteState
@@ -85,7 +88,7 @@ class ProductDetailViewModel @Inject constructor(
             _productDetail.value = detail.copy(isFavorite = newFavoriteState)
         }
     }
-    
+
     fun addToCart() {
         viewModelScope.launch {
             _productDetail.value?.let { detail ->
@@ -111,14 +114,17 @@ class ProductDetailViewModel @Inject constructor(
                 )
                 repository.addToSpecCart(cartItemSpec)
                 _showAddToCartSuccess.value = true
+                if (detail.title.contains("iPhone15") || detail.title.contains("iPhone 15")) {
+                    TaskFourteenLogger.logAddToCart(context, "${detail.title} $selectedColor $selectedPurchaseType")
+                }
             }
         }
     }
-    
+
     fun getCurrentPrice(): Double {
         return _productDetail.value?.currentPrice ?: 0.0
     }
-    
+
     fun getSelectedColor(): String {
         val detail = _productDetail.value
         val index = _selectedColorIndex.value
@@ -128,7 +134,7 @@ class ProductDetailViewModel @Inject constructor(
             ""
         }
     }
-    
+
     fun onReviewSectionViewed() {
         _productDetail.value?.let { detail ->
             if (detail.title.contains("iPhone15") || detail.title.contains("iPhone 15")) {
@@ -136,7 +142,7 @@ class ProductDetailViewModel @Inject constructor(
             }
         }
     }
-    
+
     fun onReviewsLoaded(reviewCount: Int) {
         _productDetail.value?.let { detail ->
             if (detail.title.contains("iPhone15") || detail.title.contains("iPhone 15")) {
@@ -148,5 +154,9 @@ class ProductDetailViewModel @Inject constructor(
 
     fun clearAddToCartSuccess() {
         _showAddToCartSuccess.value = false
+    }
+
+    fun clearErrorMessage() {
+        _errorMessage.value = null
     }
 }

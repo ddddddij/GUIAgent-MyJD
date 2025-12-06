@@ -25,7 +25,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.myjd.ui.theme.JDRed
 import com.example.myjd.ui.theme.JDTextPrimary
-import com.example.myjd.viewmodel.ThinkPadDetailViewModel
+import com.example.myjd.viewmodel.ProductDetailViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,7 +37,7 @@ fun ThinkPadDetailScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val viewModel: ThinkPadDetailViewModel = hiltViewModel()
+    val viewModel: ProductDetailViewModel = hiltViewModel()
     
     val productDetail by viewModel.productDetail.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
