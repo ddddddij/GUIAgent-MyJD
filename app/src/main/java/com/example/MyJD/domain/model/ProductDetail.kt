@@ -77,5 +77,6 @@ data class ReviewItem(
     val content: String,
     val images: List<String>,
     val imageCount: Int,
-    val isLiked: Boolean = false
+    val isLiked: Boolean = false,
+    val productReviewImages: List<String> = emptyList()
 )

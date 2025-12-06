@@ -61,10 +61,8 @@ class ProductSpecViewModel @Inject constructor(
             try {
                 val detail = repository.loadProductDetail(productId)
                 _productDetail.value = detail
-                if (detail != null) {
-                    basePrice = detail.currentPrice
-                    loadProductSpec()
-                }
+                basePrice = detail.currentPrice
+                loadProductSpec()
             } finally {
                 _isLoadingDetail.value = false
             }
@@ -88,14 +86,7 @@ class ProductSpecViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val productType = _productDetail.value?.title?.let { getProductTypeFromTitle(it) } ?: "Default"
-                val spec = when (productType) {
-                    "HuaweiP60" -> repository.loadHuaweiP60ProductSpec(productId)
-                    "HuaweiMate60" -> repository.loadHuaweiMate60ProductSpec(productId)
-                    "HuaweiNova11" -> repository.loadHuaweiNova11ProductSpec(productId)
-                    "ThinkPad" -> repository.loadProductSpec(productId)
-                    else -> repository.loadProductSpec(productId)
-                }
+                val spec = repository.loadProductSpec(productId)
                 _productSpec.value = spec
 
                 val defaultColor = spec.colors.find { it.selected } ?: spec.colors.firstOrNull()
@@ -161,7 +152,6 @@ class ProductSpecViewModel @Inject constructor(
 
     private fun updatePriceBasedOnSpecs() {
         val selection = _specSelection.value
-        val spec = _productSpec.value ?: return
         val productType = _productDetail.value?.title?.let { getProductTypeFromTitle(it) } ?: "Default"
 
         val calculatedPrice = when (productType) {

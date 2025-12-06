@@ -246,6 +246,7 @@ private fun ReviewItemCard(
                     itemsIndexed(review.images.take(3)) { index, image ->
                         ReviewImageItem(
                             image = image,
+                            reviewImages = review.productReviewImages,
                             imageIndex = reviewIndex * 3 + index, // 确保跨评论的图片都不重复
                             imageCount = if (review.imageCount > 3) review.imageCount - 2 else 0,
                             isLast = index == 2,
@@ -287,6 +288,7 @@ private fun ReviewItemCard(
 @Composable
 private fun ReviewImageItem(
     image: String,
+    reviewImages: List<String>,
     imageIndex: Int,
     imageCount: Int,
     isLast: Boolean,
@@ -294,11 +296,9 @@ private fun ReviewImageItem(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    
-    // 根据实际的imageIndex使用不同的评论区图片
-    val reviewImages = listOf("评论区1.jpg", "评论区2.jpg", "评论区3.jpg", "评论区4.jpg")
-    val imageName = reviewImages[imageIndex % reviewImages.size]
-    
+
+    val imageName = reviewImages.getOrNull(imageIndex % reviewImages.size) ?: image
+
     // 使用remember和derivedStateOf来处理图片加载
     val bitmap by remember(imageName) {
         derivedStateOf {
