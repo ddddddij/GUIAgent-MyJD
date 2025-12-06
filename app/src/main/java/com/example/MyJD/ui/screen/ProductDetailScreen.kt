@@ -217,9 +217,14 @@ fun ProductDetailScreen(
         
         // 规格选择弹窗
         if (showSpecDialog) {
+            val productType = if (productId.contains("thinkpad", ignoreCase = true)) {
+                "ThinkPad"
+            } else {
+                "iPhone"
+            }
             ProductSpecDialog(
                 productId = productId,
-                productType = "iPhone",
+                productType = productType,
                 isAddToCart = isAddToCartMode,
                 onDismiss = { showSpecDialog = false },
                 onConfirm = { 

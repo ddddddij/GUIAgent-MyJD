@@ -7,7 +7,15 @@
       "Bash(done)",
       "Bash(./gradlew clean build:*)",
       "Bash(tree:*)",
-      "Bash(wc:*)"
+      "Bash(wc:*)",
+      "Bash(./gradlew assembleDebug:*)",
+      "Bash(adb devices:*)",
+      "Bash(adb install:*)",
+      "Bash(adb shell:*)",
+      "Bash(adb logcat:*)",
+      "Bash(timeout 30 adb logcat:*)",
+      "Bash(./gradlew clean:*)",
+      "Bash(unzip:*)"
     ],
     "deny": []
   }

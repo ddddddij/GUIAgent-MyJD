@@ -4,27 +4,39 @@
   "images": [
     "image/联想ThinkPad封面.JPG"
   ],
-  "currentPrice": 4499.1,
-  "originalPrice": 5499.0,
-  "subsidyPrice": "政府补贴价",
-  "soldCount": "已售 15万+",
+  "currentPrice": 4999.0,
+  "originalPrice": 5399.0,
+  "subsidyPrice": "学生到手价",
+  "soldCount": "已售 20万+",
   "storeName": "联想官方旗舰店",
   "colors": [
     {
-      "name": "E14超能版 黑色",
+      "name": "【2025新款】E14超能版 银色",
+      "colorCode": "#c0c0c0",
+      "image": "💻",
+      "subsidyTags": ["学生到手价", "已减500"]
+    },
+    {
+      "name": "【2025新款】E14超能版 黑色",
       "colorCode": "#2c2c2c",
       "image": "💻",
-      "subsidyTags": ["国家补贴20%", "已减1000"]
+      "subsidyTags": ["学生到手价", "已减500"]
+    },
+    {
+      "name": "【2025新款】E14长续航版 黑色",
+      "colorCode": "#1a1a1a",
+      "image": "💻",
+      "subsidyTags": ["学生到手价", "已减500"]
     }
   ],
-  "selectedColorIndex": 0,
+  "selectedColorIndex": 1,
   "purchaseTypes": ["个人购买", "企业购买"],
   "selectedPurchaseType": 0,
   "specifications": {
     "releaseDate": "2025-01-01",
     "processor": "英特尔酷睿5 220H",
     "screenSize": "14英寸",
-    "displayTech": "IPS防眩光屏幕"
+    "displayTech": "2.8K IPS防眩光屏幕"
   },
   "tags": [
     "国家补贴20%",
@@ -33,11 +45,11 @@
     "7天价保",
     "酷睿5 220H",
     "16G内存",
-    "512G固态"
+    "1T固态"
   ],
   "isFavorite": false,
   "deliveryInfo": {
-    "deliveryTime": "明天 18:00前付款，预计11月4日（周一）送达",
+    "deliveryTime": "明天 18:00前付款，预计12月8日（周日）送达",
     "address": "武汉纺织大学(阳光校区)-北门",
     "shippingFee": "59元免基础运费",
     "logistics": "京东物流 预约送货 · 部分收货",
@@ -63,12 +75,12 @@
     "tags": [
       {
         "text": "办公性能强劲",
-        "count": 5432,
+        "count": 5680,
         "isSelected": false
       },
       {
         "text": "轻薄便携",
-        "count": 4876,
+        "count": 4523,
         "isSelected": false
       },
       {
@@ -98,8 +110,8 @@
       },
       {
         "username": "张***丽",
-        "memberLevel": "PLUS会员", 
-        "content": "这款笔记本的键盘手感真的很好，ThinkPad的经典小红点设计用着很舒服。512G固态硬盘读写速度很快，开机和软件启动都很迅速。",
+        "memberLevel": "PLUS会员",
+        "content": "这款笔记本的键盘手感真的很好，ThinkPad的经典小红点设计用着很舒服。1T固态硬盘读写速度很快，开机和软件启动都很迅速。",
         "images": ["📸", "📸"],
         "imageCount": 2,
         "isLiked": false
@@ -107,9 +119,25 @@
       {
         "username": "王***明",
         "memberLevel": "钻石会员",
-        "content": "国家补贴20%的优惠力度很大，性价比很高。E14的续航能力不错，正常办公使用一天没问题。IPS屏幕显示效果清晰，防眩光设计很实用。",
+        "content": "国家补贴20%的优惠力度很大，性价比很高。E14的续航能力不错，正常办公使用一天没问题。2.8K IPS屏幕显示效果清晰，防眩光设计很实用。",
         "images": ["📸"],
         "imageCount": 1,
+        "isLiked": false
+      },
+      {
+        "username": "赵***峰",
+        "memberLevel": "钻石会员",
+        "content": "商务笔记本的首选，轻薄但不失性能。联想的品控一直很稳定，ThinkPad系列更是经典中的经典，值得信赖。",
+        "images": ["📸"],
+        "imageCount": 1,
+        "isLiked": false
+      },
+      {
+        "username": "陈***芳",
+        "memberLevel": "PLUS会员",
+        "content": "学生价买的很划算，办公学习两不误。14英寸大小刚刚好，放在背包里也不重。散热做得不错，长时间使用也不会太热。",
+        "images": ["📸", "📸"],
+        "imageCount": 2,
         "isLiked": false
       }
     ]

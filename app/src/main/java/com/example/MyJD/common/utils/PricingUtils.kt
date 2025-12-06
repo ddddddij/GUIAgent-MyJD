@@ -165,4 +165,37 @@ object PricingUtils {
         val storageUpgrade = huaweiNova11StorageUpgrades[storage] ?: 0.0
         return basePrice + storageUpgrade
     }
+
+    // Base prices for ThinkPad series (基础价格: 4999元)
+    // 参考iPhone15定价规则，按系列和配置阶梯定价
+    private val thinkPadBasePrices = mapOf(
+        "【2025】E14 超能版" to 4999.0,        // 基础系列
+        "【2025】E16 超能版" to 5299.0,        // 大屏版 +300
+        "【AIPC】E14 锐龙版" to 5499.0,        // AI版 +500
+        "【AIPC】E16Ultra版" to 5799.0,       // AI Ultra版 +800
+        "【经典版】E16 大屏商务本" to 5999.0    // 经典版 +1000
+    )
+
+    // Configuration upgrade prices for ThinkPad
+    // 存储和处理器配置价格增量
+    private val thinkPadStorageUpgrades = mapOf(
+        "酷睿5 220H 16G 1T 2.8K" to 0.0,      // 基础配置
+        "酷睿5 220H 32G 1T 2.8K" to 500.0,    // +500元
+        "酷睿7 250H 32G 1T 2.8K" to 1000.0,   // +1000元
+        "Ultra5 228V 32G 1TB 2.8K" to 1200.0, // +1200元
+        "Ultra7 258V 32G 1TB 2.8K" to 1500.0  // +1500元
+    )
+
+    /**
+     * Calculates the price for a ThinkPad based on its series and configuration.
+     * 按系列和配置阶梯定价，基础价格4999元起
+     * @param series The ThinkPad series (e.g., "【2025】E14 超能版").
+     * @param storage The configuration (processor/memory/storage).
+     * @return The calculated price, or 0.0 if the series or storage is not found.
+     */
+    fun calculateThinkPadPrice(series: String, storage: String): Double {
+        val basePrice = thinkPadBasePrices[series] ?: return 0.0
+        val storageUpgrade = thinkPadStorageUpgrades[storage] ?: 0.0
+        return basePrice + storageUpgrade
+    }
 }

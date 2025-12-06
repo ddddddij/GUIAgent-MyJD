@@ -28,7 +28,7 @@ import com.example.myjd.ui.screen.AddressDetailScreen
 import com.example.myjd.ui.screen.HuaweiP60DetailScreen
 import com.example.myjd.ui.screen.HuaweiMate60DetailScreen
 import com.example.myjd.ui.screen.HuaweiNova11DetailScreen
-import com.example.myjd.ui.screen.ThinkPadDetailScreen
+// import com.example.myjd.ui.screen.ThinkPadDetailScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
@@ -50,8 +50,8 @@ fun AppNavigation(navController: NavHostController) {
                             navController.navigate("huawei_mate60_detail/$productId")
                         productId.contains("huawei_nova11") || productId.contains("华为Nova11") || productId.contains("Nova11") || productId.contains("nova11") -> 
                             navController.navigate("huawei_nova11_detail/$productId")
-                        productId.contains("thinkpad") || productId.contains("ThinkPad") || productId.contains("联想ThinkPad") || productId.contains("联想笔记本") -> 
-                            navController.navigate("thinkpad_detail/$productId")
+                        productId.contains("thinkpad") || productId.contains("ThinkPad") || productId.contains("联想ThinkPad") || productId.contains("联想笔记本") ->
+                            navController.navigate("product/$productId")
                         productId.contains("iphone15") || productId.contains("iPhone15") -> 
                             navController.navigate("product/$productId")
                         else -> 
@@ -251,21 +251,22 @@ fun AppNavigation(navController: NavHostController) {
         
                         }
         
-        composable("thinkpad_detail/{productId}") { backStackEntry ->
-            val productId = backStackEntry.arguments?.getString("productId") ?: ""
-            ThinkPadDetailScreen(
-                productId = productId,
-                onBackClick = {
-                    navController.popBackStack()
-                },
-                onCartClick = {
-                    navController.navigate("cart")
-                },
-                onBuyNowClick = {
-                    navController.navigate("order_confirm")
-                }
-            )
-        }
+        // ThinkPad now uses standard ProductDetailScreen via "product/{productId}" route
+        // composable("thinkpad_detail/{productId}") { backStackEntry ->
+        //     val productId = backStackEntry.arguments?.getString("productId") ?: ""
+        //     ThinkPadDetailScreen(
+        //         productId = productId,
+        //         onBackClick = {
+        //             navController.popBackStack()
+        //         },
+        //         onCartClick = {
+        //             navController.navigate("cart")
+        //         },
+        //         onBuyNowClick = {
+        //             navController.navigate("order_confirm")
+        //         }
+        //     )
+        // }
         
         composable("supermarket") {
             PlaceholderScreen(
@@ -292,8 +293,8 @@ fun AppNavigation(navController: NavHostController) {
                             navController.navigate("huawei_mate60_detail/$productId")
                         productId.contains("huawei_nova11") || productId.contains("华为Nova11") || productId.contains("Nova11") || productId.contains("nova11") -> 
                             navController.navigate("huawei_nova11_detail/$productId")
-                        productId.contains("thinkpad") || productId.contains("ThinkPad") || productId.contains("联想ThinkPad") || productId.contains("联想笔记本") -> 
-                            navController.navigate("thinkpad_detail/$productId")
+                        productId.contains("thinkpad") || productId.contains("ThinkPad") || productId.contains("联想ThinkPad") || productId.contains("联想笔记本") ->
+                            navController.navigate("product/$productId")
                         productId.contains("iphone15") || productId.contains("iPhone15") -> 
                             navController.navigate("product/$productId")
                         else -> 

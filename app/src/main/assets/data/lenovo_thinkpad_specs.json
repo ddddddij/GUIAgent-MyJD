@@ -1,0 +1,106 @@
+{
+  "productId": "thinkpad_001",
+  "defaultSeries": "【2025】E14 超能版",
+  "defaultColor": "【2025新款】E14超能版 黑色",
+  "defaultStorage": "酷睿5 220H 16G 1T 2.8K",
+  "series": [
+    {
+      "name": "【2025】E14 超能版",
+      "available": true,
+      "selected": true
+    },
+    {
+      "name": "【2025】E16 超能版",
+      "available": true,
+      "selected": false
+    },
+    {
+      "name": "【AIPC】E14 锐龙版",
+      "available": true,
+      "selected": false
+    },
+    {
+      "name": "【AIPC】E16Ultra版",
+      "available": true,
+      "selected": false
+    },
+    {
+      "name": "【经典版】E16 大屏商务本",
+      "available": true,
+      "selected": false
+    }
+  ],
+  "colors": [
+    {
+      "name": "【2025新款】E14超能版 银色",
+      "colorCode": "#c0c0c0",
+      "image": "image/联想ThinkPad封面.JPG",
+      "price": 0,
+      "originalPrice": 0,
+      "available": true,
+      "stockTag": "万人购买",
+      "selected": false
+    },
+    {
+      "name": "【2025新款】E14超能版 黑色",
+      "colorCode": "#2c2c2c",
+      "image": "image/联想ThinkPad封面.JPG",
+      "price": 0,
+      "originalPrice": 0,
+      "available": true,
+      "stockTag": "80%用户选择",
+      "selected": true
+    },
+    {
+      "name": "【2025新款】E14长续航版 黑色",
+      "colorCode": "#1a1a1a",
+      "image": "image/联想ThinkPad封面.JPG",
+      "price": 0,
+      "originalPrice": 0,
+      "available": true,
+      "stockTag": "热销",
+      "selected": false
+    }
+  ],
+  "storage": [
+    {
+      "capacity": "酷睿5 220H 16G 1T 2.8K",
+      "available": true,
+      "selected": true,
+      "priceIncrease": 0.0
+    },
+    {
+      "capacity": "酷睿5 220H 32G 1T 2.8K",
+      "available": true,
+      "selected": false,
+      "priceIncrease": 500.0
+    },
+    {
+      "capacity": "酷睿7 250H 32G 1T 2.8K",
+      "available": true,
+      "selected": false,
+      "priceIncrease": 1000.0
+    },
+    {
+      "capacity": "Ultra5 228V 32G 1TB 2.8K",
+      "available": true,
+      "selected": false,
+      "priceIncrease": 1200.0
+    },
+    {
+      "capacity": "Ultra7 258V 32G 1TB 2.8K",
+      "available": true,
+      "selected": false,
+      "priceIncrease": 1500.0
+    }
+  ],
+  "promotionInfo": {
+    "subsidyText": "学生到手价",
+    "subsidyAmount": 550,
+    "tags": [
+      "满1件打换购",
+      "国家贴息",
+      "6期免息"
+    ]
+  }
+}

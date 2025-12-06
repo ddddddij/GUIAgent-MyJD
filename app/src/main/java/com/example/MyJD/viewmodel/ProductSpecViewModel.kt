@@ -104,7 +104,7 @@ class ProductSpecViewModel @Inject constructor(
 
 
                                         "HuaweiNova11" -> repository.loadHuaweiNova11ProductSpec(productId)
-
+                                        "ThinkPad" -> repository.loadProductSpec(productId)
 
 
                                         else -> repository.loadProductSpec(productId)
@@ -380,6 +380,9 @@ class ProductSpecViewModel @Inject constructor(
                     else -> basePrice
                 }
             }
+            productType == "ThinkPad" -> {
+                PricingUtils.calculateThinkPadPrice(selection.selectedSeries, selection.selectedStorage)
+            }
             else -> {
                 // iPhone products
                 PricingUtils.calculatePrice(selection.selectedSeries, selection.selectedStorage)
@@ -488,7 +491,7 @@ class ProductSpecViewModel @Inject constructor(
 
 
 
-                storeName = if (productType.startsWith("Huawei")) "Huawei产品京东自营旗舰店" else "Apple官方旗舰店"
+                storeName = if (productType.startsWith("Huawei")) "Huawei产品京东自营旗舰店" else if (productType == "ThinkPad") "联想ThinkPad京东自营旗舰店" else "Apple官方旗舰店"
 
 
 
@@ -604,7 +607,7 @@ class ProductSpecViewModel @Inject constructor(
 
 
 
-                storeName = if (productType.startsWith("Huawei")) "Huawei产品京东自营旗舰店" else "Apple官方旗舰店",
+                storeName = if (productType.startsWith("Huawei")) "Huawei产品京东自营旗舰店" else if (productType == "ThinkPad") "联想ThinkPad京东自营旗舰店" else "Apple官方旗舰店",
 
 
 
