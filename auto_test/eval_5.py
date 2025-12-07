@@ -11,7 +11,7 @@ def validate_task_five(result=None, device_id=None, backup_dir=None):
     if device_id:
         cmd.extend(["-s", device_id])
     # The path is a guess based on the app's asset structure and conventions.
-    cmd.extend(["exec-out", "run-as", "com.example.MyJD", "cat", "files/persistent_data/products.json"])
+    cmd.extend(["exec-out", "run-as", "com.example.jd_sim", "cat", "files/persistent_data/products.json"])
 
     try:
         # Pull the file from the device

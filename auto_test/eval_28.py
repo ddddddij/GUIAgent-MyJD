@@ -11,7 +11,7 @@ def validate_task_twenty_eight(result=None, device_id=None, backup_dir=None):
     cmd = ["adb"]
     if device_id:
         cmd.extend(["-s", device_id])
-    cmd.extend(["exec-out", "run-as", "com.example.MyJD", "cat", "files/persistent_data/orders.json"])
+    cmd.extend(["exec-out", "run-as", "com.example.jd_sim", "cat", "files/persistent_data/orders.json"])
     subprocess.run(cmd, stdout=open(orders_file_path, "w"))
 
     try:
@@ -41,9 +41,9 @@ def validate_task_twenty_eight(result=None, device_id=None, backup_dir=None):
     wuchang_rice_item = next((item for item in items if "五常大米" in item.get("product", {}).get("name", "")), None)
 
     if (
-            wuchang_rice_item
-            and wuchang_rice_item.get("quantity") == 5
-            and new_wuchang_rice_order.get("status") == "PENDING_RECEIPT"
+        wuchang_rice_item
+        and wuchang_rice_item.get("quantity") == 5
+        and new_wuchang_rice_order.get("status") == "PENDING_RECEIPT"
     ):
         print("Validation Success: New order for '五常大米' found with quantity 5 and status PENDING_RECEIPT.")
         return True

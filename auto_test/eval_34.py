@@ -3,10 +3,7 @@ import os
 import subprocess
 
 def validate_task_thirty_four(result=None, device_id=None, backup_dir=None):
-    """
-    验证任务三十四：将陈七地址详情中的电话号码改成18972746987。
-    验证逻辑：检查“/data/data/com.example.MyJD/files/persistent_data/addresses.json”中id为“addr_005”的那条“phoneNumber”是否为18972746987。
-    """
+    """ 验证任务三十四：将陈七地址详情中的电话号码改成18972746987。 """
 
     addresses_file_path = os.path.join(backup_dir, "addresses.json") if backup_dir else "addresses.json"
 
@@ -14,8 +11,8 @@ def validate_task_thirty_four(result=None, device_id=None, backup_dir=None):
     cmd = ["adb"]
     if device_id:
         cmd.extend(["-s", device_id])
-    cmd.extend(["exec-out", "run-as", "com.example.MyJD", "cat", "files/persistent_data/addresses.json"])
-    
+    cmd.extend(["exec-out", "run-as", "com.example.jd_sim", "cat", "files/persistent_data/addresses.json"])
+
     try:
         with open(addresses_file_path, "w", encoding="utf-8") as f:
             subprocess.run(cmd, stdout=f, check=True)
@@ -34,7 +31,7 @@ def validate_task_thirty_four(result=None, device_id=None, backup_dir=None):
     if not isinstance(addresses, list):
         print("Validation Failed: addresses.json is not a list.")
         return False
-        
+
     # 查找指定ID的地址
     target_address = None
     for address in addresses:
@@ -49,7 +46,7 @@ def validate_task_thirty_four(result=None, device_id=None, backup_dir=None):
     # 验证电话号码
     expected_phone = "18972746987"
     actual_phone = target_address.get("phoneNumber")
-    
+
     if actual_phone == expected_phone:
         print("Validation Success: Phone number for address 'addr_005' was correctly updated.")
         return True

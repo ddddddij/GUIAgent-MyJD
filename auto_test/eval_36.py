@@ -3,21 +3,15 @@ import os
 import subprocess
 
 def validate_task_thirty_six(result=None, device_id=None, backup_dir=None):
-    """
-    验证任务：将首页所有华为手机商品的最小的内存版本加入购物车。
-    验证逻辑：检查“/data/data/com.example.MyJD/files/persistent_data/cart_items.json“中是否存在正确的条目：
-              - productId为huawei_nova11_001且storage为128GB
-              - productId为huawei_mate60_001且storage为256GB
-              - productId为huawei_p60_001且storage为256GB
-    """
+    """ 验证任务三十六：将首页所有华为手机商品的最小的内存版本加入购物车。 """
     cart_items_file_path = os.path.join(backup_dir, "cart_items.json") if backup_dir else "cart_items.json"
 
     # 从设备拉取购物车文件
     cmd = ["adb"]
     if device_id:
         cmd.extend(["-s", device_id])
-    cmd.extend(["exec-out", "run-as", "com.example.MyJD", "cat", "files/persistent_data/cart_items.json"])
-    
+    cmd.extend(["exec-out", "run-as", "com.example.jd_sim", "cat", "files/persistent_data/cart_items.json"])
+
     try:
         with open(cart_items_file_path, "w", encoding="utf-8") as f:
             subprocess.run(cmd, stdout=f, check=True)
@@ -45,14 +39,14 @@ def validate_task_thirty_six(result=None, device_id=None, backup_dir=None):
     ]
 
     found_count = 0
-    
+
     # 检查购物车中的每一项是否与预期列表匹配
     for expected in expected_items:
         found = False
         for item in cart_items:
             if (isinstance(item, dict) and
-                item.get("productId") == expected["productId"] and
-                item.get("storage") == expected["storage"]):
+                    item.get("productId") == expected["productId"] and
+                    item.get("storage") == expected["storage"]):
                 found = True
                 break
         if found:

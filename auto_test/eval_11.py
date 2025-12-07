@@ -1,7 +1,7 @@
 import re
 
 
-def validate_task_eleven(result=None, device_id=None):
+def validate_task_eleven(result=None, device_id=None, backup_dir=None):
     """验证任务十一：计算我一共收到多少条京东客服的消息，给出一个阿拉伯数字即可。"""
 
     if result and "final_message" in result and result["final_message"] is not None:

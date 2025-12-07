@@ -3,10 +3,7 @@ import os
 import subprocess
 
 def validate_task_thirty_two(result=None, device_id=None, backup_dir=None):
-    """
-    验证任务：找到首页中价格最低的手机，选择其最便宜的规格购买。
-    验证逻辑：检查“/data/data/com.example.MyJD/files/persistent_data/orders.json”中新增的条目中"items”部分的"id”是否为“huawei_nova11_001”，"selectedVersion”是否为“128GB”。
-    """
+    """ 验证任务三十二：找到首页中价格最低的手机，选择其最便宜的规格购买。 """
 
     orders_file_path = os.path.join(backup_dir, "orders.json") if backup_dir else "orders.json"
 
@@ -14,8 +11,8 @@ def validate_task_thirty_two(result=None, device_id=None, backup_dir=None):
     cmd = ["adb"]
     if device_id:
         cmd.extend(["-s", device_id])
-    cmd.extend(["exec-out", "run-as", "com.example.MyJD", "cat", "files/persistent_data/orders.json"])
-    
+    cmd.extend(["exec-out", "run-as", "com.example.jd_sim", "cat", "files/persistent_data/orders.json"])
+
     try:
         with open(orders_file_path, "w", encoding="utf-8") as f:
             subprocess.run(cmd, stdout=f, check=True)
@@ -37,7 +34,7 @@ def validate_task_thirty_two(result=None, device_id=None, backup_dir=None):
 
     # 最新订单在列表的最前面
     latest_order = orders[0]
-    
+
     items = latest_order.get("items")
     if not items:
         print("Validation Failed: 'items' key not found in the latest order.")
@@ -45,7 +42,7 @@ def validate_task_thirty_two(result=None, device_id=None, backup_dir=None):
 
     order_item = items[0]
     product_info = order_item.get("product", {})
-    
+
     # 验证 "id"
     expected_id = "huawei_nova11_001"
     actual_id = product_info.get("id")

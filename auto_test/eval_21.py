@@ -11,7 +11,7 @@ def validate_task_twenty_one(result=None, device_id=None, backup_dir=None):
     cmd = ["adb"]
     if device_id:
         cmd.extend(["-s", device_id])
-    cmd.extend(["exec-out", "run-as", "com.example.MyJD", "cat", "files/persistent_data/search_results.json"])
+    cmd.extend(["exec-out", "run-as", "com.example.jd_sim", "cat", "files/persistent_data/search_results.json"])
 
     try:
         with open(json_path, "w", encoding="utf-8") as f:
@@ -26,9 +26,9 @@ def validate_task_twenty_one(result=None, device_id=None, backup_dir=None):
             products = json.load(f)
             for product in products:
                 if (
-                    "iPhone 15" in product.get("name", "")
-                    and product.get("category") == "手机"
-                    and 6000.0 <= product.get("price", 0) <= 8000.0
+                        "iPhone 15" in product.get("name", "")
+                        and product.get("category") == "手机"
+                        and 6000.0 <= product.get("price", 0) <= 8000.0
                 ):
                     expected_count += 1
     except (FileNotFoundError, json.JSONDecodeError) as e:

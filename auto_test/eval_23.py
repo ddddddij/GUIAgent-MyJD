@@ -11,7 +11,7 @@ def validate_task_twenty_three(result=None, device_id=None, backup_dir=None):
     cmd = ["adb"]
     if device_id:
         cmd.extend(["-s", device_id])
-    cmd.extend(["exec-out", "run-as", "com.example.MyJD", "cat", "files/persistent_data/shop_data.json"])
+    cmd.extend(["exec-out", "run-as", "com.example.jd_sim", "cat", "files/persistent_data/shop_data.json"])
 
     try:
         with open(json_path, "w", encoding="utf-8") as f:
@@ -28,8 +28,8 @@ def validate_task_twenty_three(result=None, device_id=None, backup_dir=None):
             products = shop_data.get("products", [])
             for product in products:
                 if (
-                    product.get("storeId") == "apple_jd_flagship"
-                    and product.get("rating", 0) > 4.7
+                        product.get("storeId") == "apple_jd_flagship"
+                        and product.get("rating", 0) > 4.7
                 ):
                     total_price += product.get("price", 0)
                     product_count += 1

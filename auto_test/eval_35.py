@@ -10,8 +10,8 @@ def validate_task_thirty_five(result=None, device_id=None, backup_dir=None):
     cmd = ["adb"]
     if device_id:
         cmd.extend(["-s", device_id])
-    cmd.extend(["exec-out", "run-as", "com.example.MyJD", "cat", "files/persistent_data/orders.json"])
-    
+    cmd.extend(["exec-out", "run-as", "com.example.jd_sim", "cat", "files/persistent_data/orders.json"])
+
     try:
         with open(orders_file_path, "w", encoding="utf-8") as f:
             subprocess.run(cmd, stdout=f, check=True)
@@ -33,12 +33,12 @@ def validate_task_thirty_five(result=None, device_id=None, backup_dir=None):
 
     # 假设最新订单在列表的最前面
     latest_order = orders[0]
-    
+
     # 验证 shippingAddress id
     shipping_address = latest_order.get("shippingAddress", {})
     actual_address_id = shipping_address.get("id")
     expected_address_id = "addr_002"
-    
+
     if actual_address_id != expected_address_id:
         print(f"Validation Failed: Shipping address ID is incorrect. Expected: '{expected_address_id}', Actual: '{actual_address_id}'")
         return False
@@ -48,7 +48,7 @@ def validate_task_thirty_five(result=None, device_id=None, backup_dir=None):
     if not items:
         print("Validation Failed: 'items' key not found in the latest order.")
         return False
-        
+
     product_info = items[0].get("product", {})
     actual_product_id = product_info.get("id")
     expected_product_id = "huawei_mate60_001"

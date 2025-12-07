@@ -15,7 +15,9 @@
       "Bash(adb logcat:*)",
       "Bash(timeout 30 adb logcat:*)",
       "Bash(./gradlew clean:*)",
-      "Bash(unzip:*)"
+      "Bash(unzip:*)",
+      "Bash(ls:*)",
+      "Bash(python3 -m py_compile:*)"
     ],
     "deny": []
   }
