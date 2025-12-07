@@ -17,7 +17,9 @@
       "Bash(./gradlew clean:*)",
       "Bash(unzip:*)",
       "Bash(ls:*)",
-      "Bash(python3 -m py_compile:*)"
+      "Bash(python3 -m py_compile:*)",
+      "Bash(find:*)",
+      "Bash(./gradlew compileDebugKotlin:*)"
     ],
     "deny": []
   }

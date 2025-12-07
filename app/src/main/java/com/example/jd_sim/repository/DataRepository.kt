@@ -61,6 +61,8 @@ class DataRepository private constructor(private val context: Context) {
     private val muteSettingsFile = File(dataDir, "mute_settings.json")
     private val productsFile = File(dataDir, "products.json")
     private val shopDataFile = File(dataDir, "shop_data.json")
+    private val appleShopDataFile = File(dataDir, "apple_shop_data.json")
+    private val huaweiShopDataFile = File(dataDir, "huawei_shop_data.json")
 
     companion object {
         @Volatile
@@ -202,6 +204,12 @@ class DataRepository private constructor(private val context: Context) {
 
             // 初始化店铺数据到持久化文件（总是从assets重新复制以确保数据最新）
             copyShopDataFromAssetsToFile()
+
+            // 初始化Apple店铺数据到持久化文件（总是从assets重新复制以确保数据最新）
+            copyAppleShopDataFromAssetsToFile()
+
+            // 初始化华为店铺数据到持久化文件（总是从assets重新复制以确保数据最新）
+            copyHuaweiShopDataFromAssetsToFile()
 
             // 更新购物车计数
             updateCartFlows()
@@ -410,6 +418,42 @@ class DataRepository private constructor(private val context: Context) {
             android.util.Log.e(
                 "DataRepository",
                 "Error copying shop data from assets to ${shopDataFile.absolutePath}",
+                e
+            )
+        }
+    }
+
+    private fun copyAppleShopDataFromAssetsToFile() {
+        try {
+            val jsonString =
+                context.assets.open("data/apple_shop_data.json").bufferedReader().use { it.readText() }
+            appleShopDataFile.writeText(jsonString)
+            android.util.Log.d(
+                "DataRepository",
+                "Copied Apple shop data from assets to ${appleShopDataFile.absolutePath}"
+            )
+        } catch (e: Exception) {
+            android.util.Log.e(
+                "DataRepository",
+                "Error copying Apple shop data from assets to ${appleShopDataFile.absolutePath}",
+                e
+            )
+        }
+    }
+
+    private fun copyHuaweiShopDataFromAssetsToFile() {
+        try {
+            val jsonString =
+                context.assets.open("data/huawei_shop_data.json").bufferedReader().use { it.readText() }
+            huaweiShopDataFile.writeText(jsonString)
+            android.util.Log.d(
+                "DataRepository",
+                "Copied Huawei shop data from assets to ${huaweiShopDataFile.absolutePath}"
+            )
+        } catch (e: Exception) {
+            android.util.Log.e(
+                "DataRepository",
+                "Error copying Huawei shop data from assets to ${huaweiShopDataFile.absolutePath}",
                 e
             )
         }
