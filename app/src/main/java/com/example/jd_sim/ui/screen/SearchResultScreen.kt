@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -32,6 +33,8 @@ import com.example.jd_sim.ui.components.FilterBottomSheet
 import com.example.jd_sim.ui.theme.JDRed
 import com.example.jd_sim.viewmodel.SearchFilter
 import com.example.jd_sim.viewmodel.SearchResultViewModel
+import com.example.jd_sim.viewmodel.SearchTabType
+import com.example.jd_sim.viewmodel.ShopItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,6 +42,7 @@ fun SearchResultScreen(
     keyword: String,
     onBackClick: () -> Unit = {},
     onNavigateToProduct: (String) -> Unit = {},
+    onNavigateToShop: (String) -> Unit = {},
     modifier: Modifier = Modifier,
     viewModel: SearchResultViewModel = hiltViewModel()
 ) {
@@ -49,6 +53,8 @@ fun SearchResultScreen(
     }
 
     val products by viewModel.products.collectAsState()
+    val shops by viewModel.shops.collectAsState()
+    val currentTab by viewModel.currentTab.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val currentSortType by viewModel.currentSortType.collectAsState()
     var showFilterDialog by remember { mutableStateOf(false) }
@@ -67,14 +73,22 @@ fun SearchResultScreen(
             onKeywordChange = { /* Implement if search keyword can be changed on this screen */ }
         )
 
-        // 筛选排序栏
-        SortAndFilterBar(
-            currentSortType = currentSortType,
-            onSortClick = { viewModel.sortProducts(it) },
-            onFilterClick = { showFilterDialog = true }
+        // Tab切换栏
+        SearchTabBar(
+            currentTab = currentTab,
+            onTabClick = { viewModel.switchTab(it) }
         )
 
-        // 商品列表
+        // 筛选排序栏 - 仅在商品Tab显示
+        if (currentTab == SearchTabType.PRODUCTS) {
+            SortAndFilterBar(
+                currentSortType = currentSortType,
+                onSortClick = { viewModel.sortProducts(it) },
+                onFilterClick = { showFilterDialog = true }
+            )
+        }
+
+        // 内容区域
         if (isLoading) {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -83,20 +97,57 @@ fun SearchResultScreen(
                 CircularProgressIndicator(color = JDRed)
             }
         } else {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 8.dp),
-                contentPadding = PaddingValues(vertical = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(products) { product ->
-                    ProductCard(
-                        product = product,
-                        onClick = { onNavigateToProduct(product.id) }
-                    )
+            when (currentTab) {
+                SearchTabType.PRODUCTS -> {
+                    // 商品列表
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 8.dp),
+                        contentPadding = PaddingValues(vertical = 8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(products) { product ->
+                            ProductCard(
+                                product = product,
+                                onClick = { onNavigateToProduct(product.id) }
+                            )
+                        }
+                    }
+                }
+                SearchTabType.SHOPS -> {
+                    // 店铺列表
+                    if (shops.isEmpty()) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Text(
+                                    text = "未找到相关店铺",
+                                    fontSize = 16.sp,
+                                    color = Color.Gray
+                                )
+                            }
+                        }
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = 16.dp),
+                            contentPadding = PaddingValues(vertical = 8.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            items(shops.size) { index ->
+                                ShopCard(
+                                    shop = shops[index],
+                                    onClick = { onNavigateToShop(shops[index].name) }
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -383,14 +434,14 @@ private fun ModalBottomSheetLayout(
 ) {
     Box(modifier = modifier) {
         content()
-        
+
         // 半透明背景
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.Black.copy(alpha = 0.5f))
         )
-        
+
         // 底部弹窗内容
         Box(
             modifier = Modifier
@@ -399,6 +450,143 @@ private fun ModalBottomSheetLayout(
                 .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
         ) {
             sheetContent()
+        }
+    }
+}
+
+@Composable
+private fun SearchTabBar(
+    currentTab: SearchTabType,
+    onTabClick: (SearchTabType) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        color = Color.White,
+        shadowElevation = 2.dp
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 0.dp)
+        ) {
+            // 商品Tab
+            TabItem(
+                text = "商品",
+                isSelected = currentTab == SearchTabType.PRODUCTS,
+                onClick = { onTabClick(SearchTabType.PRODUCTS) },
+                modifier = Modifier.weight(1f)
+            )
+
+            // 店铺Tab
+            TabItem(
+                text = "店铺",
+                isSelected = currentTab == SearchTabType.SHOPS,
+                onClick = { onTabClick(SearchTabType.SHOPS) },
+                modifier = Modifier.weight(1f)
+            )
+        }
+    }
+}
+
+@Composable
+private fun TabItem(
+    text: String,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .clickable { onClick() }
+            .padding(vertical = 12.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = text,
+            color = if (isSelected) JDRed else Color.Gray,
+            fontSize = 15.sp,
+            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        if (isSelected) {
+            Box(
+                modifier = Modifier
+                    .width(30.dp)
+                    .height(3.dp)
+                    .background(JDRed, RoundedCornerShape(2.dp))
+            )
+        }
+    }
+}
+
+@Composable
+private fun ShopCard(
+    shop: ShopItem,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // 店铺logo
+            AsyncImage(
+                model = coil.request.ImageRequest.Builder(LocalContext.current)
+                    .data("file:///android_asset/${shop.avatar}")
+                    .build(),
+                contentDescription = shop.name,
+                modifier = Modifier
+                    .size(60.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Color(0xFFF5F5F5)),
+                contentScale = ContentScale.Fit
+            )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                // 店铺名称
+                Text(
+                    text = shop.name,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                // 店铺描述
+                Text(
+                    text = shop.description,
+                    fontSize = 13.sp,
+                    color = Color.Gray,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+
+            // 进入店铺按钮
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowRight,
+                contentDescription = "进入店铺",
+                tint = Color.Gray,
+                modifier = Modifier.size(24.dp)
+            )
         }
     }
 }

@@ -2,7 +2,7 @@
   "shopInfo": {
     "id": "apple_jd_flagship",
     "name": "Apple官方旗舰店",
-    "avatar": "📱",
+    "avatar": "image/Apple店铺logo.png",
     "followers": "2.5亿",
     "isFollowed": true,
     "serviceBanner": "Apple全方位服务，尽在京东",

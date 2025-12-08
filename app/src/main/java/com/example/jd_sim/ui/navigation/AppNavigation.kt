@@ -132,15 +132,18 @@ fun AppNavigation(navController: NavHostController) {
                 onNavigateToProduct = { productId ->
                     // 根据产品ID进行条件路由
                     when {
-                        productId.contains("huawei_p60") || productId.contains("华为P60") || productId.contains("P60") -> 
+                        productId.contains("huawei_p60") || productId.contains("华为P60") || productId.contains("P60") ->
                             navController.navigate("huawei_p60_detail/$productId")
-                        productId.contains("huawei_mate60") || productId.contains("华为Mate60") || productId.contains("Mate60") || productId.contains("mate60") -> 
+                        productId.contains("huawei_mate60") || productId.contains("华为Mate60") || productId.contains("Mate60") || productId.contains("mate60") ->
                             navController.navigate("huawei_mate60_detail/$productId")
-                        productId.contains("iphone15") || productId.contains("iPhone15") -> 
+                        productId.contains("iphone15") || productId.contains("iPhone15") ->
                             navController.navigate("product/$productId")
-                        else -> 
+                        else ->
                             navController.navigate("product/$productId")
                     }
+                },
+                onNavigateToShop = { shopName ->
+                    navController.navigate("shop_page/$shopName")
                 }
             )
         }

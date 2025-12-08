@@ -25,6 +25,18 @@ data class SearchFilter(
     val categories: List<String> = emptyList()
 )
 
+enum class SearchTabType {
+    PRODUCTS,
+    SHOPS
+}
+
+data class ShopItem(
+    val id: String,
+    val name: String,
+    val avatar: String,
+    val description: String
+)
+
 @HiltViewModel
 class SearchResultViewModel @Inject constructor(
     private val repository: DataRepository
@@ -38,19 +50,62 @@ class SearchResultViewModel @Inject constructor(
 
     private val _currentSortType = MutableStateFlow(SearchSortType.COMPREHENSIVE)
     val currentSortType: StateFlow<SearchSortType> = _currentSortType.asStateFlow()
-    
+
     private val _currentFilter = MutableStateFlow(SearchFilter())
     val currentFilter: StateFlow<SearchFilter> = _currentFilter.asStateFlow()
 
+    private val _currentTab = MutableStateFlow(SearchTabType.PRODUCTS)
+    val currentTab: StateFlow<SearchTabType> = _currentTab.asStateFlow()
+
+    private val _shops = MutableStateFlow<List<ShopItem>>(emptyList())
+    val shops: StateFlow<List<ShopItem>> = _shops.asStateFlow()
+
     private var allProducts: List<Product> = emptyList()
+
+    private val allShops = listOf(
+        ShopItem(
+            id = "apple_store",
+            name = "Apple官方旗舰店",
+            avatar = "image/Apple店铺logo.png",
+            description = "Apple官方授权旗舰店，正品保证"
+        ),
+        ShopItem(
+            id = "huawei_store",
+            name = "华为官方旗舰店",
+            avatar = "image/华为店铺logo.PNG",
+            description = "华为官方授权旗舰店，正品保证"
+        )
+    )
 
     fun loadSearchResults(keyword: String) {
         viewModelScope.launch {
             _isLoading.value = true
             allProducts = repository.getSearchResults(keyword)
             applyCurrentSortAndFilter()
+            searchShops(keyword)
             _isLoading.value = false
         }
+    }
+
+    fun switchTab(tab: SearchTabType) {
+        _currentTab.value = tab
+    }
+
+    private fun searchShops(keyword: String) {
+        val filteredShops = allShops.filter { shop ->
+            shop.name.contains(keyword, ignoreCase = true) ||
+            shop.description.contains(keyword, ignoreCase = true) ||
+            // 根据关键词匹配特定店铺
+            when {
+                keyword.contains("apple", ignoreCase = true) ||
+                keyword.contains("苹果", ignoreCase = true) ||
+                keyword.contains("iphone", ignoreCase = true) -> shop.id == "apple_store"
+                keyword.contains("huawei", ignoreCase = true) ||
+                keyword.contains("华为", ignoreCase = true) -> shop.id == "huawei_store"
+                else -> false
+            }
+        }
+        _shops.value = filteredShops
     }
 
     fun sortProducts(sortType: SearchSortType) {
