@@ -18,6 +18,7 @@ import com.example.jd_sim.common.utils.TaskSeventeenLogger
 @Composable
 fun ProductDetailScreen(
     productId: String,
+    searchKeyword: String = "", // 新增参数
     onBackClick: () -> Unit,
     onCartClick: () -> Unit,
     onBuyNowClick: (String) -> Unit,
@@ -40,6 +41,19 @@ fun ProductDetailScreen(
     // 加载商品详情
     LaunchedEffect(productId) {
         viewModel.loadProductDetail(productId)
+    }
+    
+    // 监听 productDetail 的变化以进行日志记录
+    LaunchedEffect(productDetail) {
+        productDetail?.let { detail ->
+            com.example.jd_sim.common.utils.TaskOneLogger.logFirstProductViewed(context, detail.id, detail.title)
+            
+            // 检查是否完成任务一：搜索关键词为"iPhone 15"且查看的商品名称包含"iPhone 15"
+            if (searchKeyword.contains("iPhone 15", ignoreCase = true) && 
+                detail.title.contains("iPhone 15", ignoreCase = true)) {
+                com.example.jd_sim.common.utils.TaskOneLogger.logTaskCompleted(context, searchKeyword, detail.title)
+            }
+        }
     }
     
     if (isLoading) {

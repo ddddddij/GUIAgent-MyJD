@@ -88,6 +88,8 @@ class SearchViewModel @Inject constructor(
             toastMessage = "正在搜索 $searchKeyword…",
             navigationEvent = SearchNavigationEvent.ToSearchResult(searchKeyword)
         )
+        // Add logging for search initiated
+        com.example.jd_sim.common.utils.TaskOneLogger.logSearchInitiated(context, searchKeyword)
     }
 
     fun onSearchTextChange(newText: String) {

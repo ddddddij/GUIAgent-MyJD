@@ -144,13 +144,21 @@ object TaskOneLogger {
         try {
             // 使用应用内部存储确保可靠性
             val dataDir = File(context.filesDir, "persistent_data")
+            Log.d(TAG, "Attempting to save log. Data directory: ${dataDir.absolutePath}")
+
             if (!dataDir.exists()) {
-                dataDir.mkdirs()
-                Log.d(TAG, "Created persistent_data directory: ${dataDir.absolutePath}")
+                val created = dataDir.mkdirs()
+                Log.d(TAG, "Created persistent_data directory: $created at ${dataDir.absolutePath}")
+                if (!created) {
+                    Log.e(TAG, "Failed to create persistent_data directory.")
+                    return
+                }
+            } else {
+                Log.d(TAG, "Data directory exists at ${dataDir.absolutePath}")
             }
             
             val logFile = File(dataDir, TASK_ONE_LOG_FILE)
-            Log.d(TAG, "Saving task one log to: ${logFile.absolutePath}")
+            Log.d(TAG, "Log file path: ${logFile.absolutePath}")
             
             // 读取现有日志
             val existingLogs = loadExistingLogs(logFile)
@@ -161,6 +169,11 @@ object TaskOneLogger {
             
             // 保存到文件
             logFile.writeText(updatedJson)
+            
+            Log.d(TAG, "Successfully wrote content to ${logFile.absolutePath}")
+            Log.d(TAG, "File exists after write: ${logFile.exists()}")
+            Log.d(TAG, "File size after write: ${logFile.length()} bytes")
+            
             Log.d(TAG, "Successfully saved task one log: ${taskLog.action}")
             Log.d(TAG, "Total task one logs: ${existingLogs.size}")
             

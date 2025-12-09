@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
 
 // Placeholder for SearchSortType and SearchFilter, will be defined properly
 enum class SearchSortType {
@@ -39,7 +41,8 @@ data class ShopItem(
 
 @HiltViewModel
 class SearchResultViewModel @Inject constructor(
-    private val repository: DataRepository
+    private val repository: DataRepository,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private val _products = MutableStateFlow<List<Product>>(emptyList())
@@ -83,6 +86,8 @@ class SearchResultViewModel @Inject constructor(
             allProducts = repository.getSearchResults(keyword)
             applyCurrentSortAndFilter()
             searchShops(keyword)
+            // Log search results loaded
+            com.example.jd_sim.common.utils.TaskOneLogger.logSearchResultsLoaded(context, keyword, allProducts.size)
             _isLoading.value = false
         }
     }

@@ -41,7 +41,7 @@ import com.example.jd_sim.viewmodel.ShopItem
 fun SearchResultScreen(
     keyword: String,
     onBackClick: () -> Unit = {},
-    onNavigateToProduct: (String) -> Unit = {},
+    onNavigateToProduct: (String, String) -> Unit = { _, _ -> },
     onNavigateToShop: (String) -> Unit = {},
     modifier: Modifier = Modifier,
     viewModel: SearchResultViewModel = hiltViewModel()
@@ -112,7 +112,7 @@ fun SearchResultScreen(
                         items(products) { product ->
                             ProductCard(
                                 product = product,
-                                onClick = { onNavigateToProduct(product.id) }
+                                onClick = { onNavigateToProduct(product.id, keyword) }
                             )
                         }
                     }

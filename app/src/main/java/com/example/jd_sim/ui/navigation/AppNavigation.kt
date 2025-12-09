@@ -129,17 +129,17 @@ fun AppNavigation(navController: NavHostController) {
                 onBackClick = {
                     navController.popBackStack()
                 },
-                onNavigateToProduct = { productId ->
+                onNavigateToProduct = { productId, searchKeyword ->
                     // 根据产品ID进行条件路由
                     when {
                         productId.contains("huawei_p60") || productId.contains("华为P60") || productId.contains("P60") ->
-                            navController.navigate("huawei_p60_detail/$productId")
+                            navController.navigate("huawei_p60_detail/$productId?searchKeyword=$searchKeyword")
                         productId.contains("huawei_mate60") || productId.contains("华为Mate60") || productId.contains("Mate60") || productId.contains("mate60") ->
-                            navController.navigate("huawei_mate60_detail/$productId")
+                            navController.navigate("huawei_mate60_detail/$productId?searchKeyword=$searchKeyword")
                         productId.contains("iphone15") || productId.contains("iPhone15") ->
-                            navController.navigate("product/$productId")
+                            navController.navigate("product/$productId?searchKeyword=$searchKeyword")
                         else ->
-                            navController.navigate("product/$productId")
+                            navController.navigate("product/$productId?searchKeyword=$searchKeyword")
                     }
                 },
                 onNavigateToShop = { shopName ->
@@ -148,10 +148,12 @@ fun AppNavigation(navController: NavHostController) {
             )
         }
         
-        composable("product/{productId}") { backStackEntry ->
+        composable("product/{productId}?searchKeyword={searchKeyword}") { backStackEntry ->
             val productId = backStackEntry.arguments?.getString("productId") ?: ""
+            val searchKeyword = backStackEntry.arguments?.getString("searchKeyword") ?: ""
             ProductDetailScreen(
                 productId = productId,
+                searchKeyword = searchKeyword,
                 onBackClick = {
                     navController.popBackStack()
                 },
