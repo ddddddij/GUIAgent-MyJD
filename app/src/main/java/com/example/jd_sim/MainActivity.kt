@@ -20,11 +20,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.jd_sim.ui.navigation.AppNavigation
-import com.example.jd_sim.repository.DataRepository
+import com.example.jd_sim.domain.repository.DataRepository
 import com.example.jd_sim.ui.theme.MyJDTheme
 import dagger.hilt.android.AndroidEntryPoint
 

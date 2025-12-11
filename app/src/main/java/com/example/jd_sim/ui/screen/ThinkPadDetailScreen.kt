@@ -24,7 +24,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.jd_sim.ui.theme.JDRed
 import com.example.jd_sim.ui.theme.JDTextPrimary
-import com.example.jd_sim.viewmodel.ProductDetailViewModel
+import com.example.jd_sim.ui.screen.productdetail.ProductDetailViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

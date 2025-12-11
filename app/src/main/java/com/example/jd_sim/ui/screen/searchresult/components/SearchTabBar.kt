@@ -13,7 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jd_sim.ui.theme.JDRed
-import com.example.jd_sim.viewmodel.SearchTabType
+import com.example.jd_sim.ui.screen.searchresult.SearchTabType
 
 /**
  * 搜索Tab切换栏

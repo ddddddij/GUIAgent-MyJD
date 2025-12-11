@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.jd_sim.viewmodel.ProductSpecViewModel
+import com.example.jd_sim.ui.screen.productdetail.ProductSpecViewModel
 import android.widget.Toast
 
 @Composable

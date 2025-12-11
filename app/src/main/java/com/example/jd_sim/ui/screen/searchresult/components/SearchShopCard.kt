@@ -19,7 +19,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.example.jd_sim.viewmodel.ShopItem
+import com.example.jd_sim.ui.screen.searchresult.ShopItem
 
 /**
  * 搜索结果店铺卡片

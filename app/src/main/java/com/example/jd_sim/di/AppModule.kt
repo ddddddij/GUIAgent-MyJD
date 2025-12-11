@@ -1,7 +1,7 @@
 package com.example.jd_sim.di
 
 import android.content.Context
-import com.example.jd_sim.repository.DataRepository
+import com.example.jd_sim.domain.repository.DataRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

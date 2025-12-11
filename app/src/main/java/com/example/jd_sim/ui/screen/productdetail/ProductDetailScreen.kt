@@ -1,4 +1,4 @@
-package com.example.jd_sim.ui.screen
+package com.example.jd_sim.ui.screen.productdetail
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
@@ -12,35 +12,50 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jd_sim.ui.components.*
 import com.example.jd_sim.ui.screen.productdetail.ProductDetailViewModel
+import com.example.jd_sim.common.utils.TaskSeventeenLogger
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HuaweiNova11DetailScreen(
+fun ProductDetailScreen(
     productId: String,
+    searchKeyword: String = "", // 新增参数
     onBackClick: () -> Unit,
     onCartClick: () -> Unit,
     onBuyNowClick: (String) -> Unit,
     onShopClick: (String) -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: ProductDetailViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val viewModel: ProductDetailViewModel = hiltViewModel()
-
+    
     val productDetail by viewModel.productDetail.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val selectedColorIndex by viewModel.selectedColorIndex.collectAsState()
     val selectedPurchaseType by viewModel.selectedPurchaseType.collectAsState()
     val isFavorite by viewModel.isFavorite.collectAsState()
-
+    
     // 规格选择弹窗状态
     var showSpecDialog by remember { mutableStateOf(false) }
     var isAddToCartMode by remember { mutableStateOf(true) }
-
+    
     // 加载商品详情
     LaunchedEffect(productId) {
         viewModel.loadProductDetail(productId)
     }
-
+    
+    // 监听 productDetail 的变化以进行日志记录
+    LaunchedEffect(productDetail) {
+        productDetail?.let { detail ->
+            com.example.jd_sim.common.utils.TaskOneLogger.logFirstProductViewed(context, detail.id, detail.title)
+            
+            // 检查是否完成任务一：搜索关键词为"iPhone 15"且查看的商品名称包含"iPhone 15"
+            if (searchKeyword.contains("iPhone 15", ignoreCase = true) && 
+                detail.title.contains("iPhone 15", ignoreCase = true)) {
+                com.example.jd_sim.common.utils.TaskOneLogger.logTaskCompleted(context, searchKeyword, detail.title)
+            }
+        }
+    }
+    
     if (isLoading) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -50,7 +65,7 @@ fun HuaweiNova11DetailScreen(
         }
         return
     }
-
+    
     productDetail?.let { detail ->
         Scaffold(
             modifier = modifier.fillMaxSize(),
@@ -59,6 +74,13 @@ fun HuaweiNova11DetailScreen(
                 ProductDetailBottomBar(
                     currentPrice = detail.currentPrice,
                     onStoreClick = {
+                        // 任务十七日志记录：进入店铺
+                        if (detail.title.contains("iPhone15") || detail.title.contains("iPhone 15")) {
+                            TaskSeventeenLogger.logTaskStart(context)
+                            TaskSeventeenLogger.logProductDetailEntered(context, detail.title)
+                            TaskSeventeenLogger.logShopEntered(context, detail.storeName)
+                        }
+                        // 使用商品详情中的店铺名称导航到店铺页面
                         onShopClick(detail.storeName)
                     },
                     onServiceClick = {
@@ -84,10 +106,12 @@ fun HuaweiNova11DetailScreen(
             ) {
                 item {
                     Box {
+                        // 商品图片区域
                         ProductImageSection(
                             images = detail.images
                         )
-
+                        
+                        // 顶部导航栏（悬浮）
                         ProductDetailTopBar(
                             isFavorite = isFavorite,
                             onBackClick = onBackClick,
@@ -108,8 +132,9 @@ fun HuaweiNova11DetailScreen(
                         )
                     }
                 }
-
+                
                 item {
+                    // 价格信息区
                     ProductPriceSection(
                         currentPrice = detail.currentPrice,
                         originalPrice = detail.originalPrice,
@@ -117,8 +142,9 @@ fun HuaweiNova11DetailScreen(
                         soldCount = detail.soldCount
                     )
                 }
-
+                
                 item {
+                    // 购买方式和颜色规格选择
                     ProductVariantSection(
                         purchaseTypes = detail.purchaseTypes,
                         selectedPurchaseType = selectedPurchaseType,
@@ -128,8 +154,9 @@ fun HuaweiNova11DetailScreen(
                         onColorSelected = viewModel::selectColor
                     )
                 }
-
+                
                 item {
+                    // 商品信息区
                     ProductInfoSection(
                         title = detail.title,
                         tags = detail.tags,
@@ -139,8 +166,9 @@ fun HuaweiNova11DetailScreen(
                         }
                     )
                 }
-
+                
                 item {
+                    // 配送信息区
                     ProductDeliverySection(
                         deliveryInfo = detail.deliveryInfo,
                         onAddressClick = {
@@ -148,8 +176,9 @@ fun HuaweiNova11DetailScreen(
                         }
                     )
                 }
-
+                
                 item {
+                    // 促销信息区
                     ProductPromotionSection(
                         tradeIn = detail.tradeIn,
                         onTradeInClick = {
@@ -157,8 +186,9 @@ fun HuaweiNova11DetailScreen(
                         }
                     )
                 }
-
+                
                 item {
+                    // 门店信息区
                     ProductStoreSection(
                         stores = detail.stores,
                         onAppointmentClick = {
@@ -166,8 +196,18 @@ fun HuaweiNova11DetailScreen(
                         }
                     )
                 }
-
+                
                 item {
+                    // 评价信息区
+                    LaunchedEffect(detail.reviews) {
+                        // 任务十四日志记录：当评论区域显示时记录
+                        viewModel.onReviewSectionViewed()
+                        // 记录评论数量
+                        if (detail.reviews.list.isNotEmpty()) {
+                            viewModel.onReviewsLoaded(detail.reviews.list.size)
+                        }
+                    }
+                    
                     ProductReviewSection(
                         reviews = detail.reviews,
                         onTagClick = { tagIndex ->
@@ -181,19 +221,21 @@ fun HuaweiNova11DetailScreen(
                         }
                     )
                 }
-
+                
+                // 底部间距
                 item {
                     Spacer(modifier = Modifier.height(16.dp))
                 }
             }
         }
-
+        
+        // 规格选择弹窗
         if (showSpecDialog) {
             ProductSpecDialog(
                 productId = productId,
                 isAddToCart = isAddToCartMode,
                 onDismiss = { showSpecDialog = false },
-                onConfirm = {
+                onConfirm = { 
                     showSpecDialog = false
                     Toast.makeText(context, if (isAddToCartMode) "已加入购物车" else "正在跳转到订单页", Toast.LENGTH_SHORT).show()
                 },

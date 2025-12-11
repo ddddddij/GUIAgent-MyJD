@@ -10,21 +10,22 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.jd_sim.ui.screen.HomeScreen
-import com.example.jd_sim.ui.screen.ChatScreen
-import com.example.jd_sim.ui.screen.MeScreen
+import com.example.jd_sim.ui.screen.home.HomeScreen
+import com.example.jd_sim.ui.screen.chat.ChatScreen
+import com.example.jd_sim.ui.screen.me.MeScreen
 import com.example.jd_sim.ui.screen.PlaceholderScreen
-import com.example.jd_sim.ui.screen.ProductDetailScreen
-import com.example.jd_sim.ui.screen.OrderScreen
-import com.example.jd_sim.ui.screen.SettleScreen
+import com.example.jd_sim.ui.screen.productdetail.ProductDetailScreen
+import com.example.jd_sim.ui.screen.order.OrderScreen
+import com.example.jd_sim.ui.screen.settle.SettleScreen
 import com.example.jd_sim.ui.screen.PaymentSuccessScreen
-
-import com.example.jd_sim.ui.screen.SearchResultScreen
-import com.example.jd_sim.ui.screen.MessageDetailScreen
-import com.example.jd_sim.ui.screen.MessageSettingScreen
-import com.example.jd_sim.ui.screen.ShopScreen
-import com.example.jd_sim.ui.screen.AddressListScreen
-import com.example.jd_sim.ui.screen.AddressDetailScreen
+import com.example.jd_sim.ui.screen.cart.CartScreen
+import com.example.jd_sim.ui.screen.search.SearchScreen
+import com.example.jd_sim.ui.screen.searchresult.SearchResultScreen
+import com.example.jd_sim.ui.screen.messagedetail.MessageDetailScreen
+import com.example.jd_sim.ui.screen.messagesetting.MessageSettingScreen
+import com.example.jd_sim.ui.screen.shop.ShopScreen
+import com.example.jd_sim.ui.screen.addresslist.AddressListScreen
+import com.example.jd_sim.ui.screen.addressdetail.AddressDetailScreen
 import com.example.jd_sim.ui.screen.HuaweiP60DetailScreen
 import com.example.jd_sim.ui.screen.HuaweiMate60DetailScreen
 import com.example.jd_sim.ui.screen.HuaweiNova11DetailScreen
@@ -88,7 +89,7 @@ fun AppNavigation(navController: NavHostController) {
         }
         
         composable("cart") {
-            com.example.jd_sim.ui.screen.CartScreen(
+            CartScreen(
                 onNavigateBack = {
                     navController.popBackStack()
                 },

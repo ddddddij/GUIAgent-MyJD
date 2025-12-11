@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jd_sim.ui.theme.JDRed
-import com.example.jd_sim.viewmodel.SearchSortType
+import com.example.jd_sim.ui.screen.searchresult.SearchSortType
 
 /**
  * 排序和筛选栏

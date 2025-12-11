@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jd_sim.ui.components.*
-import com.example.jd_sim.viewmodel.ProductDetailViewModel
+import com.example.jd_sim.ui.screen.productdetail.ProductDetailViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
