@@ -498,8 +498,19 @@ class DataRepository private constructor(private val context: Context) {
         try {
             val allProducts = loadProducts()
             if (query.isBlank()) {
-                return@withContext emptyList()
+                return@withContext allProducts
             }
+
+            // 店铺关键词映射（用于模糊搜索）
+            val storeKeywords = mapOf(
+                "apple_store" to listOf("苹果", "apple", "iphone", "ipad", "mac", "airpods"),
+                "huawei_store" to listOf("华为", "huawei")
+            )
+
+            // 检查查询是否包含店铺关键词
+            val matchedStoreIds = storeKeywords.filter { (_, keywords) ->
+                keywords.any { keyword -> query.contains(keyword, ignoreCase = true) }
+            }.keys
 
             // 品牌别名映射
             val brandAliases = mapOf(
@@ -512,6 +523,11 @@ class DataRepository private constructor(private val context: Context) {
             val keywords = query.split(" ", "　").filter { it.isNotBlank() }
 
             val results = allProducts.filter { product ->
+                // 如果查询包含店铺关键词，直接匹配店铺ID
+                if (matchedStoreIds.isNotEmpty() && product.storeId in matchedStoreIds) {
+                    return@filter true
+                }
+
                 // 完整匹配
                 val exactMatch = product.name.contains(query, ignoreCase = true) ||
                         product.description.contains(query, ignoreCase = true) ||

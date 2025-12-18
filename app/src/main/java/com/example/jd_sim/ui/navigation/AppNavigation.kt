@@ -40,7 +40,8 @@ fun AppNavigation(navController: NavHostController) {
         composable("home") {
             HomeScreen(
                 onNavigateToSearch = { query ->
-                    navController.navigate("search_result/$query")
+                    val searchQuery = if (query.isBlank()) "__all__" else query
+                    navController.navigate("search_result/$searchQuery")
                 },
                 onNavigateToProduct = { productId ->
                     // 根据产品ID进行条件路由

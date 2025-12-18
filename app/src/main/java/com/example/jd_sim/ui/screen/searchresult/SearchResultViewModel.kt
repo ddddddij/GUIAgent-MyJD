@@ -83,11 +83,12 @@ class SearchResultViewModel @Inject constructor(
     fun loadSearchResults(keyword: String) {
         viewModelScope.launch {
             _isLoading.value = true
-            allProducts = repository.getSearchResults(keyword)
+            val actualKeyword = if (keyword == "__all__") "" else keyword
+            allProducts = repository.getSearchResults(actualKeyword)
             applyCurrentSortAndFilter()
-            searchShops(keyword)
+            searchShops(actualKeyword)
             // Log search results loaded
-            com.example.jd_sim.common.utils.TaskOneLogger.logSearchResultsLoaded(context, keyword, allProducts.size)
+            com.example.jd_sim.common.utils.TaskOneLogger.logSearchResultsLoaded(context, actualKeyword, allProducts.size)
             _isLoading.value = false
         }
     }
