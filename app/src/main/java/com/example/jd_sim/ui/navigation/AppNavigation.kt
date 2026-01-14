@@ -46,17 +46,17 @@ fun AppNavigation(navController: NavHostController) {
                 onNavigateToProduct = { productId ->
                     // 根据产品ID进行条件路由
                     when {
-                        productId.contains("huawei_p60") || productId.contains("华为P60") || productId.contains("P60") -> 
+                        productId.contains("huawei_p60") || productId.contains("华为P60") || productId.contains("P60") ->
                             navController.navigate("huawei_p60_detail/$productId")
-                        productId.contains("huawei_mate60") || productId.contains("华为Mate60") || productId.contains("Mate60") || productId.contains("mate60") -> 
+                        productId.contains("huawei_mate60") || productId.contains("华为Mate60") || productId.contains("Mate60") || productId.contains("mate60") ->
                             navController.navigate("huawei_mate60_detail/$productId")
-                        productId.contains("huawei_nova11") || productId.contains("华为Nova11") || productId.contains("Nova11") || productId.contains("nova11") -> 
+                        productId.contains("huawei_nova11") || productId.contains("华为Nova11") || productId.contains("Nova11") || productId.contains("nova11") ->
                             navController.navigate("huawei_nova11_detail/$productId")
                         productId.contains("thinkpad") || productId.contains("ThinkPad") || productId.contains("联想ThinkPad") || productId.contains("联想笔记本") ->
                             navController.navigate("product/$productId")
-                        productId.contains("iphone15") || productId.contains("iPhone15") -> 
+                        productId.contains("iphone15") || productId.contains("iPhone15") ->
                             navController.navigate("product/$productId")
-                        else -> 
+                        else ->
                             navController.navigate("product/$productId")
                     }
                 },
@@ -65,6 +65,9 @@ fun AppNavigation(navController: NavHostController) {
                 },
                 onNavigateToSupermarket = {
                     navController.navigate("supermarket")
+                },
+                onNavigateToFunction = { route ->
+                    navController.navigate(route)
                 }
             )
         }
@@ -118,6 +121,9 @@ fun AppNavigation(navController: NavHostController) {
                 },
                 onNavigateToOrderList = { orderType ->
                     navController.navigate("order_list/$orderType")
+                },
+                onNavigateToPlaceholder = { title ->
+                    navController.navigate("placeholder/$title")
                 }
             )
         }
@@ -348,6 +354,99 @@ fun AppNavigation(navController: NavHostController) {
         composable("settings") {
             PlaceholderScreen(
                 title = "设置",
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        // 首页功能入口占位页面
+        composable("seckill") {
+            PlaceholderScreen(
+                title = "秒杀",
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable("trial") {
+            PlaceholderScreen(
+                title = "试用领取",
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable("coupon") {
+            PlaceholderScreen(
+                title = "领券",
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable("hotel") {
+            PlaceholderScreen(
+                title = "酒店",
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable("fashion") {
+            PlaceholderScreen(
+                title = "服饰鞋包",
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable("phone") {
+            PlaceholderScreen(
+                title = "手机",
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable("digital") {
+            PlaceholderScreen(
+                title = "数码",
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable("appliance") {
+            PlaceholderScreen(
+                title = "家电",
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable("more") {
+            PlaceholderScreen(
+                title = "更多",
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        // 我的页面功能入口占位页面
+        composable("placeholder/{title}") { backStackEntry ->
+            val title = backStackEntry.arguments?.getString("title") ?: "功能开发中"
+            PlaceholderScreen(
+                title = title,
                 onBackClick = {
                     navController.popBackStack()
                 }

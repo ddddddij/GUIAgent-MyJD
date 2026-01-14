@@ -20,6 +20,7 @@ fun MeScreen(
     onNavigateToAddress: () -> Unit = {},
     onNavigateToChat: () -> Unit = {},
     onNavigateToOrderList: (String) -> Unit = {},
+    onNavigateToPlaceholder: (String) -> Unit = {},
     viewModel: MeViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -61,11 +62,11 @@ fun MeScreen(
                                 "chat" -> onNavigateToChat()
                                 "address" -> onNavigateToAddress()
                                 "settings" -> onNavigateToSettings()
-                                else -> Toast.makeText(context, "${action.name}功能待开发", Toast.LENGTH_SHORT).show()
+                                else -> onNavigateToPlaceholder(action.name)
                             }
                         },
                         onAvatarClick = {
-                            Toast.makeText(context, "个人信息页待开发", Toast.LENGTH_SHORT).show()
+                            onNavigateToPlaceholder("个人信息")
                         }
                     )
                 }
@@ -75,7 +76,7 @@ fun MeScreen(
                         memberBenefits = data.memberBenefits,
                         userStats = data.userStats,
                         onBenefitClick = { benefit ->
-                            Toast.makeText(context, "${benefit.name}功能待开发", Toast.LENGTH_SHORT).show()
+                            onNavigateToPlaceholder(benefit.name)
                         }
                     )
                 }
@@ -84,7 +85,7 @@ fun MeScreen(
                     PromoBanner(
                         promoBanners = data.promoBanners,
                         onBannerClick = { banner ->
-                            Toast.makeText(context, "${banner.title}活动页面待开发", Toast.LENGTH_SHORT).show()
+                            onNavigateToPlaceholder(banner.title)
                         }
                     )
                 }
@@ -112,10 +113,10 @@ fun MeScreen(
                         assetItems = data.assetItems,
                         serviceItems = data.serviceItems,
                         onAssetClick = { asset ->
-                            Toast.makeText(context, "${asset.name}功能待开发", Toast.LENGTH_SHORT).show()
+                            onNavigateToPlaceholder(asset.name)
                         },
                         onServiceClick = { service ->
-                            Toast.makeText(context, "${service.name}功能待开发", Toast.LENGTH_SHORT).show()
+                            onNavigateToPlaceholder(service.name)
                         }
                     )
                 }
@@ -124,7 +125,7 @@ fun MeScreen(
                     InteractionSection(
                         interactionItems = data.interactionItems,
                         onInteractionClick = { interaction ->
-                            Toast.makeText(context, "${interaction.name}功能待开发", Toast.LENGTH_SHORT).show()
+                            onNavigateToPlaceholder(interaction.name)
                         }
                     )
                 }

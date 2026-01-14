@@ -19,6 +19,7 @@ fun HomeScreen(
     onNavigateToProduct: (String) -> Unit = {},
     onNavigateToCart: () -> Unit = {},
     onNavigateToSupermarket: () -> Unit = {},
+    onNavigateToFunction: (String) -> Unit = {},
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     
@@ -71,9 +72,16 @@ fun HomeScreen(
                 onFunctionClick = { function ->
                     when (function) {
                         "京东超市" -> onNavigateToSupermarket()
-                        else -> {
-                            // Navigate to placeholder for other functions
-                        }
+                        "秒杀" -> onNavigateToFunction("seckill")
+                        "试用领取" -> onNavigateToFunction("trial")
+                        "领券" -> onNavigateToFunction("coupon")
+                        "酒店" -> onNavigateToFunction("hotel")
+                        "服饰鞋包" -> onNavigateToFunction("fashion")
+                        "手机" -> onNavigateToFunction("phone")
+                        "数码" -> onNavigateToFunction("digital")
+                        "家电" -> onNavigateToFunction("appliance")
+                        "更多" -> onNavigateToFunction("more")
+                        else -> onNavigateToFunction("more")
                     }
                 }
             )
