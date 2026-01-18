@@ -7,9 +7,9 @@ def validate_task_eleven(result=None, device_id=None, backup_dir=None):
     if result and "final_message" in result and result["final_message"] is not None:
         message = result["final_message"]
         # Find all sequences of digits in the message
-        numbers = re.findall(r'\d+', message)
+        numbers = re.findall(r"\d+", message)
         # Check if any of the found numbers is exactly '2'
-        if '2' in numbers:
+        if "2" in numbers:
             return True
 
     return False

@@ -48,8 +48,8 @@ def validate_task_forty(result=None, device_id=None, backup_dir=None):
     # 如果找到所有2种商品，验证通过
     if len(found_items) == 2:
         print("Validation Success: All required items found in cart.")
-        print(f"  - Huawei P60 001 (4988.0)")
-        print(f"  - ThinkPad 001 (7499.0)")
+        print("  - Huawei P60 001 (4988.0)")
+        print("  - ThinkPad 001 (7499.0)")
         return True
 
     print(f"Validation Failed: Only found {len(found_items)} out of 2 required items.")

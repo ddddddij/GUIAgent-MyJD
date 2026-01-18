@@ -3,6 +3,7 @@ import os
 import subprocess
 import time
 
+
 def validate_task_thirty_eight(result=None, device_id=None, backup_dir=None):
     """验证任务三十八：搜索华为并筛选出起价在4500到5000的手机加入购物车并结算，送到王五的地址。"""
 

@@ -64,7 +64,7 @@ def validate_task_thirty_nine(result=None, device_id=None, backup_dir=None):
         return False
 
     print("Validation Success: ThinkPad order with highest specification created successfully.")
-    print(f"  - Product ID: thinkpad_001")
+    print("  - Product ID: thinkpad_001")
     print(f"  - Status: {order_status}")
     print(f"  - Shipping Address: {address_id} (张三)")
     print(f"  - Total Amount: {actual_total_amount}")

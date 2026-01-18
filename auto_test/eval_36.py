@@ -2,6 +2,7 @@ import json
 import os
 import subprocess
 
+
 def validate_task_thirty_six(result=None, device_id=None, backup_dir=None):
     """ 验证任务三十六：将首页所有华为手机商品的最小的内存版本加入购物车。 """
     cart_items_file_path = os.path.join(backup_dir, "cart_items.json") if backup_dir else "cart_items.json"

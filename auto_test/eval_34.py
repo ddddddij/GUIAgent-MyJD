@@ -2,6 +2,7 @@ import json
 import os
 import subprocess
 
+
 def validate_task_thirty_four(result=None, device_id=None, backup_dir=None):
     """ 验证任务三十四：将陈七地址详情中的电话号码改成18972746987。 """
 
