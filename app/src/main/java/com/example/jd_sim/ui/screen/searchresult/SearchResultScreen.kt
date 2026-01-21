@@ -30,7 +30,10 @@ fun SearchResultScreen(
     modifier: Modifier = Modifier,
     viewModel: SearchResultViewModel = hiltViewModel()
 ) {
+    var searchKeyword by remember { mutableStateOf(keyword) }
+
     LaunchedEffect(keyword) {
+        searchKeyword = keyword
         viewModel.loadSearchResults(keyword)
     }
 
@@ -49,10 +52,10 @@ fun SearchResultScreen(
     ) {
         // 顶部搜索栏
         SearchResultTopBar(
-            searchKeyword = keyword,
+            searchKeyword = searchKeyword,
             onBackClick = onBackClick,
-            onSearchClick = { viewModel.loadSearchResults(keyword) },
-            onKeywordChange = { /* Implement if search keyword can be changed on this screen */ }
+            onSearchClick = { viewModel.loadSearchResults(searchKeyword) },
+            onKeywordChange = { searchKeyword = it }
         )
 
         // Tab切换栏
