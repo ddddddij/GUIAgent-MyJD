@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Store
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -32,6 +33,7 @@ fun MessageDetailScreen(
     onBackClick: () -> Unit,
     onNavigateToProduct: (String) -> Unit,
     onNavigateToSettings: (String, String) -> Unit = { _, _ -> },
+    onNavigateToShop: (String) -> Unit = {},
     viewModel: MessageDetailViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -107,6 +109,13 @@ fun MessageDetailScreen(
                     }
                 },
                 actions = {
+                    if (uiState.title == "Apple官方旗舰店") {
+                        IconButton(onClick = {
+                            onNavigateToShop(uiState.title)
+                        }) {
+                            Icon(Icons.Filled.Store, contentDescription = "店铺")
+                        }
+                    }
                     IconButton(onClick = {
                         onNavigateToSettings(uiState.title, uiState.avatar)
                     }) {
