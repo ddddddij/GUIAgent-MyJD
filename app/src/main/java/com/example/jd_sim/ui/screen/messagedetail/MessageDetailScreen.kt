@@ -2,6 +2,7 @@ package com.example.jd_sim.ui.screen.messagedetail
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -85,11 +86,18 @@ fun MessageDetailScreen(
     }
 
     Scaffold(
+        contentWindowInsets = WindowInsets(0.dp),
         topBar = {
             TopAppBar(
+                windowInsets = WindowInsets(0.dp),
                 title = {
                     Row(
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = if (uiState.title == "Apple官方旗舰店") {
+                            Modifier.clickable { onNavigateToShop(uiState.title) }
+                        } else {
+                            Modifier
+                        }
                     ) {
                         Text(
                             text = uiState.avatar,

@@ -124,82 +124,122 @@ fun OrderScreen(
         )
     }
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Color(0xFFF5F5F5))
-    ) {
-        // Top Bar
-        TopAppBar(
-            title = { Text("我的订单", fontSize = 18.sp, fontWeight = FontWeight.Medium) },
-            navigationIcon = {
-                IconButton(onClick = onBackClick) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "返回")
+    // Show receipt confirmation dialog
+    if (uiState.showReceiptConfirmDialog) {
+        AlertDialog(
+            onDismissRequest = { viewModel.clearReceiptConfirmDialog() },
+            title = {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("✓", fontSize = 32.sp, color = Color(0xFF4CAF50))
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("您已确认收货", fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 }
             },
-            actions = {
-                OutlinedTextField(
-                    value = "",
-                    onValueChange = { },
-                    placeholder = { Text("搜索我的订单", fontSize = 14.sp) },
-                    leadingIcon = {
-                        Icon(Icons.Default.Search, contentDescription = "搜索")
-                    },
-                    modifier = Modifier
-                        .width(200.dp)
-                        .height(40.dp),
-                    singleLine = true,
-                    enabled = false
+            text = {
+                Text(
+                    "确认收货成功！订单状态已更新。",
+                    fontSize = 16.sp,
+                    modifier = Modifier.padding(vertical = 8.dp)
                 )
-                Spacer(modifier = Modifier.width(16.dp))
             },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color(0xFFE53E3E)
-            )
+            confirmButton = {
+                Button(
+                    onClick = { viewModel.clearReceiptConfirmDialog() },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF4CAF50)
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("确定", fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                }
+            }
         )
-        
-        // Tab Row
-        TabRow(
-            selectedTabIndex = uiState.selectedTabIndex,
-            containerColor = Color.White,
-            contentColor = Color(0xFFE53E3E)
-        ) {
-            (0 until 5).forEachIndexed { index, _ ->
-                Tab(
-                    selected = uiState.selectedTabIndex == index,
-                    onClick = { viewModel.onTabSelected(index) },
-                    text = {
-                        Text(
-                            text = viewModel.getTabDisplayName(index),
-                            fontSize = 14.sp,
-                            fontWeight = if (uiState.selectedTabIndex == index) FontWeight.Bold else FontWeight.Normal
+    }
+
+    Scaffold(
+        contentWindowInsets = WindowInsets(0.dp),
+        topBar = {
+            Column {
+                TopAppBar(
+                    windowInsets = WindowInsets(0.dp),
+                    title = { Text("我的订单", fontSize = 18.sp, fontWeight = FontWeight.Medium) },
+                    navigationIcon = {
+                        IconButton(onClick = onBackClick) {
+                            Icon(Icons.Default.ArrowBack, contentDescription = "返回")
+                        }
+                    },
+                    actions = {
+                        OutlinedTextField(
+                            value = "",
+                            onValueChange = { },
+                            placeholder = { Text("搜索我的订单", fontSize = 14.sp) },
+                            leadingIcon = {
+                                Icon(Icons.Default.Search, contentDescription = "搜索")
+                            },
+                            modifier = Modifier
+                                .width(200.dp)
+                                .height(40.dp),
+                            singleLine = true,
+                            enabled = false
+                        )
+                        Spacer(modifier = Modifier.width(16.dp))
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = Color(0xFFE53E3E)
+                    )
+                )
+
+                TabRow(
+                    selectedTabIndex = uiState.selectedTabIndex,
+                    containerColor = Color.White,
+                    contentColor = Color(0xFFE53E3E)
+                ) {
+                    (0 until 5).forEachIndexed { index, _ ->
+                        Tab(
+                            selected = uiState.selectedTabIndex == index,
+                            onClick = { viewModel.onTabSelected(index) },
+                            text = {
+                                Text(
+                                    text = viewModel.getTabDisplayName(index),
+                                    fontSize = 14.sp,
+                                    fontWeight = if (uiState.selectedTabIndex == index) FontWeight.Bold else FontWeight.Normal
+                                )
+                            }
                         )
                     }
+                }
+            }
+        },
+        modifier = modifier
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .background(Color(0xFFF5F5F5))
+        ) {
+            if (uiState.isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center)
                 )
-            }
-        }
-        
-        // Orders List
-        if (uiState.isLoading) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        } else {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                items(uiState.orders) { order ->
-                    OrderCard(
-                        order = order,
-                        onActionClick = { action ->
-                            viewModel.onActionClicked(action, order.id)
-                        }
-                    )
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(uiState.orders) { order ->
+                        OrderCard(
+                            order = order,
+                            onActionClick = { action ->
+                                viewModel.onActionClicked(action, order.id)
+                            }
+                        )
+                    }
                 }
             }
         }

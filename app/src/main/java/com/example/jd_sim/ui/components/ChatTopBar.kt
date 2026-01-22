@@ -21,6 +21,7 @@ fun ChatTopBar(
     onMoreClick: () -> Unit = {}
 ) {
     TopAppBar(
+        windowInsets = WindowInsets(0.dp),
         title = {
             Text(
                 text = "消息",

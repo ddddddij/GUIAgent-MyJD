@@ -20,8 +20,10 @@ fun PlaceholderScreen(
     onBackClick: () -> Unit = {}
 ) {
     Scaffold(
+        contentWindowInsets = WindowInsets(0.dp),
         topBar = {
             TopAppBar(
+                windowInsets = WindowInsets(0.dp),
                 title = {
                     Text(
                         text = title,

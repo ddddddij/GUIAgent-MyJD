@@ -100,6 +100,7 @@ fun CartScreen(
     }
 
     Scaffold(
+        contentWindowInsets = WindowInsets(0.dp),
         topBar = {
             CartHeader(
                 cartCount = totalCount,

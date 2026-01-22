@@ -99,111 +99,115 @@ fun SettleScreen(
         )
     }
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Color(0xFFF5F5F5))
-    ) {
-        // Top Bar
-        TopAppBar(
-            title = {
-                Text(
-                    "自己买",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Black
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = onBackClick) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "返回")
-                }
-            },
-            actions = {
-                TextButton(
-                    onClick = { /* 送朋友功能暂不实现 */ }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.CheckCircle,
-                        contentDescription = "送朋友",
-                        tint = Color(0xFFE93B3D),
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        containerColor = Color(0xFFF5F5F5),
+        contentWindowInsets = WindowInsets(0.dp),
+        topBar = {
+            TopAppBar(
+                windowInsets = WindowInsets(0.dp),
+                title = {
                     Text(
-                        "送朋友",
-                        color = Color(0xFFE93B3D),
-                        fontSize = 14.sp
+                        "自己买",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.Black
                     )
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color.White
-            )
-        )
-
-        if (uiState.isLoading) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        } else {
-            uiState.settleData?.let { settleData ->
-                Box(modifier = Modifier.fillMaxSize()) {
-                    // Main Content
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(bottom = 80.dp), // 留出底部按钮空间
-                        contentPadding = PaddingValues(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        item {
-                            SettleAddressSection(
-                                address = settleData.address,
-                                onClick = viewModel::onAddressClick
-                            )
-                        }
-
-                        item {
-                            SettleProductSection(
-                                product = settleData.product,
-                                quantity = uiState.quantity,
-                                onQuantityIncrease = viewModel::onQuantityIncrease,
-                                onQuantityDecrease = viewModel::onQuantityDecrease
-                            )
-                        }
-
-                        item {
-                            SettleServiceDeliverySection(
-                                service = settleData.service,
-                                delivery = settleData.delivery,
-                                onServiceClick = viewModel::onServiceClick,
-                                onDeliveryClick = viewModel::onDeliveryClick
-                            )
-                        }
-
-                        item {
-                            SettlePricingSection(
-                                pricing = uiState.pricing ?: settleData.pricing,
-                                selectedCoupon = settleData.selectedCoupon,
-                                onCouponClick = viewModel::onCouponClick
-                            )
-                        }
-
-                        item {
-                            SettlePaymentSection()
-                        }
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "返回")
                     }
+                },
+                actions = {
+                    TextButton(
+                        onClick = { /* 送朋友功能暂不实现 */ }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.CheckCircle,
+                            contentDescription = "送朋友",
+                            tint = Color(0xFFE93B3D),
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            "送朋友",
+                            color = Color(0xFFE93B3D),
+                            fontSize = 14.sp
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.White
+                )
+            )
+        }
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            if (uiState.isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            } else {
+                uiState.settleData?.let { settleData ->
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        // Main Content
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(bottom = 80.dp), // 留出底部按钮空间
+                            contentPadding = PaddingValues(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            item {
+                                SettleAddressSection(
+                                    address = settleData.address,
+                                    onClick = viewModel::onAddressClick
+                                )
+                            }
 
-                    // Bottom Payment Bar
-                    SettleBottomPaymentBar(
-                        totalAmount = uiState.pricing?.totalAmount ?: settleData.pricing.totalAmount,
-                        onPaymentClick = viewModel::onPaymentClick,
-                        modifier = Modifier.align(Alignment.BottomCenter)
-                    )
+                            item {
+                                SettleProductSection(
+                                    product = settleData.product,
+                                    quantity = uiState.quantity,
+                                    onQuantityIncrease = viewModel::onQuantityIncrease,
+                                    onQuantityDecrease = viewModel::onQuantityDecrease
+                                )
+                            }
+
+                            item {
+                                SettleServiceDeliverySection(
+                                    service = settleData.service,
+                                    delivery = settleData.delivery,
+                                    onServiceClick = viewModel::onServiceClick,
+                                    onDeliveryClick = viewModel::onDeliveryClick
+                                )
+                            }
+
+                            item {
+                                SettlePricingSection(
+                                    pricing = uiState.pricing ?: settleData.pricing,
+                                    selectedCoupon = settleData.selectedCoupon,
+                                    onCouponClick = viewModel::onCouponClick
+                                )
+                            }
+
+                            item {
+                                SettlePaymentSection()
+                            }
+                        }
+
+                        // Bottom Payment Bar
+                        SettleBottomPaymentBar(
+                            totalAmount = uiState.pricing?.totalAmount ?: settleData.pricing.totalAmount,
+                            onPaymentClick = viewModel::onPaymentClick,
+                            modifier = Modifier.align(Alignment.BottomCenter)
+                        )
+                    }
                 }
             }
         }

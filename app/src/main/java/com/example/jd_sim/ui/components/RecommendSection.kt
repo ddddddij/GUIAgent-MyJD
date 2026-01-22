@@ -211,7 +211,7 @@ private fun ProductCard(
 
                 // Add to cart button
                 FloatingActionButton(
-                    onClick = onAddToCart,
+                    onClick = onProductClick,
                     modifier = Modifier.size(32.dp),
                     containerColor = JDRed,
                     contentColor = Color.White

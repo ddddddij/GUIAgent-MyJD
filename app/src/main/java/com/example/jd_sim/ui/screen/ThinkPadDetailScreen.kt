@@ -59,8 +59,10 @@ fun ThinkPadDetailScreen(
         Scaffold(
             modifier = modifier.fillMaxSize(),
             containerColor = Color(0xFFFFFFFF),
+            contentWindowInsets = WindowInsets(0.dp),
             topBar = {
                 TopAppBar(
+                    windowInsets = WindowInsets(0.dp),
                     title = { 
                         Text(
                             text = "商品详情",

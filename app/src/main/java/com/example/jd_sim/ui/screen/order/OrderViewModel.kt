@@ -25,7 +25,8 @@ data class OrderUiState(
     val toastMessage: String? = null,
     val shouldNavigateToPayment: String? = null,
     val showDeleteDialog: String? = null,
-    val showPaymentSuccessDialog: Boolean = false
+    val showPaymentSuccessDialog: Boolean = false,
+    val showReceiptConfirmDialog: Boolean = false
 )
 
 @HiltViewModel
@@ -112,7 +113,7 @@ class OrderViewModel @Inject constructor(
                 "确认收货" -> {
                     val success = repository.confirmReceipt(orderId)
                     if (success) {
-                        _uiState.value = _uiState.value.copy(toastMessage = "已确认收货")
+                        _uiState.value = _uiState.value.copy(showReceiptConfirmDialog = true)
                         loadOrders() // 刷新订单列表
                     } else {
                         val order = repository.getOrderById(orderId)
@@ -152,6 +153,10 @@ class OrderViewModel @Inject constructor(
 
     fun clearPaymentSuccessDialog() {
         _uiState.value = _uiState.value.copy(showPaymentSuccessDialog = false)
+    }
+
+    fun clearReceiptConfirmDialog() {
+        _uiState.value = _uiState.value.copy(showReceiptConfirmDialog = false)
     }
 
     fun onDeleteConfirmed(orderId: String) {

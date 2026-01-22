@@ -77,7 +77,7 @@
       "count": 0
     },
     {
-      "id": "order_pending_delivery",
+      "id": "order_pending_receipt",
       "name": "待收货",
       "iconEmoji": "📦",
       "count": 0

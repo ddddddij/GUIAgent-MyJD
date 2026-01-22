@@ -80,38 +80,40 @@ fun AddressListScreen(
         }
     }
     
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Color(0xFFF8F8F8))
-    ) {
-        // 顶部导航栏
-        TopAppBar(
-            title = {
-                Text(
-                    text = "收货地址",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.White
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = onBackClick) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "返回",
-                        tint = Color.White
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        containerColor = Color(0xFFF8F8F8),
+        contentWindowInsets = WindowInsets(0.dp),
+        topBar = {
+            TopAppBar(
+                windowInsets = WindowInsets(0.dp),
+                title = {
+                    Text(
+                        text = "收货地址",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.White
                     )
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color(0xFFE2231A)
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "返回",
+                            tint = Color.White
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xFFE2231A)
+                )
             )
-        )
-        
+        }
+    ) { paddingValues ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(paddingValues)
         ) {
             if (isLoading) {
                 // 加载状态
@@ -162,14 +164,14 @@ fun AddressListScreen(
                             onSetDefaultClick = { viewModel.onSetDefaultAddressClick(it) }
                         )
                     }
-                    
+
                     // 底部间距，避免被新增按钮遮挡
                     item {
                         Spacer(modifier = Modifier.height(80.dp))
                     }
                 }
             }
-            
+
             // 新增收货地址按钮
             Button(
                 onClick = { viewModel.onAddNewAddressClick() },

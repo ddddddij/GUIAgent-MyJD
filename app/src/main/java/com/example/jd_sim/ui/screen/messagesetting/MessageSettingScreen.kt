@@ -69,8 +69,10 @@ fun MessageSettingScreen(
     }
     
     Scaffold(
+        contentWindowInsets = WindowInsets(0.dp),
         topBar = {
             TopAppBar(
+                windowInsets = WindowInsets(0.dp),
                 title = { 
                     Text(
                         text = "消息设置",

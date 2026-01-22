@@ -6,6 +6,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jd_sim.ui.screen.chat.ChatViewModel
 import com.example.jd_sim.ui.components.*
@@ -26,6 +27,7 @@ fun ChatScreen(
     val isLoading by viewModel.isLoading.collectAsState()
 
     Scaffold(
+        contentWindowInsets = WindowInsets(0.dp),
         topBar = {
             ChatTopBar(
                 onCartClick = onNavigateToCart,

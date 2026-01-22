@@ -25,6 +25,7 @@ fun CartHeader(
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
+        windowInsets = WindowInsets(0.dp),
         title = {
             Row(
                 verticalAlignment = Alignment.CenterVertically,

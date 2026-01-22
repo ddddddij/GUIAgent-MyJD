@@ -76,8 +76,10 @@ fun ShopScreen(
     }
 
     Scaffold(
+        contentWindowInsets = WindowInsets(0.dp),
         topBar = {
             TopAppBar(
+                windowInsets = WindowInsets(0.dp),
                 title = {
                     Text(
                         text = shopData?.shopInfo?.name ?: shopName,

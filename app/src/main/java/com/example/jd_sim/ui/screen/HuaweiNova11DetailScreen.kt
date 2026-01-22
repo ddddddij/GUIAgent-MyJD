@@ -55,6 +55,7 @@ fun HuaweiNova11DetailScreen(
         Scaffold(
             modifier = modifier.fillMaxSize(),
             containerColor = Color(0xFFF5F5F5),
+            contentWindowInsets = WindowInsets(0.dp),
             bottomBar = {
                 ProductDetailBottomBar(
                     currentPrice = detail.currentPrice,
