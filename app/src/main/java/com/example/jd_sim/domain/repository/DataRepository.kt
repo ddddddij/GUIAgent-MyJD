@@ -765,9 +765,12 @@ class DataRepository private constructor(private val context: Context) {
 
     suspend fun getShopData(shopName: String): ShopPageData? = withContext(Dispatchers.IO) {
         try {
+            if (shopName.contains("华为", ignoreCase = true)) {
+                return@withContext loadHuaweiShopPageData()
+            }
+
             val fileName = when {
                 shopName.contains("Apple", ignoreCase = true) -> "data/apple_shop_data.json"
-                shopName.contains("华为", ignoreCase = true) -> "data/huawei_shop_data.json"
                 else -> return@withContext null // Or a default empty state
             }
             val jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }

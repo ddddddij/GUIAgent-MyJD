@@ -32,6 +32,7 @@ fun ProductCardItem(
     product: Product,
     onProductClick: (Product) -> Unit,
     onAddToCartClick: (Product) -> Unit,
+    showOutOfStockLabel: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     val priceFormatter = DecimalFormat("#,###")
@@ -179,7 +180,7 @@ fun ProductCardItem(
             }
             
             // 库存状态
-            if (!product.isInStock) {
+            if (showOutOfStockLabel && !product.isInStock) {
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "暂时缺货",
@@ -187,7 +188,7 @@ fun ProductCardItem(
                     color = Color(0xFFFF9800),
                     fontWeight = FontWeight.Medium
                 )
-            } else if (product.stock < 10) {
+            } else if (product.isInStock && product.stock in 1..9) {
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "仅剩${product.stock}件",

@@ -253,9 +253,9 @@ fun ProductGridSection(
             ProductCardItem(
                 product = product,
                 onProductClick = { onProductClick(product) },
-                onAddToCartClick = { onAddToCartClick(product) }
+                onAddToCartClick = { onAddToCartClick(product) },
+                showOutOfStockLabel = false
             )
         }
     }
 }
-
