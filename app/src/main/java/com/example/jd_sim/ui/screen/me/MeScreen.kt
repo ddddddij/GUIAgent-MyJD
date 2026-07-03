@@ -1,6 +1,5 @@
 package com.example.jd_sim.ui.screen.me
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,7 +11,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jd_sim.ui.screen.me.MeViewModel
-import com.example.jd_sim.ui.components.*
+import com.example.jd_sim.ui.components.AssetServiceSection
+import com.example.jd_sim.ui.components.InteractionSection
+import com.example.jd_sim.ui.components.OrderSection
+import com.example.jd_sim.ui.components.UserHeader
 
 @Composable
 fun MeScreen(
@@ -23,8 +25,6 @@ fun MeScreen(
     onNavigateToPlaceholder: (String) -> Unit = {},
     viewModel: MeViewModel = hiltViewModel()
 ) {
-    val context = LocalContext.current
-
     val meTabData by viewModel.meTabData.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
 
@@ -45,7 +45,7 @@ fun MeScreen(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color(0xFFF5F5F5)),
+                    .background(Color(0xFFF5F6F8)),
                 verticalArrangement = Arrangement.spacedBy(0.dp)
             ) {
                 item {
@@ -67,25 +67,6 @@ fun MeScreen(
                         },
                         onAvatarClick = {
                             onNavigateToPlaceholder("个人信息")
-                        }
-                    )
-                }
-                
-                item {
-                    MemberSection(
-                        memberBenefits = data.memberBenefits,
-                        userStats = data.userStats,
-                        onBenefitClick = { benefit ->
-                            onNavigateToPlaceholder(benefit.name)
-                        }
-                    )
-                }
-                
-                item {
-                    PromoBanner(
-                        promoBanners = data.promoBanners,
-                        onBannerClick = { banner ->
-                            onNavigateToPlaceholder(banner.title)
                         }
                     )
                 }
@@ -132,7 +113,7 @@ fun MeScreen(
                 
                 // Add some bottom padding for better scrolling
                 item {
-                    Spacer(modifier = Modifier.height(80.dp))
+                    Spacer(modifier = Modifier.height(96.dp))
                 }
             }
         }

@@ -59,7 +59,7 @@ fun CartHeader(
                         modifier = Modifier.size(16.dp)
                     )
                     Text(
-                        text = "武汉纺织大学(阳光校区)-北门",
+                        text = "武汉市江夏区文化大道",
                         fontSize = 12.sp,
                         color = Color(0xFF666666)
                     )

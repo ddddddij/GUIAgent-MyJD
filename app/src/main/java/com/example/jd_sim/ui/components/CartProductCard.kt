@@ -39,7 +39,7 @@ fun CartProductCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 6.dp, bottom = 12.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -47,13 +47,11 @@ fun CartProductCard(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 // 选择框
-                Checkbox(
+                CartSelectionCircle(
                     checked = cartItem.selected,
-                    onCheckedChange = { onSelectionToggle() },
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = Color(0xFFE2231A),
-                        uncheckedColor = Color(0xFFCCCCCC)
-                    )
+                    onCheckedChange = onSelectionToggle,
+                    modifier = Modifier.padding(top = 20.dp),
+                    size = 24.dp
                 )
                 
                 // 商品图片
@@ -100,9 +98,14 @@ fun CartProductCard(
                     )
                     
                     // 促销标签
-                    if (cartItem.promotionTags.isNotEmpty()) {
+                    val visibleTags = remember(cartItem.promotionTags) {
+                        cartItem.promotionTags.filterNot { tag ->
+                            tag.contains("保价") || tag.contains("价保")
+                        }
+                    }
+                    if (visibleTags.isNotEmpty()) {
                         PromotionTags(
-                            tags = cartItem.promotionTags
+                            tags = visibleTags
                         )
                     }
                     

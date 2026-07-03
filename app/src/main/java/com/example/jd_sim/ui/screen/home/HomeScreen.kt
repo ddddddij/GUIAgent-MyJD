@@ -1,9 +1,12 @@
 package com.example.jd_sim.ui.screen.home
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -35,7 +38,9 @@ fun HomeScreen(
     }
 
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFFF4F5F7)),
         verticalArrangement = Arrangement.spacedBy(0.dp)
     ) {
         item {
@@ -48,6 +53,7 @@ fun HomeScreen(
         item {
             BannerSection(
                 banners = banners,
+                products = products,
                 onBannerClick = { banner ->
                     when (banner.type) {
                         "PRODUCT" -> {
@@ -63,7 +69,8 @@ fun HomeScreen(
                             // Handle other banner types or show placeholder
                         }
                     }
-                }
+                },
+                onProductClick = onNavigateToProduct
             )
         }
         

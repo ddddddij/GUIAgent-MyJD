@@ -2,9 +2,24 @@ package com.example.jd_sim.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jd_sim.domain.model.MemberBenefit
 import com.example.jd_sim.domain.model.UserStats
-import com.example.jd_sim.ui.theme.JDRed
 
 @Composable
 fun MemberSection(
@@ -25,112 +39,113 @@ fun MemberSection(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        shape = RoundedCornerShape(12.dp),
+            .padding(horizontal = 16.dp, vertical = 10.dp),
+        shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(horizontal = 18.dp, vertical = 16.dp)
         ) {
-            // Member benefits grid
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                memberBenefits.forEach { benefit ->
+                listOf(
+                    "足迹" to userStats.footprint.toString(),
+                    "收藏" to userStats.favorites.toString(),
+                    "关注" to userStats.following.toString(),
+                    "种草" to userStats.grass.toString()
+                ).forEach { (label, value) ->
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = label,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFF191919)
+                            )
+                            Spacer(modifier = Modifier.size(6.dp))
+                            Box(
+                                modifier = Modifier
+                                    .background(Color(0xFFF1F2F5), CircleShape)
+                                    .padding(horizontal = 10.dp, vertical = 4.dp)
+                            ) {
+                                Text(
+                                    text = value,
+                                    fontSize = 11.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = Color(0xFF555555)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(18.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                memberBenefits.take(6).forEach { benefit ->
+                    val label = when (benefit.name) {
+                        "红包" -> "抽¥${benefit.value}"
+                        "秒送" -> "退换/售后"
+                        "更多" -> "更多"
+                        else -> benefit.name
+                    }
+                    val icon = when (benefit.name) {
+                        "优惠券" -> "🧾"
+                        "京豆" -> "📦"
+                        "红包" -> "🔖"
+                        "白条取现" -> "💬"
+                        "秒送" -> "¥"
+                        else -> "全部"
+                    }
+
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
                             .weight(1f)
                             .clickable { onBenefitClick(benefit) }
-                            .padding(vertical = 8.dp)
                     ) {
-                        if (benefit.value.isNotEmpty()) {
+                        Box(contentAlignment = Alignment.TopEnd) {
                             Text(
-                                text = benefit.value,
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = JDRed
+                                text = icon,
+                                fontSize = if (benefit.name == "秒送" || benefit.name == "更多") 13.sp else 18.sp,
+                                fontWeight = if (benefit.name == "秒送" || benefit.name == "更多") FontWeight.Bold else FontWeight.Normal,
+                                color = if (benefit.name == "秒送" || benefit.name == "更多") Color(0xFF1F1F1F) else Color.Unspecified
                             )
-                            
-                            Text(
-                                text = benefit.description,
-                                fontSize = 10.sp,
-                                color = Color.Gray
-                            )
+                            if (benefit.name == "白条取现") {
+                                Box(
+                                    modifier = Modifier
+                                        .offset(x = 10.dp, y = (-6).dp)
+                                        .background(Color(0xFFFF4A52), CircleShape)
+                                        .padding(horizontal = 6.dp, vertical = 2.dp)
+                                ) {
+                                    Text(
+                                        text = "7",
+                                        fontSize = 10.sp,
+                                        color = Color.White,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
+                            }
                         }
-                        
-                        Spacer(modifier = Modifier.height(4.dp))
-                        
+                        Spacer(modifier = Modifier.height(10.dp))
                         Text(
-                            text = benefit.name,
-                            fontSize = 12.sp,
-                            color = Color.Black
+                            text = label,
+                            fontSize = 9.sp,
+                            color = Color(0xFF2B2B2B),
+                            maxLines = 1
                         )
-                        
-                        if (benefit.name == "更多") {
-                            Text(
-                                text = benefit.iconEmoji,
-                                fontSize = 16.sp
-                            )
-                        }
                     }
                 }
             }
-            
-            Spacer(modifier = Modifier.height(16.dp))
-            
-            // User stats row
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                StatItem(
-                    label = "足迹",
-                    value = userStats.footprint.toString()
-                )
-                
-                StatItem(
-                    label = "收藏",
-                    value = userStats.favorites.toString()
-                )
-                
-                StatItem(
-                    label = "关注",
-                    value = userStats.following.toString()
-                )
-                
-                StatItem(
-                    label = "种草",
-                    value = userStats.grass.toString()
-                )
-            }
         }
-    }
-}
-
-@Composable
-private fun StatItem(
-    label: String,
-    value: String
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = value,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Black
-        )
-        
-        Text(
-            text = label,
-            fontSize = 12.sp,
-            color = Color.Gray
-        )
     }
 }

@@ -33,7 +33,7 @@ fun CartStoreSection(
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 14.dp, bottom = 6.dp)
         ) {
             // 店铺信息行
             Row(
@@ -42,13 +42,10 @@ fun CartStoreSection(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 // 选择框
-                Checkbox(
+                CartSelectionCircle(
                     checked = isSelected,
-                    onCheckedChange = { onSelectionToggle() },
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = Color(0xFFE2231A),
-                        uncheckedColor = Color(0xFFCCCCCC)
-                    )
+                    onCheckedChange = onSelectionToggle,
+                    size = 24.dp
                 )
                 
                 // 自营标签
@@ -69,7 +66,8 @@ fun CartStoreSection(
                 // 店铺名称
                 Text(
                     text = storeName,
-                    fontSize = 14.sp,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
                     color = Color(0xFF333333),
                     modifier = Modifier.weight(1f)
                 )
@@ -85,7 +83,7 @@ fun CartStoreSection(
             
             // 补贴信息
             if (subsidyInfo.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(6.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,

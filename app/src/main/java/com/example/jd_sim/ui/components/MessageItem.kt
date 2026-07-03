@@ -27,17 +27,15 @@ fun MessageItem(
     message: Message,
     onClick: (Message) -> Unit
 ) {
-    Card(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick(message) },
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+            .background(Color.White)
+            .clickable { onClick(message) }
+            .padding(horizontal = 16.dp, vertical = 10.dp)
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.Top
         ) {
             // 头像
@@ -45,8 +43,8 @@ fun MessageItem(
                 modifier = Modifier
                     .size(48.dp)
                     .background(
-                        color = Color(0xFFF5F5F5),
-                        shape = CircleShape
+                        color = Color(0xFFF0F0F0),
+                        shape = RoundedCornerShape(8.dp)
                     ),
                 contentAlignment = Alignment.Center
             ) {
@@ -55,9 +53,9 @@ fun MessageItem(
                     fontSize = 24.sp
                 )
             }
-            
+
             Spacer(modifier = Modifier.width(12.dp))
-            
+
             // 消息内容
             Column(
                 modifier = Modifier.weight(1f)
@@ -65,51 +63,54 @@ fun MessageItem(
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.Top
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     // 发送方名称和官方标识
                     Row(
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.weight(1f, fill = false)
                     ) {
                         Text(
                             text = message.senderName,
-                            fontSize = 14.sp,
+                            fontSize = 15.sp,
                             fontWeight = FontWeight.Medium,
                             color = JDTextPrimary,
                             maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier.weight(1f, fill = false)
+                            overflow = TextOverflow.Ellipsis
                         )
-                        
+
                         if (message.isOfficial) {
                             Spacer(modifier = Modifier.width(4.dp))
                             Box(
                                 modifier = Modifier
                                     .background(
                                         color = JDRed,
-                                        shape = RoundedCornerShape(4.dp)
+                                        shape = RoundedCornerShape(2.dp)
                                     )
-                                    .padding(horizontal = 4.dp, vertical = 2.dp)
+                                    .padding(horizontal = 4.dp, vertical = 1.dp)
                             ) {
                                 Text(
                                     text = "官方",
-                                    fontSize = 10.sp,
-                                    color = Color.White
+                                    fontSize = 9.sp,
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Medium
                                 )
                             }
                         }
                     }
-                    
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
                     // 时间
                     Text(
                         text = formatTimestamp(message.timestamp),
-                        fontSize = 12.sp,
+                        fontSize = 11.sp,
                         color = JDTextHint
                     )
                 }
-                
+
                 Spacer(modifier = Modifier.height(4.dp))
-                
+
                 // 消息内容
                 val content = if (message.senderName == "得力装订文具旗舰店" || message.senderName == "Apple官方旗舰店") {
                     "<好物分享>"
@@ -118,34 +119,29 @@ fun MessageItem(
                 }
                 Text(
                     text = content,
-                    fontSize = 12.sp,
+                    fontSize = 13.sp,
                     color = JDTextSecondary,
-                    maxLines = 2,
+                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis
-                )
-            }
-            
-            // 未读红点
-            if (message.hasUnreadDot) {
-                Spacer(modifier = Modifier.width(8.dp))
-                Box(
-                    modifier = Modifier
-                        .size(8.dp)
-                        .background(
-                            color = JDRed,
-                            shape = CircleShape
-                        )
                 )
             }
         }
     }
-    
-    // 分割线
-    HorizontalDivider(
-        modifier = Modifier.fillMaxWidth(),
-        color = Color(0xFFEEEEEE),
-        thickness = 0.5.dp
-    )
+
+    // 分割线（左侧留出头像位置）
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White)
+    ) {
+        HorizontalDivider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 76.dp),
+            color = Color(0xFFF0F0F0),
+            thickness = 0.5.dp
+        )
+    }
 }
 
 private fun formatTimestamp(timestamp: Long): String {

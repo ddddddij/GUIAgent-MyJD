@@ -1,10 +1,8 @@
 package com.example.jd_sim.ui.components
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.LocalShipping
-import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,8 +25,8 @@ fun ProductDeliverySection(
         shape = RoundedCornerShape(0.dp)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             // 配送时间
             DeliveryInfoRow(
@@ -86,7 +84,9 @@ private fun DeliveryInfoRow(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .then(if (onClick != null) Modifier.clickable { onClick() } else Modifier),
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
@@ -105,25 +105,12 @@ private fun DeliveryInfoRow(
         )
         
         // 内容
-        if (onClick != null) {
-            TextButton(
-                onClick = onClick,
-                contentPadding = PaddingValues(0.dp)
-            ) {
-                Text(
-                    text = content,
-                    fontSize = 14.sp,
-                    color = contentColor,
-                    modifier = Modifier.weight(1f)
-                )
-            }
-        } else {
-            Text(
-                text = content,
-                fontSize = 14.sp,
-                color = contentColor,
-                modifier = Modifier.weight(1f)
-            )
-        }
+        Text(
+            text = content,
+            fontSize = 14.sp,
+            color = contentColor,
+            lineHeight = 21.sp,
+            modifier = Modifier.weight(1f)
+        )
     }
 }

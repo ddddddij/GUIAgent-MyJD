@@ -4,9 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -46,8 +44,8 @@ fun ProductReviewSection(
         shape = RoundedCornerShape(0.dp)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             // 评价统计
             ReviewStatsHeader(
@@ -159,7 +157,7 @@ private fun ReviewList(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(0.dp)
     ) {
         reviews.take(3).forEachIndexed { reviewIndex, review ->
             ReviewItemCard(
@@ -167,6 +165,13 @@ private fun ReviewList(
                 reviewIndex = reviewIndex,
                 onImageClick = onImageClick
             )
+            if (reviewIndex != reviews.take(3).lastIndex) {
+                HorizontalDivider(
+                    modifier = Modifier.padding(vertical = 10.dp),
+                    color = Color(0xFFF0F0F0),
+                    thickness = 1.dp
+                )
+            }
         }
     }
 }
@@ -180,17 +185,10 @@ private fun ReviewItemCard(
 ) {
     var isLiked by remember { mutableStateOf(review.isLiked) }
     
-    Card(
+    Column(
         modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFF8F8F8)
-        ),
-        shape = RoundedCornerShape(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(12.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
             // 用户信息
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -212,10 +210,10 @@ private fun ReviewItemCard(
                     )
                 }
                 
-                Column {
+                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     Text(
                         text = review.username,
-                        fontSize = 14.sp,
+                        fontSize = 15.sp,
                         fontWeight = FontWeight.Medium,
                         color = Color(0xFF333333)
                     )
@@ -233,7 +231,7 @@ private fun ReviewItemCard(
                 text = review.content,
                 fontSize = 14.sp,
                 color = Color(0xFF333333),
-                lineHeight = 20.sp,
+                lineHeight = 22.sp,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis
             )
@@ -281,7 +279,6 @@ private fun ReviewItemCard(
                     )
                 }
             }
-        }
     }
 }
 

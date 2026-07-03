@@ -3,7 +3,7 @@ package com.example.jd_sim.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,57 +24,59 @@ fun MessageTabs(
     onTabSelected: (MessageType) -> Unit,
     getTabDisplayName: (MessageType) -> String
 ) {
-    Row(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.White)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        tabs.forEach { tab ->
-            val isSelected = tab == selectedTab
-            
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .weight(1f)
-                    .clickable { onTabSelected(tab) }
-            ) {
-                Box(
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 12.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            tabs.forEach { tab ->
+                val isSelected = tab == selectedTab
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
-                        .size(48.dp)
-                        .background(
-                            color = if (isSelected) JDRed.copy(alpha = 0.1f) else Color.Transparent,
-                            shape = CircleShape
-                        ),
-                    contentAlignment = Alignment.Center
+                        .weight(1f)
+                        .clickable { onTabSelected(tab) }
+                        .padding(vertical = 4.dp)
                 ) {
-                    Text(
-                        text = getTabIcon(tab),
-                        fontSize = 24.sp
-                    )
-                }
-                
-                Spacer(modifier = Modifier.height(4.dp))
-                
-                Text(
-                    text = getTabDisplayName(tab),
-                    fontSize = 12.sp,
-                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                    color = if (isSelected) JDRed else JDTextSecondary
-                )
-                
-                if (isSelected) {
-                    Spacer(modifier = Modifier.height(2.dp))
                     Box(
                         modifier = Modifier
-                            .width(20.dp)
-                            .height(2.dp)
-                            .background(JDRed)
+                            .size(42.dp)
+                            .background(
+                                color = if (isSelected) JDRed.copy(alpha = 0.08f) else Color(0xFFF8F8F8),
+                                shape = RoundedCornerShape(8.dp)
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = getTabIcon(tab),
+                            fontSize = 22.sp
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(6.dp))
+
+                    Text(
+                        text = getTabDisplayName(tab),
+                        fontSize = 11.sp,
+                        fontWeight = if (isSelected) FontWeight.Medium else FontWeight.Normal,
+                        color = if (isSelected) JDTextPrimary else JDTextSecondary
                     )
                 }
             }
         }
+
+        // 分割线
+        HorizontalDivider(
+            color = Color(0xFFF0F0F0),
+            thickness = 1.dp
+        )
     }
 }
 

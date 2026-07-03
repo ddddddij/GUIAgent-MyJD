@@ -33,8 +33,8 @@ fun ProductVariantSection(
         shape = RoundedCornerShape(0.dp)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
             // 购买方式选择
             PurchaseTypeSelector(
@@ -62,42 +62,47 @@ private fun PurchaseTypeSelector(
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         purchaseTypes.forEachIndexed { index, type ->
             val isSelected = index == selectedType
+            val subtitle = if (type == "以旧换新") "预估仅需¥399" else " "
             
             Card(
                 modifier = Modifier
                     .weight(1f)
+                    .height(74.dp)
                     .clickable { onTypeSelected(index) },
                 colors = CardDefaults.cardColors(
-                    containerColor = if (isSelected) Color(0xFFFFF3E0) else Color(0xFFF5F5F5)
+                    containerColor = if (isSelected) Color(0xFFFFFBF8) else Color(0xFFF7F7F7)
                 ),
                 border = if (isSelected) {
                     androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFE2231A))
-                } else null,
-                shape = RoundedCornerShape(8.dp)
+                } else {
+                    androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFE9E9E9))
+                },
+                shape = RoundedCornerShape(12.dp)
             ) {
                 Column(
-                    modifier = Modifier.padding(12.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 12.dp, vertical = 10.dp),
+                    verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
                         text = type,
-                        fontSize = 14.sp,
+                        fontSize = 15.sp,
                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
                         color = if (isSelected) Color(0xFFE2231A) else Color(0xFF333333)
                     )
-                    
-                    if (index == 1) { // 以旧换新
-                        Text(
-                            text = "预估仅需¥399",
-                            fontSize = 12.sp,
-                            color = Color(0xFFE2231A),
-                            modifier = Modifier.padding(top = 4.dp)
-                        )
-                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = subtitle,
+                        fontSize = 12.sp,
+                        color = if (type == "以旧换新") Color(0xFFE2231A) else Color.Transparent,
+                        maxLines = 1
+                    )
                 }
             }
         }
@@ -113,7 +118,7 @@ private fun ColorSelector(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         // 颜色标题
         Row(
@@ -146,7 +151,7 @@ private fun ColorSelector(
         
         // 颜色选择器
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             itemsIndexed(colors) { index, color ->
                 ColorOptionItem(
@@ -164,32 +169,7 @@ private fun ColorSelector(
             ) {
                 items(colors[selectedIndex].subsidyTags.size) { index ->
                     val tag = colors[selectedIndex].subsidyTags[index]
-                    Card(
-                        colors = CardDefaults.cardColors(
-                            containerColor = when (tag) {
-                                "政府补贴" -> Color(0xFFE8F5E8)
-                                "已减100" -> Color(0xFFE8F5E8)
-                                "国家贴息" -> Color(0xFFFFF3E0)
-                                "12期免息" -> Color(0xFFE2231A)
-                                else -> Color(0xFFF5F5F5)
-                            }
-                        ),
-                        shape = RoundedCornerShape(4.dp)
-                    ) {
-                        Text(
-                            text = tag,
-                            fontSize = 12.sp,
-                            color = when (tag) {
-                                "政府补贴" -> Color(0xFF00C853)
-                                "已减100" -> Color(0xFF00C853)
-                                "国家贴息" -> Color(0xFFFF6F00)
-                                "12期免息" -> Color.White
-                                else -> Color(0xFF666666)
-                            },
-                            fontWeight = FontWeight.Medium,
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
-                        )
-                    }
+                    SubsidyTagChip(tag = tag)
                 }
             }
         }
@@ -211,15 +191,15 @@ private fun ColorOptionItem(
         // 颜色图片/emoji
         Box(
             modifier = Modifier
-                .size(64.dp)
+                .size(70.dp)
                 .background(
                     color = Color(android.graphics.Color.parseColor(color.colorCode)),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(10.dp)
                 )
                 .border(
                     width = if (isSelected) 2.dp else 1.dp,
                     color = if (isSelected) Color(0xFFE2231A) else Color(0xFFDDDDDD),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(10.dp)
                 ),
             contentAlignment = Alignment.Center
         ) {
@@ -232,9 +212,31 @@ private fun ColorOptionItem(
         // 颜色名称
         Text(
             text = color.name,
-            fontSize = 12.sp,
+            fontSize = 13.sp,
             color = if (isSelected) Color(0xFFE2231A) else Color(0xFF666666),
             fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+        )
+    }
+}
+
+@Composable
+private fun SubsidyTagChip(tag: String) {
+    val (backgroundColor, textColor) = when (tag) {
+        "政府补贴", "已减100" -> Color(0xFFE8F4E8) to Color(0xFF6E9F67)
+        "国家贴息", "12期免息" -> Color(0xFFEFF7E8) to Color(0xFF6E9F67)
+        else -> Color(0xFFFFF0F2) to Color(0xFFE24A57)
+    }
+
+    Card(
+        colors = CardDefaults.cardColors(containerColor = backgroundColor),
+        shape = RoundedCornerShape(6.dp)
+    ) {
+        Text(
+            text = tag,
+            fontSize = 12.sp,
+            color = textColor,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
         )
     }
 }

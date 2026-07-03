@@ -1,5 +1,6 @@
 package com.example.jd_sim.ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,8 +24,9 @@ fun MessageList(
         )
     } else {
         LazyColumn(
-            modifier = modifier.fillMaxSize(),
-            contentPadding = PaddingValues(vertical = 8.dp)
+            modifier = modifier
+                .fillMaxSize()
+                .background(Color(0xFFF5F5F5))
         ) {
             items(messages) { message ->
                 MessageItem(

@@ -37,105 +37,102 @@ fun ProductPriceSection(
                     )
                 )
             )
-            .padding(16.dp)
+            .padding(horizontal = 16.dp, vertical = 14.dp)
     ) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Bottom
         ) {
-            // 主价格行
-            Row(
-                verticalAlignment = Alignment.Bottom,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
-                // 价格符号
-                Text(
-                    text = "¥",
-                    fontSize = 16.sp,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold
-                )
-                
-                // 主价格
-                Text(
-                    text = currentPrice.toInt().toString(),
-                    fontSize = 36.sp,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold
-                )
-                
-                // 补贴标签
-                Card(
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color.White.copy(alpha = 0.9f)
-                    ),
-                    shape = RoundedCornerShape(4.dp),
-                    modifier = Modifier.padding(bottom = 4.dp)
+                Row(
+                    verticalAlignment = Alignment.Bottom,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     Text(
-                        text = subsidyPrice,
-                        fontSize = 12.sp,
-                        color = Color(0xFF00C853),
+                        text = "¥",
+                        fontSize = 18.sp,
+                        color = Color.White,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                    )
+                    Text(
+                        text = currentPrice.toInt().toString(),
+                        fontSize = 38.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.ExtraBold
+                    )
+
+                    if (subsidyPrice.isNotBlank()) {
+                        Card(
+                            colors = CardDefaults.cardColors(
+                                containerColor = Color.White.copy(alpha = 0.96f)
+                            ),
+                            shape = RoundedCornerShape(5.dp),
+                            modifier = Modifier.padding(bottom = 6.dp)
+                        ) {
+                            Text(
+                                text = subsidyPrice,
+                                fontSize = 12.sp,
+                                color = Color(0xFF27A94B),
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
+                            )
+                        }
+                    }
+                }
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Text(
+                        text = buildAnnotatedString {
+                            withStyle(
+                                style = SpanStyle(
+                                    textDecoration = TextDecoration.LineThrough,
+                                    color = Color.White.copy(alpha = 0.7f),
+                                    fontSize = 14.sp
+                                )
+                            ) {
+                                append("¥${originalPrice.toInt()}")
+                            }
+                        }
+                    )
+
+                    Text(
+                        text = soldCount,
+                        fontSize = 14.sp,
+                        color = Color.White.copy(alpha = 0.9f)
                     )
                 }
             }
-            
-            // 原价和销量
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+
+            Card(
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White.copy(alpha = 0.18f)
+                ),
+                shape = RoundedCornerShape(14.dp)
             ) {
-                // 原价（划线）
-                Text(
-                    text = buildAnnotatedString {
-                        withStyle(
-                            style = SpanStyle(
-                                textDecoration = TextDecoration.LineThrough,
-                                color = Color.White.copy(alpha = 0.7f),
-                                fontSize = 14.sp
-                            )
-                        ) {
-                            append("¥${originalPrice.toInt()}")
-                        }
-                    }
-                )
-                
-                // 销量
-                Text(
-                    text = soldCount,
-                    fontSize = 14.sp,
-                    color = Color.White.copy(alpha = 0.9f)
-                )
-            }
-            
-            // 右上角政府补贴信息
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
-            ) {
-                Card(
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color.White.copy(alpha = 0.9f)
-                    ),
-                    shape = RoundedCornerShape(8.dp)
+                Column(
+                    modifier = Modifier.padding(horizontal = 18.dp, vertical = 14.dp),
+                    horizontalAlignment = Alignment.End
                 ) {
-                    Column(
-                        modifier = Modifier.padding(12.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "11.11",
-                            fontSize = 16.sp,
-                            color = Color(0xFFE2231A),
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            text = "政府补贴·贴息",
-                            fontSize = 10.sp,
-                            color = Color(0xFF666666)
-                        )
-                    }
+                    Text(
+                        text = "11.11",
+                        fontSize = 18.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.ExtraBold
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "政府补贴×贴息",
+                        fontSize = 12.sp,
+                        color = Color.White.copy(alpha = 0.94f),
+                        fontWeight = FontWeight.SemiBold
+                    )
                 }
             }
         }

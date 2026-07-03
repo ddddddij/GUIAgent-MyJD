@@ -2,31 +2,48 @@ package com.example.jd_sim.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.material.icons.filled.CardGiftcard
+import androidx.compose.material.icons.filled.Checkroom
+import androidx.compose.material.icons.filled.Devices
+import androidx.compose.material.icons.filled.Hotel
+import androidx.compose.material.icons.filled.Kitchen
+import androidx.compose.material.icons.filled.LocalOffer
+import androidx.compose.material.icons.filled.MoreHoriz
+import androidx.compose.material.icons.filled.PhoneAndroid
+import androidx.compose.material.icons.filled.Store
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.jd_sim.ui.theme.JDRed
-import com.example.jd_sim.ui.theme.JDTextPrimary
 
 data class FunctionItem(
     val name: String,
     val icon: ImageVector,
-    val emoji: String? = null
+    val gradient: List<Color>,
+    val badge: String? = null
 )
 
 @Composable
@@ -35,49 +52,58 @@ fun FunctionGrid(
     modifier: Modifier = Modifier
 ) {
     val functions = listOf(
-        FunctionItem("秒杀", Icons.Filled.FlashOn),
-        FunctionItem("京东超市", Icons.Filled.Store),
-        FunctionItem("试用领取", Icons.Filled.CardGiftcard),
-        FunctionItem("领券", Icons.Filled.LocalOffer),
-        FunctionItem("酒店", Icons.Filled.Hotel),
-        FunctionItem("服饰鞋包", Icons.Filled.Checkroom),
-        FunctionItem("手机", Icons.Filled.PhoneAndroid),
-        FunctionItem("数码", Icons.Filled.Devices),
-        FunctionItem("家电", Icons.Filled.Kitchen),
-        FunctionItem("更多", Icons.Filled.MoreHoriz)
+        FunctionItem("秒杀", Icons.Filled.Bolt, listOf(Color(0xFFF74E49), Color(0xFFF1312D)), "领京豆"),
+        FunctionItem("京东超市", Icons.Filled.Store, listOf(Color(0xFFF7B441), Color(0xFF55C88B))),
+        FunctionItem("试用领取", Icons.Filled.CardGiftcard, listOf(Color(0xFFF86A55), Color(0xFFE93B31)), "包邮"),
+        FunctionItem("领券", Icons.Filled.LocalOffer, listOf(Color(0xFFFFB33D), Color(0xFFF56B23))),
+        FunctionItem("酒店", Icons.Filled.Hotel, listOf(Color(0xFF8EC7FF), Color(0xFF376FF1))),
+        FunctionItem("服饰鞋包", Icons.Filled.Checkroom, listOf(Color(0xFFAA78FF), Color(0xFF6D42F3))),
+        FunctionItem("手机", Icons.Filled.PhoneAndroid, listOf(Color(0xFFFF8F7A), Color(0xFFF24735))),
+        FunctionItem("数码", Icons.Filled.Devices, listOf(Color(0xFF6BA7FF), Color(0xFF2D64F4))),
+        FunctionItem("家电", Icons.Filled.Kitchen, listOf(Color(0xFF9BE078), Color(0xFF39B85A))),
+        FunctionItem("更多", Icons.Filled.MoreHoriz, listOf(Color(0xFFFFB877), Color(0xFFF67D3D)))
     )
 
-    Card(
+    Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+            .background(Color.White)
+            .padding(start = 10.dp, end = 10.dp, top = 6.dp, bottom = 8.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            // Split functions into rows of 5
-            val rows = functions.chunked(5)
-            rows.forEach { rowFunctions ->
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    rowFunctions.forEach { function ->
-                        FunctionGridItem(
-                            function = function,
-                            onClick = { onFunctionClick(function.name) },
-                            modifier = Modifier.weight(1f)
-                        )
-                    }
-                    // Fill remaining slots if row is not complete
-                    repeat(5 - rowFunctions.size) {
-                        Spacer(modifier = Modifier.weight(1f))
-                    }
-                }
+            functions.forEach { function ->
+                FunctionGridItem(
+                    function = function,
+                    onClick = { onFunctionClick(function.name) },
+                    modifier = Modifier.weight(1f)
+                )
             }
+        }
+
+        Spacer(modifier = Modifier.height(6.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Box(
+                modifier = Modifier
+                    .width(20.dp)
+                    .height(6.dp)
+                    .clip(RoundedCornerShape(999.dp))
+                    .background(Color(0xFFE34B49))
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Box(
+                modifier = Modifier
+                    .width(28.dp)
+                    .height(6.dp)
+                    .clip(RoundedCornerShape(999.dp))
+                    .background(Color(0xFFD8D8D8))
+            )
         }
     }
 }
@@ -91,50 +117,52 @@ private fun FunctionGridItem(
     Column(
         modifier = modifier
             .clickable { onClick() }
-            .padding(4.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+            .padding(horizontal = 2.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(
-            modifier = Modifier
-                .size(48.dp)
-                .clip(RoundedCornerShape(8.dp))
-                .background(
-                    when (function.name) {
-                        "秒杀" -> JDRed
-                        "京东超市" -> Color(0xFF4CAF50)
-                        "试用领取" -> Color(0xFF2196F3)
-                        "领券" -> Color(0xFFFF9800)
-                        else -> Color(0xFFF5F5F5)
-                    }
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            if (function.emoji != null) {
-                Text(
-                    text = function.emoji,
-                    fontSize = 24.sp
-                )
-            } else {
+        Box(contentAlignment = Alignment.TopEnd) {
+            Box(
+                modifier = Modifier
+                    .size(54.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(Brush.linearGradient(function.gradient)),
+                contentAlignment = Alignment.Center
+            ) {
                 Icon(
                     imageVector = function.icon,
                     contentDescription = function.name,
-                    tint = if (function.name in listOf("秒杀", "京东超市", "试用领取", "领券")) {
-                        Color.White
-                    } else {
-                        JDTextPrimary
-                    },
-                    modifier = Modifier.size(24.dp)
+                    tint = Color.White,
+                    modifier = Modifier.size(26.dp)
                 )
             }
+
+            function.badge?.let { badge ->
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(999.dp))
+                        .background(Color(0xFFF44336))
+                        .padding(horizontal = 6.dp, vertical = 2.dp)
+                ) {
+                    Text(
+                        text = badge,
+                        color = Color.White,
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
         }
-        
+
+        Spacer(modifier = Modifier.height(6.dp))
+
         Text(
             text = function.name,
             fontSize = 12.sp,
-            color = JDTextPrimary,
+            fontWeight = FontWeight.Medium,
+            color = Color(0xFF4F4F55),
             textAlign = TextAlign.Center,
-            maxLines = 1
+            lineHeight = 14.sp,
+            maxLines = 2
         )
     }
 }
